@@ -6,7 +6,7 @@ const token = "NTk2NzE1MTExNTExNDkwNTYw.XSFriA.xz3pHbVKO8HrEbWRJ2jEkNiTiPM"
 
 client.on("ready", async () => {
     console.log("ready!")
-    client.user.setActivity("I AM BLUBBADOO PREMIUM")
+    client.user.setActivity("Still in development")
     client.user.setStatus("online")
 });
 
