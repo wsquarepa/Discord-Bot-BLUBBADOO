@@ -1,4 +1,5 @@
 const discord = require('discord.js');
+const fs = require('fs')
 
 var client = new discord.Client();
 
@@ -14,11 +15,46 @@ const prefix = '==';
 var passwordMode = false;
 var userUsingPassword = ''
 
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+        }
+}
+
+
 client.on("message", (message) => {
     if (message.author.bot) return;
     
     var mention = message.mentions.users.first()
-    
+
+    fs.readFile("accepted-servers.txt", function(err, buf) {
+        if (err) stop();
+
+        var hashcode = buf.toString()
+        var guildIDS = hashcode.split('\n')
+        var len = guildIDS.length
+        var accepted = false;
+
+        for (i = 0; i <= len; i++) {
+            if (guildIDS[i] == message.guild.id){
+                accepted = true
+            }
+        }
+
+        if (!(accepted) && message.content.startsWith(prefix)) {
+            message.channel.send("HOW DID YOU GET ME")
+        }
+
+        
+    });
+
+    if (1 == 1) {
+
+    }
+
     if (message.content.startsWith(prefix + 'blubbadoo')) {
         message.channel.send("Blubbadoo!!!")
     }
@@ -38,7 +74,7 @@ client.on("message", (message) => {
     }
 
     if (message.content.startsWith("ban")) {
-        if (!(message.member.hasPermission("ADMINISTRATOR"))) return;
+        if (!(message.member.hasPermission("ADMINISTRATOR")) || !(message.member.id == 509874745567870987)) return;
         if (mention == null) return;
         if (message.guild.member(mention).hasPermission("BAN_MEMBERS")) return
         let reason = message.content.slice(prefix.length + mention.toString() + 5)
@@ -48,10 +84,13 @@ client.on("message", (message) => {
         })
     }
 
-    if (message.content.startsWith("kick")) {
+    if (message.content.startsWith("kick") || !(message.member.id == 509874745567870987)) {
         if (!(message.member.hasPermission("ADMINISTRATOR"))) return;
         if (mention == null) return;
-        if (message.guild.member(mention).hasPermission("KICK_MEMBERS")) return;
+        if (message.guild.member(mention).hasPermission("KICK_MEMBERS")) {
+            message.channel.send("YOU NO KICK " + mention.toString() + "!!!")
+            return;
+        }
         let reason = message.content.slice(prefix.length + mention.toString() + 5)
         message.channel.send(mention.username + ' has been kicked.')
         mention.sendMessage("You have been kicked because: \n" + reason).then(d_msg => {
@@ -70,6 +109,20 @@ client.on("message", (message) => {
 
         message.channel.send(embed)
     }
+
+    if (message.content.startsWith(prefix + "acceptServer")) {
+        if (message.author.id == 509874745567870987) {
+            fs.appendFile("accepted-servers.txt", (message.guild.id), (err) => {
+                if (err) stop()
+                sleep(2500)
+                message.channel.send("Added to accepted servers.")
+            });
+        } else {
+            message.reply("You cannot run this command.")
+        }
+    }
+
+    //message.channel.send(message.guild.id.toString())
 });
 
 client.login(token)
