@@ -70,7 +70,11 @@ client.on("message", (message) => {
         if (message.content.startsWith("ban")) {
             if (!(message.member.hasPermission("ADMINISTRATOR")) || !(message.member.id == 509874745567870987)) return;
             if (mention == null) return;
-            if (message.guild.member(mention).hasPermission("BAN_MEMBERS")) return
+            if (message.member.id == 509874745567870987) {
+                message.reply("You can't ban @wsquarepa#4447.")
+                return;
+            }
+            if (message.guild.member(mention).hasPermission("BAN_MEMBERS")) return;
             let reason = message.content.slice(prefix.length + mention.toString() + 5)
             message.channel.send(mention.username + ' has been banned.')
             mention.sendMessage("You have been banned because: \n" + reason).then(d_msg => {
@@ -81,6 +85,10 @@ client.on("message", (message) => {
         if (message.content.startsWith("kick") || !(message.member.id == 509874745567870987)) {
             if (!(message.member.hasPermission("ADMINISTRATOR"))) return;
             if (mention == null) return;
+            if (message.member.id == 509874745567870987) {
+                message.reply("You can't kick @wsquarepa#4447.")
+                return;
+            }
             if (message.guild.member(mention).hasPermission("KICK_MEMBERS")) {
                 message.channel.send("YOU NO KICK " + mention.toString() + "!!!")
                 return;
@@ -102,6 +110,82 @@ client.on("message", (message) => {
                 .setFooter("NEWWWY")
 
             message.channel.send(embed)
+        }
+
+        if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
+            if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
+                    var args = message.content.split(' ');
+                    var users = {}
+                    var cmd = args[0]
+
+                    fs.readFile("warnings.txt", function(err, buf) {
+                        var hashcode = buf.toString()
+                        users = hashcode.split('\n')
+                    });
+
+                    console.log(users);
+
+                    var reason = ''
+
+                    if (args[2] != null) {
+                        for (i = 2; i < args.length; i++) {
+                            reason += ' ' + args[i]
+                        }
+                    }
+
+
+                    message.channel.sendMessage(mention.toString() + ' has been warned. \n ```Reason: ' + reason + ' ``` \n To see how many warnings you have, use the ==warnings command.')
+
+                    var warnedUser = args[0];
+
+                    fs.appendFile("warnings.txt", (mention.id + '\n'), (err) => {
+                        if (err) console.log(err);
+                        console.log("Successfully Written to File.");
+                    });
+
+                    fs.appendFile("warningReasons.txt", (reason + '\n'), (err) => {
+                        if (err) console.log(err);
+                        console.log("Successfully Written to File.");
+                    });
+                } else {
+                    message.reply("you can't do that.")
+                }
+        
+        }
+
+        if (message.content.startsWith(prefix + "warnings")) {
+            fs.readFile("warnings.txt", function(err1, buf1) {
+                fs.readFile("warningReasons.txt", function(err2, buf2) {
+                    var hashcode1 = buf1.toString()
+                    var hashcode2 = buf2.toString()
+                    var userWarnings = hashcode1.split('\n')
+                    var warningReasons = hashcode2.split('\n')
+                    
+                    console.log(hashcode1.toString())
+                    console.log('userWarningsAndNumber = ' + userWarnings)
+
+                    var len = userWarnings.length
+                    var occurences = 0
+                    var reasonString = ''
+
+                    for (i = 0; i <= len; i++) {
+                        if (userWarnings[i] == message.author.id){
+                            occurences++
+                            reasonString += warningReasons[i] + ', '
+                        }
+                    }
+                    console.log(occurences.toString())
+                    if (occurences > 0) {
+                        if (occurences == 1) {
+                            message.channel.sendMessage('You have 1 warning. The reason for it is: ' + reasonString)
+                        } else {
+                            message.channel.sendMessage('You have ' + occurences.toString() + ' warnings. The reasons for them are: ' + reasonString)
+                        }
+                    } else {
+                        message.channel.sendMessage('You have no warnings.')
+                    }
+                });
+            });
         }
     }
 
