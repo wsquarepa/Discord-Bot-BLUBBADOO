@@ -46,11 +46,6 @@ client.on("message", (message) => {
 
         if (!(accepted) && message.content.startsWith(prefix)) {
             message.channel.send("HOW DID YOU GET ME")
-<<<<<<< HEAD
-	    return;
-=======
-            
->>>>>>> f853a027edca2196e4b06df64e1895417f7b0dd4
         }
 
         
