@@ -107,6 +107,7 @@ client.on("message", (message) => {
 
             message.channel.send(embed)
         }
+    }
 
         if (message.content.startsWith(prefix + "acceptServer")) {
             if (message.author.id == 509874745567870987) {
@@ -119,8 +120,6 @@ client.on("message", (message) => {
                 message.reply("You cannot run this command.")
             }
         }
-
-    }
 
     //message.channel.send(message.guild.id.toString())
 });
