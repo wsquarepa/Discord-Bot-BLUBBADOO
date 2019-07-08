@@ -29,6 +29,7 @@ client.on("message", (message) => {
     if (message.author.bot) return;
     
     var mention = message.mentions.users.first()
+    var accepted = false;
 
     fs.readFile("accepted-servers.txt", function(err, buf) {
         if (err) stop();
@@ -36,7 +37,6 @@ client.on("message", (message) => {
         var hashcode = buf.toString()
         var guildIDS = hashcode.split('\n')
         var len = guildIDS.length
-        var accepted = false;
 
         for (i = 0; i <= len; i++) {
             if (guildIDS[i] == message.guild.id){
@@ -44,15 +44,11 @@ client.on("message", (message) => {
             }
         }
 
-        if (!(accepted) && message.content.startsWith(prefix)) {
+        if (!(accepted) && message.content.startsWith(prefix) && !(message.content.startsWith(prefix + "acceptServer"))) {
             message.channel.send("HOW DID YOU GET ME")
         }
 
-        
-    });
-
-    if (accepted) {
-
+        if (accepted) {
         if (message.content.startsWith(prefix + 'blubbadoo')) {
             message.channel.send("Blubbadoo!!!")
         }
@@ -120,6 +116,7 @@ client.on("message", (message) => {
                 message.reply("You cannot run this command.")
             }
         }
+    });
 
     //message.channel.send(message.guild.id.toString())
 });
