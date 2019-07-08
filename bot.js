@@ -107,7 +107,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "acceptServer")) {
             if (message.author.id == 509874745567870987) {
-                fs.appendFile("accepted-servers.txt", (message.guild.id), (err) => {
+                fs.appendFile("accepted-servers.txt", (message.guild.id + "\n"), (err) => {
                     if (err) stop()
                     sleep(2500)
                     message.channel.send("Added to accepted servers.")
