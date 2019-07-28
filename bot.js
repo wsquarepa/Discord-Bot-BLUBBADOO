@@ -1,9 +1,10 @@
 const discord = require('discord.js');
 const fs = require('fs')
+const auth = require('./auth.json')
 
 var client = new discord.Client();
 
-const token = "NTk2NzE1MTExNTExNDkwNTYw.XSFriA.xz3pHbVKO8HrEbWRJ2jEkNiTiPM"
+const token = auth.token
 
 client.on("ready", async () => {
     console.log("ready!")
@@ -14,6 +15,7 @@ client.on("ready", async () => {
 const prefix = '==';
 var passwordMode = false;
 var userUsingPassword = ''
+var possibleStatuses = ['online', 'idle', 'dnd']
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -21,24 +23,28 @@ function sleep(milliseconds) {
         if ((new Date().getTime() - start) > milliseconds) {
             break;
         }
-        }
+    }
 }
 
 function embed(author, description, color) {
     var embed = new discord.RichEmbed()
-                .setAuthor(author)
-                .setDescription(description)
-                .setColor(color)
+        .setAuthor(author)
+        .setDescription(description)
+        .setColor(color)
     return embed
+}
+
+function statusSet(status) {
+    client.user.setStatus(status)
 }
 
 client.on("message", (message) => {
     if (message.author.bot) return;
-    
+
     var mention = message.mentions.users.first()
     var accepted = false;
 
-    fs.readFile("accepted-servers.txt", function(err, buf) {
+    fs.readFile("accepted-servers.txt", function (err, buf) {
         if (err) stop();
 
         var hashcode = buf.toString()
@@ -46,7 +52,7 @@ client.on("message", (message) => {
         var len = guildIDS.length
 
         for (i = 0; i <= len; i++) {
-            if (guildIDS[i] == message.guild.id){
+            if (guildIDS[i] == message.guild.id) {
                 accepted = true
             }
         }
@@ -114,53 +120,53 @@ client.on("message", (message) => {
 
             if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
                 if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
-                        var args = message.content.split(' ');
-                        var users = {}
-                        var cmd = args[0]
+                    var args = message.content.split(' ');
+                    var users = {}
+                    var cmd = args[0]
 
-                        fs.readFile("warnings.txt", function(err, buf) {
-                            var hashcode = buf.toString()
-                            users = hashcode.split('\n')
-                        });
+                    fs.readFile("warnings.txt", function (err, buf) {
+                        var hashcode = buf.toString()
+                        users = hashcode.split('\n')
+                    });
 
-                        console.log(users);
+                    console.log(users);
 
-                        var reason = ''
+                    var reason = ''
 
-                        if (args[2] != null) {
-                            for (i = 2; i < args.length; i++) {
-                                reason += ' ' + args[i]
-                            }
+                    if (args[2] != null) {
+                        for (i = 2; i < args.length; i++) {
+                            reason += ' ' + args[i]
                         }
-
-                        var warnedUser = args[0];
-
-                        //message.channel.sendMessage(mention.username.toString() + ' has been warned. \n ```Reason: ' + reason + ' ``` \n To see how many warnings you have, use the ==warnings command.')
-                        var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have, use the ==warnings command.")
-                        message.channel.send(warningEmbed)
-                        fs.appendFile("warnings.txt", (mention.id + '\n'), (err) => {
-                            if (err) console.log(err);
-                            console.log("Successfully Written to File.");
-                        });
-
-                        fs.appendFile("warningReasons.txt", (reason + '\n'), (err) => {
-                            if (err) console.log(err);
-                            console.log("Successfully Written to File.");
-                        });
-                    } else {
-                        message.reply("you can't do that.")
                     }
-            
+
+                    var warnedUser = args[0];
+
+                    //message.channel.sendMessage(mention.username.toString() + ' has been warned. \n ```Reason: ' + reason + ' ``` \n To see how many warnings you have, use the ==warnings command.')
+                    var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have, use the ==warnings command.")
+                    message.channel.send(warningEmbed)
+                    fs.appendFile("warnings.txt", (mention.id + '\n'), (err) => {
+                        if (err) console.log(err);
+                        console.log("Successfully Written to File.");
+                    });
+
+                    fs.appendFile("warningReasons.txt", (reason + '\n'), (err) => {
+                        if (err) console.log(err);
+                        console.log("Successfully Written to File.");
+                    });
+                } else {
+                    message.reply("you can't do that.")
+                }
+
             }
 
             if (message.content.startsWith(prefix + "warnings")) {
-                fs.readFile("warnings.txt", function(err1, buf1) {
-                    fs.readFile("warningReasons.txt", function(err2, buf2) {
+                fs.readFile("warnings.txt", function (err1, buf1) {
+                    fs.readFile("warningReasons.txt", function (err2, buf2) {
                         var hashcode1 = buf1.toString()
                         var hashcode2 = buf2.toString()
                         var userWarnings = hashcode1.split('\n')
                         var warningReasons = hashcode2.split('\n')
-                        
+
                         console.log(hashcode1.toString())
                         console.log('userWarningsAndNumber = ' + userWarnings)
 
@@ -169,7 +175,7 @@ client.on("message", (message) => {
                         var reasonString = ''
 
                         for (i = 0; i <= len; i++) {
-                            if (userWarnings[i] == message.author.id){
+                            if (userWarnings[i] == message.author.id) {
                                 occurences++
                                 reasonString += warningReasons[i] + ', '
                             }
@@ -187,7 +193,36 @@ client.on("message", (message) => {
                     });
                 });
             }
-    }
+
+            if (message.content.startsWith(prefix + "setStatus")) {
+                var args = message.content.split(' ');
+                var cmd = args[0]
+                var possible = false;
+
+                console.log(args[1])
+
+                // try {
+                //     statusSet(args[0])
+                //     message.reply("Status set should be complete. If not, please wait.")
+                // } catch {
+                //     message.reply("Not a valid status. The possible statuses are " + possibleStatuses.join(", "))
+                // }
+
+                for (i = 0; i < possibleStatuses.length; i++) {
+                    if (args[1] == possibleStatuses[i]) {
+                        possible = true;
+                    }
+                }
+
+                if (possible) {
+                    statusSet(args[0])
+                    message.reply("Status set should be complete. If not, please wait.")
+                } else {
+                    message.reply("Not a valid status. The possible statuses are " + possibleStatuses.join(", "))
+                }
+            }
+
+        }
 
         if (message.content.startsWith(prefix + "acceptServer")) {
             if (message.author.id == 509874745567870987 && !(accepted)) {
@@ -200,16 +235,16 @@ client.on("message", (message) => {
                 message.reply("You either cannot run this command or it is already accepted.")
             }
         }
+
+        if (message.content.startsWith("pls meme")) {
+            message.channel.send("", {
+                files: ["./images/Stealy.jpg"]
+            })
+        }
     });
 
     //message.channel.send(message.guild.id.toString())
 });
-
-client.on("guildMemberAdd", (member) => {
-    var role = member.guild.roles.find("name", "newbie")
-    member.addRole(role)
-})
-
 client.login(token)
 
 //invite: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8
