@@ -237,6 +237,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith("pls meme")) {
+            sleep(500)
             message.channel.send("", {
                 files: ["./images/Stealy.jpg"]
             })
