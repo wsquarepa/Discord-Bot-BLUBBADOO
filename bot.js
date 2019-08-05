@@ -237,10 +237,13 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith("pls meme")) {
-            sleep(500)
-            message.channel.send("", {
-                files: ["./images/Stealy.jpg"]
-            })
+            var choose = Math.floor((Math.random() * 2) + 1);
+            if (choose == 1) {
+                sleep(500)
+                message.channel.send("", {
+                    files: ["./images/Stealy.jpg"]
+                })
+            }
         }
     });
 
