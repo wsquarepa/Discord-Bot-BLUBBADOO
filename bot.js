@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const fs = require('fs')
 const auth = require('./auth.json')
+const developer = require('./develop.json')
 
 var client = new discord.Client();
 
@@ -8,7 +9,9 @@ const token = auth.token
 
 client.on("ready", async () => {
     console.log("ready!")
-    client.user.setActivity("Still in development")
+    if (developer.onDevelopMode) {
+        client.user.setActivity("Still in development")
+    }
     client.user.setStatus("online")
 });
 
@@ -76,13 +79,19 @@ client.on("message", (message) => {
                 message.reply("Enter the password.").then(deleteMessage => deleteMessage.delete(3000))
                 passwordMode = true;
                 userUsingPassword = message.author.id
-                client.user.setStatus("dnd")
             }
 
             if (message.content.startsWith("javascript") && passwordMode && message.author.id == userUsingPassword) {
                 message.delete(500)
-                message.reply("Test mode activiated").then(d_msg => d_msg.delete(3000))
-                client.user.setStatus("online")
+                if (developer.onDevelopMode) {
+                    developer.onDevelopMode = false
+                    message.reply("Test mode deactivated").then(d_msg => d_msg.delete(3000))
+                } else {
+                    developer.onDevelopMode = true
+                    message.reply("Test mode activiated").then(d_msg => d_msg.delete(3000))
+                }
+                console.log(developer.onDevelopMode)
+                
             }
 
             if (message.content.startsWith("ban")) {
