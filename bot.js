@@ -38,6 +38,11 @@ function statusSet(status) {
     client.user.setStatus(status)
 }
 
+function randomNumber(end) {
+    //Starts with 0 and ends with your input.
+    return Math.floor((Math.random() * end) + 1);
+}
+
 client.on("message", (message) => {
     if (message.author.bot) return;
 
@@ -237,7 +242,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith("pls meme")) {
-            var choose = Math.floor((Math.random() * 2) + 1);
+            var choose = randomNumber(2)
             if (choose == 1) {
                 sleep(500)
                 message.channel.send("", {
