@@ -47,7 +47,7 @@ function randomNumber(end) {
 }
 
 client.on("message", (message) => {
-    if (message.author.bot) return;
+    if (message.author.bot && message.author.id != 596715111511490560) return;
 
     var mention = message.mentions.users.first()
     var accepted = false;
@@ -94,9 +94,15 @@ client.on("message", (message) => {
                 
             }
 
-            if (message.content.startsWith("ban")) {
-                if (!(message.member.hasPermission("ADMINISTRATOR")) || !(message.member.id == 509874745567870987)) return;
-                if (mention == null) return;
+            if (message.content.startsWith("ban") || !(message.member.id == 509874745567870987)) {
+                if (!(message.member.hasPermission("ADMINISTRATOR"))) {
+                    message.reply("Ok. Banning... WAIT! YOU DON'T HAVE THE ADMIN!")
+                    return;
+                }
+                if (mention == null) {
+                    message.reply("Ok. Banning nobody... Wait. That's an error!")
+                    return;
+                }
                 if (message.member.id == 509874745567870987) {
                     message.reply("You can't ban @wsquarepa#4447.")
                     return;
@@ -110,8 +116,14 @@ client.on("message", (message) => {
             }
 
             if (message.content.startsWith("kick") || !(message.member.id == 509874745567870987)) {
-                if (!(message.member.hasPermission("ADMINISTRATOR"))) return;
-                if (mention == null) return;
+                if (!(message.member.hasPermission("ADMINISTRATOR"))) {
+                    message.reply("Ok. Kicking... WAIT! YOU DON'T HAVE THE ADMIN!")
+                    return;
+                }
+                if (mention == null) {
+                    message.reply("Ok. Kicking nobody... Wait. That's an error!")
+                    return;
+                }
                 if (message.member.id == 509874745567870987) {
                     message.reply("You can't kick @wsquarepa#4447.")
                     return;
@@ -234,6 +246,12 @@ client.on("message", (message) => {
                 } else {
                     message.reply("Not a valid status. The possible statuses are " + possibleStatuses.join(", "))
                 }
+            }
+
+            if (message.content.startsWith(prefix + "instantDev")) {
+                message.channel.send("==develop")
+                sleep(5000)
+                message.channel.send("javascript")
             }
 
         }
