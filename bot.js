@@ -144,7 +144,7 @@ client.on("message", (message) => {
                 message.channel.send(testEmbed)
             }
 
-            if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
+            if (message.content.startsWith("warn") && !(message.content.startsWith(prefix + "warnings"))) {
                 if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
                     var args = message.content.split(' ');
                     var users = {}
@@ -183,6 +183,11 @@ client.on("message", (message) => {
                     message.reply("you can't do that.")
                 }
 
+            }
+
+            if (message.content.startsWith("How are you") || message.content.startsWith("How r u")) {
+                sleep(500)
+                message.reply("Great!")
             }
 
             if (message.content.startsWith(prefix + "warnings")) {
