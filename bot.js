@@ -94,7 +94,7 @@ client.on("message", (message) => {
                 
             }
 
-            if (message.content.startsWith("ban") || !(message.member.id == 509874745567870987)) {
+            if (message.content.startsWith(prefix + "ban") || !(message.member.id == 509874745567870987)) {
                 if (!(message.member.hasPermission("ADMINISTRATOR"))) {
                     message.reply("Ok. Banning... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
@@ -115,7 +115,7 @@ client.on("message", (message) => {
                 })
             }
 
-            if (message.content.startsWith("kick") || !(message.member.id == 509874745567870987)) {
+            if (message.content.startsWith(prefix + "kick") || !(message.member.id == 509874745567870987)) {
                 if (!(message.member.hasPermission("ADMINISTRATOR"))) {
                     message.reply("Ok. Kicking... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
@@ -144,7 +144,7 @@ client.on("message", (message) => {
                 message.channel.send(testEmbed)
             }
 
-            if (message.content.startsWith("warn") && !(message.content.startsWith(prefix + "warnings"))) {
+            if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
                 if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
                     var args = message.content.split(' ');
                     var users = {}
