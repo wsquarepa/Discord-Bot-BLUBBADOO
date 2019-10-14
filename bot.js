@@ -47,7 +47,8 @@ function randomNumber(end) {
 }
 
 client.on("message", (message) => {
-    if (message.author.bot && message.author.id != 596715111511490560) return;
+    if (message.author.bot) return;
+    //if (message.author.bot && message.author.id != 596715111511490560) return;
 
     var mention = message.mentions.users.first()
     var accepted = false;
