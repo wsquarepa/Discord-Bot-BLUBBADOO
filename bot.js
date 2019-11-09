@@ -95,13 +95,13 @@ client.on("message", (message) => {
                 
             }
 
-            if (message.content.startsWith(prefix + "ban") || (message.member.id == 509874745567870987)) {
-                if (!(message.member.hasPermission("ADMINISTRATOR"))) {
+            if (message.content.startsWith(prefix + "ban")) {
+                if (!(message.member.hasPermission("ADMINISTRATOR")) || message.member.id == 509874745567870987) {
                     message.reply("Ok. Banning... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
                 }
                 if (mention == null) {
-                    message.reply("Ok. Banning nobody... Wait. That's an error!")
+                    //message.reply("Ok. Banning nobody... Wait. That's an error!")
                     return;
                 }
                 if (message.member.id == 509874745567870987) {
@@ -116,8 +116,8 @@ client.on("message", (message) => {
                 })
             }
 
-            if (message.content.startsWith(prefix + "kick") || !(message.member.id == 509874745567870987)) {
-                if (!(message.member.hasPermission("ADMINISTRATOR"))) {
+            if (message.content.startsWith(prefix + "kick")) {
+                if (!(message.member.hasPermission("ADMINISTRATOR")) || message.member.id == 509874745567870987) {
                     message.reply("Ok. Kicking... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
                 }
