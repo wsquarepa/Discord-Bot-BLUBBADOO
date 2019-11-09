@@ -95,7 +95,7 @@ client.on("message", (message) => {
                 
             }
 
-            if (message.content.startsWith(prefix + "ban") || !(message.member.id == 509874745567870987)) {
+            if (message.content.startsWith(prefix + "ban") || (message.member.id == 509874745567870987)) {
                 if (!(message.member.hasPermission("ADMINISTRATOR"))) {
                     message.reply("Ok. Banning... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
@@ -282,6 +282,10 @@ client.on("message", (message) => {
                     files: ["./images/Stealy.jpg"]
                 })
             }
+        }
+
+        if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
+            message.channel.sendMessage("MUPPY!!!")
         }
     });
 
