@@ -10,7 +10,7 @@ const token = auth.token
 client.on("ready", async () => {
     console.log("ready!")
     if (developer.onDevelopMode) {
-        client.user.setActivity("Still in development")
+        client.user.setActivity("the prefix is '=='")
     }
     client.user.setStatus("online")
 });
@@ -71,6 +71,7 @@ client.on("message", (message) => {
         }
 
         if (accepted) {
+
             if (message.content.startsWith(prefix + 'blubbadoo')) {
                 message.channel.send("Blubbadoo!!!")
             }
@@ -96,7 +97,7 @@ client.on("message", (message) => {
             }
 
             if (message.content.startsWith(prefix + "ban")) {
-                if (!(message.member.hasPermission("ADMINISTRATOR")) || message.member.id == 509874745567870987) {
+                if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
                     message.reply("Ok. Banning... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
                 }
@@ -117,7 +118,7 @@ client.on("message", (message) => {
             }
 
             if (message.content.startsWith(prefix + "kick")) {
-                if (!(message.member.hasPermission("ADMINISTRATOR")) || message.member.id == 509874745567870987) {
+                if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
                     message.reply("Ok. Kicking... WAIT! YOU DON'T HAVE THE ADMIN!")
                     return;
                 }
@@ -125,7 +126,7 @@ client.on("message", (message) => {
                     message.reply("Ok. Kicking nobody... Wait. That's an error!")
                     return;
                 }
-                if (message.member.id == 509874745567870987) {
+                if (mention.member.id == 509874745567870987) {
                     message.reply("You can't kick @wsquarepa#4447.")
                     return;
                 }
@@ -209,18 +210,20 @@ client.on("message", (message) => {
                         for (i = 0; i <= len; i++) {
                             if (userWarnings[i] == message.author.id) {
                                 occurences++
-                                reasonString += warningReasons[i] + ', '
+                                reasonString += warningReasons[i] + ", "
                             }
                         }
                         console.log(occurences.toString())
                         if (occurences > 0) {
                             if (occurences == 1) {
-                                message.channel.sendMessage('You have 1 warning. The reason for it is: ' + reasonString)
+                                var warningEmbed = embed("You have 1 warning.", "The reason is " + reasonString, "ff0000")
+                                message.channel.send(warningEmbed)
                             } else {
                                 message.channel.sendMessage('You have ' + occurences.toString() + ' warnings. The reasons for them are: ' + reasonString)
                             }
                         } else {
-                            message.channel.sendMessage('You have no warnings.')
+                            var warningEmbed = embed("You have no warnings.", "You haven't got any warnings.", "00ff00")
+                            message.channel.send(warningEmbed)
                         }
                     });
                 });
