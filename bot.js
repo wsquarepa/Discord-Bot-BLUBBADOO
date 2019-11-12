@@ -10,7 +10,7 @@ const token = auth.token
 client.on("ready", async () => {
     console.log("ready!")
     if (developer.onDevelopMode) {
-        client.user.setActivity("Still in development")
+        client.user.setActivity("the prefix is '=='")
     }
     client.user.setStatus("online")
 });
