@@ -290,6 +290,14 @@ client.on("message", (message) => {
         if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
             message.channel.sendMessage("MUPPY!!!")
         }
+
+        if (message.content.includes("tis"))  {
+            message.channel.sendMessage("Yos!")
+        }
+
+        if ((message.content.includes("is") || message.content.includes("Is")) && message.content.endsWith("?")) {
+            message.channel.sendMessage("Yos!")
+        }
     });
 
     //message.channel.send(message.guild.id.toString())
