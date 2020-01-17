@@ -278,7 +278,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith("pls meme")) {
-            var choose = randomNumber(2)
+            var choose = randomNumber(5)
             if (choose == 1) {
                 sleep(500)
                 message.channel.send("", {
