@@ -295,7 +295,7 @@ client.on("message", (message) => {
             message.channel.sendMessage("Yos!")
         }
 
-        if ((message.content.includes("is") || message.content.includes("Is")) && message.content.endsWith("?")) {
+        if ((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) && message.content.endsWith("?")) {
             message.channel.sendMessage("Yos!")
         }
     });
