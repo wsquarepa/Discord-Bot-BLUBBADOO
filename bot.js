@@ -10,7 +10,7 @@ const token = auth.token
 client.on("ready", async () => {
     console.log("ready!")
     if (developer.onDevelopMode) {
-        client.user.setActivity("the prefix is '=='")
+        client.user.setStatus("the prefix is '=='")
     }
     client.user.setStatus("online")
 });
@@ -29,9 +29,9 @@ function sleep(milliseconds) {
     }
 }
 
-function embed(author, description, color) {
+function embed(title, description, color) {
     var embed = new discord.RichEmbed()
-        .setAuthor(author)
+        .setAuthor(title)
         .setDescription(description)
         .setColor(color)
     return embed
@@ -67,7 +67,7 @@ client.on("message", (message) => {
         }
 
         if (!(accepted) && message.content.startsWith(prefix) && !(message.content.startsWith(prefix + "acceptServer"))) {
-            message.channel.send("HOW DID YOU GET ME")
+            message.channel.send(embed("Error", "You cannot run this command.", "ff0000"))
         }
 
         if (accepted) {
@@ -106,7 +106,7 @@ client.on("message", (message) => {
                     return;
                 }
                 if (message.member.id == 509874745567870987) {
-                    message.reply("You can't ban @wsquarepa#4447.")
+                    message.reply("You can't ban @wsquarepa#4447. Use another thing.")
                     return;
                 }
                 if (message.guild.member(mention).hasPermission("BAN_MEMBERS")) return;
@@ -210,7 +210,7 @@ client.on("message", (message) => {
                         for (i = 0; i <= len; i++) {
                             if (userWarnings[i] == message.author.id) {
                                 occurences++
-                                reasonString += warningReasons[i] + ", "
+                                reasonString += warningReasons[i] + "\n"
                             }
                         }
                         console.log(occurences.toString())
@@ -219,7 +219,7 @@ client.on("message", (message) => {
                                 var warningEmbed = embed("You have 1 warning.", "The reason is " + reasonString, "ff0000")
                                 message.channel.send(warningEmbed)
                             } else {
-                                message.channel.sendMessage('You have ' + occurences.toString() + ' warnings. The reasons for them are: ' + reasonString)
+                                message.channel.send(embed("You have " + occurences.toString() + " warnings.", "Warning reasons: \n" + reasonString))
                             }
                         } else {
                             var warningEmbed = embed("You have no warnings.", "You haven't got any warnings.", "00ff00")

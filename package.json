@@ -9,7 +9,7 @@
   "author": "William Wang (Willy)",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^11.6.4",
     "enmap": "^5.1.0"
   }
 }
