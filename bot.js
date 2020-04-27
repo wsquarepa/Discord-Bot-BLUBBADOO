@@ -90,7 +90,7 @@ client.on("message", (message) => {
 
     if (message.content.startsWith(prefix + "ban")) {
         if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
-            message.reply("Ok. Banning... WAIT! YOU DON'T HAVE THE ADMIN!")
+            message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
             return;
         }
         if (mention == null) {
@@ -114,7 +114,7 @@ client.on("message", (message) => {
 
     if (message.content.startsWith(prefix + "kick")) {
         if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
-            message.channel.send("Ok. Kicking... WAIT! YOU DON'T HAVE THE ADMIN!")
+            message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
             return;
         }
         if (mention == null) {
@@ -148,6 +148,11 @@ client.on("message", (message) => {
                 return;
             }
             var args = message.content.split(' ');
+
+            for (var i = 0; i < args.length; i++) {
+                args[i] = args[i].replace(" ", "")
+            }
+
             var users = {}
             var cmd = args[0]
 
@@ -159,22 +164,59 @@ client.on("message", (message) => {
             console.log(users);
 
             var reason = ''
+            var modifier = false
+            var modifiers = []
+            var disguiseId = ""
+            var existingModifiers = ["anonymous", "silent", "disguise"]
+            
+            if (message.content.includes("-")) {
+                modifier = true
+            }
 
-            if (args[2] != null) {
-                for (i = 2; i < args.length; i++) {
-                    reason += ' ' + args[i]
+            if (!modifier) {
+                if (args[2] != null) {
+                    for (i = 2; i < args.length; i++) {
+                        reason += ' ' + args[i]
+                    }
+                }
+            } else {
+                if (args[2] != null) {
+                    for (i = 2; i < args.length; i++) {
+                        if (args[i].startsWith("-", 0) && existingModifiers.includes(args[i].replace("-", ""))) {
+                            console.log(args[i])
+                            if (args[i] == "-disguise") {
+                                disguiseId = args[i + 1]
+                                args.splice(i + 1, 1)
+                            }
+                            console.log(args)
+                            modifiers.push(args[i].replace("-", ""))
+                        } else {
+                            reason += ' ' + args[i]
+                        }
+                    }
                 }
             }
 
-            //message.channel.sendMessage(mention.username.toString() + ' has been warned. \n ```Reason: ' + reason + ' ``` \n To see how many warnings you have, use the ==warnings command.')
-            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have, use the ==warnings command.")
-            message.channel.send(warningEmbed)
-            fs.appendFile("warnings.txt", (mention.id + ',' + reason + ',' + message.author.id + '\n'), (err) => {
+            console.log(modifiers)
+
+            reason = reason.replace(" ", "")
+            disguiseId = disguiseId.replace(" ", "")
+            
+            fs.appendFile("warnings.txt", (mention.id + ',' + reason + ',' + (modifiers.includes("disguise")? disguiseId:message.author.id.replace(" ", "")) + '\n'), (err) => {
                 if (err) console.log(err);
                 console.log("Successfully Written to File.");
             });
+            
+            if (modifiers.includes("silent")) {
+                message.delete()
+                return;
+            }
+
+            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have, use the ==warnings command.")
+            message.channel.send(warningEmbed)
+            
         } else {
-            message.reply("you can't do that.")
+            message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
         }
 
     }
@@ -193,23 +235,45 @@ client.on("message", (message) => {
             var occurences = 0
             var reasonString = ''
 
-            for (i = 0; i < len; i++) {
-                var warning = userWarnings[i].split(',')
-                if (warning[0] == message.author.id) {
-                    occurences++
-                    reasonString += warning[1] + ", issued by <@" + warning[2] + ">\n"
+            if (mention == null) {
+                for (i = 0; i < len; i++) {
+                    var warning = userWarnings[i].split(',')
+                    if (warning[0] == message.author.id) {
+                        occurences++
+                        reasonString += warning[1] + ", issued by <@" + warning[2] + ">\n"
+                    }
                 }
-            }
-            if (occurences > 0) {
-                if (occurences == 1) {
-                    var warningEmbed = embed("You have 1 warning.", "The reason is " + reasonString, "ff0000")
-                    message.channel.send(warningEmbed)
+                if (occurences > 0) {
+                    if (occurences == 1) {
+                        var warningEmbed = embed("You have 1 warning.", "The reason is " + reasonString, "ff0000")
+                        message.channel.send(warningEmbed)
+                    } else {
+                        message.channel.send(embed("You have " + occurences.toString() + " warnings.", "Warning reasons: \n" + reasonString, "ff0000"))
+                    }
                 } else {
-                    message.channel.send(embed("You have " + occurences.toString() + " warnings.", "Warning reasons: \n" + reasonString, "ff0000"))
+                    var warningEmbed = embed("You have no warnings.", "You haven't got any warnings.", "00ff00")
+                    message.channel.send(warningEmbed)
                 }
             } else {
-                var warningEmbed = embed("You have no warnings.", "You haven't got any warnings.", "00ff00")
-                message.channel.send(warningEmbed)
+                for (i = 0; i < len; i++) {
+                    var warning = userWarnings[i].split(',')
+                    if (warning[0] == mention.id) {
+                        occurences++
+                        reasonString += warning[1] + ", issued by <@" + warning[2] + ">\n"
+                    }
+                }
+
+                if (occurences > 0) {
+                    if (occurences == 1) {
+                        var warningEmbed = embed(mention.username.toString() + " has 1 warning.", "The reason is " + reasonString, "ff0000")
+                        message.channel.send(warningEmbed)
+                    } else {
+                        message.channel.send(embed(mention.username.toString() + " has " + occurences.toString() + " warnings.", "Warning reasons: \n" + reasonString, "ff0000"))
+                    }
+                } else {
+                    var warningEmbed = embed(mention.username.toString() + " has no warnings.", "You haven't got any warnings.", "00ff00")
+                    message.channel.send(warningEmbed)
+                }
             }
         });
     }
@@ -274,6 +338,10 @@ client.on("message", (message) => {
         message.delete(0)
         message.channel.sendMessage("BOB IS NOT COOL!!!")
         message.channel.send(`==warn <@${message.member.id}> Saying that ${message.content} but he is not cool.`).then(d_msg => d_msg.delete())
+    }
+
+    if (message.content.toLowerCase() == "bob") {
+        message.channel.send("... is not cool!")
     }
 });
 client.login(token)
