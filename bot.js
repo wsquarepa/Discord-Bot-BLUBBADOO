@@ -298,6 +298,10 @@ client.on("message", (message) => {
         if ((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) && message.content.endsWith("?")) {
             message.channel.sendMessage("Yos!")
         }
+
+        if (message.content.toLowerCase().includes("bob is cool")) {
+            message.channel.sendMessage("Actually, that is false!")
+        }
     });
 
     //message.channel.send(message.guild.id.toString())
@@ -305,3 +309,4 @@ client.on("message", (message) => {
 client.login(token)
 
 //invite: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8
+//jasdhfjkahfjkshajkfhldjhahhdhdje adhhe sjdjej sjahh ejskel;jej e ejsjke;skje e jks  the shtint skal.0 the ting is that the thnnng is the same
