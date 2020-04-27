@@ -54,12 +54,13 @@ client.on("message", (message) => {
 
     if (message.content.startsWith(prefix + 'help')) {
         message.channel.send(embed("THINGS THAT I CAN DO", `
-            Ok sooo... \n
+            Ok sooo... Info: <...> means required and [...] means optional field. \n
             ==blubbadoo, I shall reply! \n
             ==ban <user> <reason>, to ban people \n
             ==kick <user> <reason>, to kick people \n
             ==warn <user> <reason>, to warn people \n
-            ==warnings, to see your warnings \n
+            ==warnings [user], to see your warnings \n
+            ==clearWarnings <user> to clear the user's warnings \n
             secret texting commands that you'll have to find out and that's pretty much it!
         `, "ffffff").setFooter("Version 1.9.8 (BETA)"))
     }
@@ -224,6 +225,10 @@ client.on("message", (message) => {
     if (message.content.toLowerCase().startsWith("how are you") || message.content.toLowerCase().startsWith("how r u")) {
         sleep(500)
         message.reply("Great!")
+    }
+
+    if (message.content.startsWith(prefix + "clearWarnings")) {
+        message.author.send(embed("Error", "Sorry, but I can't clear warnings yet. Please DM wsquarepa#4447 to ask for deletion!", "ff0000"))
     }
 
     if (message.content.startsWith(prefix + "warnings")) {
