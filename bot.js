@@ -207,6 +207,10 @@ client.on("message", (message) => {
                 if (err) console.log(err);
                 console.log("Successfully Written to File.");
             });
+
+            mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
+            message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" + 
+            (modifiers.includes("disguise")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the rules to not be warned!"))
             
             if (modifiers.includes("silent")) {
                 message.delete()
