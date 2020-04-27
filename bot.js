@@ -300,7 +300,8 @@ client.on("message", (message) => {
         }
 
         if (message.content.toLowerCase().includes("bob is cool")) {
-            message.channel.sendMessage("Actually, that is false!")
+            message.delete(0)
+            message.channel.sendMessage("BOB IS NOT COOL!!!")
         }
     });
 
