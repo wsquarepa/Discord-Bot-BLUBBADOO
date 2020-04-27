@@ -47,7 +47,7 @@ function randomNumber(end) {
 }
 
 client.on("message", (message) => {
-    if (message.author.bot) return;
+    if (message.author.bot && message.author.id != 596715111511490560) return;
     //if (message.author.bot && message.author.id != 596715111511490560) return;
 
     var mention = message.mentions.users.first()
@@ -299,9 +299,10 @@ client.on("message", (message) => {
             message.channel.sendMessage("Yos!")
         }
 
-        if (message.content.toLowerCase().includes("bob is cool")) {
+        if (message.content.toLowerCase().includes("bob is cool") && message.member.id != 596715111511490560) {
             message.delete(0)
             message.channel.sendMessage("BOB IS NOT COOL!!!")
+            message.channel.send(`==warn <@${message.member.id}> Saying that ${message.content} but he is not cool.`).then(d_msg => d_msg.delete())
         }
     });
 
