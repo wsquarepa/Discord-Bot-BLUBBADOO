@@ -137,6 +137,12 @@ client.on("message", (message) => {
         })
     }
 
+    if (message.content.startsWith(prefix + "whois") && message.member.id == 509874745567870987) {
+        mention.send(embed("Hi.", "Hello! <@509874745567870987> wants to know who you are! Please DM him your name or " + 
+        "just ignore this message.", "0000ff"))
+        message.channel.send("Sent!")
+    }
+
     if (message.content.startsWith(prefix + "embeddie")) {
         var testEmbed = embed("@wsquarepa#4447", "Test embed", "ffffff", "This is a test").addField("Hello there!", "A test")
         message.channel.send(testEmbed)
@@ -168,7 +174,7 @@ client.on("message", (message) => {
             var modifier = false
             var modifiers = []
             var disguiseId = ""
-            var existingModifiers = ["anonymous", "silent", "disguise"]
+            var existingModifiers = ["silent", "disguise"]
             
             if (message.content.includes("-")) {
                 modifier = true
@@ -217,7 +223,8 @@ client.on("message", (message) => {
                 return;
             }
 
-            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have, use the ==warnings command.")
+            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," + 
+            "use the ==warnings command.")
             message.channel.send(warningEmbed)
             
         } else {
