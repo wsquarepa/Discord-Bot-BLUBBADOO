@@ -20,6 +20,7 @@ const prefix = '==';
 var passwordMode = false;
 var userUsingPassword = ''
 var possibleStatuses = ['online', 'idle', 'dnd']
+var trustedPeople = [509874745567870987, 536659745420083208]
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -53,6 +54,7 @@ client.on("message", (message) => {
         //if (message.author.bot && message.author.id != 596715111511490560) return;
 
         var mention = message.mentions.users.first()
+        var mentions = message.mentions.users
 
         if (message.content.startsWith(prefix + 'help')) {
             message.channel.send(embed("THINGS THAT I CAN DO", `
@@ -379,20 +381,41 @@ client.on("message", (message) => {
 
             var reason = ""
             var args = message.content.split(' ');
+            var modifiers = []
+            var disguiseId = ""
             if (args[2] != null) {
                 for (i = 2; i < args.length; i++) {
-                    reason += ' ' + args[i]
+                    if (args[i].startsWith("-")) {
+                        if (args[i] == "-impose") {
+                            disguiseId = mentions.last().id
+                            modifiers.push("impose")
+                        }
+                    } else {
+                        reason += ' ' + args[i]
+                    }
                 }
             }
 
-            mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
-            message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
-            message.author.id.replace(" ", "") + "> and please follow the " +
-            "rules to not be warned!", "ff0000"))
+            console.log(mention.id)
 
             var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," + 
             "use the ==warnings command.")
             message.channel.send(warningEmbed)
+
+            if (trustedPeople.includes(parseInt(mention.id), 0)) {
+                mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
+                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
+                (modifiers.includes("impose")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
+                "rules to not be warned!", "ff0000").setFooter("Since you're a supporter or a trusted person, I'm going to tell you a secret. \n" + 
+                "1: This message is a trolling command, and did not actually warn you. \n" + 
+                "2: This message was " + (disguiseId == ""? "not imposed":("imposed and the real sender is " + message.author.username))))
+                return;
+            }
+            
+            mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
+            message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
+            (modifiers.includes("impose")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
+            "rules to not be warned!", "ff0000"))
         }
 
     } catch(e) {
