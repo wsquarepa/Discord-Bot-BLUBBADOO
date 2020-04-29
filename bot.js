@@ -73,26 +73,6 @@ client.on("message", (message) => {
             message.channel.send("Blubbadoo!!!")
         }
 
-        if (message.content.startsWith(prefix + "develop")) {
-            message.delete(500)
-            message.reply("Enter the password.").then(deleteMessage => deleteMessage.delete(3000))
-            passwordMode = true;
-            userUsingPassword = message.author.id
-        }
-
-        if (message.content.startsWith("javascript") && passwordMode && message.author.id == userUsingPassword) {
-            message.delete(500)
-            if (developer.onDevelopMode) {
-                developer.onDevelopMode = false
-                message.reply("Test mode deactivated").then(d_msg => d_msg.delete(3000))
-            } else {
-                developer.onDevelopMode = true
-                message.reply("Test mode activiated").then(d_msg => d_msg.delete(3000))
-            }
-            console.log(developer.onDevelopMode)
-            
-        }
-
         if (message.content.startsWith(prefix + "ban")) {
             if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
                 message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
@@ -107,7 +87,7 @@ client.on("message", (message) => {
                 return;
             }
             if (message.guild.member(mention).hasPermission("BAN_MEMBERS")) {
-                message.channel.send("Umm... You can't ban someone that has a BAN_MEMBERS permission...")
+                message.channel.send(mention.toString() + " can't be punished, silly.")
                 return
             };
             let reason = message.content.slice(prefix.length + mention.toString() + 5)
@@ -131,7 +111,7 @@ client.on("message", (message) => {
                 return;
             }
             if (message.guild.member(mention).hasPermission("KICK_MEMBERS")) {
-                message.channel.send("YOU NO KICK " + mention.toString() + "!!!")
+                message.channel.send(mention.toString() + " can't be punished, silly.")
                 return;
             }
             let reason = message.content.slice(prefix.length + mention.toString() + 5)
@@ -153,11 +133,18 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
+            console.log(message.member.hasPermission("ADMINISTRATOR"))
             if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
                 if (mention == null) {
                     message.channel.send("You can't warn nobody.")
                     return;
                 }
+
+                if (message.guild.member(mention).hasPermission("ADMINISTRATOR") && message.member.id != 509874745567870987 && message.member.id != 596715111511490560) {
+                    message.channel.send(mention.toString() + " can't be punished, silly.")
+                    return;
+                }
+
                 var args = message.content.split(' ');
 
                 for (var i = 0; i < args.length; i++) {
@@ -196,7 +183,7 @@ client.on("message", (message) => {
                             if (args[i].startsWith("-", 0) && existingModifiers.includes(args[i].replace("-", ""))) {
                                 console.log(args[i])
                                 if (args[i] == "-disguise") {
-                                    disguiseId = args[i + 1]
+                                    disguiseId = mentions.last().id
                                     args.splice(i + 1, 1)
                                 }
                                 console.log(args)
@@ -219,7 +206,7 @@ client.on("message", (message) => {
                 });
 
                 mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
-                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" + 
+                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@!" + 
                 (modifiers.includes("disguise")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
                 "rules to not be warned!", "ff0000"))
                 
@@ -389,6 +376,7 @@ client.on("message", (message) => {
                         if (args[i] == "-impose") {
                             disguiseId = mentions.last().id
                             modifiers.push("impose")
+                            args.splice(i, i + 1)
                         }
                     } else {
                         reason += ' ' + args[i]
@@ -402,11 +390,11 @@ client.on("message", (message) => {
             "use the ==warnings command.")
             message.channel.send(warningEmbed)
 
-            if (trustedPeople.includes(parseInt(mention.id), 0)) {
+            if (trustedPeople.includes(parseInt(mention.id), 0) || message.guild.member(mention).hasPermission("ADMINISTRATOR")) {
                 mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
                 message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
                 (modifiers.includes("impose")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
-                "rules to not be warned!", "ff0000").setFooter("Since you're a supporter or a trusted person, I'm going to tell you a secret. \n" + 
+                "rules to not be warned!", "ff0000").setFooter("Since you're a supporter, a trusted person or an administrator, I'm going to tell you a secret. \n" + 
                 "1: This message is a trolling command, and did not actually warn you. \n" + 
                 "2: This message was " + (disguiseId == ""? "not imposed":("imposed and the real sender is " + message.author.username))))
                 return;
