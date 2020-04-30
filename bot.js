@@ -82,7 +82,7 @@ client.on("message", (message) => {
                 message.channel.send("Ok. Banning nobody... Wait. That's an error!")
                 return;
             }
-            if (message.member.id == 509874745567870987) {
+            if (mention.id == "509874745567870987") {
                 message.channel.send("You can't ban @wsquarepa#4447. Use another thing.")
                 return;
             }
@@ -90,7 +90,7 @@ client.on("message", (message) => {
                 message.channel.send(mention.toString() + " can't be punished, silly.")
                 return
             };
-            let reason = message.content.slice(prefix.length + mention.toString() + 5)
+            let reason = message.content.slice(prefix.length + 5 + mention.toString().length + 1, message.content.length)
             message.channel.send(mention.username + ' has been banned.')
             mention.sendMessage("You have been banned because: \n" + reason).then(() => {
                 message.guild.member(mention).ban(reason)
@@ -106,7 +106,7 @@ client.on("message", (message) => {
                 message.channel.send("Ok. Kicking nobody... Wait. That's an error!")
                 return;
             }
-            if (mention.id == 509874745567870987) {
+            if (mention.id == "509874745567870987") {
                 message.channel.send("You can't kick @wsquarepa#4447.")
                 return;
             }
@@ -114,7 +114,7 @@ client.on("message", (message) => {
                 message.channel.send(mention.toString() + " can't be punished, silly.")
                 return;
             }
-            let reason = message.content.slice(prefix.length + mention.toString() + 5)
+            let reason = message.content.slice(prefix.length + 5 + mention.toString().length + 1, message.content.length)
             message.channel.send(mention.username + ' has been kicked.')
             mention.sendMessage("You have been kicked because: \n" + reason).then(d_msg => {
                 message.guild.member(mention).kick(reason)
@@ -404,6 +404,18 @@ client.on("message", (message) => {
             message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
             (modifiers.includes("impose")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
             "rules to not be warned!", "ff0000"))
+        }
+
+        if (message.content.startsWith(prefix + "permsCheck")) {
+            if (message.guild.member(client.user).hasPermission("ADMINISTRATOR")) {
+                message.channel.send(embed("PERMS CHECK", "Perms have been checked, and it's all good!", "00ff00"))
+                return;
+            }
+            message.channel.send(embed("PERMS CHECK", "ERROR! Blubbadoo must have ADMIN perms to function properly.", "ff0000"))
+        }
+
+        if (message.guild.id == "705081585074176152") {
+            
         }
 
     } catch(e) {
