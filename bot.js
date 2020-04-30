@@ -64,7 +64,7 @@ client.on("message", (message) => {
                 ==kick <user> <reason>, to kick people \n
                 ==warn <user> <reason>, to warn people \n
                 ==warnings [user], to see your warnings \n
-                ==clearWarnings <user> to clear the user's warnings \n
+                ==clearWarnings <user> to clear the user's warnings (Does not work) \n
                 secret texting commands that you'll have to find out and that's pretty much it!
             `, "ffffff").setFooter("Version 1.9.8 (BETA)"))
         }
