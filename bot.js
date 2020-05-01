@@ -55,8 +55,10 @@ function randomNumber(end) {
 
 client.on("message", (message) => {
     try {
-        if (message.author.bot && message.author.id != 596715111511490560) return;
-        //if (message.author.bot && message.author.id != 596715111511490560) return;
+        if ((message.author.bot && message.author.id != 596715111511490560) && message.content.startsWith(prefix)) {
+            message.channel.send(embed("UMM NO", "Yeah... YOU CAN'T DO THAT MR.BOT!", "ff0000"))
+            return;
+        };
 
         var mention = message.mentions.users.first()
         var mentions = message.mentions.users
