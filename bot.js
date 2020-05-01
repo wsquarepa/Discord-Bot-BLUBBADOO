@@ -39,8 +39,13 @@ function embed(title, description, color) {
     return embed
 }
 
-function statusSet(status) {
-    client.user.setStatus(status)
+function getMapSize(x) {
+    var len = 0;
+    for (var count in x) {
+            len++;
+    }
+
+    return len;
 }
 
 function randomNumber(end) {
@@ -406,16 +411,65 @@ client.on("message", (message) => {
             "rules to not be warned!", "ff0000"))
         }
 
-        if (message.content.startsWith(prefix + "permsCheck")) {
-            if (message.guild.member(client.user).hasPermission("ADMINISTRATOR")) {
-                message.channel.send(embed("PERMS CHECK", "Perms have been checked, and it's all good!", "00ff00"))
+        if (message.content.startsWith(prefix + "perms")) {
+            var args = message.content.split(" ")
+            var permsList = ["ADMINISTRATOR", "BAN_MEMBERS", "KICK_MEMBERS", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_CHANNELS", "MANAGE_EMOJIS", "MANAGE_GUILD"
+            , "MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "VIEW_AUDIT_LOG", "CREATE_INSTANT_INVITE", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "EMBED_LINKS",
+            "ATTACH_FILES", "READ_MESSAGES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "ADD_REACTIONS", "CONNECT", "SPEAK", "STREAM", "MUTE_MEMBERS",
+            "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "PRIORITY_SPEAKER"]
+
+            if (mention == null) {
+                var myperms = []
+                if (message.guild.member(message.author).hasPermission("ADMINISTRATOR")) {
+                    myperms.push("ADMINISTRATOR")
+                } else {
+                    for (var i = 0; i < permsList.length; i++) {
+                        if (message.guild.member(message.author).hasPermission(permsList[i])){
+                            myperms.push(permsList[i])
+                        }
+                    }
+                }
+                var permsString = myperms.toString().replace(/,/g, "\n")
+                message.delete(10000)
+                message.channel.send(embed("You have these perms:", permsString, "0000ff").setFooter("This message will dissapear in 10 seconds")).then(d_msg => d_msg.delete(10000))
                 return;
+            } else {
+                var myperms = []
+                if (message.guild.member(mention).hasPermission("ADMINISTRATOR")) {
+                    myperms.push("ADMINISTRATOR")
+                } else {
+                    for (var i = 0; i < permsList.length; i++) {
+                        if (message.guild.member(mention).hasPermission(permsList[i])){
+                            myperms.push(permsList[i])
+                        }
+                    }
+                }
+                var permsString = myperms.toString().replace(/,/g, "\n")
+                message.delete(10000)
+                message.channel.send(embed(mention.username + " has these perms:", permsString, "0000ff").setFooter("This message will dissapear in 10 seconds")).then(d_msg => d_msg.delete(10000))
             }
-            message.channel.send(embed("PERMS CHECK", "ERROR! Blubbadoo must have ADMIN perms to function properly.", "ff0000"))
         }
 
-        if (message.guild.id == "705081585074176152") {
-            
+        if (message.content.startsWith(prefix + "purge")) {
+            message.delete()
+            var args = message.content.split(' ');
+            var numberToDelete = args[1]
+            try {
+                let messagecount = parseInt(numberToDelete);
+                if (messagecount > 100) {
+                    message.channel.send("You can not purge more than 100 messages yet.")
+                    return;
+                }
+                message.channel.fetchMessages({ limit: messagecount }).then(function(messages) {  
+                    message.channel.bulkDelete(messages).then(function()  {
+                        message.channel.send(messages.size + " messages deleted!").then(d_msg => d_msg.delete(2500))
+                    })
+                    
+                });
+                
+            } catch {
+                message.channel.send("Next time, type an integer.")
+            }
         }
 
     } catch(e) {
