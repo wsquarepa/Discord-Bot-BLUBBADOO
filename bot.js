@@ -73,8 +73,8 @@ client.on("message", (message) => {
                 ==clearWarnings <user> to clear the user's warnings (Does not work) \n
                 ==perms <user> for perms of that user (Note: USE_VAD = Use Voice Activity) \n
                 ==purge <number of messages to purge> to purge channels. You can purge a maximum of 2 week's worth or 100 messages. \n
-                ==mute <member> mute a member, you need a role named "Muted" with caps to work. \n
-                ==unmute <member> unmute a member, you need a role named "Muted" with caps to work. \n
+                ==mute <member> mute a member. \n
+                ==unmute <member> unmute a member. \n
             `, "ffffff").setFooter("Version 2.9.6 (BETA)"))
         }
 
@@ -491,7 +491,7 @@ client.on("message", (message) => {
             }
         }
 
-        if (message.content.toLowerCase() == "no u") {
+        if (message.content.toLowerCase() == "no u" && !message.author.bot) {
             message.channel.send("no u")
         }
 
@@ -500,7 +500,19 @@ client.on("message", (message) => {
                 var mutedRole = message.guild.roles.find('name', "Muted")
                 console.log(mutedRole)
                 if (mutedRole === null) {
-                    message.channel.send("That role does not exist.")
+                    message.guild.createRole(
+                        data = {
+                            name: 'Muted',
+                            color: 'GRAY'
+                        },
+                        reason = 'Mute command'
+                    ).then((role) => {
+                        role.setPermissions("CREATE_INSTANT_INVITE")
+                        role.setPosition(0, false)
+                        message.guild.embedChannel
+                        message.guild.member(mention).addRole(role)
+                        message.channel.send("Member muted!")
+                    })
                     return;
                 }
                 if (mention === null) {
@@ -558,7 +570,18 @@ client.on("message", (message) => {
             if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
                 var role = message.guild.roles.find('name', "OP")
                 if (role === null) {
-                    message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!").then(msg => msg.react("✅"))
+                    message.guild.createRole(
+                        data = {
+                            name: 'OP',
+                            color: 'DEFAULT'
+                        },
+                        reason = 'OP role command'
+                    ).then((role) => {
+                        role.setPermissions("ADMINISTRATOR")
+                        role.setPosition(1, true)
+                        message.guild.member(mention).addRole(role)
+                        message.channel.send("Member **OPPED**")
+                    })
                 } else {
                     if (mention === null) {
                         message.channel.send("You can't exactly OP everyone...")
