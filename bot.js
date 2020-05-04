@@ -42,7 +42,7 @@ function embed(title, description, color) {
 function getMapSize(x) {
     var len = 0;
     for (var count in x) {
-            len++;
+        len++;
     }
 
     return len;
@@ -65,23 +65,23 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + 'help')) {
             message.channel.send(embed("THINGS THAT I CAN DO", `
-                Ok sooo... Info: <...> means required and [...] means optional field. \n
-                ==blubbadoo, I shall reply! \n
+                Commands: (ℹ️ - <...> means required and [...] means optional field.) \n
                 ==ban <user> <reason>, to ban people \n
                 ==kick <user> <reason>, to kick people \n
                 ==warn <user> <reason>, to warn people \n
                 ==warnings [user], to see your warnings \n
                 ==clearWarnings <user> to clear the user's warnings (Does not work) \n
-                secret texting commands that you'll have to find out and that's pretty much it!
-            `, "ffffff").setFooter("Version 1.9.8 (BETA)"))
+                ==perms <user> for perms of that user (Note: USE_VAD = Use Voice Activity) \n
+                ==purge <number of messages to purge> to purge channels. You can purge a maximum of 2 week's worth or 100 messages.
+            `, "ffffff").setFooter("Version 2.3.4 (BETA)"))
         }
 
-        if (message.content.startsWith(prefix + 'blubbadoo')) {
-            message.channel.send("Blubbadoo!!!")
+        if (message.content.toLowerCase() == 'blubbadoo') {
+            message.channel.send("Hi <@" + message.author.id + ">!")
         }
 
         if (message.content.startsWith(prefix + "ban")) {
-            if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
+            if (!(message.member.hasPermission("BAN_MEMBERS")) && !(message.member.id == 509874745567870987)) {
                 message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
                 return;
             }
@@ -104,7 +104,7 @@ client.on("message", (message) => {
             })
         }
 
-        if (message.content.startsWith(prefix + "kick")) {
+        if (message.content.startsWith(prefix + "kick") && !(message.content.startsWith(prefix + "kickall"))) {
             if (!(message.member.hasPermission("ADMINISTRATOR")) && !(message.member.id == 509874745567870987)) {
                 message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
                 return;
@@ -129,8 +129,8 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "whois") && message.member.id == 509874745567870987) {
-            mention.send(embed("Hi.", "Hello! <@509874745567870987> wants to know who you are! Please DM him your name or " + 
-            "just ignore this message.", "0000ff"))
+            mention.send(embed("Hi.", "Hello! <@509874745567870987> wants to know who you are! Please DM him your name or " +
+                "just ignore this message.", "0000ff"))
             message.channel.send("Sent!")
         }
 
@@ -173,7 +173,7 @@ client.on("message", (message) => {
                 var modifiers = []
                 var disguiseId = ""
                 var existingModifiers = ["silent", "disguise"]
-                
+
                 if (message.content.includes("-")) {
                     modifier = true
                 }
@@ -206,26 +206,26 @@ client.on("message", (message) => {
 
                 reason = reason.replace(" ", "")
                 disguiseId = disguiseId.replace(" ", "")
-                
-                fs.appendFile("warnings.txt", (mention.id + ',' + reason + ',' + (modifiers.includes("disguise")? disguiseId:message.author.id.replace(" ", "")) + '\n'), (err) => {
+
+                fs.appendFile("warnings.txt", (mention.id + ',' + reason + ',' + (modifiers.includes("disguise") ? disguiseId : message.author.id.replace(" ", "")) + '\n'), (err) => {
                     if (err) console.log(err);
                     console.log("Successfully Written to File.");
                 });
 
-                mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
-                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@!" + 
-                (modifiers.includes("disguise")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
-                "rules to not be warned!", "ff0000"))
-                
+                mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " +
+                    message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@!" +
+                    (modifiers.includes("disguise") ? disguiseId : message.author.id.replace(" ", "")) + "> and please follow the " +
+                    "rules to not be warned!", "ff0000"))
+
                 if (modifiers.includes("silent")) {
                     message.delete()
                     return;
                 }
 
-                var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," + 
-                "use the ==warnings command.")
+                var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," +
+                    "use the ==warnings command.")
                 message.channel.send(warningEmbed)
-                
+
             } else {
                 message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
             }
@@ -344,12 +344,12 @@ client.on("message", (message) => {
             message.channel.sendMessage("MUPPY!!!")
         }
 
-        if (message.content.includes("tis"))  {
+        if (message.content.includes("tis")) {
             message.channel.sendMessage("Yos!")
         }
 
-        if (((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do"))|| 
-        message.content.toLowerCase().includes("am")) && message.content.endsWith("?")) {
+        if (((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) ||
+                message.content.toLowerCase().includes("am")) && message.content.endsWith("?")) {
             message.channel.sendMessage("Yos!")
         }
 
@@ -393,32 +393,41 @@ client.on("message", (message) => {
 
             console.log(mention.id)
 
-            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," + 
-            "use the ==warnings command.")
+            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," +
+                "use the ==warnings command.")
             message.channel.send(warningEmbed)
 
             if (trustedPeople.includes(parseInt(mention.id), 0) || message.guild.member(mention).hasPermission("ADMINISTRATOR")) {
-                mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
-                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
-                (modifiers.includes("impose")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
-                "rules to not be warned!", "ff0000").setFooter("Since you're a supporter, a trusted person or an administrator, I'm going to tell you a secret. \n" + 
-                "1: This message is a trolling command, and did not actually warn you. \n" + 
-                "2: This message was " + (disguiseId == ""? "not imposed":("imposed and the real sender is " + message.author.username))))
+                mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " +
+                    message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
+                    (modifiers.includes("impose") ? disguiseId : message.author.id.replace(" ", "")) + "> and please follow the " +
+                    "rules to not be warned!", "ff0000").setFooter("Since you're a supporter, a trusted person or an administrator, I'm going to tell you a secret. \n" +
+                    "1: This message is a trolling command, and did not actually warn you. \n" +
+                    "2: This message was " + (disguiseId == "" ? "not imposed" : ("imposed and the real sender is " + message.author.username))))
+                
+                    message.guild.owner.send(embed("Warning!", "Warning: " + message.author.username + " is using a trolling command in your server, " + message.guild.name +
+                    ", and the warning was " + (disguiseId == "" ? "not imposed" : ("imposed and the real sender is " + message.author.username))
+                    + ". If you don't accept these types of things, then warn the user.", "ff0000"))
+
                 return;
             }
-            
-            mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " + 
-            message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
-            (modifiers.includes("impose")? disguiseId:message.author.id.replace(" ", "")) + "> and please follow the " +
-            "rules to not be warned!", "ff0000"))
+
+            mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " +
+                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@" +
+                (modifiers.includes("impose") ? disguiseId : message.author.id.replace(" ", "")) + "> and please follow the " +
+                "rules to not be warned!", "ff0000"))
+
+            message.guild.owner.send(embed("Warning!", "Warning: " + message.author.username + " is using a trolling command in your server, " + message.guild.name +
+            ". If you don't accept these types of things, then warn the user.", "ff0000"))
         }
 
         if (message.content.startsWith(prefix + "perms")) {
             var args = message.content.split(" ")
-            var permsList = ["ADMINISTRATOR", "BAN_MEMBERS", "KICK_MEMBERS", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_CHANNELS", "MANAGE_EMOJIS", "MANAGE_GUILD"
-            , "MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "VIEW_AUDIT_LOG", "CREATE_INSTANT_INVITE", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "EMBED_LINKS",
-            "ATTACH_FILES", "READ_MESSAGES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "ADD_REACTIONS", "CONNECT", "SPEAK", "STREAM", "MUTE_MEMBERS",
-            "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "PRIORITY_SPEAKER"]
+            var permsList = ["ADMINISTRATOR", "BAN_MEMBERS", "KICK_MEMBERS", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_CHANNELS", "MANAGE_EMOJIS", "MANAGE_GUILD", "MANAGE_MESSAGES", 
+                "MANAGE_ROLES", "MANAGE_WEBHOOKS", "VIEW_AUDIT_LOG", "CREATE_INSTANT_INVITE", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "EMBED_LINKS",
+                "ATTACH_FILES", "READ_MESSAGES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "ADD_REACTIONS", "CONNECT", "SPEAK", "STREAM", "MUTE_MEMBERS",
+                "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "PRIORITY_SPEAKER"
+            ]
 
             if (mention == null) {
                 var myperms = []
@@ -426,7 +435,7 @@ client.on("message", (message) => {
                     myperms.push("ADMINISTRATOR")
                 } else {
                     for (var i = 0; i < permsList.length; i++) {
-                        if (message.guild.member(message.author).hasPermission(permsList[i])){
+                        if (message.guild.member(message.author).hasPermission(permsList[i])) {
                             myperms.push(permsList[i])
                         }
                     }
@@ -441,7 +450,7 @@ client.on("message", (message) => {
                     myperms.push("ADMINISTRATOR")
                 } else {
                     for (var i = 0; i < permsList.length; i++) {
-                        if (message.guild.member(mention).hasPermission(permsList[i])){
+                        if (message.guild.member(mention).hasPermission(permsList[i])) {
                             myperms.push(permsList[i])
                         }
                     }
@@ -453,28 +462,79 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "purge")) {
-            message.delete()
-            var args = message.content.split(' ');
-            var numberToDelete = args[1]
-            try {
-                let messagecount = parseInt(numberToDelete);
-                if (messagecount > 100) {
-                    message.channel.send("You can not purge more than 100 messages yet.")
-                    return;
+            if (message.guild.member(message.author).hasPermission("MANAGE_MESSAGES") || message.author.id == 509874745567870987) {
+                message.delete()
+                var args = message.content.split(' ');
+                var numberToDelete = args[1]
+                try {
+                    let messagecount = parseInt(numberToDelete);
+                    if (messagecount > 100) {
+                        message.channel.send("You can not purge more than 100 messages yet.")
+                        return;
+                    }
+                    message.channel.fetchMessages({
+                        limit: messagecount + 1
+                    }).then(function (messages) {
+                        message.channel.bulkDelete(messages).then(function () {
+                            message.channel.send(messages.size - 1 + " messages deleted!").then(d_msg => d_msg.delete(2500))
+                        }).catch(function(reason) {
+                            message.channel.send(embed("An error occured", reason, "ff0000"))
+                        })
+                    });
+                } catch {
+                    message.channel.send("Next time, type an integer.")
                 }
-                message.channel.fetchMessages({ limit: messagecount }).then(function(messages) {  
-                    message.channel.bulkDelete(messages).then(function()  {
-                        message.channel.send(messages.size + " messages deleted!").then(d_msg => d_msg.delete(2500))
-                    })
-                    
-                });
-                
-            } catch {
-                message.channel.send("Next time, type an integer.")
+            } else {
+                message.channel.send(embed("Error","<@" + message.author.id + ">, you can't do that.", "ff0000"))
             }
         }
 
-    } catch(e) {
+        if (message.content.toLowerCase() == "no u") {
+            message.channel.send("no u")
+        }
+
+        //#region - Broken Commands
+
+        // if (message.content.startsWith(prefix + "kickall")) {
+        //     console.log("ACTIVIATEDS")
+        //     message.guild.fetchMembers().then(function(users) {
+        //         var keys = users.members.keys()
+        //         console.log(keys)
+        //         for (var user in users.members._array) {
+        //             users.members.get(user).kick("SERVER PURGE")
+        //         }
+        //     })
+        // }
+
+        // if (message.content.toLowerCase().startsWith(prefix + "op")) {
+        //     var role = message.guild.roles.get("OP")
+        //     if (role === null) {
+        //         message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
+        //     } else {
+        //         if (mention === null) {
+        //             message.channel.send("You can't exactly OP everyone...")
+        //         } else {
+        //             mention.addRole(role)
+        //         }
+        //     }
+        // }
+
+        // if (message.content.toLowerCase().startsWith(prefix + "deop")) {
+        //     var role = message.guild.roles.get("OP")
+        //     if (role === null) {
+        //         message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
+        //     } else {
+        //         if (mention === null) {
+        //             message.channel.send("You can't exactly DEOP everyone...")
+        //         } else {
+        //             mention.removeRole(role)
+        //         }
+        //     }
+        // }
+
+        //#endregion
+
+    } catch (e) {
         message.channel.send(embed("An error occured", e.toString(), "ff0000"))
     }
 });
