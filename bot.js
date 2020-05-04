@@ -496,7 +496,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "mute")) {
-            if (message.member.hasPermission("MUTE_MEMBERS") || message.member.id == "509874745567870987") {
+            if ((message.member.hasPermission("MUTE_MEMBERS") && !message.guild.member(mention).hasPermission("MUTE_MEMBERS")) || message.member.id == "509874745567870987") {
                 var mutedRole = message.guild.roles.find('name', "Muted")
                 console.log(mutedRole)
                 if (mutedRole === null) {
