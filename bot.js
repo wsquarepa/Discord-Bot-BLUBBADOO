@@ -72,8 +72,10 @@ client.on("message", (message) => {
                 ==warnings [user], to see your warnings \n
                 ==clearWarnings <user> to clear the user's warnings (Does not work) \n
                 ==perms <user> for perms of that user (Note: USE_VAD = Use Voice Activity) \n
-                ==purge <number of messages to purge> to purge channels. You can purge a maximum of 2 week's worth or 100 messages.
-            `, "ffffff").setFooter("Version 2.3.4 (BETA)"))
+                ==purge <number of messages to purge> to purge channels. You can purge a maximum of 2 week's worth or 100 messages. \n
+                ==mute <member> mute a member, you need a role named "Muted" with caps to work. \n
+                ==unmute <member> unmute a member, you need a role named "Muted" with caps to work. \n
+            `, "ffffff").setFooter("Version 2.9.6 (BETA)"))
         }
 
         if (message.content.toLowerCase() == 'blubbadoo') {
@@ -493,6 +495,50 @@ client.on("message", (message) => {
             message.channel.send("no u")
         }
 
+        if (message.content.startsWith(prefix + "mute")) {
+            if (message.member.hasPermission("MUTE_MEMBERS") || message.member.id == "509874745567870987") {
+                var mutedRole = message.guild.roles.find('name', "Muted")
+                console.log(mutedRole)
+                if (mutedRole === null) {
+                    message.channel.send("That role does not exist.")
+                    return;
+                }
+                if (mention === null) {
+                    message.channel.send("Next time, mention someone.")
+                    return;
+                }
+                if (!message.guild.member(mention).roles.has(mutedRole.id)) {
+                    message.guild.member(mention).addRole(mutedRole)
+                    message.channel.send("Member muted!")
+                } 
+                
+            } else {
+                message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
+            }
+        }
+
+        if (message.content.startsWith(prefix + "unmute")) {
+            if (message.member.hasPermission("MUTE_MEMBERS") || message.member.id == "509874745567870987") {
+                var mutedRole = message.guild.roles.find('name', "Muted")
+                console.log(mutedRole)
+                if (mutedRole === null) {
+                    message.channel.send("That role does not exist.")
+                    return;
+                }
+                if (mention === null) {
+                    message.channel.send("Next time, mention someone.")
+                    return;
+                }
+                if (message.guild.member(mention).roles.has(mutedRole.id)) {
+                    message.guild.member(mention).removeRole(mutedRole)
+                    message.channel.send("Member unmuted!")
+                } 
+                
+            } else {
+                message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
+            }
+        }
+
         //#region - Broken Commands
 
         // if (message.content.startsWith(prefix + "kickall")) {
@@ -505,34 +551,47 @@ client.on("message", (message) => {
         //         }
         //     })
         // }
-
-        // if (message.content.toLowerCase().startsWith(prefix + "op")) {
-        //     var role = message.guild.roles.get("OP")
-        //     if (role === null) {
-        //         message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
-        //     } else {
-        //         if (mention === null) {
-        //             message.channel.send("You can't exactly OP everyone...")
-        //         } else {
-        //             mention.addRole(role)
-        //         }
-        //     }
-        // }
-
-        // if (message.content.toLowerCase().startsWith(prefix + "deop")) {
-        //     var role = message.guild.roles.get("OP")
-        //     if (role === null) {
-        //         message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
-        //     } else {
-        //         if (mention === null) {
-        //             message.channel.send("You can't exactly DEOP everyone...")
-        //         } else {
-        //             mention.removeRole(role)
-        //         }
-        //     }
-        // }
-
+        
         //#endregion
+
+        if (message.content.toLowerCase().startsWith(prefix + "op")) {
+            if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
+                var role = message.guild.roles.find('name', "OP")
+                if (role === null) {
+                    message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!").then(msg => msg.react("✅"))
+                } else {
+                    if (mention === null) {
+                        message.channel.send("You can't exactly OP everyone...")
+                    } else {
+                        message.guild.member(mention).addRole(role)
+                        message.channel.send("Member **OPPED**")
+                    }
+                }
+            } else {
+                message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
+            }
+            
+        }
+
+        if (message.content.toLowerCase().startsWith(prefix + "deop")) {
+            if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
+                var role = message.guild.roles.find("name", "OP")
+                if (role === null) {
+                    message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
+                } else {
+                    if (mention === null) {
+                        message.channel.send("You can't exactly DEOP everyone...")
+                    } else {
+                        message.guild.member(mention).removeRole(role)
+                        message.channel.send("Member **DEOPPED**")
+                    }
+                }
+            } else {
+                message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
+            }
+        }
+
+        
 
     } catch (e) {
         message.channel.send(embed("An error occured", e.toString(), "ff0000"))
