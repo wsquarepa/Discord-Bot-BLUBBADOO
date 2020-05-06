@@ -637,21 +637,20 @@ client.on("message", (message) => {
             roleName = roleName.join(" ")
             var role = message.guild.roles.find('name', roleName)
             if (role !== null) {
-                if (args[0] == "add") {
-                    try {
-                        message.guild.member(message.author).addRole(role)
-                        message.channel.send("Welcome to " + roleName + "!")
-                    } catch {
-                        message.channel.send("I don't have permission to give you that role.")
-                    }
-                } else if (args[0] == "remove") {
-                    try {
-                        message.guild.member(message.author).removeRole(role)
-                        message.channel.send("You've left " + roleName + ".")
-                    } catch {
-                        message.channel.send("I don't have permission to remove that role.")
-                    }
-                }
+                // if (args[0] == "add") {
+                //     message.guild.member(message.author).addRole(role).catch(function() {
+                //         message.channel.send("I don't have permission to give you that role.")
+                //         return
+                //     })
+                //     message.channel.send("Welcome to " + roleName + "!")
+                // } else if (args[0] == "remove") {
+                //     message.guild.member(message.author).removeRole(role).catch(function() {
+                //         message.channel.send("I don't have permission to let you leave that role.")
+                //         return
+                //     })
+                //     message.channel.send("You've left " + roleName + ".")
+                // }
+                message.channel.send("The role command has been temporarily disabled due to security issues.")
             } else {
                 message.channel.send("That role does not exist.")
             }
