@@ -56,9 +56,14 @@ function randomNumber(end) {
 client.on("message", (message) => {
     try {
         if ((message.author.bot && message.author.id != 596715111511490560) && message.content.startsWith(prefix)) {
-            message.channel.send(embed("UMM NO", "Yeah... YOU CAN'T DO THAT MR.BOT!", "ff0000"))
+            message.channel.send(embed("UMM... NO.", "Yeah... YOU CAN'T DO THAT MR.BOT!", "ff0000"))
             return;
         };
+
+        if (message.channel.type == "dm" && !message.author.bot && message.content.startsWith(prefix)) {
+            message.channel.send(embed("UMM... NO.", "You cannot use Blubbadoo in DMs. Sorry!", "ff0000"))
+            return;
+        }
 
         var mention = message.mentions.users.first()
         var mentions = message.mentions.users
@@ -75,6 +80,8 @@ client.on("message", (message) => {
                 ==purge <number of messages to purge> to purge channels. You can purge a maximum of 2 week's worth or 100 messages. \n
                 ==mute <member> mute a member. \n
                 ==unmute <member> unmute a member. \n
+                ==suggest <suggestion> post a suggestion in the channel you sent this in. \n
+                ==role <add | remove> <role name> join the role. Do not use "@" when typing the role. \n
             `, "ffffff").setFooter("Version 2.9.6 (BETA)"))
         }
 
@@ -101,7 +108,7 @@ client.on("message", (message) => {
             };
             let reason = message.content.slice(prefix.length + 5 + mention.toString().length + 1, message.content.length)
             message.channel.send(mention.username + ' has been banned.')
-            mention.sendMessage("You have been banned because: \n" + reason).then(() => {
+            mention.send("You have been banned because: \n" + reason).then(() => {
                 message.guild.member(mention).ban(reason)
             })
         }
@@ -125,7 +132,7 @@ client.on("message", (message) => {
             }
             let reason = message.content.slice(prefix.length + 5 + mention.toString().length + 1, message.content.length)
             message.channel.send(mention.username + ' has been kicked.')
-            mention.sendMessage("You have been kicked because: \n" + reason).then(d_msg => {
+            mention.send("You have been kicked because: \n" + reason).then(d_msg => {
                 message.guild.member(mention).kick(reason)
             })
         }
@@ -343,21 +350,21 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
-            message.channel.sendMessage("MUPPY!!!")
+            message.channel.send("MUPPY!!!")
         }
 
         if (message.content.includes("tis")) {
-            message.channel.sendMessage("Yos!")
+            message.channel.send("Yos!")
         }
 
         if (((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) ||
                 message.content.toLowerCase().includes("am")) && message.content.endsWith("?")) {
-            message.channel.sendMessage("Yos!")
+            message.channel.send("Yos!")
         }
 
         if (message.content.toLowerCase().includes("bob is cool") && message.member.id != 596715111511490560) {
             message.delete(0)
-            message.channel.sendMessage("BOB IS NOT COOL!!!")
+            message.channel.send("BOB IS NOT COOL!!!")
             message.channel.send(`==warn <@${message.member.id}> Saying that ${message.content} but he is not cool.`).then(d_msg => d_msg.delete())
         }
 
@@ -614,12 +621,55 @@ client.on("message", (message) => {
             }
         }
 
-        
+        if (message.content.startsWith(prefix + "suggest")) {
+            var suggestion = message.content.slice(prefix.length + 7)
+            message.delete()
+            message.channel.send(embed(message.author.username + " suggested something!", "Suggestion: " + suggestion, "00cafc"))
+        }
+
+        if (message.content.startsWith(prefix + "role")) {
+            var args = message.content.split(" ")
+            args.splice(0, 1)
+            for (var i = 0; i < args.length; i++) {
+                args[i] = args[i].trim()
+            }
+            var roleName = args.slice(1)
+            roleName = roleName.join(" ")
+            var role = message.guild.roles.find('name', roleName)
+            if (role !== null) {
+                if (args[0] == "add") {
+                    try {
+                        message.guild.member(message.author).addRole(role)
+                        message.channel.send("Welcome to " + roleName + "!")
+                    } catch {
+                        message.channel.send("I don't have permission to give you that role.")
+                    }
+                } else if (args[0] == "remove") {
+                    try {
+                        message.guild.member(message.author).removeRole(role)
+                        message.channel.send("You've left " + roleName + ".")
+                    } catch {
+                        message.channel.send("I don't have permission to remove that role.")
+                    }
+                }
+            } else {
+                message.channel.send("That role does not exist.")
+            }
+        }
 
     } catch (e) {
         message.channel.send(embed("An error occured", e.toString(), "ff0000"))
     }
 });
+
+client.on('guildMemberAdd', function(member) {
+    if (member.guild.id == "705081585074176152") {
+        var role = member.guild.roles.find('name', "CITIZEN")
+        member.addRole(role)
+        member.send("Welcome to " + member.guild.name + "! Please read the rules in the rules channel and have fun!")
+    }
+})
+
 client.login(token)
 
 //invite: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8
