@@ -81,12 +81,8 @@ client.on("message", (message) => {
                 ==mute <member> mute a member. \n
                 ==unmute <member> unmute a member. \n
                 ==suggest <suggestion> post a suggestion in the channel you sent this in. \n
-                ==role <add | remove> <role name> join the role. Do not use "@" when typing the role. \n
+                ==role <add | remove> [user] <role name> join the role. Do not use "@" when typing the role. \n
             `, "ffffff").setFooter("Version 2.9.6 (BETA)"))
-        }
-
-        if (message.content.toLowerCase() == 'blubbadoo') {
-            message.channel.send("Hi <@" + message.author.id + ">!")
         }
 
         if (message.content.startsWith(prefix + "ban")) {
@@ -413,10 +409,10 @@ client.on("message", (message) => {
                     "rules to not be warned!", "ff0000").setFooter("Since you're a supporter, a trusted person or an administrator, I'm going to tell you a secret. \n" +
                     "1: This message is a trolling command, and did not actually warn you. \n" +
                     "2: This message was " + (disguiseId == "" ? "not imposed" : ("imposed and the real sender is " + message.author.username))))
-                
-                    message.guild.owner.send(embed("Warning!", "Warning: " + message.author.username + " is using a trolling command in your server, " + message.guild.name +
-                    ", and the warning was " + (disguiseId == "" ? "not imposed" : ("imposed and the real sender is " + message.author.username))
-                    + ". If you don't accept these types of things, then warn the user.", "ff0000"))
+
+                message.guild.owner.send(embed("Warning!", "Warning: " + message.author.username + " is using a trolling command in your server, " + message.guild.name +
+                    ", and the warning was " + (disguiseId == "" ? "not imposed" : ("imposed and the real sender is " + message.author.username)) +
+                    ". If you don't accept these types of things, then warn the user.", "ff0000"))
 
                 return;
             }
@@ -427,12 +423,12 @@ client.on("message", (message) => {
                 "rules to not be warned!", "ff0000"))
 
             message.guild.owner.send(embed("Warning!", "Warning: " + message.author.username + " is using a trolling command in your server, " + message.guild.name +
-            ". If you don't accept these types of things, then warn the user.", "ff0000"))
+                ". If you don't accept these types of things, then warn the user.", "ff0000"))
         }
 
         if (message.content.startsWith(prefix + "perms")) {
             var args = message.content.split(" ")
-            var permsList = ["ADMINISTRATOR", "BAN_MEMBERS", "KICK_MEMBERS", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_CHANNELS", "MANAGE_EMOJIS", "MANAGE_GUILD", "MANAGE_MESSAGES", 
+            var permsList = ["ADMINISTRATOR", "BAN_MEMBERS", "KICK_MEMBERS", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_CHANNELS", "MANAGE_EMOJIS", "MANAGE_GUILD", "MANAGE_MESSAGES",
                 "MANAGE_ROLES", "MANAGE_WEBHOOKS", "VIEW_AUDIT_LOG", "CREATE_INSTANT_INVITE", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "EMBED_LINKS",
                 "ATTACH_FILES", "READ_MESSAGES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "ADD_REACTIONS", "CONNECT", "SPEAK", "STREAM", "MUTE_MEMBERS",
                 "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "PRIORITY_SPEAKER"
@@ -486,7 +482,7 @@ client.on("message", (message) => {
                     }).then(function (messages) {
                         message.channel.bulkDelete(messages).then(function () {
                             message.channel.send(messages.size - 1 + " messages deleted!").then(d_msg => d_msg.delete(2500))
-                        }).catch(function(reason) {
+                        }).catch(function (reason) {
                             message.channel.send(embed("An error occured", reason, "ff0000"))
                         })
                     });
@@ -494,7 +490,7 @@ client.on("message", (message) => {
                     message.channel.send("Next time, type an integer.")
                 }
             } else {
-                message.channel.send(embed("Error","<@" + message.author.id + ">, you can't do that.", "ff0000"))
+                message.channel.send(embed("Error", "<@" + message.author.id + ">, you can't do that.", "ff0000"))
             }
         }
 
@@ -529,8 +525,8 @@ client.on("message", (message) => {
                 if (!message.guild.member(mention).roles.has(mutedRole.id)) {
                     message.guild.member(mention).addRole(mutedRole)
                     message.channel.send("Member muted!")
-                } 
-                
+                }
+
             } else {
                 message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
             }
@@ -551,8 +547,8 @@ client.on("message", (message) => {
                 if (message.guild.member(mention).roles.has(mutedRole.id)) {
                     message.guild.member(mention).removeRole(mutedRole)
                     message.channel.send("Member unmuted!")
-                } 
-                
+                }
+
             } else {
                 message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
             }
@@ -570,7 +566,7 @@ client.on("message", (message) => {
         //         }
         //     })
         // }
-        
+
         //#endregion
 
         if (message.content.toLowerCase().startsWith(prefix + "op")) {
@@ -600,7 +596,7 @@ client.on("message", (message) => {
             } else {
                 message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
             }
-            
+
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "deop")) {
@@ -628,32 +624,42 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "role")) {
-            var args = message.content.split(" ")
-            args.splice(0, 1)
-            for (var i = 0; i < args.length; i++) {
-                args[i] = args[i].trim()
-            }
-            var roleName = args.slice(1)
-            roleName = roleName.join(" ")
-            var role = message.guild.roles.find('name', roleName)
-            if (role !== null) {
-                // if (args[0] == "add") {
-                //     message.guild.member(message.author).addRole(role).catch(function() {
-                //         message.channel.send("I don't have permission to give you that role.")
-                //         return
-                //     })
-                //     message.channel.send("Welcome to " + roleName + "!")
-                // } else if (args[0] == "remove") {
-                //     message.guild.member(message.author).removeRole(role).catch(function() {
-                //         message.channel.send("I don't have permission to let you leave that role.")
-                //         return
-                //     })
-                //     message.channel.send("You've left " + roleName + ".")
-                // }
-                message.channel.send("The role command has been temporarily disabled due to security issues.")
+            if (message.guild.member(message.author).hasPermission("MANAGE_ROLES") || message.author.id == "509874745567870987") {
+                var args = message.content.split(" ")
+                args.splice(0, 1)
+                for (var i = 0; i < args.length; i++) {
+                    args[i] = args[i].trim()
+                }
+                var roleName = args.slice(1)
+                if (mention) {
+                    roleName = args.slice(2)
+                }
+                roleName = roleName.join(" ")
+                var role = message.guild.roles.find('name', roleName)
+                if (!mention) {
+                    mention = message.author
+                }
+                if (role !== null) {
+                    if (args[0] == "add") {
+                        message.guild.member(mention).addRole(role).catch(function () {
+                            message.channel.send("I don't have permission to give you that role.")
+                            return
+                        })
+                        message.channel.send(mention.username + " entered " + roleName + "!")
+                    } else if (args[0] == "remove" || args[0] == "leave") {
+                        message.guild.member(mention).removeRole(role).catch(function () {
+                            message.channel.send("I don't have permission to let you leave that role.")
+                            return
+                        })
+                        message.channel.send(mention.username + " left " + roleName + ".")
+                    }
+                } else {
+                    message.channel.send("That role does not exist.")
+                }
             } else {
-                message.channel.send("That role does not exist.")
+                message.channel.send(":x: You don't have permission to run that command.")
             }
+            
         }
 
     } catch (e) {
@@ -661,7 +667,7 @@ client.on("message", (message) => {
     }
 });
 
-client.on('guildMemberAdd', function(member) {
+client.on('guildMemberAdd', function (member) {
     if (member.guild.id == "705081585074176152") {
         var role = member.guild.roles.find('name', "CITIZEN")
         member.addRole(role)
