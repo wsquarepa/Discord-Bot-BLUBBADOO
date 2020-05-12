@@ -22,8 +22,8 @@ var passwordMode = false;
 var userUsingPassword = ''
 var possibleStatuses = ['online', 'idle', 'dnd']
 var trustedPeople = [509874745567870987, 536659745420083208]
-const talkedRecently = new Set();
-const talkedRecently2 = new Set();
+const workMoneyCooldown = new Set();
+const dailyCooldown = new Set();
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -52,27 +52,27 @@ function saveCoins(coins, message) {
 }
 
 function setCooldown(msg, time) {
-    talkedRecently.add(msg.author.id);
+    workMoneyCooldown.add(msg.author.id);
     setTimeout(() => {
         // Removes the user from the set after a minute
-        talkedRecently.delete(msg.author.id);
+        workMoneyCooldown.delete(msg.author.id);
     }, time);
 }
 
 function setDailyCooldown(msg, time) {
-    talkedRecently2.add(msg.author.id);
+    dailyCooldown.add(msg.author.id);
     setTimeout(() => {
         // Removes the user from the set after a minute
-        talkedRecently.delete(msg.author.id);
+        workMoneyCooldown.delete(msg.author.id);
     }, time);
 }
 
 function inCooldown(msg) {
-    return talkedRecently.has(msg.author.id)
+    return workMoneyCooldown.has(msg.author.id)
 }
 
 function inDailyCooldown(msg) {
-    return talkedRecently2.has(msg.author.id)
+    return dailyCooldown.has(msg.author.id)
 }
 
 client.on("message", (message) => {
@@ -106,6 +106,8 @@ client.on("message", (message) => {
                 ==role <add | remove> [user] <role name> join the role. Do not use "@" when typing the role. \n
             `, "ffffff").setFooter("Version 2.9.6 (BETA)"))
         }
+
+        //#region - Moderation
 
         if (message.content.startsWith(prefix + "ban")) {
             if (!(message.member.hasPermission("BAN_MEMBERS")) && !(message.member.id == 509874745567870987)) {
@@ -681,10 +683,8 @@ client.on("message", (message) => {
             } else {
                 message.channel.send(":x: You don't have permission to run that command.")
             }
-
-
-
         }
+        //#endregion
         //#region - coins
 
         if (!coins[message.author.id]) {
@@ -774,7 +774,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "work")) {
             if (inCooldown(message)) {
-                message.channel.send(embed("Complete", "Try again later. The cooldown is `1h`", "ff0000"))
+                message.channel.send(embed("Error", "Try again later. The cooldown is `1h`", "ff0000"))
                 return;
             }
             var earnings = randomNumber(500)
@@ -789,7 +789,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "daily")) {
             if (inDailyCooldown(message)) {
-                message.channel.send(embed("Complete", "Try again later. The cooldown is `1d`", "ff0000"))
+                message.channel.send(embed("Error", "Try again later. The cooldown is `1d`", "ff0000"))
                 return;
             }
             var earnings = 1500
@@ -873,6 +873,10 @@ client.on("message", (message) => {
         //#endregion
 
         //#endregion
+        //#region - Util
+
+        //#endregion
+
     } catch (e) {
         message.channel.send(embed("An error occured", e.toString(), "ff0000"))
     }
