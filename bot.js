@@ -2,6 +2,7 @@ const discord = require('discord.js');
 const fs = require('fs')
 const auth = require('./auth.json')
 const developer = require('./develop.json')
+var coins = require("./coins.json")
 
 
 var client = new discord.Client();
@@ -21,6 +22,8 @@ var passwordMode = false;
 var userUsingPassword = ''
 var possibleStatuses = ['online', 'idle', 'dnd']
 var trustedPeople = [509874745567870987, 536659745420083208]
+const talkedRecently = new Set();
+const talkedRecently2 = new Set();
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -39,18 +42,37 @@ function embed(title, description, color) {
     return embed
 }
 
-function getMapSize(x) {
-    var len = 0;
-    for (var count in x) {
-        len++;
-    }
-
-    return len;
-}
-
 function randomNumber(end) {
     //Starts with 0 and ends with your input.
     return Math.floor((Math.random() * end) + 1);
+}
+
+function saveCoins(coins, message) {
+    fs.writeFile("./coins.json", JSON.stringify(coins), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+}
+
+function setCooldown(msg, time) {
+    talkedRecently.add(msg.author.id);
+    setTimeout(() => {
+        // Removes the user from the set after a minute
+        talkedRecently.delete(msg.author.id);
+    }, time);
+}
+
+function setDailyCooldown(msg, time) {
+    talkedRecently2.add(msg.author.id);
+    setTimeout(() => {
+        // Removes the user from the set after a minute
+        talkedRecently.delete(msg.author.id);
+    }, time);
+}
+
+function inCooldown(msg) {
+    return talkedRecently.has(msg.author.id)
+}
+
+function inDailyCooldown(msg) {
+    return talkedRecently2.has(msg.author.id)
 }
 
 client.on("message", (message) => {
@@ -659,9 +681,198 @@ client.on("message", (message) => {
             } else {
                 message.channel.send(":x: You don't have permission to run that command.")
             }
-            
+
+
+
+        }
+        //#region - coins
+
+        if (!coins[message.author.id]) {
+            coins[message.author.id] = {
+                cash: 0,
+                bank: 0
+            }
         }
 
+        let coinAmt = randomNumber(25)
+        let baseAmt = randomNumber(25)
+        //console.log(coinAmt + ":" + baseAmt)
+
+        if (coinAmt == baseAmt) {
+            coins[message.author.id] = {
+                cash: coins[message.author.id].cash + coinAmt,
+                bank: coins[message.author.id].bank
+            }
+            saveCoins(coins, message)
+        }
+
+        if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
+            if (mention) {
+                var cash = coins[mention.id].cash
+                var bank = coins[mention.id].bank
+                message.channel.send(embed(mention.username + "'s balance:", "Cash: $" + cash + " \n Bank: $" + bank, "00ff00"))
+                return
+            }
+            var cash = coins[message.author.id].cash
+            var bank = coins[message.author.id].bank
+            message.channel.send(embed("Your balance:", "Cash: $" + cash + " \n Bank: $" + bank, "00ff00"))
+        }
+
+        if (message.content.startsWith(prefix + "dep")) {
+            var args = message.content.split(" ")
+            args.splice(0, 1)
+            if (args[0] == null) {
+                message.channel.send("Next time, tell me what you want to put in the bank.")
+                return
+            }
+            args[0] = args[0].trim()
+            if (args[0] == "all") {
+                coins[message.author.id] = {
+                    cash: 0,
+                    bank: coins[message.author.id].bank + coins[message.author.id].cash
+                }
+            } else if (args[0] != null) {
+                if ((coins[message.author.id].cash - parseInt(args[0])) < 0) {
+                    message.channel.send(embed("Error", "You can't deposit more than you have.", "ff0000"))
+                    return;
+                }
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].cash - parseInt(args[0]),
+                    bank: coins[message.author.id].bank + parseInt(args[0])
+                }
+            }
+            saveCoins(coins, message)
+            message.channel.send(embed("Complete", "You deposited " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " to the bank.", "00ff00"))
+        }
+
+        if (message.content.startsWith(prefix + "withdraw")) {
+            var args = message.content.split(" ")
+            args.splice(0, 1)
+            if (args[0] == null) {
+                message.channel.send("Next time, tell me what you want to take out of the bank.")
+                return
+            }
+            args[0] = args[0].trim()
+            if (args[0] == "all") {
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].bank + coins[message.author.id].cash,
+                    bank: 0
+                }
+            } else if (args[0] != null) {
+                if ((coins[message.author.id].bank - parseInt(args[0])) < 0) {
+                    message.channel.send(embed("Error", "You can't withdraw more than you have.", "ff0000"))
+                    return;
+                }
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].cash + parseInt(args[0]),
+                    bank: coins[message.author.id].bank - parseInt(args[0])
+                }
+            }
+            saveCoins(coins, message)
+            message.channel.send(embed("Complete", "You withdrew " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " from the bank.", "00ff00"))
+        }
+
+        if (message.content.startsWith(prefix + "work")) {
+            if (inCooldown(message)) {
+                message.channel.send(embed("Complete", "Try again later. The cooldown is `1h`", "ff0000"))
+                return;
+            }
+            var earnings = randomNumber(500)
+            coins[message.author.id] = {
+                cash: coins[message.author.id].cash + earnings,
+                bank: coins[message.author.id].bank
+            }
+            saveCoins(coins, message)
+            message.channel.send(embed("Work", `You work and earn $${earnings}. It's now in your wallet.`, "00ff00"))
+            setCooldown(message, 3.6e+6)
+        }
+
+        if (message.content.startsWith(prefix + "daily")) {
+            if (inDailyCooldown(message)) {
+                message.channel.send(embed("Complete", "Try again later. The cooldown is `1d`", "ff0000"))
+                return;
+            }
+            var earnings = 1500
+            coins[message.author.id] = {
+                cash: coins[message.author.id].cash + earnings,
+                bank: coins[message.author.id].bank
+            }
+            saveCoins(coins, message)
+            message.channel.send(embed("Daily", `Daily money! $${earnings} is now added to your wallet.`, "00ff00"))
+            setDailyCooldown(message, 8.64e+7)
+        }
+
+        //#region - Admin money commands
+
+        if (message.content.startsWith(prefix + "addMoney")) {
+            if (message.author.id != 509874745567870987) {
+                message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
+                return
+            }
+            var args = message.content.split(" ")
+
+            if (mention == null) {
+                args.splice(0, 1)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to add.")
+                    return
+                }
+                args[0] = args[0].trim()
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].cash + parseInt(args[0]),
+                    bank: coins[message.author.id].bank
+                }
+            } else {
+                args.splice(0, 2)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to add.")
+                    return
+                }
+                args[0] = args[0].trim()
+                coins[mention.id] = {
+                    cash: coins[mention.id].cash + parseInt(args[0]),
+                    bank: coins[mention.id].bank
+                }
+            }
+            message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null? "your":mention.username + "'s") + " cash.", "00ff00"))
+        }
+
+        if (message.content.startsWith(prefix + "removeMoney")) {
+            if (message.author.id != 509874745567870987) {
+                message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
+                return
+            }
+            var args = message.content.split(" ")
+
+            if (mention == null) {
+                args.splice(0, 1)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to remove.")
+                    return
+                }
+                args[0] = args[0].trim()
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].cash - parseInt(args[0]),
+                    bank: coins[message.author.id].bank
+                }
+            } else {
+                args.splice(0, 2)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to remove.")
+                    return
+                }
+                args[0] = args[0].trim()
+                coins[mention.id] = {
+                    cash: coins[mention.id].cash - parseInt(args[0]),
+                    bank: coins[mention.id].bank
+                }
+            }
+            message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null? "your":mention.username + "'s") + " cash.", "ff0000"))
+        }
+
+        //#endregion
+
+        //#endregion
     } catch (e) {
         message.channel.send(embed("An error occured", e.toString(), "ff0000"))
     }
