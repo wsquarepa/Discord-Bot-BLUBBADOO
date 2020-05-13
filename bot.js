@@ -938,6 +938,10 @@ client.on("message", (message) => {
                 message.channel.send("That person doesn't have a bank account yet.")
                 return;
             }
+            if (message.author.id == mention.id) {
+                message.channel.send("Why would you like to rob yourself? You don't earn anything anyway.")
+                return  
+            }
             var randRobNumber = randomNumber(10)
             if (randRobNumber == 1) {
                 var earnings = coins[mention.id].cash * 0.1
@@ -966,7 +970,7 @@ client.on("message", (message) => {
                     bank: coins[mention.id].bank
                 }
                 saveCoins(coins, message)
-                message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined " + earnings)
+                message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined $" + earnings + ".")
             }
         }
 
