@@ -10,7 +10,9 @@ var client = new discord.Client();
 const token = auth.token
 
 client.on("ready", async () => {
-    console.log("ready!")
+    console.log("Bot ready.")
+    console.log("Discord socialspy: Ready. Type ==socialSpy to turn on")
+    console.log("Socialspy - messages recieved after on:")
     if (developer.onDevelopMode) {
         client.user.setActivity("a game that is telling you that the prefix is '=='")
     }
@@ -22,8 +24,12 @@ var passwordMode = false;
 var userUsingPassword = ''
 var possibleStatuses = ['online', 'idle', 'dnd']
 var trustedPeople = [509874745567870987, 536659745420083208]
+
 const workMoneyCooldown = new Set();
 const dailyCooldown = new Set();
+const huntCooldown = new Set()
+
+var socialSpyOn = false
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -51,11 +57,11 @@ function saveCoins(coins, message) {
     fs.writeFile("./coins.json", JSON.stringify(coins), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
 }
 
-function setCooldown(msg, time) {
-    workMoneyCooldown.add(msg.author.id);
+function setCooldown(msg, time, set) {
+    set.add(msg.author.id);
     setTimeout(() => {
         // Removes the user from the set after a minute
-        workMoneyCooldown.delete(msg.author.id);
+        set.delete(msg.author.id);
     }, time);
 }
 
@@ -67,8 +73,8 @@ function setDailyCooldown(msg, time) {
     }, time);
 }
 
-function inCooldown(msg) {
-    return workMoneyCooldown.has(msg.author.id)
+function inCooldown(msg, set) {
+    return set.has(msg.author.id)
 }
 
 function inDailyCooldown(msg) {
@@ -77,6 +83,7 @@ function inDailyCooldown(msg) {
 
 client.on("message", (message) => {
     try {
+        
         if ((message.author.bot && message.author.id != 596715111511490560) && message.content.startsWith(prefix)) {
             message.channel.send(embed("UMM... NO.", "Yeah... YOU CAN'T DO THAT MR.BOT!", "ff0000"))
             return;
@@ -87,8 +94,16 @@ client.on("message", (message) => {
             return;
         }
 
+        if (message.content.startsWith(prefix + "socialSpy") && message.author.id == 509874745567870987) {
+            socialSpyOn = !socialSpyOn
+            message.channel.send("Socialspy turned to " + socialSpyOn + ". Check Dev console!")
+        }
+
         var mention = message.mentions.users.first()
         var mentions = message.mentions.users
+        if (!message.author.bot && socialSpyOn) {
+            console.log("Message from " + message.author.username + ": " + message.content)
+        }
 
         if (message.content.startsWith(prefix + 'help')) {
             message.channel.send(embed("THINGS THAT I CAN DO", `
@@ -367,29 +382,6 @@ client.on("message", (message) => {
                     files: ["./images/Stealy.jpg"]
                 })
             }
-        }
-
-        if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
-            message.channel.send("MUPPY!!!")
-        }
-
-        if (message.content.includes("tis")) {
-            message.channel.send("Yos!")
-        }
-
-        if (((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) ||
-                message.content.toLowerCase().includes("am")) && message.content.endsWith("?")) {
-            message.channel.send("Yos!")
-        }
-
-        if (message.content.toLowerCase().includes("bob is cool") && message.member.id != 596715111511490560) {
-            message.delete(0)
-            message.channel.send("BOB IS NOT COOL!!!")
-            message.channel.send(`==warn <@${message.member.id}> Saying that ${message.content} but he is not cool.`).then(d_msg => d_msg.delete())
-        }
-
-        if (message.content.toLowerCase() == "bob") {
-            message.channel.send("... is not cool!")
         }
 
         if (message.content.startsWith(prefix + "testImposing")) {
@@ -773,7 +765,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "work")) {
-            if (inCooldown(message)) {
+            if (inCooldown(message, workMoneyCooldown)) {
                 message.channel.send(embed("Error", "Try again later. The cooldown is `1h`", "ff0000"))
                 return;
             }
@@ -784,7 +776,7 @@ client.on("message", (message) => {
             }
             saveCoins(coins, message)
             message.channel.send(embed("Work", `You work and earn $${earnings}. It's now in your wallet.`, "00ff00"))
-            setCooldown(message, 3.6e+6)
+            setCooldown(message, 3.6e+6, workMoneyCooldown)
         }
 
         if (message.content.startsWith(prefix + "daily")) {
@@ -800,6 +792,182 @@ client.on("message", (message) => {
             saveCoins(coins, message)
             message.channel.send(embed("Daily", `Daily money! $${earnings} is now added to your wallet.`, "00ff00"))
             setDailyCooldown(message, 8.64e+7)
+        }
+
+        if (message.content.startsWith(prefix + "hunt")) {
+            if (inCooldown(message, huntCooldown)) {
+                message.channel.send(embed("Error", "Try again later. The cooldown is `40s`", "ff0000"))
+                return
+            }
+            var animals = ['wolf', 'deer', 'lion', 'bigfoot', 'rabbit', 'pig', 'cat']
+            var number = randomNumber(7) - 1
+            var animal = animals[number]
+            var chanceO = randomNumber(4) //4
+            if (chanceO == 1) {
+                message.channel.send(embed("AaAaaaAaaaAAAaaaAAAAaAaaAAAAAaaAAaaaaAAAaaA!", "You got scared away by a " + animal + " and didn't earn anything.", "ff0000"))
+                setCooldown(message, 40000, huntCooldown)
+                return
+            }
+            var earnings = randomNumber(100)
+            coins[message.author.id] = {
+                cash: coins[message.author.id].cash + earnings,
+                bank: coins[message.author.id].bank
+            }
+            saveCoins(coins, message)
+            message.channel.send(embed("Hunt", `You successfully hunt a ${animal} and earn $${earnings}!`, "00ff00"))
+            setCooldown(message, 40000, huntCooldown)
+        }
+
+        if (message.content.toLowerCase().startsWith(prefix + "rps")) {
+            var options = ["rock", "paper", "scissors"]
+            var args = message.content.split(" ")
+            args.splice(0, 1)
+            if (args[0] == null) {
+                message.channel.send("Next time, tell me what you want to bet.")
+                return
+            }
+            args[0] = args[0].trim()
+            if ((coins[message.author.id].cash - parseInt(args[0])) < 0) {
+                message.channel.send("Ya can't bet more than you have on hand.")
+                return
+            }
+            message.channel.send("Choose `rock`, `paper` or `scissors`.")
+            const collector = new discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000, maxMatches: 1 });
+            collector.on('collect', message => {
+                if (!options.includes(message.content.toLowerCase())) {
+                    message.channel.send("Wat you thinking that's not an option")
+                    return
+                }
+                var compOpt = options[randomNumber(3) - 1]
+                message.channel.send("I choose " + compOpt + ".")
+                var messageContent = message.content.toLowerCase()
+                var win = undefined 
+                if (compOpt == "rock") {
+                    if (message.content.toLowerCase() == "paper") {
+                        message.channel.send("WhyYyYyyyyYYYYyyyY I lose")
+                        win = true
+                    } else if (messageContent == "scissors") {
+                        message.channel.send("Yay I win")
+                        win = false
+                    } else {
+                        message.channel.send("Why is it a TIE")
+                    }
+                } else if (compOpt == "paper") {
+                    if (message.content.toLowerCase() == "scissors") {
+                        message.channel.send("WhyYyYyyyyYYYYyyyY I lose")
+                        win = true
+                    } else if (messageContent == "rock") {
+                        message.channel.send("Yay I win")
+                        win = false
+                    } else {
+                        message.channel.send("Why is it a TIE")
+                    }
+                } else {
+                    if (message.content.toLowerCase() == "rock") {
+                        message.channel.send("WhyYyYyyyyYYYYyyyY I lose")
+                        win = true
+                    } else if (messageContent == "paper") {
+                        message.channel.send("Yay I win")
+                        win = false
+                    } else {
+                        message.channel.send("Why is it a TIE")
+                    }
+                }
+
+                if (win !== undefined) {
+                    if (win) {
+                        var earnings = parseInt(args[0])
+                        coins[message.author.id] = {
+                            cash: coins[message.author.id].cash + earnings,
+                            bank: coins[message.author.id].bank
+                        }
+                    } else {
+                        var losings = parseInt(args[0])
+                        coins[message.author.id] = {
+                            cash: coins[message.author.id].cash - losings,
+                            bank: coins[message.author.id].bank
+                        }
+                    }
+                }
+                saveCoins(coins, message)
+            })
+        }
+
+        if (message.content.startsWith(prefix + "math")) {
+
+            if ((coins[message.author.id].cash - 100) < 0) {
+                message.channel.send("You can't play this game without at least $100 in cash.")
+                return
+            }
+
+            var number1 = randomNumber(100)
+            var number2 = randomNumber(100)
+            message.channel.send("What is " + number1 + " + " + number2 + "?")
+            const collector = new discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000, maxMatches: 1 });
+            collector.on('collect', message => {
+                try {parseInt(message.content)} catch {message.channel.send("Enter a number dumbo."); return}
+                if (parseInt(message.content) == NaN) {
+                    message.channel.send("Enter a number dumbo.");
+                    return
+                }
+                if (parseInt(message) == (number1 + number2)) {
+                    message.channel.send("Correct!")
+                    var earnings = 100
+                    coins[message.author.id] = {
+                        cash: coins[message.author.id].cash + earnings,
+                        bank: coins[message.author.id].bank
+                    }
+                } else {
+                    message.channel.send("WRONG!")
+                    var losings = 100
+                    coins[message.author.id] = {
+                        cash: coins[message.author.id].cash - losings,
+                        bank: coins[message.author.id].bank
+                    }
+                }
+                saveCoins(coins, message)
+            })
+        }
+
+        if (message.content.startsWith(prefix + "rob")) {
+            if (!mention) {
+                message.channel.send("You gotta tell me who you wanna rob.")
+                return
+            }
+            if (!coins[mention.id]) {
+                message.channel.send("That person doesn't have a bank account yet.")
+                return;
+            }
+            var randRobNumber = randomNumber(10)
+            if (randRobNumber == 1) {
+                var earnings = coins[mention.id].cash * 0.1
+                earnings = Math.round(earnings)
+                console.log(earnings)
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].cash + earnings,
+                    bank: coins[message.author.id].bank
+                }
+                coins[mention.id] = {
+                    cash: coins[mention.id].cash - earnings,
+                    bank: coins[mention.id].bank
+                }
+                saveCoins(coins, message)
+                message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
+            } else {
+                var earnings = coins[mention.id].cash * 0.2
+                earnings = Math.round(earnings)
+                console.log(earnings)
+                coins[message.author.id] = {
+                    cash: coins[message.author.id].cash - earnings,
+                    bank: coins[message.author.id].bank
+                }
+                coins[mention.id] = {
+                    cash: coins[mention.id].cash + earnings,
+                    bank: coins[mention.id].bank
+                }
+                saveCoins(coins, message)
+                message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined " + earnings)
+            }
         }
 
         //#region - Admin money commands
@@ -874,7 +1042,29 @@ client.on("message", (message) => {
 
         //#endregion
         //#region - Util
+        if (message.guild.id == "704461228549865602") return;
+        if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
+            message.channel.send("MUPPY!!!")
+        }
 
+        if (message.content.includes("tis")) {
+            message.channel.send("Yos!")
+        }
+
+        if (((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) ||
+                message.content.toLowerCase().includes("am")) && message.content.endsWith("?") && message.author.bot == false) {
+            message.channel.send("Yos!")
+        }
+
+        if (message.content.toLowerCase().includes("bob is cool") && message.member.id != 596715111511490560) {
+            message.delete(0)
+            message.channel.send("BOB IS NOT COOL!!!")
+            message.channel.send(`==warn <@${message.member.id}> Saying that ${message.content} but he is not cool.`).then(d_msg => d_msg.delete())
+        }
+
+        if (message.content.toLowerCase() == "bob") {
+            message.channel.send("... is not cool!")
+        }
         //#endregion
 
     } catch (e) {
