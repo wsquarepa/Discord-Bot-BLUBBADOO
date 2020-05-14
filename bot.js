@@ -942,9 +942,13 @@ client.on("message", (message) => {
                 message.channel.send("Why would you like to rob yourself? You don't earn anything anyway.")
                 return  
             }
+            if (coins[message.author.id].cash < 2000) {
+                message.channel.send("You cannot rob someone without at least $2000 in cash.")
+                return 
+            }
             var randRobNumber = randomNumber(10)
             if (randRobNumber == 1) {
-                var earnings = coins[mention.id].cash * 0.1
+                var earnings = coins[mention.id].cash * 0.75
                 earnings = Math.round(earnings)
                 console.log(earnings)
                 coins[message.author.id] = {
@@ -958,7 +962,7 @@ client.on("message", (message) => {
                 saveCoins(coins, message)
                 message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
             } else {
-                var earnings = coins[mention.id].cash * 0.2
+                var earnings = coins[message.author.id].cash * 0.5
                 earnings = Math.round(earnings)
                 console.log(earnings)
                 coins[message.author.id] = {
