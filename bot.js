@@ -961,7 +961,8 @@ client.on("message", (message) => {
                 args[0] = args[0].trim()
                 userData[message.author.id] = {
                     cash: userData[message.author.id].cash + parseInt(args[0]),
-                    bank: userData[message.author.id].bank
+                    bank: userData[message.author.id].bank,
+                    inventory: userData[message.author.id].inventory
                 }
             } else {
                 args.splice(0, 2)
@@ -972,9 +973,11 @@ client.on("message", (message) => {
                 args[0] = args[0].trim()
                 userData[mention.id] = {
                     cash: userData[mention.id].cash + parseInt(args[0]),
-                    bank: userData[mention.id].bank
+                    bank: userData[mention.id].bank,
+                    inventory: userData[mention.id].inventory
                 }
             }
+            saveCoins(userData, message)
             message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null? "your":mention.username + "'s") + " cash.", "00ff00"))
         }
 
@@ -994,7 +997,8 @@ client.on("message", (message) => {
                 args[0] = args[0].trim()
                 userData[message.author.id] = {
                     cash: userData[message.author.id].cash - parseInt(args[0]),
-                    bank: userData[message.author.id].bank
+                    bank: userData[message.author.id].bank,
+                    inventory: userData[message.author.id].inventory
                 }
             } else {
                 args.splice(0, 2)
@@ -1005,9 +1009,11 @@ client.on("message", (message) => {
                 args[0] = args[0].trim()
                 userData[mention.id] = {
                     cash: userData[mention.id].cash - parseInt(args[0]),
-                    bank: userData[mention.id].bank
+                    bank: userData[mention.id].bank,
+                    inventory: userData[mention.id].inventory
                 }
             }
+            saveCoins(userData, message)
             message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null? "your":mention.username + "'s") + " cash.", "ff0000"))
         }
 
