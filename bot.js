@@ -88,7 +88,7 @@ function setCoins(userID, cashAmount, bankAmount) {
         bank: bankAmount,
         inventory: userData[userID].inventory
     }
-    fs.writeFile("./coins.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
+    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
 
 client.on("message", (message) => {
