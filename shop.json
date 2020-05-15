@@ -1,0 +1,11 @@
+{
+    "Knife":{
+        "price":100,
+        "image":"🔪"
+    },
+
+    "Dagger":{
+        "price":500,
+        "image":"🗡️"
+    }
+}

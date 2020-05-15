@@ -2,7 +2,8 @@ const discord = require('discord.js');
 const fs = require('fs')
 const auth = require('./auth.json')
 const developer = require('./develop.json')
-var coins = require("./coins.json")
+var userData = require('./userData.json')
+var shopData = require('./shop.json')
 
 
 var client = new discord.Client();
@@ -54,7 +55,7 @@ function randomNumber(end) {
 }
 
 function saveCoins(coins, message) {
-    fs.writeFile("./coins.json", JSON.stringify(coins), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+    fs.writeFile("./userData.json", JSON.stringify(coins), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
 }
 
 function setCooldown(msg, time, set) {
@@ -79,6 +80,15 @@ function inCooldown(msg, set) {
 
 function inDailyCooldown(msg) {
     return dailyCooldown.has(msg.author.id)
+}
+
+function setCoins(userID, cashAmount, bankAmount) {
+    userData[userID] = {
+        cash: cashAmount,
+        bank: bankAmount,
+        inventory: userData[userID].inventory
+    }
+    fs.writeFile("./coins.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
 
 client.on("message", (message) => {
@@ -679,34 +689,32 @@ client.on("message", (message) => {
         //#endregion
         //#region - coins
 
-        if (!coins[message.author.id]) {
-            coins[message.author.id] = {
+        if (!userData[message.author.id]) {
+            userData[message.author.id] = {
                 cash: 0,
-                bank: 0
+                bank: 0,
+                inventory: {}
             }
         }
 
         let coinAmt = randomNumber(25)
         let baseAmt = randomNumber(25)
+        let previousAmt = userData[message.author.id].cash
         //console.log(coinAmt + ":" + baseAmt)
 
         if (coinAmt == baseAmt) {
-            coins[message.author.id] = {
-                cash: coins[message.author.id].cash + coinAmt,
-                bank: coins[message.author.id].bank
-            }
-            saveCoins(coins, message)
+            setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
         }
 
         if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
             if (mention) {
-                var cash = coins[mention.id].cash
-                var bank = coins[mention.id].bank
+                var cash = userData[mention.id].cash
+                var bank = userData[mention.id].bank
                 message.channel.send(embed(mention.username + "'s balance:", "Cash: $" + cash + " \n Bank: $" + bank, "00ff00"))
                 return
             }
-            var cash = coins[message.author.id].cash
-            var bank = coins[message.author.id].bank
+            var cash = userData[message.author.id].cash
+            var bank = userData[message.author.id].bank
             message.channel.send(embed("Your balance:", "Cash: $" + cash + " \n Bank: $" + bank, "00ff00"))
         }
 
@@ -719,21 +727,14 @@ client.on("message", (message) => {
             }
             args[0] = args[0].trim()
             if (args[0] == "all") {
-                coins[message.author.id] = {
-                    cash: 0,
-                    bank: coins[message.author.id].bank + coins[message.author.id].cash
-                }
+                setCoins(message.author.id, 0, userData[message.author.id].bank + userData[message.author.id].cash)
             } else if (args[0] != null) {
-                if ((coins[message.author.id].cash - parseInt(args[0])) < 0) {
+                if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
                     message.channel.send(embed("Error", "You can't deposit more than you have.", "ff0000"))
                     return;
                 }
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].cash - parseInt(args[0]),
-                    bank: coins[message.author.id].bank + parseInt(args[0])
-                }
+                setCoins(message.author.id, userData[message.author.id].cash - parseInt(args[0]), userData[message.author.id].bank + parseInt(args[0]))
             }
-            saveCoins(coins, message)
             message.channel.send(embed("Complete", "You deposited " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " to the bank.", "00ff00"))
         }
 
@@ -746,21 +747,14 @@ client.on("message", (message) => {
             }
             args[0] = args[0].trim()
             if (args[0] == "all") {
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].bank + coins[message.author.id].cash,
-                    bank: 0
-                }
+                setCoins(message.author.id, userData[message.author.id].bank + userData[message.author.id].cash, 0)
             } else if (args[0] != null) {
-                if ((coins[message.author.id].bank - parseInt(args[0])) < 0) {
+                if ((userData[message.author.id].bank - parseInt(args[0])) < 0) {
                     message.channel.send(embed("Error", "You can't withdraw more than you have.", "ff0000"))
                     return;
                 }
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].cash + parseInt(args[0]),
-                    bank: coins[message.author.id].bank - parseInt(args[0])
-                }
+                setCoins(message.author.id, userData[message.author.id].cash + parseInt(args[0]), userData[message.author.id].bank - parseInt(args[0]))
             }
-            saveCoins(coins, message)
             message.channel.send(embed("Complete", "You withdrew " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " from the bank.", "00ff00"))
         }
 
@@ -770,11 +764,7 @@ client.on("message", (message) => {
                 return;
             }
             var earnings = randomNumber(500)
-            coins[message.author.id] = {
-                cash: coins[message.author.id].cash + earnings,
-                bank: coins[message.author.id].bank
-            }
-            saveCoins(coins, message)
+            setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Work", `You work and earn $${earnings}. It's now in your wallet.`, "00ff00"))
             setCooldown(message, 3.6e+6, workMoneyCooldown)
         }
@@ -785,11 +775,7 @@ client.on("message", (message) => {
                 return;
             }
             var earnings = 1500
-            coins[message.author.id] = {
-                cash: coins[message.author.id].cash + earnings,
-                bank: coins[message.author.id].bank
-            }
-            saveCoins(coins, message)
+            setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Daily", `Daily money! $${earnings} is now added to your wallet.`, "00ff00"))
             setDailyCooldown(message, 8.64e+7)
         }
@@ -799,6 +785,13 @@ client.on("message", (message) => {
                 message.channel.send(embed("Error", "Try again later. The cooldown is `40s`", "ff0000"))
                 return
             }
+
+            if (userData[message.author.id].inventory["Knife"] === null || userData[message.author.id].inventory["Knife"] < 1) {
+                message.channel.send(embed("Error", "How do you suppose you hunt without a knife?", "ff0000"))
+                return
+            }
+            userData[message.author.id].inventory.Knife -= 1
+            saveCoins(userData, message)
             var animals = ['wolf', 'deer', 'lion', 'bigfoot', 'rabbit', 'pig', 'cat']
             var number = randomNumber(7) - 1
             var animal = animals[number]
@@ -809,11 +802,7 @@ client.on("message", (message) => {
                 return
             }
             var earnings = randomNumber(100)
-            coins[message.author.id] = {
-                cash: coins[message.author.id].cash + earnings,
-                bank: coins[message.author.id].bank
-            }
-            saveCoins(coins, message)
+            setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Hunt", `You successfully hunt a ${animal} and earn $${earnings}!`, "00ff00"))
             setCooldown(message, 40000, huntCooldown)
         }
@@ -827,7 +816,7 @@ client.on("message", (message) => {
                 return
             }
             args[0] = args[0].trim()
-            if ((coins[message.author.id].cash - parseInt(args[0])) < 0) {
+            if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
                 message.channel.send("Ya can't bet more than you have on hand.")
                 return
             }
@@ -877,25 +866,18 @@ client.on("message", (message) => {
                 if (win !== undefined) {
                     if (win) {
                         var earnings = parseInt(args[0])
-                        coins[message.author.id] = {
-                            cash: coins[message.author.id].cash + earnings,
-                            bank: coins[message.author.id].bank
-                        }
+                        setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
                     } else {
                         var losings = parseInt(args[0])
-                        coins[message.author.id] = {
-                            cash: coins[message.author.id].cash - losings,
-                            bank: coins[message.author.id].bank
-                        }
+                        setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
                     }
                 }
-                saveCoins(coins, message)
             })
         }
 
         if (message.content.startsWith(prefix + "math")) {
 
-            if ((coins[message.author.id].cash - 100) < 0) {
+            if ((userData[message.author.id].cash - 100) < 0) {
                 message.channel.send("You can't play this game without at least $100 in cash.")
                 return
             }
@@ -913,19 +895,12 @@ client.on("message", (message) => {
                 if (parseInt(message) == (number1 + number2)) {
                     message.channel.send("Correct!")
                     var earnings = 100
-                    coins[message.author.id] = {
-                        cash: coins[message.author.id].cash + earnings,
-                        bank: coins[message.author.id].bank
-                    }
+                    setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
                 } else {
                     message.channel.send("WRONG!")
                     var losings = 100
-                    coins[message.author.id] = {
-                        cash: coins[message.author.id].cash - losings,
-                        bank: coins[message.author.id].bank
-                    }
+                    setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
                 }
-                saveCoins(coins, message)
             })
         }
 
@@ -934,7 +909,7 @@ client.on("message", (message) => {
                 message.channel.send("You gotta tell me who you wanna rob.")
                 return
             }
-            if (!coins[mention.id]) {
+            if (!userData[mention.id]) {
                 message.channel.send("That person doesn't have a bank account yet.")
                 return;
             }
@@ -942,43 +917,33 @@ client.on("message", (message) => {
                 message.channel.send("Why would you like to rob yourself? You don't earn anything anyway.")
                 return  
             }
-            if (coins[message.author.id].cash < 2000) {
+            if (userData[message.author.id].cash < 2000) {
                 message.channel.send("You cannot rob someone without at least $2000 in cash.")
                 return 
             }
+
+            if (userData[message.author.id].inventory["Dagger"] === null || userData[message.author.id].inventory["Dagger"] < 1) {
+                message.channel.send(embed("Error", "Try to rob without a dagger to defend yourself? **FAIL!**", "ff0000"))
+                return
+            }
+            userData[message.author.id].inventory.Dagger -= 1
+            saveCoins(userData, message)
+
             var randRobNumber = randomNumber(10)
             if (randRobNumber == 1) {
-                var earnings = coins[mention.id].cash * 0.75
+                var earnings = userData[mention.id].cash * 0.75
                 earnings = Math.round(earnings)
-                console.log(earnings)
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].cash + earnings,
-                    bank: coins[message.author.id].bank
-                }
-                coins[mention.id] = {
-                    cash: coins[mention.id].cash - earnings,
-                    bank: coins[mention.id].bank
-                }
-                saveCoins(coins, message)
+                setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
+                setCoins(mention.id, userData[mention.id].cash - earnings, userData[mention.id].bank)
                 message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
             } else {
-                var earnings = coins[message.author.id].cash * 0.5
+                var earnings = userData[message.author.id].cash * 0.5
                 earnings = Math.round(earnings)
-                console.log(earnings)
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].cash - earnings,
-                    bank: coins[message.author.id].bank
-                }
-                coins[mention.id] = {
-                    cash: coins[mention.id].cash + earnings,
-                    bank: coins[mention.id].bank
-                }
-                saveCoins(coins, message)
+                setCoins(message.author.id, userData[message.author.id].cash - earnings, userData[message.author.id].bank)
+                setCoins(mention.id, userData[mention.id].cash + earnings, userData[mention.id].bank)
                 message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined $" + earnings + ".")
             }
         }
-
-        //#region - Admin money commands
 
         if (message.content.startsWith(prefix + "addMoney")) {
             if (message.author.id != 509874745567870987) {
@@ -994,9 +959,9 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].cash + parseInt(args[0]),
-                    bank: coins[message.author.id].bank
+                userData[message.author.id] = {
+                    cash: userData[message.author.id].cash + parseInt(args[0]),
+                    bank: userData[message.author.id].bank
                 }
             } else {
                 args.splice(0, 2)
@@ -1005,9 +970,9 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                coins[mention.id] = {
-                    cash: coins[mention.id].cash + parseInt(args[0]),
-                    bank: coins[mention.id].bank
+                userData[mention.id] = {
+                    cash: userData[mention.id].cash + parseInt(args[0]),
+                    bank: userData[mention.id].bank
                 }
             }
             message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null? "your":mention.username + "'s") + " cash.", "00ff00"))
@@ -1027,9 +992,9 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                coins[message.author.id] = {
-                    cash: coins[message.author.id].cash - parseInt(args[0]),
-                    bank: coins[message.author.id].bank
+                userData[message.author.id] = {
+                    cash: userData[message.author.id].cash - parseInt(args[0]),
+                    bank: userData[message.author.id].bank
                 }
             } else {
                 args.splice(0, 2)
@@ -1038,15 +1003,72 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                coins[mention.id] = {
-                    cash: coins[mention.id].cash - parseInt(args[0]),
-                    bank: coins[mention.id].bank
+                userData[mention.id] = {
+                    cash: userData[mention.id].cash - parseInt(args[0]),
+                    bank: userData[mention.id].bank
                 }
             }
             message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null? "your":mention.username + "'s") + " cash.", "ff0000"))
         }
 
-        //#endregion
+        if (message.content.startsWith(prefix + "inv")) {
+            var userInv = userData[message.author.id].inventory
+            var keys = Object.keys(userInv)
+
+            if (keys.toString() == "[]") {
+                message.channel.send(embed("Your inventory", "You have nothing!", "ff0000"))
+            } else {
+                var itemString = ""
+                for (var i = 0; i < keys.length; i++) {
+                    itemString += keys[i] + " - " + userInv[keys[i]] + "\n \n"
+                }
+                if (itemString == "") {
+                    message.channel.send(embed("Your inventory", "You have nothing!", "ff0000"))
+                    return
+                }
+                message.channel.send(embed("Your inventory", itemString, "00ff00"))
+            }
+        }
+
+        if (message.content.startsWith(prefix + "shop")) {
+            var keys = Object.keys(shopData)
+            var itemString = ""
+            for (var i = 0; i < keys.length; i++) {
+                itemString += shopData[keys[i]].image + " " + keys[i] + " - $" + shopData[keys[i]].price + "\n \n"
+            }
+            message.channel.send(embed("Welcome to the shop!", itemString, "00ff00"))
+        }
+
+        if (message.content.startsWith(prefix + "buy")) {
+            var args = message.content.split(" ")
+            args.splice(0, 1)
+            for (var i = 0; i < args.length; i++) {
+                args[i] = args[i].trim()
+            }
+            var keys = Object.keys(shopData)
+            if (!keys.includes(args[0])) {
+                message.channel.send("Wut you think that's not an item of the shop.")
+                return
+            }
+
+            if (args[1] == null) {
+                args[1] = 1
+            }
+
+            if (shopData[args[0]].price * args[1] > userData[message.author.id].cash) {
+                message.channel.send("You obviously can't buy that. Get more **CASH**.")
+                return
+            }
+            setCoins(message.author.id, userData[message.author.id].cash - shopData[args[0]].price * args[1], userData[message.author.id].bank)
+            if (userData[message.author.id].inventory[args[0]]) {
+                userData[message.author.id].inventory[args[0]] += args[1]
+            } else {
+                userData[message.author.id].inventory[args[0]] = args[1]
+            }
+            saveCoins(userData, message)
+            message.channel.send(embed("Success!", `Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`, "00ff00")
+            .setFooter("Sorry for the grammar"))
+        }
 
         //#endregion
         //#region - Util
