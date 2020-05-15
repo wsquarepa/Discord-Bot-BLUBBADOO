@@ -1,11 +1,12 @@
 {
     "Knife":{
         "price":100,
-        "image":"🔪"
+        "image":"🔪",
+        "description":"A knife to rob and hunt with."
     },
 
-    "Dagger":{
-        "price":500,
-        "image":"🗡️"
+    "Coin":{
+        "price":20,
+        "image":"©️"
     }
 }

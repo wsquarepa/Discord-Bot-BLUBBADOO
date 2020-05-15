@@ -4,7 +4,7 @@ const auth = require('./auth.json')
 const developer = require('./develop.json')
 var userData = require('./userData.json')
 var shopData = require('./shop.json')
-
+var guildData = require('./guildData.json')
 
 var client = new discord.Client();
 
@@ -29,6 +29,7 @@ var trustedPeople = [509874745567870987, 536659745420083208]
 const workMoneyCooldown = new Set();
 const dailyCooldown = new Set();
 const huntCooldown = new Set()
+const coinflipCooldown = new Set()
 
 var socialSpyOn = false
 
@@ -49,9 +50,9 @@ function embed(title, description, color) {
     return embed
 }
 
-function randomNumber(end) {
+function randomNumber(start, end) {
     //Starts with 0 and ends with your input.
-    return Math.floor((Math.random() * end) + 1);
+    return Math.floor((Math.random() * end) + start);
 }
 
 function saveCoins(coins, message) {
@@ -91,6 +92,11 @@ function setCoins(userID, cashAmount, bankAmount) {
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
 
+setInterval(function() {
+    userData = require("./userData.json")
+    shopData = require("./shop.json")
+}, 60000)
+
 client.on("message", (message) => {
     try {
         
@@ -116,20 +122,49 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + 'help')) {
-            message.channel.send(embed("THINGS THAT I CAN DO", `
-                Commands: (ℹ️ - <...> means required and [...] means optional field.) \n
-                ==ban <user> <reason>, to ban people \n
-                ==kick <user> <reason>, to kick people \n
-                ==warn <user> <reason>, to warn people \n
-                ==warnings [user], to see your warnings \n
-                ==clearWarnings <user> to clear the user's warnings (Does not work) \n
-                ==perms <user> for perms of that user (Note: USE_VAD = Use Voice Activity) \n
-                ==purge <number of messages to purge> to purge channels. You can purge a maximum of 2 week's worth or 100 messages. \n
-                ==mute <member> mute a member. \n
-                ==unmute <member> unmute a member. \n
-                ==suggest <suggestion> post a suggestion in the channel you sent this in. \n
-                ==role <add | remove> [user] <role name> join the role. Do not use "@" when typing the role. \n
-            `, "ffffff").setFooter("Version 2.9.6 (BETA)"))
+            var args = message.content.toLowerCase().split(" ")
+            try {
+                args[0] = args[1].trim()
+            } catch {
+                message.channel.send("Choose Moderation or Money.")
+            }
+            
+            if (args[0].startsWith("mod")) {
+                message.channel.send(embed("MODERATION COMMANDS", `
+                    Commands: (ℹ️ - <...> means required and [...] means optional field.) \n
+
+                    MODERATION COMMANDS: \n
+                    ==ban <user> <reason> - Ban people \n
+                    ==kick <user> <reason> - Kick people \n
+                    ==warn <user> <reason> - Warn people \n
+                    ==warnings [user] - See your or [user]'s warnings \n
+                    ==clearWarnings <user> - Clear the user's warnings (Does not work) \n
+                    ==perms <user> - See perms of that user (Note: USE_VAD = Use Voice Activity) \n
+                    ==purge <number of messages to purge> - Purge channels. You can purge a maximum of 2 week's worth or 100 messages. \n
+                    ==mute <member> - Mute a member. \n
+                    ==unmute <member> - Unmute a member. \n
+                    ==suggest <suggestion> - Post a suggestion in the channel you sent this in. \n
+                    ==role <add | remove> [user] <role name> - Add or remove the role from you or [user]. Do not use "@" when typing the role. \n
+                `, "ffffff").setFooter("Version 5.0.1 (BETA)"))
+            } else if (args[0].startsWith("money")) {
+                message.channel.send(embed("MODERATION COMMANDS", `
+                    Commands: (ℹ️ - <...> means required and [...] means optional field.) \n
+
+                    MONEY COMMANDS: \n
+                    ==money|bal|balance - Check your balance. \n
+                    ==dep|deposit <all|Number> - Deposit all or [Number] into your bank. \n
+                    ==withdraw <all|Number> - Withdraw all or [Number] from your bank. \n
+                    ==daily - Get your daily money. Cooldown: \`1d\` \n
+                    ==work - Work to get money. Cooldown: \`1h\` \n
+                    ==shop - View the shop. \n
+                    ==buy <itemName - Case sensitive> - Buy the item. itemName is case sensitive. \n
+                    ==hunt - Hunt for cash. 75% success rate. Requires a knife. \n
+                    ==rps <bet> - Play "ROCK PAPER SCISSORS" with the bot. \n
+                    ==math - Do a math question. $100 if correct, -$100 if wrong. \n
+                    ==coin <heads|tails> <bet> - Flip a coin and win your bet. Chance depends on your bet and total money. Requires a coin. Cooldown: \`30s\` \n
+                    ==rob <user> - Rob <user>. 20% success rate, earn 75% of their money, otherwise -50% of yours to them. \n
+                `, "ffffff").setFooter("Version 5.0.1 (BETA)"))
+            }
         }
 
         //#region - Moderation
@@ -697,16 +732,22 @@ client.on("message", (message) => {
             }
         }
 
-        let coinAmt = randomNumber(25)
-        let baseAmt = randomNumber(25)
+        let coinAmt = randomNumber(1, 25)
+        let baseAmt = randomNumber(1, 25)
         let previousAmt = userData[message.author.id].cash
         //console.log(coinAmt + ":" + baseAmt)
 
-        if (coinAmt == baseAmt) {
+        if (coinAmt == baseAmt && message.author.presence.status != "offline") {
             setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
         }
 
         if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             if (mention) {
                 var cash = userData[mention.id].cash
                 var bank = userData[mention.id].bank
@@ -719,6 +760,12 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "dep")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             var args = message.content.split(" ")
             args.splice(0, 1)
             if (args[0] == null) {
@@ -739,6 +786,12 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "withdraw")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             var args = message.content.split(" ")
             args.splice(0, 1)
             if (args[0] == null) {
@@ -759,17 +812,29 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "work")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             if (inCooldown(message, workMoneyCooldown)) {
                 message.channel.send(embed("Error", "Try again later. The cooldown is `1h`", "ff0000"))
                 return;
             }
-            var earnings = randomNumber(500)
+            var earnings = randomNumber(1, 500)
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Work", `You work and earn $${earnings}. It's now in your wallet.`, "00ff00"))
             setCooldown(message, 3.6e+6, workMoneyCooldown)
         }
 
         if (message.content.startsWith(prefix + "daily")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             if (inDailyCooldown(message)) {
                 message.channel.send(embed("Error", "Try again later. The cooldown is `1d`", "ff0000"))
                 return;
@@ -781,6 +846,12 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "hunt")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             if (inCooldown(message, huntCooldown)) {
                 message.channel.send(embed("Error", "Try again later. The cooldown is `40s`", "ff0000"))
                 return
@@ -793,21 +864,27 @@ client.on("message", (message) => {
             userData[message.author.id].inventory.Knife -= 1
             saveCoins(userData, message)
             var animals = ['wolf', 'deer', 'lion', 'bigfoot', 'rabbit', 'pig', 'cat']
-            var number = randomNumber(7) - 1
+            var number = randomNumber(1, 7) - 1
             var animal = animals[number]
-            var chanceO = randomNumber(4) //4
+            var chanceO = randomNumber(1, 4) //4
             if (chanceO == 1) {
                 message.channel.send(embed("AaAaaaAaaaAAAaaaAAAAaAaaAAAAAaaAAaaaaAAAaaA!", "You got scared away by a " + animal + " and didn't earn anything.", "ff0000"))
                 setCooldown(message, 40000, huntCooldown)
                 return
             }
-            var earnings = randomNumber(100)
+            var earnings = randomNumber(1, 100)
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Hunt", `You successfully hunt a ${animal} and earn $${earnings}!`, "00ff00"))
             setCooldown(message, 40000, huntCooldown)
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "rps")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             var options = ["rock", "paper", "scissors"]
             var args = message.content.split(" ")
             args.splice(0, 1)
@@ -827,7 +904,7 @@ client.on("message", (message) => {
                     message.channel.send("Wat you thinking that's not an option")
                     return
                 }
-                var compOpt = options[randomNumber(3) - 1]
+                var compOpt = options[randomNumber(1, 3) - 1]
                 message.channel.send("I choose " + compOpt + ".")
                 var messageContent = message.content.toLowerCase()
                 var win = undefined 
@@ -877,13 +954,18 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "math")) {
 
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             if ((userData[message.author.id].cash - 100) < 0) {
                 message.channel.send("You can't play this game without at least $100 in cash.")
                 return
             }
 
-            var number1 = randomNumber(100)
-            var number2 = randomNumber(100)
+            var number1 = randomNumber(1, 100)
+            var number2 = randomNumber(1, 100)
             message.channel.send("What is " + number1 + " + " + number2 + "?")
             const collector = new discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000, maxMatches: 1 });
             collector.on('collect', message => {
@@ -905,6 +987,12 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "rob")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             if (!mention) {
                 message.channel.send("You gotta tell me who you wanna rob.")
                 return
@@ -922,14 +1010,20 @@ client.on("message", (message) => {
                 return 
             }
 
-            if (userData[message.author.id].inventory["Dagger"] === null || userData[message.author.id].inventory["Dagger"] < 1) {
-                message.channel.send(embed("Error", "Try to rob without a dagger to defend yourself? **FAIL!**", "ff0000"))
+            if (message.guild.member(mention).presence.status == "offline") {
+                message.channel.send("I don't think you'd like it if someone robbed from you when you're offline.")
                 return
             }
-            userData[message.author.id].inventory.Dagger -= 1
+
+            if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"] < 1) {
+                message.channel.send(embed("Error", "Try to rob without a knife to defend yourself? **FAIL!**", "ff0000"))
+                return
+            }
+
+            userData[message.author.id].inventory.Knife -= 1
             saveCoins(userData, message)
 
-            var randRobNumber = randomNumber(10)
+            var randRobNumber = randomNumber(1, 10)
             if (randRobNumber == 1) {
                 var earnings = userData[mention.id].cash * 0.75
                 earnings = Math.round(earnings)
@@ -959,11 +1053,7 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                userData[message.author.id] = {
-                    cash: userData[message.author.id].cash + parseInt(args[0]),
-                    bank: userData[message.author.id].bank,
-                    inventory: userData[message.author.id].inventory
-                }
+                setCoins(message.author.id, userData[message.author.id].cash + parseInt(args[0]), userData[message.author.id].bank)
             } else {
                 args.splice(0, 2)
                 if (args[0] == null) {
@@ -971,11 +1061,7 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                userData[mention.id] = {
-                    cash: userData[mention.id].cash + parseInt(args[0]),
-                    bank: userData[mention.id].bank,
-                    inventory: userData[mention.id].inventory
-                }
+                setCoins(mention.id, userData[mention.id].cash + parseInt(args[0]), userData[mention.id].bank)
             }
             saveCoins(userData, message)
             message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null? "your":mention.username + "'s") + " cash.", "00ff00"))
@@ -995,11 +1081,7 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                userData[message.author.id] = {
-                    cash: userData[message.author.id].cash - parseInt(args[0]),
-                    bank: userData[message.author.id].bank,
-                    inventory: userData[message.author.id].inventory
-                }
+                setCoins(message.author.id, userData[message.author.id].cash - parseInt(args[0]), userData[message.author.id].bank)
             } else {
                 args.splice(0, 2)
                 if (args[0] == null) {
@@ -1007,17 +1089,18 @@ client.on("message", (message) => {
                     return
                 }
                 args[0] = args[0].trim()
-                userData[mention.id] = {
-                    cash: userData[mention.id].cash - parseInt(args[0]),
-                    bank: userData[mention.id].bank,
-                    inventory: userData[mention.id].inventory
-                }
+                setCoins(mention.id, userData[mention.id].cash - parseInt(args[0]), userData[mention.id].bank)
             }
-            saveCoins(userData, message)
             message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null? "your":mention.username + "'s") + " cash.", "ff0000"))
         }
 
         if (message.content.startsWith(prefix + "inv")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             var userInv = userData[message.author.id].inventory
             var keys = Object.keys(userInv)
 
@@ -1037,6 +1120,12 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "shop")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
             var keys = Object.keys(shopData)
             var itemString = ""
             for (var i = 0; i < keys.length; i++) {
@@ -1061,6 +1150,8 @@ client.on("message", (message) => {
                 args[1] = 1
             }
 
+            args[1] = parseInt(args[1])
+
             if (shopData[args[0]].price * args[1] > userData[message.author.id].cash) {
                 message.channel.send("You obviously can't buy that. Get more **CASH**.")
                 return
@@ -1076,9 +1167,104 @@ client.on("message", (message) => {
             .setFooter("Sorry for the grammar"))
         }
 
+        if (message.content.startsWith(prefix + "coin")) {
+
+            if (message.author.presence.status == "offline") {
+                message.reply("You cannot use money commands while your status is 'Invisible'")
+                return
+            }
+
+            if (inCooldown(message, coinflipCooldown)) {
+                message.channel.send(embed("Error", "Try again later. The cooldown is `30s`", "ff0000"))
+                return;
+            }
+
+            if (userData[message.author.id].inventory["Coin"] == null || userData[message.author.id].inventory["Coin"] < 1) {
+                message.channel.send(embed("Error", "How do you suppose you filp a coin without a coin?", "ff0000"))
+                return
+            }
+            saveCoins(userData, message)
+
+            var args = message.content.split(" ")
+            args.splice(0, 1)
+            for (var i = 0; i < args.length; i++) {
+                args[i] = args[i].toLowerCase().trim()
+            }
+            
+            if (args[0] === null || args[0] != "heads" && args[0] != "tails") {
+                message.channel.send("Enter heads or tails next time.")
+                return
+            }
+
+            args[1] = parseInt(args[1])
+            if (args[1] == NaN) {
+                message.channel.send("I'm not sure how you're going to bet that.")
+                return
+            }
+
+            var bet = args[1]
+
+            if (bet > userData[message.author.id].cash) {
+                message.channel.send("Hey, you can't bet more than you have on hand.")
+                return
+            }
+
+            userData[message.author.id].inventory.Coin -= 1
+
+            var randNumber = randomNumber(0, userData[message.author.id].cash - 1)
+            var win = false
+            if (randNumber > bet) {
+                win = true
+            }
+
+            var otherPossibility = ""
+            if (args[0] == "heads") {
+                otherPossibility = "tails"
+            } else {
+                otherPossibility = "heads"
+            }
+
+            if (win) {
+                setCoins(message.author.id, userData[message.author.id].cash + args[1], userData[message.author.id].bank)
+                message.channel.send("Congrats, you won. It flipped " + args[0])
+            } else {
+                setCoins(message.author.id, userData[message.author.id].cash - args[1], userData[message.author.id].bank)
+                message.channel.send("Spectacular! You **LOST**! It flipped " + otherPossibility)
+            }
+            setCooldown(message, 30000, coinflipCooldown)
+        }
+
+        if (message.content.startsWith(prefix + "update")) {
+            var msg = new discord.Message()
+            message.channel.send(embed("Updating...", "Please wait...", "ffff00")).then((m) => msg = m)
+            if (message.author.id == "509874745567870987") {
+                setTimeout(function() {
+                    userData = require("./userData.json")
+                    shopData = require("./shop.json")
+                    msg.edit(embed("Update complete!", "All files have been refreshed.", "00ff00"))
+                }, randomNumber(1000, 3000))
+            } else {
+                setTimeout(function() {
+                    msg.edit(embed("Update error.", "PermissionError: You do not have permission to execute this command.", "ff0000"))
+                }, randomNumber(1000, 3000))
+            }
+        }
+
         //#endregion
         //#region - Util
-        if (message.guild.id == "704461228549865602") return;
+
+        if (message.content.toLowerCase().startsWith(prefix + "disablemodule util")) {
+            guildData.utilDisabled.push(message.guild.id)
+            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+            message.channel.send("Module UTIL disabled.")
+        }
+
+        for (var i = 0; i < guildData.utilDisabled.length; i++) {
+            if (guildData.utilDisabled[i] == message.guild.id) {
+                return
+            }
+        }
+
         if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
             message.channel.send("MUPPY!!!")
         }
