@@ -166,6 +166,11 @@ client.on("message", (message) => {
                 `, "ffffff").setFooter("Version 5.0.1 (BETA)"))
             }
         }
+        
+        if (message.content.toLowerCase().startsWith(prefix + "invite")) {
+            message.channel.send("Use this: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8")
+            return;
+        }
 
         //#region - Moderation
 
@@ -724,6 +729,31 @@ client.on("message", (message) => {
         //#endregion
         //#region - coins
 
+        if (!guildData[message.guild.id]) {
+            guildData[message.guild.id] = {
+                warnings: {},
+                disabledModules: []
+            }
+        }
+
+        if (message.content.toLowerCase().startsWith(prefix + "disablemodule coins")) {
+            guildData[message.guild.id].disabledModules.push("coins")
+            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+            message.channel.send("Module COINS disabled.")
+        }
+
+        if (message.content.toLowerCase().startsWith(prefix + "enablemodule coins")) {
+            guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("coins"), 1)
+            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+            message.channel.send("Module COINS enabled.")
+        }
+
+        for (var i = 0; i < guildData[message.guild.id].disabledModules.length; i++) {
+            if (guildData[message.guild.id].disabledModules[i] == "coins") {
+                return
+            }
+        }
+
         if (!userData[message.author.id]) {
             userData[message.author.id] = {
                 cash: 0,
@@ -857,12 +887,17 @@ client.on("message", (message) => {
                 return
             }
 
-            if (userData[message.author.id].inventory["Knife"] === null || userData[message.author.id].inventory["Knife"] < 1) {
+            if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
                 message.channel.send(embed("Error", "How do you suppose you hunt without a knife?", "ff0000"))
                 return
             }
-            userData[message.author.id].inventory.Knife -= 1
+            userData[message.author.id].inventory.Knife.uses -= 1
+            if (userData[message.author.id].inventory.Knife.uses < 1) {
+                userData[message.author.id].inventory.Knife.amount -= 1
+                userData[message.author.id].inventory.Knife.uses = shopData.Knife.uses
+            }
             saveCoins(userData, message)
+
             var animals = ['wolf', 'deer', 'lion', 'bigfoot', 'rabbit', 'pig', 'cat']
             var number = randomNumber(1, 7) - 1
             var animal = animals[number]
@@ -872,7 +907,7 @@ client.on("message", (message) => {
                 setCooldown(message, 40000, huntCooldown)
                 return
             }
-            var earnings = randomNumber(1, 100)
+            var earnings = randomNumber(50, 200)
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Hunt", `You successfully hunt a ${animal} and earn $${earnings}!`, "00ff00"))
             setCooldown(message, 40000, huntCooldown)
@@ -1015,15 +1050,15 @@ client.on("message", (message) => {
                 return
             }
 
-            if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"] < 1) {
+            if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
                 message.channel.send(embed("Error", "Try to rob without a knife to defend yourself? **FAIL!**", "ff0000"))
                 return
             }
 
-            userData[message.author.id].inventory.Knife -= 1
+            userData[message.author.id].inventory.Knife.amount -= 1
             saveCoins(userData, message)
 
-            var randRobNumber = randomNumber(1, 10)
+            var randRobNumber = randomNumber(1, 5)
             if (randRobNumber == 1) {
                 var earnings = userData[mention.id].cash * 0.75
                 earnings = Math.round(earnings)
@@ -1109,7 +1144,7 @@ client.on("message", (message) => {
             } else {
                 var itemString = ""
                 for (var i = 0; i < keys.length; i++) {
-                    itemString += keys[i] + " - " + userInv[keys[i]] + "\n \n"
+                    itemString += keys[i] + " - " + userInv[keys[i]].amount + "\n \n"
                 }
                 if (itemString == "") {
                     message.channel.send(embed("Your inventory", "You have nothing!", "ff0000"))
@@ -1158,9 +1193,12 @@ client.on("message", (message) => {
             }
             setCoins(message.author.id, userData[message.author.id].cash - shopData[args[0]].price * args[1], userData[message.author.id].bank)
             if (userData[message.author.id].inventory[args[0]]) {
-                userData[message.author.id].inventory[args[0]] += args[1]
+                userData[message.author.id].inventory[args[0]].amount += args[1]
             } else {
-                userData[message.author.id].inventory[args[0]] = args[1]
+                userData[message.author.id].inventory[args[0]] = {
+                    amount: args[1],
+                    uses: shopData[args[0]].uses
+                }
             }
             saveCoins(userData, message)
             message.channel.send(embed("Success!", `Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`, "00ff00")
@@ -1209,7 +1247,11 @@ client.on("message", (message) => {
                 return
             }
 
-            userData[message.author.id].inventory.Coin -= 1
+            userData[message.author.id].inventory.Coin.uses -= 1
+            if (userData[message.author.id].inventory.Coin.uses < 1) {
+                userData[message.author.id].inventory.Coin.amount -= 1
+                userData[message.author.id].inventory.Coin.uses = shopData.Coin.uses
+            }
 
             var randNumber = randomNumber(0, userData[message.author.id].cash - 1)
             var win = false
@@ -1254,13 +1296,19 @@ client.on("message", (message) => {
         //#region - Util
 
         if (message.content.toLowerCase().startsWith(prefix + "disablemodule util")) {
-            guildData.utilDisabled.push(message.guild.id)
+            guildData[message.guild.id].disabledModules.push("util")
             fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
             message.channel.send("Module UTIL disabled.")
         }
 
-        for (var i = 0; i < guildData.utilDisabled.length; i++) {
-            if (guildData.utilDisabled[i] == message.guild.id) {
+        if (message.content.toLowerCase().startsWith(prefix + "enablemodule util")) {
+            guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("util"), 1)
+            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+            message.channel.send("Module UTIL enabled.")
+        }
+
+        for (var i = 0; i < guildData[message.guild.id].disabledModules.length; i++) {
+            if (guildData[message.guild.id].disabledModules[i] == "util") {
                 return
             }
         }

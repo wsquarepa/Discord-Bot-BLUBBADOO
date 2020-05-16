@@ -2,11 +2,13 @@
     "Knife":{
         "price":100,
         "image":"🔪",
-        "description":"A knife to rob and hunt with."
+        "description":"A knife to rob and hunt with.",
+        "uses":5
     },
 
     "Coin":{
         "price":20,
-        "image":"©️"
+        "image":"©️",
+        "uses":1
     }
 }
