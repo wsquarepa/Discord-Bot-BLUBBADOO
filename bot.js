@@ -50,6 +50,16 @@ function embed(title, description, color) {
     return embed
 }
 
+function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+
 function randomNumber(start, end) {
     //Starts with 0 and ends with your input.
     return Math.floor((Math.random() * end) + start);
@@ -768,13 +778,15 @@ client.on("message", (message) => {
             if (coinAmt == baseAmt && message.author.presence.status != "offline") {
                 setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
             }
-    
-            if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
-    
+
+            if (message.content.startsWith(prefix)) {
                 if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
+                    message.channel.send("You cannot use money commands while your status is 'Invisible'").then(msg => msg.delete(5000))
                     return
                 }
+            }
+    
+            if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
     
                 if (mention) {
                     var cash = userData[mention.id].cash
@@ -788,11 +800,6 @@ client.on("message", (message) => {
             }
     
             if (message.content.startsWith(prefix + "dep")) {
-    
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
     
                 var args = message.content.split(" ")
                 args.splice(0, 1)
@@ -815,11 +822,6 @@ client.on("message", (message) => {
     
             if (message.content.startsWith(prefix + "withdraw")) {
     
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
-    
                 var args = message.content.split(" ")
                 args.splice(0, 1)
                 if (args[0] == null) {
@@ -841,11 +843,6 @@ client.on("message", (message) => {
     
             if (message.content.startsWith(prefix + "work")) {
     
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
-    
                 if (inCooldown(message, workMoneyCooldown)) {
                     message.channel.send(embed("Error", "Try again later. The cooldown is `1h`", "ff0000"))
                     return;
@@ -858,11 +855,6 @@ client.on("message", (message) => {
     
             if (message.content.startsWith(prefix + "daily")) {
     
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
-    
                 if (inDailyCooldown(message)) {
                     message.channel.send(embed("Error", "Try again later. The cooldown is `1d`", "ff0000"))
                     return;
@@ -874,11 +866,6 @@ client.on("message", (message) => {
             }
     
             if (message.content.startsWith(prefix + "hunt")) {
-    
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
     
                 if (inCooldown(message, huntCooldown)) {
                     message.channel.send(embed("Error", "Try again later. The cooldown is `40s`", "ff0000"))
@@ -912,11 +899,6 @@ client.on("message", (message) => {
             }
     
             if (message.content.toLowerCase().startsWith(prefix + "rps")) {
-    
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
     
                 var options = ["rock", "paper", "scissors"]
                 var args = message.content.split(" ")
@@ -987,11 +969,6 @@ client.on("message", (message) => {
     
             if (message.content.startsWith(prefix + "math")) {
     
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
-    
                 if ((userData[message.author.id].cash - 100) < 0) {
                     message.channel.send("You can't play this game without at least $100 in cash.")
                     return
@@ -1017,14 +994,10 @@ client.on("message", (message) => {
                         setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
                     }
                 })
+                collector.on('end', () => message.channel.send("AMAZING! YOU CAN'T EVEN DO THAT IN 10 SECONDS! YAAAAAY"))
             }
     
             if (message.content.startsWith(prefix + "rob")) {
-    
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
     
                 if (!mention) {
                     message.channel.send("You gotta tell me who you wanna rob.")
@@ -1129,11 +1102,6 @@ client.on("message", (message) => {
     
             if (message.content.startsWith(prefix + "inv")) {
     
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
-    
                 var userInv = userData[message.author.id].inventory
                 var keys = Object.keys(userInv)
     
@@ -1153,11 +1121,6 @@ client.on("message", (message) => {
             }
     
             if (message.content.startsWith(prefix + "shop")) {
-    
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
     
                 var keys = Object.keys(shopData)
                 var itemString = ""
@@ -1204,11 +1167,6 @@ client.on("message", (message) => {
             }
     
             if (message.content.startsWith(prefix + "coin")) {
-    
-                if (message.author.presence.status == "offline") {
-                    message.reply("You cannot use money commands while your status is 'Invisible'")
-                    return
-                }
     
                 if (inCooldown(message, coinflipCooldown)) {
                     message.channel.send(embed("Error", "Try again later. The cooldown is `30s`", "ff0000"))
@@ -1290,7 +1248,63 @@ client.on("message", (message) => {
                 }
             }
 
+            if (message.content.startsWith(prefix + "race")) {
+                if (mention == null) {
+                    message.channel.send("Please mention someone next time.")
+                    return;
+                }
 
+                if (mention.id == message.author.id) {
+                    message.channel.send("What's the point in racing yourself? You'd tie anyway.")
+                    return
+                }
+
+                if (mention.bot) {
+                    message.channel.send("You do realize that the bot would win, right?")
+                    return
+                }
+
+                if (mention.presence.status == "offline") {
+                    message.channel.send("I don't think you'd like it if someone tried to race you while you were offline.")
+                    return
+                }
+
+                var args = message.content.toLowerCase().split(" ")
+                for (var i = 0; i < args.length; i++) {
+                    args[i] = args[i].trim()
+                }
+
+                var randomString = makeid(10)
+                message.channel.send("Are you ready, <@" + mention.id + ">?")
+                const collector = new discord.MessageCollector(message.channel, m => m.author.id == mention.id, { time: 10000, maxMatches:1 });
+                collector.on('collect', collectorMessage => {
+                    if (collectorMessage.content.toLowerCase() == "yes") {
+                        var editMsg = new discord.Message()
+                        collectorMessage.channel.send("GET READY").then(m => editMsg = m)
+                        setTimeout(function() {
+                            editMsg.edit("GET SET")
+                            setTimeout(function() {
+                                editMsg.edit("GOOOOOOO! \n FIRST TO TYPE THIS WINS: " + randomString)
+                                const raceCollector = new discord.MessageCollector(collectorMessage.channel, 
+                                    m => m.author.id == mention.id || m.author.id == message.author.id, { time: 20000, maxMatches:1 });
+                                console.log(raceCollector)
+                                raceCollector.on('collect', raceCollectorMsg => {
+                                    console.log(raceCollectorMsg)
+                                    if (raceCollectorMsg.content == randomString) {
+                                        raceCollectorMsg.channel.send("CONGRATULATIONS! <@" + raceCollectorMsg.author.id + "> WON THE RACE!!!")
+                                        setCoins(raceCollectorMsg.author.id, userData[raceCollectorMsg.author.id].cash + 1000, userData[raceCollectorMsg.author.id].bank)
+                                        raceCollectorMsg.channel.send("You earn $1000. Congratulations!")
+                                    }
+                                })
+                            }, 1000)
+                        }, 1000)
+                    } else if (collectorMessage.content.toLowerCase() == "no") {
+                        collectorMessage.channel.send("Well, that's too bad.");
+                    } else {
+                        collectorMessage.channel.send("Enter yes or no next time.")
+                    }
+                })
+            }
 
         } //Put coin commands above here.
         
@@ -1344,6 +1358,10 @@ client.on("message", (message) => {
     
             if (message.content.toLowerCase() == "bob") {
                 message.channel.send("... is not cool!")
+            }
+
+            if (message.content.startsWith(prefix + "randomString")) {
+                message.channel.send(makeid(2000))
             }
         }
         //#endregion
