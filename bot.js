@@ -1311,7 +1311,7 @@ client.on("message", (message) => {
                             msg.edit("GET SET")
                             setTimeout(function() {
                                 msg.edit("GOOOOOOO")
-                                var sentence = sentencer.make("{{a_noun}} jumped over {{a_noun}}.")
+                                var sentence = sentencer.make("{{a_noun}} {{adjective}} {{a_noun}}.")
                                 console.log(sentence)
                                 var revealed = []
                                 var sentenceList = sentence.split("")
