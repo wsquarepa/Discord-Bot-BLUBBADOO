@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const fs = require('fs')
 const auth = require('./auth.json')
+const textToPicture = require('text-to-picture')
 const developer = require('./develop.json')
 var userData = require('./userData.json')
 var shopData = require('./shop.json')
@@ -52,7 +53,7 @@ function embed(title, description, color) {
 
 function makeid(length) {
     var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var characters = 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789'; //Capital I and lowercase l have been removed for readiness purposes.
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -115,10 +116,7 @@ client.on("message", (message) => {
             return;
         };
 
-        if (message.channel.type == "dm" && !message.author.bot && message.content.startsWith(prefix)) {
-            message.channel.send(embed("UMM... NO.", "You cannot use Blubbadoo in DMs. Sorry!", "ff0000"))
-            return;
-        }
+        if (message.channel.type == "dm") return
 
         if (message.content.startsWith(prefix + "socialSpy") && message.author.id == 509874745567870987) {
             socialSpyOn = !socialSpyOn
@@ -994,7 +992,6 @@ client.on("message", (message) => {
                         setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
                     }
                 })
-                collector.on('end', () => message.channel.send("AMAZING! YOU CAN'T EVEN DO THAT IN 10 SECONDS! YAAAAAY"))
             }
     
             if (message.content.startsWith(prefix + "rob")) {
@@ -1274,30 +1271,49 @@ client.on("message", (message) => {
                     args[i] = args[i].trim()
                 }
 
-                var randomString = makeid(10)
                 message.channel.send("Are you ready, <@" + mention.id + ">?")
                 const collector = new discord.MessageCollector(message.channel, m => m.author.id == mention.id, { time: 10000, maxMatches:1 });
                 collector.on('collect', collectorMessage => {
                     if (collectorMessage.content.toLowerCase() == "yes") {
-                        var editMsg = new discord.Message()
-                        collectorMessage.channel.send("GET READY").then(m => editMsg = m)
-                        setTimeout(function() {
-                            editMsg.edit("GET SET")
+                        var randomString = makeid(10)
+                        textToPicture.convert({
+                            text: randomString,
+                            ext: 'png',
+                            size: 16,
+                            width: 30,
+                            height: 20,
+                            color: "white"
+                        }).then(function(result) {
+                            result.write('./' + randomString + '.png')
+                            var editMsg = new discord.Message()
+                            collectorMessage.channel.send("GET READY").then(m => editMsg = m)
                             setTimeout(function() {
-                                editMsg.edit("GOOOOOOO! \n FIRST TO TYPE THIS WINS: " + randomString)
-                                const raceCollector = new discord.MessageCollector(collectorMessage.channel, 
-                                    m => m.author.id == mention.id || m.author.id == message.author.id, { time: 20000, maxMatches:1 });
-                                console.log(raceCollector)
-                                raceCollector.on('collect', raceCollectorMsg => {
-                                    console.log(raceCollectorMsg)
-                                    if (raceCollectorMsg.content == randomString) {
-                                        raceCollectorMsg.channel.send("CONGRATULATIONS! <@" + raceCollectorMsg.author.id + "> WON THE RACE!!!")
-                                        setCoins(raceCollectorMsg.author.id, userData[raceCollectorMsg.author.id].cash + 1000, userData[raceCollectorMsg.author.id].bank)
-                                        raceCollectorMsg.channel.send("You earn $1000. Congratulations!")
-                                    }
-                                })
+                                editMsg.edit("GET SET")
+                                setTimeout(function() {
+                                    editMsg.edit("GOOOOOOO! \n FIRST TO TYPE THIS WINS: ")
+                                    message.channel.send("", {files: ['./' + randomString + '.png']}).then(msg => editMsg = msg)
+                                    const raceCollector = new discord.MessageCollector(collectorMessage.channel, 
+                                        m => m.author.id == mention.id || m.author.id == message.author.id, {time: 20000});
+                                    raceCollector.on('collect', raceCollectorMsg => {
+                                        if (raceCollectorMsg.content == randomString) {
+                                            raceCollectorMsg.channel.send("CONGRATULATIONS! <@" + raceCollectorMsg.author.id + "> WON THE RACE!!!")
+                                            setCoins(raceCollectorMsg.author.id, userData[raceCollectorMsg.author.id].cash + 250, userData[raceCollectorMsg.author.id].bank)
+                                            raceCollectorMsg.author.send("You earn $250 for that race against " + mention.username + ". Congratulations!")
+                                            editMsg.delete()
+                                            raceCollector.stop("Listen end.")
+                                            fs.unlink('./' + randomString + '.png', function(error) {
+                                                if (error) message.channel.send(embed("Error", error, "ff0000"))
+                                            })
+                                        } else {
+                                            message.channel.send("Incorrect. Try again.")
+                                        }
+                                    })
+                                }, 1000)
                             }, 1000)
-                        }, 1000)
+                        })
+                        
+                           
+                        
                     } else if (collectorMessage.content.toLowerCase() == "no") {
                         collectorMessage.channel.send("Well, that's too bad.");
                     } else {
