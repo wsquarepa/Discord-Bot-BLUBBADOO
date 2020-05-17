@@ -1240,7 +1240,7 @@ client.on("message", (message) => {
                 const collector = new discord.MessageCollector(message.channel, m => m.author.id == mention.id, { time: 10000, maxMatches:1 });
                 collector.on('collect', collectorMessage => {
                     if (collectorMessage.content.toLowerCase() == "yes") {
-                        var randomString = makeid(10)
+                        var randomString = sentencer.make("{{a_noun}} {{adjective}} {{a_noun}}.")
                         textToPicture.convert({
                             text: randomString,
                             ext: 'png',
@@ -1288,7 +1288,7 @@ client.on("message", (message) => {
             }
 
             if(message.content.startsWith(prefix + "phrase")) {
-                message.channel.send("@here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join'")
+                message.channel.send("For the people who are here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join'")
                 const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id, { time: 10000 });
                 var players = [message.author.id]
                 collector.on('collect', collectorMessage => {
