@@ -1303,7 +1303,7 @@ client.on("message", (message) => {
                     }
                     message.channel.send("Ok. " + players.length.toString() + " players joined.")
                     message.channel.send("So, the point of this game is to guess the sentence first, and the first to guess it earns $250 in their cash! \n" + 
-                    "You get 1 minute and 30 seconds to guess the sentence.")
+                    "You get 1 minute to guess the sentence.")
                     setTimeout(function() {
                         var msg = new discord.Message()
                         message.channel.send("GET READY").then(m => msg = m)
@@ -1323,7 +1323,7 @@ client.on("message", (message) => {
                                 usedNumbers.push(number)
                                 revealed[number] = sentenceList[number]
                                 message.channel.send(revealed.toString().split(",").join(" ")).then(m => msg = m)
-                                const guessCollect = new discord.MessageCollector(message.channel, m => players.includes(m.author.id), { time: 90000 });
+                                const guessCollect = new discord.MessageCollector(message.channel, m => players.includes(m.author.id), { time: 60000 });
                                 guessCollect.on('collect', function(messageCollected) {
                                     if (messageCollected.content == sentence) {
                                         messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
@@ -1334,6 +1334,7 @@ client.on("message", (message) => {
                                         while (usedNumbers.includes(number)) {
                                             number = randomNumber(0, sentenceList.length - 1)
                                         }
+                                        usedNumbers.push(number)
                                         revealed[number] = sentenceList[number]
                                         messageCollected.delete()
                                         msg.edit(revealed.toString().split(",").join(" "))
