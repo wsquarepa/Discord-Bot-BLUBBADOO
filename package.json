@@ -13,6 +13,8 @@
     "discord.js": "^11.6.4",
     "enmap": "^5.1.0",
     "jimp": "^0.11.0",
+    "sentence-generator": "^1.0.1",
+    "sentencer": "^0.2.1",
     "text-to-picture": "^1.0.0"
   }
 }

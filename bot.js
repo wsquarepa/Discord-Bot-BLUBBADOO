@@ -2,6 +2,7 @@ const discord = require('discord.js');
 const fs = require('fs')
 const auth = require('./auth.json')
 const textToPicture = require('text-to-picture')
+const sentencer = require('sentencer')
 const developer = require('./develop.json')
 var userData = require('./userData.json')
 var shopData = require('./shop.json')
@@ -118,9 +119,13 @@ client.on("message", (message) => {
 
         if (message.channel.type == "dm") return
 
-        if (message.content.startsWith(prefix + "socialSpy") && message.author.id == 509874745567870987) {
-            socialSpyOn = !socialSpyOn
-            message.channel.send("Socialspy turned to " + socialSpyOn + ". Check Dev console!")
+        if (message.content.startsWith(prefix + "socialSpy")) {
+            if (message.author.id == 509874745567870987) {
+                socialSpyOn = !socialSpyOn
+                message.channel.send("Socialspy turned to " + socialSpyOn + ". Check Dev console!")
+            } else {
+                message.channel.send("What's the point? You can't see it anyway.")
+            }
         }
 
         var mention = message.mentions.users.first()
@@ -130,49 +135,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + 'help')) {
-            var args = message.content.toLowerCase().split(" ")
-            try {
-                args[0] = args[1].trim()
-            } catch {
-                message.channel.send("Choose Moderation or Money.")
-            }
-            
-            if (args[0].startsWith("mod")) {
-                message.channel.send(embed("MODERATION COMMANDS", `
-                    Commands: (ℹ️ - <...> means required and [...] means optional field.) \n
-
-                    MODERATION COMMANDS: \n
-                    ==ban <user> <reason> - Ban people \n
-                    ==kick <user> <reason> - Kick people \n
-                    ==warn <user> <reason> - Warn people \n
-                    ==warnings [user] - See your or [user]'s warnings \n
-                    ==clearWarnings <user> - Clear the user's warnings (Does not work) \n
-                    ==perms <user> - See perms of that user (Note: USE_VAD = Use Voice Activity) \n
-                    ==purge <number of messages to purge> - Purge channels. You can purge a maximum of 2 week's worth or 100 messages. \n
-                    ==mute <member> - Mute a member. \n
-                    ==unmute <member> - Unmute a member. \n
-                    ==suggest <suggestion> - Post a suggestion in the channel you sent this in. \n
-                    ==role <add | remove> [user] <role name> - Add or remove the role from you or [user]. Do not use "@" when typing the role. \n
-                `, "ffffff").setFooter("Version 5.0.1 (BETA)"))
-            } else if (args[0].startsWith("money")) {
-                message.channel.send(embed("MODERATION COMMANDS", `
-                    Commands: (ℹ️ - <...> means required and [...] means optional field.) \n
-
-                    MONEY COMMANDS: \n
-                    ==money|bal|balance - Check your balance. \n
-                    ==dep|deposit <all|Number> - Deposit all or [Number] into your bank. \n
-                    ==withdraw <all|Number> - Withdraw all or [Number] from your bank. \n
-                    ==daily - Get your daily money. Cooldown: \`1d\` \n
-                    ==work - Work to get money. Cooldown: \`1h\` \n
-                    ==shop - View the shop. \n
-                    ==buy <itemName - Case sensitive> - Buy the item. itemName is case sensitive. \n
-                    ==hunt - Hunt for cash. 75% success rate. Requires a knife. \n
-                    ==rps <bet> - Play "ROCK PAPER SCISSORS" with the bot. \n
-                    ==math - Do a math question. $100 if correct, -$100 if wrong. \n
-                    ==coin <heads|tails> <bet> - Flip a coin and win your bet. Chance depends on your bet and total money. Requires a coin. Cooldown: \`30s\` \n
-                    ==rob <user> - Rob <user>. 20% success rate, earn 75% of their money, otherwise -50% of yours to them. \n
-                `, "ffffff").setFooter("Version 5.0.1 (BETA)"))
-            }
+            message.channel.send(embed("Need help? The commands are here:", "https://wsquarepams.github.io/?location=commands", "ffffff"))
         }
         
         if (message.content.toLowerCase().startsWith(prefix + "invite")) {
@@ -740,15 +703,23 @@ client.on("message", (message) => {
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "disablemodule coins")) {
-            guildData[message.guild.id].disabledModules.push("coins")
-            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
-            message.channel.send("Module COINS disabled.")
+            if (message.guild.member(message.author).hasPermission('MANAGE_GUILD')) {
+                guildData[message.guild.id].disabledModules.push("coins")
+                fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+                message.channel.send("Module COINS disabled.")
+            } else {
+                message.channel.send(embed("Error", "You can't do that!", "ff0000"))
+            }
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "enablemodule coins")) {
-            guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("coins"), 1)
-            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
-            message.channel.send("Module COINS enabled.")
+            if (message.guild.member(message.author).hasPermission('MANAGE_GUILD')) {
+                guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("coins"), 1)
+                fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+                message.channel.send("Module COINS enabled.")
+            } else {
+                message.channel.send(embed("Error", "You can't do that!", "ff0000"))
+            }
         }
 
         var disabled = false
@@ -771,7 +742,6 @@ client.on("message", (message) => {
             let coinAmt = randomNumber(1, 25)
             let baseAmt = randomNumber(1, 25)
             let previousAmt = userData[message.author.id].cash
-            //console.log(coinAmt + ":" + baseAmt)
     
             if (coinAmt == baseAmt && message.author.presence.status != "offline") {
                 setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
@@ -1011,11 +981,6 @@ client.on("message", (message) => {
                 if (userData[message.author.id].cash < 2000) {
                     message.channel.send("You cannot rob someone without at least $2000 in cash.")
                     return 
-                }
-    
-                if (message.guild.member(mention).presence.status == "offline") {
-                    message.channel.send("I don't think you'd like it if someone robbed from you when you're offline.")
-                    return
                 }
     
                 if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
@@ -1322,6 +1287,67 @@ client.on("message", (message) => {
                 })
             }
 
+            if(message.content.startsWith(prefix + "phrase")) {
+                message.channel.send("@here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join'")
+                const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id, { time: 10000 });
+                var players = [message.author.id]
+                collector.on('collect', collectorMessage => {
+                    if (collectorMessage.content.toLowerCase() == "join") {
+                        players.push(collectorMessage.author.id)
+                    }
+                })
+                collector.on('end', function() {
+                    if (players.length == 1) {
+                        message.channel.send("Not enough people joined.")
+                        return
+                    }
+                    message.channel.send("Ok. " + players.length.toString() + " players joined.")
+                    message.channel.send("So, the point of this game is to guess the sentence first, and the first to guess it earns $250 in their cash! \n" + 
+                    "You get 1 minute and 30 seconds to guess the sentence.")
+                    setTimeout(function() {
+                        var msg = new discord.Message()
+                        message.channel.send("GET READY").then(m => msg = m)
+                        setTimeout(function() {
+                            msg.edit("GET SET")
+                            setTimeout(function() {
+                                msg.edit("GOOOOOOO")
+                                var sentence = sentencer.make("{{a_noun}} jumped over {{a_noun}}.")
+                                console.log(sentence)
+                                var revealed = []
+                                var sentenceList = sentence.split("")
+                                for (var i = 0; i < sentence.length; i++) {
+                                    revealed.push("\\_")
+                                }
+                                var usedNumbers = []
+                                var number = randomNumber(0, sentenceList.length - 1)
+                                usedNumbers.push(number)
+                                revealed[number] = sentenceList[number]
+                                message.channel.send(revealed.toString().split(",").join(" ")).then(m => msg = m)
+                                const guessCollect = new discord.MessageCollector(message.channel, m => players.includes(m.author.id), { time: 90000 });
+                                guessCollect.on('collect', function(messageCollected) {
+                                    if (messageCollected.content == sentence) {
+                                        messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
+                                        setCoins(messageCollected.author.id, userData[messageCollected.author.id].cash + 250, userData[messageCollected.author.id].bank)
+                                        guessCollect.stop("Game end")
+                                    } else {
+                                        number = randomNumber(0, sentenceList.length - 1)
+                                        while (usedNumbers.includes(number)) {
+                                            number = randomNumber(0, sentenceList.length - 1)
+                                        }
+                                        revealed[number] = sentenceList[number]
+                                        messageCollected.delete()
+                                        msg.edit(revealed.toString().split(",").join(" "))
+                                    }
+                                })
+
+                                guessCollect.on('end', function() {
+                                    message.channel.send("GAME ENDED. IT WAS `" + sentence.toString().split(",").join(" ") + "`")
+                                })
+                            }, 1000)
+                        }, 2000)
+                    }, 1000)
+                })
+            }
         } //Put coin commands above here.
         
 
@@ -1329,15 +1355,24 @@ client.on("message", (message) => {
         //#region - Util
 
         if (message.content.toLowerCase().startsWith(prefix + "disablemodule util")) {
-            guildData[message.guild.id].disabledModules.push("util")
-            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
-            message.channel.send("Module UTIL disabled.")
+            if (message.guild.member(message.author).hasPermission("MANAGE_GUILD")) {
+                guildData[message.guild.id].disabledModules.push("util")
+                fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+                message.channel.send("Module UTIL disabled.")
+            } else {
+                message.channel.send("Error", "You can't do that!", "ff0000")
+            }
+            
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "enablemodule util")) {
-            guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("util"), 1)
-            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
-            message.channel.send("Module UTIL enabled.")
+            if (message.guild.member(message.author).hasPermission("MANAGE_GUILD")) {
+                guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("util"), 1)
+                fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
+                message.channel.send("Module UTIL enabled.")
+            } else {
+                message.channel.send("Error", "You can't do that!", "ff0000")
+            }
         }
 
         disabled = false
