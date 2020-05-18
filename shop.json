@@ -3,12 +3,28 @@
         "price":100,
         "image":"🔪",
         "description":"A knife to rob and hunt with.",
-        "uses":5
+        "uses":5,
+        "usable":false
     },
 
     "Coin":{
         "price":20,
         "image":"©️",
-        "uses":1
+        "uses":1,
+        "usable":false
+    },
+
+    "Lock":{
+        "price":3000,
+        "image":"🔒",
+        "uses":2,
+        "usable":true
+    },
+
+    "Magnif":{
+        "price":50,
+        "image":"🔍",
+        "uses":3,
+        "useable":false
     }
 }

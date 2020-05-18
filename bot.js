@@ -23,8 +23,6 @@ client.on("ready", async () => {
 });
 
 const prefix = '==';
-var passwordMode = false;
-var userUsingPassword = ''
 var possibleStatuses = ['online', 'idle', 'dnd']
 var trustedPeople = [509874745567870987, 536659745420083208]
 
@@ -32,8 +30,11 @@ const workMoneyCooldown = new Set();
 const dailyCooldown = new Set();
 const huntCooldown = new Set()
 const coinflipCooldown = new Set()
+const searchCooldown = new Set()
 
 var socialSpyOn = false
+
+//#region - Functions
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -99,10 +100,17 @@ function setCoins(userID, cashAmount, bankAmount) {
     userData[userID] = {
         cash: cashAmount,
         bank: bankAmount,
-        inventory: userData[userID].inventory
+        inventory: userData[userID].inventory,
+        username: userData[userID].username
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
+
+function emoji(id) {
+    return client.emojis.get(id).toString()
+}
+
+//#endregion
 
 setInterval(function() {
     userData = require("./userData.json")
@@ -390,15 +398,6 @@ client.on("message", (message) => {
             sleep(5000)
             message.channel.send("javascript")
         }
-        if (message.content.startsWith("pls meme")) {
-            var choose = randomNumber(5)
-            if (choose == 1) {
-                sleep(500)
-                message.channel.send("", {
-                    files: ["./images/Stealy.jpg"]
-                })
-            }
-        }
 
         if (message.content.startsWith(prefix + "testImposing")) {
             message.channel.send(embed("WARNING!", "ALERT! <@" + message.author.id + "> IS IMPOSING AS SOMEONE ELSE!", "ff0000"))
@@ -524,10 +523,6 @@ client.on("message", (message) => {
             } else {
                 message.channel.send(embed("Error", "<@" + message.author.id + ">, you can't do that.", "ff0000"))
             }
-        }
-
-        if (message.content.toLowerCase() == "no u" && !message.author.bot) {
-            message.channel.send("no u")
         }
 
         if (message.content.startsWith(prefix + "mute")) {
@@ -735,7 +730,8 @@ client.on("message", (message) => {
                 userData[message.author.id] = {
                     cash: 0,
                     bank: 0,
-                    inventory: {}
+                    inventory: {},
+                    username: message.author.username
                 }
             }
     
@@ -743,9 +739,14 @@ client.on("message", (message) => {
             let baseAmt = randomNumber(1, 25)
             let previousAmt = userData[message.author.id].cash
     
-            if (coinAmt == baseAmt && message.author.presence.status != "offline") {
+            if (coinAmt == baseAmt && message.author.presence.status != "offline" && !message.author.bot) {
                 setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
             }
+
+            if (userData[message.author.id].username == null) {
+                userData[message.author.id].username = message.author.username
+            }
+            saveCoins(userData, message)
 
             if (message.content.startsWith(prefix)) {
                 if (message.author.presence.status == "offline") {
@@ -1238,18 +1239,20 @@ client.on("message", (message) => {
 
                 message.channel.send("Are you ready, <@" + mention.id + ">?")
                 const collector = new discord.MessageCollector(message.channel, m => m.author.id == mention.id, { time: 10000, maxMatches:1 });
+                collector.on('end', function() {message.channel.send("Collect end.")})
                 collector.on('collect', collectorMessage => {
                     if (collectorMessage.content.toLowerCase() == "yes") {
-                        var randomString = sentencer.make("{{a_noun}} {{adjective}} {{a_noun}}.")
+                        var randomString = sentencer.make("{{a_noun}} {{adjective}} {{a_noun}}")
+                        var filename = makeid(10)
                         textToPicture.convert({
                             text: randomString,
                             ext: 'png',
                             size: 16,
                             width: 30,
                             height: 20,
-                            color: "white"
+                            color: "black"
                         }).then(function(result) {
-                            result.write('./' + randomString + '.png')
+                            result.write('./' + filename + '.png')
                             var editMsg = new discord.Message()
                             collectorMessage.channel.send("GET READY").then(m => editMsg = m)
                             setTimeout(function() {
@@ -1266,11 +1269,12 @@ client.on("message", (message) => {
                                             raceCollectorMsg.author.send("You earn $250 for that race against " + mention.username + ". Congratulations!")
                                             editMsg.delete()
                                             raceCollector.stop("Listen end.")
-                                            fs.unlink('./' + randomString + '.png', function(error) {
+                                            fs.unlink('./' + filename + '.png', function(error) {
                                                 if (error) message.channel.send(embed("Error", error, "ff0000"))
                                             })
                                         } else {
-                                            message.channel.send("Incorrect. Try again.")
+                                            raceCollectorMsg.delete(2000)
+                                            message.channel.send("Incorrect. Try again.").then(mesgi => mesgi.delete(2000))
                                         }
                                     })
                                 }, 1000)
@@ -1287,13 +1291,18 @@ client.on("message", (message) => {
                 })
             }
 
-            if(message.content.startsWith(prefix + "phrase")) {
-                message.channel.send("For the people who are here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join'")
-                const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id, { time: 10000 });
+            if (message.content.startsWith(prefix + "phrase")) {
+                message.channel.send("For the people who are here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join' within the next " + 
+                "10 seconds.")
+                const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id && !m.author.bot, { time: 10000 });
                 var players = [message.author.id]
                 collector.on('collect', collectorMessage => {
-                    if (collectorMessage.content.toLowerCase() == "join") {
+
+                    if (players.includes(collectorMessage.author.id)) {
+                        message.channel.send("You already joined.")
+                    } else if (collectorMessage.content.toLowerCase() == "join") {
                         players.push(collectorMessage.author.id)
+                        collectorMessage.reply("Joined!")
                     }
                 })
                 collector.on('end', function() {
@@ -1311,7 +1320,7 @@ client.on("message", (message) => {
                             msg.edit("GET SET")
                             setTimeout(function() {
                                 msg.edit("GOOOOOOO")
-                                var sentence = sentencer.make("{{a_noun}} {{adjective}} {{a_noun}}.")
+                                var sentence = sentencer.make("{{a_noun}} {{adjective}} {{noun}}.")
                                 console.log(sentence)
                                 var revealed = []
                                 var sentenceList = sentence.split("")
@@ -1331,7 +1340,7 @@ client.on("message", (message) => {
                                         guessCollect.stop("Game end")
                                     } else {
                                         number = randomNumber(0, sentenceList.length - 1)
-                                        while (usedNumbers.includes(number)) {
+                                        while (usedNumbers.includes(number) && usedNumbers.length == sentenceList.length - 1) {
                                             number = randomNumber(0, sentenceList.length - 1)
                                         }
                                         usedNumbers.push(number)
@@ -1348,6 +1357,134 @@ client.on("message", (message) => {
                         }, 2000)
                     }, 1000)
                 })
+            }
+
+            if (message.content.startsWith(prefix + "search")) {
+
+                if (inCooldown(message, searchCooldown)) {
+                    message.channel.send(embed("Cooldown?", "There is a cooldown, you know, it's like, `40s`", 'ff0000'))
+                    return
+                }
+
+                if (userData[message.author.id].inventory.Magnif == null || userData[message.author.id].inventory.Magnif < 1) {
+                    message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
+                    return
+                }
+
+                if (userData[message.author.id].cash < 500) {
+                    message.channel.send("You gotta have at least $500 to search.")
+                    return
+                }
+
+                var locations = ['backyard', 'house', 'trash can', 'basement', 'code', 'math homework', 'authy', 'nowhere', 'everywhere']
+                var searchableLocations = []
+                for (var i = 0; i < 3; i++) {
+                    var num = randomNumber(0, locations.length - 1)
+                    searchableLocations.push(locations[num])
+                    locations.splice(num, 1)
+                }
+                message.channel.send("Where would you like to search? You can search from these locations: `" + searchableLocations.join("` , `") + '`')
+                const collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000, maxMatches:1 });
+                collector.on('collect', collectorMessage => {
+                    if (searchableLocations.includes(collectorMessage.content.trim().toLowerCase())) {
+                        var location = collectorMessage.content.trim().toLowerCase()
+                        var earnings = 0
+                        if (location == 'backyard') {
+                            earnings = randomNumber(3, 20)
+                            message.channel.send("You look in your backyard and find $" + earnings + '.')
+                        } else if (location == 'house') {
+                            earnings = randomNumber(-500, -100)
+                            message.channel.send("You got caught trying to pry open the obviously unlocked front door and were fined $" + fine.toString() + ".")
+                        } else if (location == 'trash can') {
+                            earnings = randomNumber(-2, 10)
+                            message.channel.send("You search in the trash can, but you may have dropped some coins. The total is $" + fine.toString() + ".")
+                        } else if (location == 'basement') {
+                            earnings = randomNumber(20, 50)
+                            message.channel.send("You search everywhere in the basement and find $" + fine.toString() + ".")
+                        } else if (location == 'code') {
+                            earnings = randomNumber(500, 2000)
+                            message.channel.send("You search in the source code of BLUBBADOO and give yourself $" + earnings + ".")
+                        } else if (location == 'math homework') {
+                            message.channel.send("WHAT IS 1 + 1 HUH")
+                            message.channel.send(`I wonder why you searched in your math homework, but anyway, you found nothing.`)
+                        } else if (location == 'authy') {
+                            message.channel.send("You try to search in your authenticator app, authy, but instead it shoots a lock at your face.")
+                            if (userData[message.author.id].inventory['Lock']) {
+                                userData[message.author.id].inventory['Lock'].amount += 1
+                            } else {
+                                userData[message.author.id].inventory['Lock'] = {
+                                    amount: 1,
+                                    uses: shopData['Lock'].uses
+                                }
+                            }
+                            saveCoins(userData, message)
+                        } else if (location == 'nowhere') {
+                            earnings = 99
+                            message.channel.send("You just stand there and suddenly, money falls from the sky and you catch $" + earnings + ".")
+                        } else if (location == 'everywhere') {
+                            earnings = randomNumber(-5, -1)
+                            message.channel.send("YOU SCOUR EVERYWHERE, BUT WHOOPS! YOU DROP $" + earnings + "!")
+                        } else {
+                            message.channel.send(embed("Error", "An error occured while trying to process your request. Please try again.", 'ff0000'))
+                            return
+                        }
+                        setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
+                        setCooldown(message, 40000, searchCooldown)
+                        return
+                    } else {
+                        message.channel.send("You do realize that that's not a choice.")
+                    }
+                })
+            }
+
+            if (message.content.startsWith(prefix + "use") && trustedPeople.includes(parseInt(message.author.id))) {
+                var args = message.content.split(" ")
+                args.splice(0, 1)
+                for (var i = 0; i < args.length; i++) {
+                    args[i] = args[i].trim()
+                }
+                var keys = Object.keys(userData[message.author.id].inventory)
+                if (!keys.includes(args[0])) {
+                    message.channel.send("Wut you think that's not an item you have.")
+                    return
+                }
+
+                if (userData[message.author.id].inventory[args[0]]) {
+                    userData[message.author.id].inventory[args[0]].amount += args[1]
+                } else {
+                    userData[message.author.id].inventory[args[0]] = {
+                        amount: args[1],
+                        uses: shopData[args[0]].uses
+                    }
+                }
+
+                saveCoins(userData, message)
+            }
+
+            if (message.content.startsWith(prefix + "leaderboard")) {
+                var leaders = []
+                var keys = Object.keys(userData)
+                var dict = userData
+                  
+                // Create items array
+                var items = Object.keys(dict).map(function(key) {
+                return [dict[key].username, dict[key].cash];
+                });
+                
+                // Sort the array based on the second element
+                items.sort(function(first, second) {
+                return second[1] - first[1];
+                });
+                
+                // Create a new array with only the first 5 items
+                leaders = items.slice(0, 5);
+                var leaderString = ""
+
+                for (var i = 0; i < leaders.length; i++) {
+                    leaderString += leaders[i][0] + " - $" + leaders[i][1] + "\n"
+                }
+
+                message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa"))
             }
         } //Put coin commands above here.
         
@@ -1414,6 +1551,20 @@ client.on("message", (message) => {
 
             if (message.content.startsWith(prefix + "randomString")) {
                 message.channel.send(makeid(2000))
+            }
+
+            if (message.content.startsWith("pls meme")) {
+                var choose = randomNumber(5)
+                if (choose == 1) {
+                    sleep(500)
+                    message.channel.send("", {
+                        files: ["./images/Stealy.jpg"]
+                    })
+                }
+            }
+
+            if (message.content.toLowerCase() == "no u" && !message.author.bot) {
+                message.channel.send("no u")
             }
         }
         //#endregion
