@@ -1394,10 +1394,10 @@ client.on("message", (message) => {
                             message.channel.send("You look in your backyard and find $" + earnings + '.')
                         } else if (location == 'house') {
                             earnings = randomNumber(-500, -100)
-                            message.channel.send("You got caught trying to pry open the obviously unlocked front door and were fined $" + fine.toString() + ".")
+                            message.channel.send("You got caught trying to pry open the obviously unlocked front door and were fined $" + earnings.toString() + ".")
                         } else if (location == 'trash can') {
                             earnings = randomNumber(-2, 10)
-                            message.channel.send("You search in the trash can, but you may have dropped some coins. The total is $" + fine.toString() + ".")
+                            message.channel.send("You search in the trash can, but you may have dropped some coins. The total is $" + earnings.toString() + ".")
                         } else if (location == 'basement') {
                             earnings = randomNumber(20, 50)
                             message.channel.send("You search everywhere in the basement and find $" + fine.toString() + ".")
