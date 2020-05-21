@@ -3,9 +3,9 @@ const fs = require('fs')
 const auth = require('./auth.json')
 const textToPicture = require('text-to-picture')
 const sentencer = require('sentencer')
-var userData = require('./userData.json')
-var shopData = require('./shop.json')
-var guildData = require('./guildData.json')
+var userData = JSON.parse(fs.readFileSync("./userData.json"))
+var shopData = JSON.parse(fs.readFileSync("./shop.json"))
+var guildData = JSON.parse(fs.readFileSync("./guildData.json"))
 
 var client = new discord.Client();
 
@@ -120,6 +120,30 @@ function emoji(id) {
     return client.emojis.get(id).toString()
 }
 
+function getMention(message) {
+    var args = message.content.split(" ")
+    args.splice(0, 1)
+    for (var i = 0; i < args.length; i++) {
+        args[i] = args[i].trim()
+    }
+
+    console.log(args.join(" "))
+
+    try {
+        return message.guild.members.find('nickname', args.join(" ")).user
+    } catch {
+        return null
+    }
+}
+
+function getArgs(message) {
+    var args = message.content.split(" ")
+    args.splice(0, 1)
+    for (var i = 0; i < args.length; i++) {
+        args[i] = args[i].trim()
+    }
+    return args
+}
 //#endregion
 
 setInterval(function () {
@@ -159,29 +183,45 @@ client.on("message", (message) => {
         return;
     }
 
-    //#region - Moderation
+    //#region - Moderation TODO:fix troll command
 
     if (message.content.startsWith(prefix + "ban")) {
         if (!(message.member.hasPermission("BAN_MEMBERS")) && !(message.member.id == 509874745567870987)) {
             message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
             return;
         }
+
         if (mention == null) {
-            message.channel.send("Ok. Banning nobody... Wait. That's an error!")
+            mention = getMention(message)
+        }
+
+        if (mention == null) {
+            message.channel.send(embed("Error", "Ok. Banning nobody... Wait. That's an error! \n \n \n" + 
+            `P.S. Some help:
+            1:Only use ==ban <nickname>, not ==ban <nickname> <reason>.
+            2:Unfortunatley, I cannot recognise users without a mention that also don't have a nickname. Add a nickname to the user!`, "ff0000"))
             return;
         }
+        
         if (mention.id == "509874745567870987") {
-            message.channel.send("You can't ban @wsquarepa#4447. Use another thing.")
+            message.channel.send(embed("Error", "Error: You cannot ban <@509874745567870987> with this bot. Try something else.", "ff0000"))
             return;
         }
+
         if (message.guild.member(mention).hasPermission("BAN_MEMBERS")) {
-            message.channel.send(mention.toString() + " can't be punished, silly.")
+            message.channel.send(embed("Error", mention.toString() + " can't be punished, silly.", "ff0000"))
             return
         };
-        let reason = message.content.slice(prefix.length + 5 + mention.toString().length + 1, message.content.length)
-        message.channel.send(mention.username + ' has been banned.')
-        mention.send("You have been banned because: \n" + reason).then(() => {
-            message.guild.member(mention).ban(reason)
+
+        message.channel.send("What's the reason?")
+        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+        collector.on('collect', function(msg) {
+            collector.stop()
+            let reason = msg.content
+            message.channel.send(embed("Complete", mention.username + ' has been banned.', "ff0000"))
+            mention.send(embed("Uh oh...", mention.username + ", you've been banned from " + message.guild.name + ". They banned you because " + reason)).then(() => {
+                message.guild.member(mention).ban(reason)
+            })
         })
     }
 
@@ -190,42 +230,52 @@ client.on("message", (message) => {
             message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
             return;
         }
+
         if (mention == null) {
-            message.channel.send("Ok. Kicking nobody... Wait. That's an error!")
+            mention = getMention(message)
+        }
+
+        if (mention == null) {
+            message.channel.send(embed("Error", "Ok. Kicking nobody... Wait. That's an error! \n \n \n" + 
+            `P.S. Some help:
+            1:Only use ==kick <nickname>, not ==kick <nickname> <reason>.
+            2:Unfortunatley, I cannot recognise users without a mention that also don't have a nickname. Add a nickname to the user!`, "ff0000"))
             return;
         }
+
         if (mention.id == "509874745567870987") {
-            message.channel.send("You can't kick @wsquarepa#4447.")
+            message.channel.send(embed("Error", "Error: You cannot kick <@509874745567870987> with this bot. Try something else.", "ff0000"))
             return;
         }
         if (message.guild.member(mention).hasPermission("KICK_MEMBERS")) {
-            message.channel.send(mention.toString() + " can't be punished, silly.")
-            return;
+            message.channel.send(embed("Error", mention.toString() + " can't be punished, silly.", "ff0000"))
+            return
         }
-        let reason = message.content.slice(prefix.length + 5 + mention.toString().length + 1, message.content.length)
-        message.channel.send(mention.username + ' has been kicked.')
-        mention.send("You have been kicked because: \n" + reason).then(d_msg => {
-            message.guild.member(mention).kick(reason)
+
+        message.channel.send("What's the reason?")
+        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+        collector.on('collect', function(msg) {
+            collector.stop()
+            let reason = msg.content
+            message.channel.send(mention.username + ' has been kicked.')
+            mention.send("You have been kicked because: \n" + reason).then(() => {
+                message.guild.member(mention).kick(reason)
+            })
         })
-    }
-
-    if (message.content.startsWith(prefix + "whois") && message.member.id == 509874745567870987) {
-        mention.send(embed("Hi.", "Hello! <@509874745567870987> wants to know who you are! Please DM him your name or " +
-            "just ignore this message.", "0000ff"))
-        message.channel.send("Sent!")
-    }
-
-    if (message.content.startsWith(prefix + "embeddie")) {
-        var testEmbed = embed("@wsquarepa#4447", "Test embed", "ffffff", "This is a test").addField("Hello there!", "A test")
-        message.channel.send(testEmbed)
     }
 
     if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
         console.log(message.member.hasPermission("ADMINISTRATOR"))
         if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
             if (mention == null) {
-                message.channel.send("You can't warn nobody.")
-                return;
+                mention = getMention(message)
+            }
+
+            if (mention == null) {
+                message.channel.send(embed("Error", "Ok. warning nobody... Wait. That's an error! \n \n \n" + 
+                `P.S. Some help:
+                1:Only use ==warn <nickname>, not ==warn <nickname> <reason>.
+                2:Unfortunatley, I cannot recognise users without a mention that also don't have a nickname. Add a nickname to the user!`, "ff0000"))
             }
 
             if (message.guild.member(mention).hasPermission("ADMINISTRATOR") && message.member.id != 509874745567870987 && message.member.id != 596715111511490560) {
@@ -233,80 +283,90 @@ client.on("message", (message) => {
                 return;
             }
 
-            var args = message.content.split(' ');
+            var delmsg = new discord.Message()
+            message.channel.send("What's the reason?").then(del => delmsg = del)
+            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+            collector.on('collect', function(msg) {
+                var args = msg.content.split(' ');
 
-            for (var i = 0; i < args.length; i++) {
-                args[i] = args[i].replace(" ", "")
-            }
-
-            var users = {}
-            var cmd = args[0]
-
-            fs.readFile("warnings.txt", function (err, buf) {
-                var hashcode = buf.toString()
-                users = hashcode.split('\n')
-            });
-
-            console.log(users);
-
-            var reason = ''
-            var modifier = false
-            var modifiers = []
-            var disguiseId = ""
-            var existingModifiers = ["silent", "disguise"]
-
-            if (message.content.includes("-")) {
-                modifier = true
-            }
-
-            if (!modifier) {
-                if (args[2] != null) {
-                    for (i = 2; i < args.length; i++) {
-                        reason += ' ' + args[i]
-                    }
+                for (var i = 0; i < args.length; i++) {
+                    args[i] = args[i].trim()
                 }
-            } else {
-                if (args[2] != null) {
-                    for (i = 2; i < args.length; i++) {
-                        if (args[i].startsWith("-", 0) && existingModifiers.includes(args[i].replace("-", ""))) {
-                            console.log(args[i])
-                            if (args[i] == "-disguise") {
-                                disguiseId = mentions.last().id
-                                args.splice(i + 1, 1)
-                            }
-                            console.log(args)
-                            modifiers.push(args[i].replace("-", ""))
-                        } else {
+
+                var users = {}
+                var cmd = args[0]
+
+                fs.readFile("warnings.txt", function (err, buf) {
+                    var hashcode = buf.toString()
+                    users = hashcode.split('\n')
+                });
+
+                console.log(users);
+
+                var reason = ''
+                var modifier = false
+                var modifiers = []
+                var disguiseId = ""
+                var existingModifiers = ["silent", "disguise"]
+
+                if (msg.content.includes("-")) {
+                    modifier = true
+                }
+
+                if (args[0] == null) {
+                    message.channel.send(embed("Error", "You must supply a reason.", "ff0000"))
+                }
+
+                if (!modifier) {
+                    if (args[0] != null) {
+                        for (i = 0; i < args.length; i++) {
                             reason += ' ' + args[i]
                         }
                     }
+                } else {
+                    if (args[0] != null) {
+                        for (i = 0; i < args.length; i++) {
+                            if (args[i].startsWith("-", 0) && existingModifiers.includes(args[i].replace("-", ""))) {
+                                console.log(args[i])
+                                if (args[i] == "-disguise") {
+                                    disguiseId = mentions.last().id
+                                    args.splice(i + 1, 1)
+                                }
+                                console.log(args)
+                                modifiers.push(args[i].replace("-", ""))
+                            } else {
+                                reason += ' ' + args[i]
+                            }
+                        }
+                    }
                 }
-            }
 
-            console.log(modifiers)
+                console.log(modifiers)
 
-            reason = reason.replace(" ", "")
-            disguiseId = disguiseId.replace(" ", "")
+                reason = reason.replace(" ", "")
+                disguiseId = disguiseId.replace(" ", "")
 
-            fs.appendFile("warnings.txt", (mention.id + ',' + reason + ',' + (modifiers.includes("disguise") ? disguiseId : message.author.id.replace(" ", "")) + '\n'), (err) => {
-                if (err) console.log(err);
-                console.log("Successfully Written to File.");
-            });
+                fs.appendFile("warnings.txt", (mention.id + ',' + reason + ',' + (modifiers.includes("disguise") ? disguiseId : message.author.id.replace(" ", "")) + '\n'), (err) => {
+                    if (err) console.log(err);
+                    console.log("Successfully Written to File.");
+                });
 
-            mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " +
-                message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@!" +
-                (modifiers.includes("disguise") ? disguiseId : message.author.id.replace(" ", "")) + "> and please follow the " +
-                "rules to not be warned!", "ff0000"))
+                mention.send(embed("You have been warned in " + message.guild.name.toString(), "Hello " + mention.username.toString() + ", you have been warned in " +
+                    message.guild.name.toString() + ".\n The reason why you were warned is: " + reason + ". \n You have been warned by <@!" +
+                    (modifiers.includes("disguise") ? disguiseId : message.author.id.replace(" ", "")) + "> and please follow the " +
+                    "rules to not be warned!", "ff0000"))
 
-            if (modifiers.includes("silent")) {
-                message.delete()
-                return;
-            }
+                if (modifiers.includes("silent")) {
+                    message.delete()
+                    msg.delete()
+                    delmsg.delete()
+                    return;
+                }
 
-            var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," +
-                "use the ==warnings command.")
-            message.channel.send(warningEmbed)
-
+                var warningEmbed = embed(mention.username.toString() + " has been warned.", "Reason: " + reason, "ffff00").setFooter("To see how many warnings you have," +
+                    "use the ==warnings command.")
+                message.channel.send(warningEmbed)
+            })
         } else {
             message.channel.send(embed("Error", message.author + ", you can't do that!", "ff0000"))
         }
@@ -325,6 +385,10 @@ client.on("message", (message) => {
             var len = userWarnings.length
             var occurences = 0
             var reasonString = ''
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
 
             if (mention == null) {
                 for (i = 0; i < len; i++) {
@@ -362,56 +426,14 @@ client.on("message", (message) => {
                         message.channel.send(embed(mention.username.toString() + " has " + occurences.toString() + " warnings.", "Warning reasons: \n" + reasonString, "ff0000"))
                     }
                 } else {
-                    var warningEmbed = embed(mention.username.toString() + " has no warnings.", "You haven't got any warnings.", "00ff00")
+                    var warningEmbed = embed(mention.username.toString() + " has no warnings.", "They haven't got any warnings.", "00ff00")
                     message.channel.send(warningEmbed)
                 }
             }
         });
     }
 
-    if (message.content.startsWith(prefix + "setStatus")) {
-        if (message.author.id != 509874745567870987) {
-            message.reply(" you can't do that.")
-            return;
-        }
-        var args = message.content.split(' ');
-        var cmd = args[0]
-        var possible = false;
-
-        console.log(args[1])
-
-        // try {
-        //     statusSet(args[0])
-        //     message.reply("Status set should be complete. If not, please wait.")
-        // } catch {
-        //     message.reply("Not a valid status. The possible statuses are " + possibleStatuses.join(", "))
-        // }
-
-        for (i = 0; i < possibleStatuses.length; i++) {
-            if (args[1] == possibleStatuses[i]) {
-                possible = true;
-            }
-        }
-
-        if (possible) {
-            client.user.setStatus(args[0])
-            message.reply("Status set should be complete. If not, please wait.")
-        } else {
-            message.reply("Not a valid status. The possible statuses are " + possibleStatuses.join(", "))
-        }
-    }
-
-    if (message.content.startsWith(prefix + "instantDev")) {
-        message.channel.send("==develop")
-        sleep(5000)
-        message.channel.send("javascript")
-    }
-
-    if (message.content.startsWith(prefix + "testImposing")) {
-        message.channel.send(embed("WARNING!", "ALERT! <@" + message.author.id + "> IS IMPOSING AS SOMEONE ELSE!", "ff0000"))
-    }
-
-    if (message.content.startsWith("===warn")) {
+    if (message.content.startsWith("===warn")) { //fix
         if (mention == null) {
             message.channel.send("UH NO")
             return;
@@ -474,6 +496,10 @@ client.on("message", (message) => {
         ]
 
         if (mention == null) {
+            mention = getMention(message)
+        }
+
+        if (mention == null) {
             var myperms = []
             if (message.guild.member(message.author).hasPermission("ADMINISTRATOR")) {
                 myperms.push("ADMINISTRATOR")
@@ -534,10 +560,20 @@ client.on("message", (message) => {
     }
 
     if (message.content.startsWith(prefix + "mute")) {
+        if (mention == null) {
+                mention = getMention(message)
+        }
+            
+        if (mention == null) {
+            message.channel.send("Next time, mention someone.")
+            return;
+        }
+
         if ((message.member.hasPermission("MUTE_MEMBERS") && !message.guild.member(mention).hasPermission("MUTE_MEMBERS")) || message.member.id == "509874745567870987") {
+
             var mutedRole = message.guild.roles.find('name', "Muted")
             console.log(mutedRole)
-            if (mutedRole === null) {
+            if (mutedRole == null) {
                 message.guild.createRole(
                     data = {
                         name: 'Muted',
@@ -545,18 +581,17 @@ client.on("message", (message) => {
                     },
                     reason = 'Mute command'
                 ).then((role) => {
-                    role.setPermissions("CREATE_INSTANT_INVITE")
                     role.setPosition(0, false)
-                    message.guild.embedChannel
                     message.guild.member(mention).addRole(role)
                     message.channel.send("Member muted!")
                 })
                 return;
             }
-            if (mention === null) {
-                message.channel.send("Next time, mention someone.")
-                return;
-            }
+
+
+
+            
+
             if (!message.guild.member(mention).roles.has(mutedRole.id)) {
                 message.guild.member(mention).addRole(mutedRole)
                 message.channel.send("Member muted!")
@@ -568,6 +603,16 @@ client.on("message", (message) => {
     }
 
     if (message.content.startsWith(prefix + "unmute")) {
+
+        if (mention == null) {
+            mention = getMention(message)
+        }
+
+        if (mention === null) {
+            message.channel.send("Next time, mention someone.")
+            return;
+        }
+
         if (message.member.hasPermission("MUTE_MEMBERS") || message.member.id == "509874745567870987") {
             var mutedRole = message.guild.roles.find('name', "Muted")
             console.log(mutedRole)
@@ -575,10 +620,7 @@ client.on("message", (message) => {
                 message.channel.send("That role does not exist.")
                 return;
             }
-            if (mention === null) {
-                message.channel.send("Next time, mention someone.")
-                return;
-            }
+            
             if (message.guild.member(mention).roles.has(mutedRole.id)) {
                 message.guild.member(mention).removeRole(mutedRole)
                 message.channel.send("Member unmuted!")
@@ -605,6 +647,16 @@ client.on("message", (message) => {
     //#endregion
 
     if (message.content.toLowerCase().startsWith(prefix + "op")) {
+
+        if (mention == null) {
+            mention = getMention(message)
+        }
+
+        if (mention == null) {
+            message.channel.send("Hmm, you sure you wanna op everyone? I don't think so.")
+            return
+        }
+
         if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
             var role = message.guild.roles.find('name', "OP")
             if (role === null) {
@@ -621,12 +673,8 @@ client.on("message", (message) => {
                     message.channel.send("Member **OPPED**")
                 })
             } else {
-                if (mention === null) {
-                    message.channel.send("You can't exactly OP everyone...")
-                } else {
-                    message.guild.member(mention).addRole(role)
-                    message.channel.send("Member **OPPED**")
-                }
+                message.guild.member(mention).addRole(role)
+                message.channel.send("Member **OPPED**")
             }
         } else {
             message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
@@ -635,17 +683,23 @@ client.on("message", (message) => {
     }
 
     if (message.content.toLowerCase().startsWith(prefix + "deop")) {
+
+        if (mention == null) {
+            mention = getMention(message)
+        }
+
+        if (mention == null) {
+            message.channel.send("No.")
+            return
+        }
+
         if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
             var role = message.guild.roles.find("name", "OP")
             if (role === null) {
                 message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
             } else {
-                if (mention === null) {
-                    message.channel.send("You can't exactly DEOP everyone...")
-                } else {
-                    message.guild.member(mention).removeRole(role)
-                    message.channel.send("Member **DEOPPED**")
-                }
+                message.guild.member(mention).removeRole(role)
+                message.channel.send("Member **DEOPPED**")
             }
         } else {
             message.channel.send(embed("Error!", `<@${message.author.id}>, you can't do that!`, "ff0000"))
@@ -659,41 +713,58 @@ client.on("message", (message) => {
     }
 
     if (message.content.startsWith(prefix + "role")) {
+
         if (message.guild.member(message.author).hasPermission("MANAGE_ROLES") || message.author.id == "509874745567870987") {
-            var args = message.content.split(" ")
-            args.splice(0, 1)
-            for (var i = 0; i < args.length; i++) {
-                args[i] = args[i].trim()
+            if (mention == null) {
+                mention = getMention(message)
             }
-            var roleName = args.slice(1)
-            if (mention) {
-                roleName = args.slice(2)
+    
+            if (mention == null) {
+                message.channel.send("You might want to mention someone/say someone's nickname.")
+                return
             }
-            roleName = roleName.join(" ")
-            var role = message.guild.roles.find('name', roleName)
-            if (!mention) {
-                mention = message.author
-            }
-            if (role !== null) {
-                if (args[0] == "add") {
-                    message.guild.member(mention).addRole(role).catch(function () {
-                        message.channel.send("I don't have permission to give you that role.")
-                        return
-                    })
-                    message.channel.send(mention.username + " entered " + roleName + "!")
-                } else if (args[0] == "remove" || args[0] == "leave") {
-                    message.guild.member(mention).removeRole(role).catch(function () {
-                        message.channel.send("I don't have permission to let you leave that role.")
-                        return
-                    })
-                    message.channel.send(mention.username + " left " + roleName + ".")
+    
+            message.channel.send("Add or remove which role? For example, reply 'add Muted' for the user (you or someone else) to enter the role named Muted!")
+            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+            collector.on('collect', function(msg) {
+                console.log(mention)
+                var args = msg.content.split(" ")
+                var select = args[0]
+                args.splice(0, 1)
+                for (var i = 0; i < args.length; i++) {
+                    args[i] = args[i].trim()
                 }
-            } else {
-                message.channel.send("That role does not exist.")
-            }
+                roleName = args.join(" ")
+                var role = message.guild.roles.find('name', roleName)
+
+                if (!mention) {
+                    mention = msg.author
+                }
+
+                if (role !== null) {
+                    if (select == "add") {
+                        message.guild.member(mention).addRole(role).catch(function () {
+                            message.channel.send("I don't have permission to give you that role.")
+                            return
+                        }).then(function() {
+                            message.channel.send(mention.username + " entered " + roleName + "!")
+                        })
+                    } else if (select == "remove" || select == "leave") {
+                        message.guild.member(mention).removeRole(role).catch(function () {
+                            message.channel.send("I don't have permission to let you leave that role.")
+                            return
+                        }).then(function() {
+                            message.channel.send(mention.username + " left " + roleName + ".")
+                        })
+                    }
+                } else {
+                    message.channel.send("That role does not exist.")
+                }
+            })
         } else {
             message.channel.send(":x: You don't have permission to run that command.")
         }
+        
     }
     //#endregion
     //#region - Coins
@@ -779,7 +850,17 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
 
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
             if (mention) {
+                
+                if (mention.bot) {
+                    message.channel.send("Are you crazy the bot obviously doesn't have money")
+                    return;
+                }
+
                 var cash = userData[mention.id].cash
                 var bank = userData[mention.id].bank
                 var gems = userData[mention.id].gems
@@ -1002,6 +1083,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "rob")) {
 
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
             if (!mention) {
                 message.channel.send("You gotta tell me who you wanna rob.")
                 return
@@ -1051,6 +1136,10 @@ client.on("message", (message) => {
             var args = message.content.split(" ")
 
             if (mention == null) {
+                mention = getMention(message)
+            }
+
+            if (mention == null) {
                 args.splice(0, 1)
                 if (args[0] == null) {
                     message.channel.send("Next time, tell me how much money to add.")
@@ -1077,6 +1166,10 @@ client.on("message", (message) => {
                 return
             }
             var args = message.content.split(" ")
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
 
             if (mention == null) {
                 args.splice(0, 1)
@@ -1247,6 +1340,11 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "race")) {
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
             if (mention == null) {
                 message.channel.send("Please mention someone next time.")
                 return;
@@ -1489,27 +1587,20 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "use") && trustedPeople.includes(parseInt(message.author.id))) {
-            var args = message.content.split(" ")
-            args.splice(0, 1)
-            for (var i = 0; i < args.length; i++) {
-                args[i] = args[i].trim()
-            }
-            var keys = Object.keys(userData[message.author.id].inventory)
-            if (!keys.includes(args[0])) {
-                message.channel.send("Wut you think that's not an item you have.")
-                return
+            var args = getArgs(message)
+            if (args[0] == null) {
+                message.channel.send("Next time tell me what you wanna use.")
+                return;
             }
 
-            if (userData[message.author.id].inventory[args[0]]) {
-                userData[message.author.id].inventory[args[0]].amount += args[1]
-            } else {
-                userData[message.author.id].inventory[args[0]] = {
-                    amount: args[1],
-                    uses: shopData[args[0]].uses
-                }
+            if (args[0].toLowerCase() == "gem") {
+                message.channel.send("Ok, using " + args[0] + "...")
+                userData[message.author.id].gems -= 1
+                saveCoins(userData, message)
+                var earnings = randomNumber(1000, 3000)
+                setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
+                message.channel.send("Congrats, you earned $" + earnings + " from that " + args[0] + ".")
             }
-
-            saveCoins(userData, message)
         }
 
         if (message.content.startsWith(prefix + "leaderboard")) {
@@ -1542,84 +1633,6 @@ client.on("message", (message) => {
     } //Put coin commands above here.
 
 
-    //#endregion
-    //#region - Util
-
-    if (message.content.toLowerCase().startsWith(prefix + "disablemodule util")) {
-        if (message.guild.member(message.author).hasPermission("MANAGE_GUILD")) {
-            guildData[message.guild.id].disabledModules.push("util")
-            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
-            message.channel.send("Module UTIL disabled.")
-        } else {
-            message.channel.send("Error", "You can't do that!", "ff0000")
-        }
-
-    }
-
-    if (message.content.toLowerCase().startsWith(prefix + "enablemodule util")) {
-        if (message.guild.member(message.author).hasPermission("MANAGE_GUILD")) {
-            guildData[message.guild.id].disabledModules.splice(guildData[message.guild.id].disabledModules.indexOf("util"), 1)
-            fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
-            message.channel.send("Module UTIL enabled.")
-        } else {
-            message.channel.send("Error", "You can't do that!", "ff0000")
-        }
-    }
-
-    disabled = false
-    for (var i = 0; i < guildData[message.guild.id].disabledModules.length; i++) {
-        if (guildData[message.guild.id].disabledModules[i] == "util") {
-            disabled = true
-        }
-    }
-
-    if (!disabled) {
-        if (message.content.startsWith("Muppy") || message.content.startsWith("muppy")) {
-            message.channel.send("MUPPY!!!")
-        }
-
-        if (message.content.toLowerCase().startsWith("how are you") || message.content.toLowerCase().startsWith("how r u")) {
-            sleep(500)
-            message.reply("Great!")
-        }
-
-        if (message.content.includes("tis")) {
-            message.channel.send("Yos!")
-        }
-
-        if (((message.content.includes("is") || message.content.includes("Is") || message.content.includes("do") || message.content.includes("Do")) ||
-                message.content.toLowerCase().includes("am")) && message.content.endsWith("?") && message.author.bot == false) {
-            message.channel.send("Yos!")
-        }
-
-        if (message.content.toLowerCase().includes("bob is cool") && message.member.id != 596715111511490560) {
-            message.delete(0)
-            message.channel.send("BOB IS NOT COOL!!!")
-            message.channel.send(`==warn <@${message.member.id}> Saying that ${message.content} but he is not cool.`).then(d_msg => d_msg.delete())
-        }
-
-        if (message.content.toLowerCase() == "bob") {
-            message.channel.send("... is not cool!")
-        }
-
-        if (message.content.startsWith(prefix + "randomString")) {
-            message.channel.send(makeid(2000))
-        }
-
-        if (message.content.startsWith("pls meme")) {
-            var choose = randomNumber(5)
-            if (choose == 1) {
-                sleep(500)
-                message.channel.send("", {
-                    files: ["./images/Stealy.jpg"]
-                })
-            }
-        }
-
-        if (message.content.toLowerCase() == "no u" && !message.author.bot) {
-            message.channel.send("no u")
-        }
-    }
     //#endregion
 });
 
