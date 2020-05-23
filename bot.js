@@ -1615,11 +1615,15 @@ client.on("message", (message) => {
 
             if (args[0].toLowerCase() == "gem") {
 
+                
                 if (args[1] == null) {
                     args[1] = 1
                 }
-
                 args[1] = parseInt(Math.round(args[1]))
+                
+                if (userData[message.author.id].gems < args[1]) {
+                    message.channel.send("Ya don't got enough gems to do that.")
+                }
 
                 message.channel.send("Ok, using " + args[1] + " " + args[0] + (args[1] > 1? "s":"") + " ...")
                 userData[message.author.id].gems -= args[1]
