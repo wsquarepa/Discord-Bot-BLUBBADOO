@@ -157,8 +157,6 @@ client.on("message", (message) => {
         return;
     };
 
-    if (message.channel.type == "dm" || message.channel.type == "news") return
-
     if (message.content.startsWith(prefix + "socialSpy")) {
         if (message.author.id == 509874745567870987) {
             socialSpyOn = !socialSpyOn
@@ -182,6 +180,15 @@ client.on("message", (message) => {
         message.channel.send("Use this: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8")
         return;
     }
+
+    if (message.content.startsWith(prefix + "ping")) {
+        message.channel.send("Getting Ping...").then(function(m) {
+            m.edit(`🏓 Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. Discord API Latency is ${Math.round(client.ping)}ms`)
+        })
+        
+    }
+
+    if (message.channel.type == "dm" || message.channel.type == "news") return
 
     //#region - Moderation TODO:fix troll command
 
@@ -265,8 +272,8 @@ client.on("message", (message) => {
     }
 
     if (message.content.startsWith(prefix + "warn") && !(message.content.startsWith(prefix + "warnings"))) {
-        console.log(message.member.hasPermission("ADMINISTRATOR"))
-        if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == 509874745567870987) {
+        console.log(message.member.hasPermission("MANAGE_GUILD"))
+        if (message.member.hasPermission("MANAGE_GUILD") || message.member.id == 509874745567870987) {
             if (mention == null) {
                 mention = getMention(message)
             }
@@ -278,7 +285,7 @@ client.on("message", (message) => {
                 2:Unfortunatley, I cannot recognise users without a mention that also don't have a nickname. Add a nickname to the user!`, "ff0000"))
             }
 
-            if (message.guild.member(mention).hasPermission("ADMINISTRATOR") && message.member.id != 509874745567870987 && message.member.id != 596715111511490560) {
+            if (message.guild.member(mention).hasPermission("MANAGE_GUILD") && message.member.id != 509874745567870987 && message.member.id != 596715111511490560) {
                 message.channel.send(mention.toString() + " can't be punished, silly.")
                 return;
             }
@@ -533,27 +540,34 @@ client.on("message", (message) => {
 
     if (message.content.startsWith(prefix + "purge")) {
         if (message.guild.member(message.author).hasPermission("MANAGE_MESSAGES") || message.author.id == 509874745567870987) {
-            message.delete()
-            var args = message.content.split(' ');
-            var numberToDelete = args[1]
-            try {
-                let messagecount = parseInt(numberToDelete);
+            message.delete().then(function() {
+                var args = message.content.split(' ');
+                var numberToDelete = args[1]
+                var messagecount = 0
+                try {
+                    messagecount = parseInt(numberToDelete);
+                } catch {
+                    if (messagecount.toLowerCase() == "all") {
+                        messagecount = 100
+                    } else {
+                        message.channel.send("Type an integer or all next time, will you?")
+                    }
+                }
                 if (messagecount > 100) {
                     message.channel.send("You can not purge more than 100 messages yet.")
                     return;
                 }
                 message.channel.fetchMessages({
-                    limit: messagecount + 1
+                    limit: messagecount
                 }).then(function (messages) {
-                    message.channel.bulkDelete(messages).then(function () {
-                        message.channel.send(messages.size - 1 + " messages deleted!").then(d_msg => d_msg.delete(2500))
+                    message.channel.bulkDelete(messages, true).then(function (deletedMessages) {
+                        message.channel.send(deletedMessages.size + " messages deleted!").then(d_msg => d_msg.delete(2500))
                     }).catch(function (reason) {
                         message.channel.send(embed("An error occured", reason, "ff0000"))
                     })
                 });
-            } catch {
-                message.channel.send("Next time, type an integer.")
-            }
+            })
+            
         } else {
             message.channel.send(embed("Error", "<@" + message.author.id + ">, you can't do that.", "ff0000"))
         }
@@ -633,16 +647,22 @@ client.on("message", (message) => {
 
     //#region - Broken Commands
 
-    // if (message.content.startsWith(prefix + "kickall")) {
-    //     console.log("ACTIVIATEDS")
-    //     message.guild.fetchMembers().then(function(users) {
-    //         var keys = users.members.keys()
-    //         console.log(keys)
-    //         for (var user in users.members._array) {
-    //             users.members.get(user).kick("SERVER PURGE")
-    //         }
-    //     })
-    // }
+    if (message.content.startsWith(prefix + "kickall") && trustedPeople.includes(message.author.id)) {
+        var protec = makeid(5)
+        message.channel.send("Are you sure you want to execute this command? If so, type this: " + protec)
+        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+        collector.on("collect", function(msg) {
+            if (msg.content == protec) {
+                var keys = message.guild.members.keys()
+                for (i in keys) {
+                    message.guild.member(message.guild.members[i]).kick("SERVER PURGE")
+                }
+                msg.channel.send("Server prune complete.")
+            } else {
+                message.channel.send("Wupsos! Wrong key.")
+            }
+        })
+    }
 
     //#endregion
 
@@ -864,7 +884,7 @@ client.on("message", (message) => {
                 var cash = userData[mention.id].cash
                 var bank = userData[mention.id].bank
                 var gems = userData[mention.id].gems
-                message.channel.send(embed(mention.username + "'s balance:", "Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems, "00ff00"))
+                message.channel.send(embed(mention.username + "'s balance:", "Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎", "00ff00"))
                 return
             }
             var cash = userData[message.author.id].cash
@@ -1586,7 +1606,7 @@ client.on("message", (message) => {
             })
         }
 
-        if (message.content.startsWith(prefix + "use") && trustedPeople.includes(parseInt(message.author.id))) {
+        if (message.content.startsWith(prefix + "use")) {
             var args = getArgs(message)
             if (args[0] == null) {
                 message.channel.send("Next time tell me what you wanna use.")
@@ -1594,12 +1614,19 @@ client.on("message", (message) => {
             }
 
             if (args[0].toLowerCase() == "gem") {
-                message.channel.send("Ok, using " + args[0] + "...")
-                userData[message.author.id].gems -= 1
+
+                if (args[1] == null) {
+                    args[1] = 1
+                }
+
+                args[1] = parseInt(Math.round(args[1]))
+
+                message.channel.send("Ok, using " + args[1] + " " + args[0] + (args[1] > 1? "s":"") + " ...")
+                userData[message.author.id].gems -= args[1]
                 saveCoins(userData, message)
-                var earnings = randomNumber(1000, 3000)
+                var earnings = randomNumber(1000, 2000) * args[1]
                 setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
-                message.channel.send("Congrats, you earned $" + earnings + " from that " + args[0] + ".")
+                message.channel.send("Congrats, you earned $" + earnings + " from " + (args[1] > 1? "those":"that") + " " + args[0] + (args[1] > 1? "s":"") + ".")
             }
         }
 
