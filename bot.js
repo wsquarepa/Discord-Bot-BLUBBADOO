@@ -1623,6 +1623,7 @@ client.on("message", (message) => {
                 
                 if (userData[message.author.id].gems < args[1]) {
                     message.channel.send("Ya don't got enough gems to do that.")
+                    return
                 }
 
                 message.channel.send("Ok, using " + args[1] + " " + args[0] + (args[1] > 1? "s":"") + " ...")
