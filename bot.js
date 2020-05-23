@@ -3,8 +3,8 @@ const fs = require('fs')
 const auth = require('./auth.json')
 const textToPicture = require('text-to-picture')
 const sentencer = require('sentencer')
-var userData = JSON.parse(fs.readFileSync("./userData.json"))
-var shopData = JSON.parse(fs.readFileSync("./shop.json"))
+var userData = require('./userData.json')
+var shopData = require("./shop.json")
 var guildData = JSON.parse(fs.readFileSync("./guildData.json"))
 
 var client = new discord.Client();
@@ -21,7 +21,7 @@ client.on("ready", async () => {
 
 const prefix = '==';
 var possibleStatuses = ['online', 'idle', 'dnd']
-var trustedPeople = [509874745567870987, 536659745420083208]
+var trustedPeople = ["509874745567870987", "536659745420083208"]
 
 const workMoneyCooldown = new Set();
 const dailyCooldown = new Set();
@@ -100,7 +100,8 @@ function setCoins(userID, cashAmount, bankAmount) {
         bank: bankAmount,
         gems: userData[userID].gems,
         inventory: userData[userID].inventory,
-        username: userData[userID].username
+        username: userData[userID].username,
+        account: userData[userID].account
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
@@ -845,6 +846,10 @@ client.on("message", (message) => {
                 userData[message.author.id].gems = 0
             }
 
+            if (userData[message.author.id].account == null) {
+                userData[message.author.id].account = {secured: false, type: "user"}
+            }
+
             let coinAmt = randomNumber(1, 25)
             let baseAmt = randomNumber(1, 25)
             let previousAmt = userData[message.author.id].cash
@@ -1132,8 +1137,18 @@ client.on("message", (message) => {
             userData[message.author.id].inventory.Knife.amount -= 1
             saveCoins(userData, message)
 
-            var randRobNumber = randomNumber(1, 5)
+            var randRobNumber = randomNumber(1, 1)
             if (randRobNumber == 1) {
+                if (userData[mention.id].account.secured) {
+                    var earnings = userData[message.author.id].cash * 0.5
+                    earnings = Math.round(earnings)
+                    setCoins(message.author.id, userData[message.author.id].cash - earnings, userData[message.author.id].bank)
+                    setCoins(mention.id, userData[mention.id].cash + earnings, userData[mention.id].bank)
+                    message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack" + mention.username + "! You were fined $" + earnings + ".")
+                    userData[mention.id].account.secured = false
+                    saveCoins(userData, message)
+                    return
+                }
                 var earnings = userData[mention.id].cash * 0.75
                 earnings = Math.round(earnings)
                 setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
@@ -1176,7 +1191,6 @@ client.on("message", (message) => {
                 args[0] = args[0].trim()
                 setCoins(mention.id, userData[mention.id].cash + parseInt(args[0]), userData[mention.id].bank)
             }
-            saveCoins(userData, message)
             message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null ? "your" : mention.username + "'s") + " cash.", "00ff00"))
         }
 
@@ -1569,7 +1583,7 @@ client.on("message", (message) => {
                         message.channel.send("You search in the trash can, but you may have dropped some coins. The total is $" + earnings.toString() + ".")
                     } else if (location == 'basement') {
                         earnings = randomNumber(20, 50)
-                        message.channel.send("You search everywhere in the basement and find $" + fine.toString() + ".")
+                        message.channel.send("You search everywhere in the basement and find $" + earnings.toString() + ".")
                     } else if (location == 'code') {
                         earnings = randomNumber(500, 2000)
                         message.channel.send("You search in the source code of BLUBBADOO and give yourself $" + earnings + ".")
@@ -1615,7 +1629,6 @@ client.on("message", (message) => {
 
             if (args[0].toLowerCase() == "gem") {
 
-                
                 if (args[1] == null) {
                     args[1] = 1
                 }
@@ -1632,6 +1645,18 @@ client.on("message", (message) => {
                 var earnings = randomNumber(1000, 2000) * args[1]
                 setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
                 message.channel.send("Congrats, you earned $" + earnings + " from " + (args[1] > 1? "those":"that") + " " + args[0] + (args[1] > 1? "s":"") + ".")
+            } else if (args[0].toLowerCase() == "lock") {
+
+                if (userData[message.author.id].account.secured == true) {
+                    message.channel.send("Your account is already secured, there's no point re-securing it.")
+                    return
+                }
+
+                message.channel.send("Ok, locking your account...")
+                userData[message.author.id].inventory.Lock.amount -= 1
+                userData[message.author.id].account.secured = true
+                saveCoins(userData, message)
+                message.channel.send("Ok, account secured!")
             }
         }
 
@@ -1662,6 +1687,11 @@ client.on("message", (message) => {
 
             message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa"))
         }
+
+        if (message.content.startsWith(prefix + "test") && trustedPeople.includes(message.author.id)) {
+            message.channel.send(":discord-load:")
+        }
+
     } //Put coin commands above here.
 
 
@@ -1679,3 +1709,4 @@ client.on('guildMemberAdd', function (member) {
 client.login(token)
 
 //invite: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8
+//loadEmoji: 713445327931441162
