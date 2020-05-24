@@ -133,9 +133,12 @@ function getMention(message) {
 
     try {
         return client.users.find("username", args.join(" "))
-        //return message.guild.members.find('nickname', args.join(" ")).user
     } catch {
-        return null
+        try {
+            return message.guild.members.find('nickname', args.join(" ")).user
+        } catch {
+            return null
+        }
     }
 }
 
