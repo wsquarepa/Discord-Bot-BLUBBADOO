@@ -112,13 +112,14 @@ function addGems(message, gems) {
         bank: userData[message.author.id].bank,
         gems: userData[message.author.id].gems + gems,
         inventory: userData[message.author.id].inventory,
-        username: userData[message.author.id].username
+        username: userData[message.author.id].username,
+        account: userData[userID].account
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
 
-function emoji(id) {
-    return client.emojis.get(id).toString()
+function emoji(type, stuff) {
+    return client.emojis.find(type, stuff).toString()
 }
 
 function getMention(message) {
@@ -131,7 +132,8 @@ function getMention(message) {
     console.log(args.join(" "))
 
     try {
-        return message.guild.members.find('nickname', args.join(" ")).user
+        return client.users.find("username", args.join(" "))
+        //return message.guild.members.find('nickname', args.join(" ")).user
     } catch {
         return null
     }
@@ -895,7 +897,8 @@ client.on("message", (message) => {
             var cash = userData[message.author.id].cash
             var bank = userData[message.author.id].bank
             var gems = userData[message.author.id].gems
-            message.channel.send(embed("Your balance:", "Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎", "00ff00"))
+            message.channel.send(embed("Your balance:", "Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎", "00ff00")
+                .setFooter("Account status - locked: " + userData[message.author.id].account.secured))
         }
 
         if (message.content.startsWith(prefix + "dep")) {
@@ -1689,7 +1692,7 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "test") && trustedPeople.includes(message.author.id)) {
-            message.channel.send(":discord-load:")
+            message.channel.send("\\" + emoji("name", "discordload"))
         }
 
     } //Put coin commands above here.
@@ -1710,3 +1713,4 @@ client.login(token)
 
 //invite: https://discordapp.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8
 //loadEmoji: 713445327931441162
+//loadEmoji2: 713814508669501481
