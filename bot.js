@@ -241,13 +241,13 @@ client.on("message", (message) => {
                 connectMessageShown = true
             }
             if (phoneUser == "" || phoneUser == message.author.id) {
-                if (client.users.find('id', "509874745567870987").presence.status == "offline") {
-                    message.channel.send("Sorry, but WSQUAREPA is offline right now. Please try again later.")
-                    return
-                }
+                // if (client.users.find('id', "509874745567870987").presence.status == "offline") {
+                //     message.channel.send("Sorry, but WSQUAREPA is offline right now. Please try again later.")
+                //     return
+                // }
                 client.users.find('id', "509874745567870987").send(message.content)
             } else {
-                message.channel.send("⚠️ Someone is already in a call with WSQUAREPA. Please try again later.")
+                //message.channel.send("⚠️ Someone is already in a call with WSQUAREPA. Please try again later.")
             }
         }
         return;
