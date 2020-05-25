@@ -30,6 +30,9 @@ const coinflipCooldown = new Set()
 const searchCooldown = new Set()
 
 var socialSpyOn = false
+var phoneUser = ""
+var connectMessageShown = false
+var phoners = {}
 
 //#region - Functions
 
@@ -113,7 +116,7 @@ function addGems(message, gems) {
         gems: userData[message.author.id].gems + gems,
         inventory: userData[message.author.id].inventory,
         username: userData[message.author.id].username,
-        account: userData[userID].account
+        account: userData[message.author.id].account
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
@@ -132,10 +135,10 @@ function getMention(message) {
     console.log(args.join(" "))
 
     try {
-        return client.users.find("username", args.join(" "))
+        return message.guild.members.find('nickname', args.join(" ")).user
     } catch {
         try {
-            return message.guild.members.find('nickname', args.join(" ")).user
+            return client.users.find("username", args.join(" "))
         } catch {
             return null
         }
@@ -194,7 +197,61 @@ client.on("message", (message) => {
         
     }
 
-    if (message.channel.type == "dm" || message.channel.type == "news") return
+    if (message.channel.type == "dm") {
+        if (message.author.bot) return
+
+        if (message.content.startsWith(prefix + "find") && message.author.id == "509874745567870987") {
+            var args = getArgs(message)
+            var usersFound = client.users.findAll('username', args.join(" "))
+            message.channel.send("Users found: \n" + usersFound.join("\n"))
+            return
+        }
+
+        if (message.content.startsWith(prefix + "connect") && message.author.id == "509874745567870987") {
+            var args = getArgs(message)
+            try {
+                phoneUser = client.users.find('id', args[0]).id
+            } catch {
+                message.channel.send("Not a valid id.")
+                return
+            }
+            message.channel.send("Connected.")
+            connectMessageShown = true
+            return
+        }
+
+        if (message.content.startsWith(prefix + "disconnect")) {
+            client.users.find('id', "509874745567870987").send("Disconnected.")
+            client.users.find('id', phoneUser).send("Disconnected.")
+            phoneUser = ""
+            connectMessageShown = false
+            return
+        }
+
+        if (message.author.id == "509874745567870987") {
+            if (message.content.startsWith(prefix)) return
+            try {
+                client.users.find('id', phoneUser).send(message.content)
+            } catch {
+                message.channel.send("Nobody is connected with you.")
+            }
+        } else { 
+            if (!connectMessageShown) {
+                client.users.find('id', "509874745567870987").send("Connected to " + message.author.username + "#" + message.author.discriminator)
+                connectMessageShown = true
+            }
+            if (phoneUser == "" || phoneUser == message.author.id) {
+                if (client.users.find('id', "509874745567870987").presence.status == "offline") {
+                    message.channel.send("Sorry, but WSQUAREPA is offline right now. Please try again later.")
+                    return
+                }
+                client.users.find('id', "509874745567870987").send(message.content)
+            } else {
+                message.channel.send("⚠️ Someone is already in a call with WSQUAREPA. Please try again later.")
+            }
+        }
+        return;
+    }
 
     //#region - Moderation TODO:fix troll command
 
@@ -839,11 +896,14 @@ client.on("message", (message) => {
                     gems: 0,
                     inventory: {},
                     username: message.author.username,
-
+                    account: {
+                        secured: false, 
+                        type: "user"
+                    }
                 }
             }
 
-            if (userData[message.author.id].username == null) {
+            if (userData[message.author.id].username != message.author.username) {
                 userData[message.author.id].username = message.author.username
             }
 
@@ -869,7 +929,6 @@ client.on("message", (message) => {
 
             saveCoins(userData, message)
         }
-
 
         if (message.content.startsWith(prefix)) {
             if (message.author.presence.status == "offline") {
@@ -1671,6 +1730,12 @@ client.on("message", (message) => {
             var keys = Object.keys(userData)
             var dict = userData
 
+            for (var i = 0; i < keys.length; i++) {
+                if (dict[keys[i]].account.type.toLowerCase() == "admin") {
+                    delete dict[keys[i]]
+                }
+            }
+
             // Create items array
             var items = Object.keys(dict).map(function (key) {
                 return [dict[key].username, dict[key].cash];
@@ -1681,9 +1746,6 @@ client.on("message", (message) => {
             });
 
             leaders = items.slice(0, 5);
-            if (leaders[0][0] == "wsquarepa") {
-                leaders = items.slice(1, 6);
-            }
 
             var leaderString = ""
 
