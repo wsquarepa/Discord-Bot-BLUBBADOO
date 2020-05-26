@@ -23,27 +23,12 @@ const prefix = '==';
 var possibleStatuses = ['online', 'idle', 'dnd']
 var trustedPeople = ["509874745567870987", "536659745420083208"]
 
-const workMoneyCooldown = new Set();
-const dailyCooldown = new Set();
-const huntCooldown = new Set()
-const coinflipCooldown = new Set()
-const searchCooldown = new Set()
-
 var socialSpyOn = false
 var phoneUser = ""
 var connectMessageShown = false
 var phoners = {}
 
 //#region - Functions
-
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds) {
-            break;
-        }
-    }
-}
 
 function embed(title, description, color) {
     var embed = new discord.RichEmbed()
@@ -73,28 +58,40 @@ function saveCoins(coins, message) {
     fs.writeFile("./userData.json", JSON.stringify(coins), (err) => err !== null ? message.channel.send(embed("An error occured", err.toString(), "ff0000")) : null)
 }
 
-function setCooldown(msg, time, set) {
-    set.add(msg.author.id);
-    setTimeout(() => {
-        // Removes the user from the set after a minute
-        set.delete(msg.author.id);
-    }, time);
+function AddSecondsToDate(date, seconds) {
+    return new Date(date.getTime() + (seconds * 1000));
 }
 
-function setDailyCooldown(msg, time) {
-    dailyCooldown.add(msg.author.id);
-    setTimeout(() => {
-        // Removes the user from the set after a minute
-        workMoneyCooldown.delete(msg.author.id);
-    }, time);
+function getUntilTime(msg, name) {
+    var userCooldowns = userData[msg.author.id].cooldowns
+    var now = new Date().getTime()
+    for (var i = 0; i < userCooldowns.length; i++) {
+        if (userCooldowns[i].name == name) {
+            return (userCooldowns[i].endTime - now)
+        }
+    }
 }
 
-function inCooldown(msg, set) {
-    return set.has(msg.author.id)
+function setCooldown(message, seconds, cooldownName) {
+    var now = new Date()
+    var endTime = AddSecondsToDate(now, seconds).getTime()
+    userData[message.author.id].cooldowns.push({name: cooldownName, endTime: endTime})
+    saveCoins(userData, message)
 }
 
-function inDailyCooldown(msg) {
-    return dailyCooldown.has(msg.author.id)
+function inCooldown(msg, name) {
+    var userCooldowns = userData[msg.author.id].cooldowns
+    var now = new Date().getTime()
+    for (var i = 0; i < userCooldowns.length; i++) {
+        if (userCooldowns[i].name == name) {
+            if (userCooldowns[i].endTime > now) {
+                return true
+            } else {
+                userData[msg.author.id].cooldowns.splice(i, 1)
+                return false
+            }
+        }
+    }
 }
 
 function setCoins(userID, cashAmount, bankAmount) {
@@ -104,7 +101,8 @@ function setCoins(userID, cashAmount, bankAmount) {
         gems: userData[userID].gems,
         inventory: userData[userID].inventory,
         username: userData[userID].username,
-        account: userData[userID].account
+        account: userData[userID].account,
+        cooldowns: userData[userID].cooldowns
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
@@ -116,7 +114,8 @@ function addGems(message, gems) {
         gems: userData[message.author.id].gems + gems,
         inventory: userData[message.author.id].inventory,
         username: userData[message.author.id].username,
-        account: userData[message.author.id].account
+        account: userData[message.author.id].account,
+        cooldowns: userData[message.author.id].cooldowns
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
@@ -154,11 +153,6 @@ function getArgs(message) {
     return args
 }
 //#endregion
-
-setInterval(function () {
-    userData = require("./userData.json")
-    shopData = require("./shop.json")
-}, 60000)
 
 client.on("message", (message) => {
     if ((message.author.bot && message.author.id != 596715111511490560) && message.content.startsWith(prefix)) {
@@ -222,9 +216,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "disconnect")) {
             client.users.find('id', "509874745567870987").send("Disconnected.")
-            client.users.find('id', phoneUser).send("Disconnected.")
-            phoneUser = ""
-            connectMessageShown = false
+            client.users.find('id', phoneUser).send("Disconnected.").then(() => {
+                phoneUser = ""
+                connectMessageShown = false
+            })
             return
         }
 
@@ -246,6 +241,7 @@ client.on("message", (message) => {
                 //     return
                 // }
                 client.users.find('id', "509874745567870987").send(message.content)
+                phoneUser = message.author.id
             } else {
                 //message.channel.send("⚠️ Someone is already in a call with WSQUAREPA. Please try again later.")
             }
@@ -850,7 +846,10 @@ client.on("message", (message) => {
         
     }
     //#endregion
+    
     //#region - Coins
+
+    //#region - Module Enabling
 
     if (!guildData[message.guild.id]) {
         guildData[message.guild.id] = {
@@ -886,6 +885,8 @@ client.on("message", (message) => {
         }
     }
 
+    //#endregion
+
     if (!disabled) {
 
         if (!message.author.bot) {
@@ -899,7 +900,8 @@ client.on("message", (message) => {
                     account: {
                         secured: false, 
                         type: "user"
-                    }
+                    },
+                    cooldowns: []
                 }
             }
 
@@ -913,6 +915,10 @@ client.on("message", (message) => {
 
             if (userData[message.author.id].account == null) {
                 userData[message.author.id].account = {secured: false, type: "user"}
+            }
+
+            if (userData[message.author.id].cooldowns == null) {
+                userData[message.author.id].cooldowns = []
             }
 
             let coinAmt = randomNumber(1, 25)
@@ -1007,33 +1013,42 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "work")) {
 
-            if (inCooldown(message, workMoneyCooldown)) {
-                message.channel.send(embed("Error", "Try again later. The cooldown is `1h`", "ff0000"))
+            if (inCooldown(message, "work")) {
+                var timeUntil = getUntilTime(message, "work") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `1h`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
                 return;
             }
             var earnings = randomNumber(1, 500)
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Work", `You work and earn $${earnings}. It's now in your wallet.`, "00ff00"))
-            setCooldown(message, 3.6e+6, workMoneyCooldown)
+            setCooldown(message, 3600, "work")
         }
 
         if (message.content.startsWith(prefix + "daily")) {
 
-            if (inDailyCooldown(message)) {
-                message.channel.send(embed("Error", "Try again later. The cooldown is `1d`", "ff0000"))
+            if (inCooldown(message, "daily")) {
+                var timeUntil = getUntilTime(message, "daily") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `1d`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
                 return;
             }
             var earnings = 1500
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Daily", `Daily money! $${earnings} is now added to your wallet.`, "00ff00"))
-            setDailyCooldown(message, 8.64e+7)
+            setCooldown(message, 86400, "daily")
         }
 
         if (message.content.startsWith(prefix + "hunt")) {
 
-            if (inCooldown(message, huntCooldown)) {
-                message.channel.send(embed("Error", "Try again later. The cooldown is `40s`", "ff0000"))
-                return
+            if (inCooldown(message, "hunt")) {
+                var timeUntil = getUntilTime(message, "hunt") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `40s`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
+                return;
             }
 
             if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
@@ -1053,13 +1068,13 @@ client.on("message", (message) => {
             var chanceO = randomNumber(1, 4) //4
             if (chanceO == 1) {
                 message.channel.send(embed("AaAaaaAaaaAAAaaaAAAAaAaaAAAAAaaAAaaaaAAAaaA!", "You got scared away by a " + animal + " and didn't earn anything.", "ff0000"))
-                setCooldown(message, 40000, huntCooldown)
+                setCooldown(message, 40, "hunt")
                 return
             }
             var earnings = randomNumber(50, 200)
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Hunt", `You successfully hunt a ${animal} and earn $${earnings}!`, "00ff00"))
-            setCooldown(message, 40000, huntCooldown)
+            setCooldown(message, 40, "hunt")
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "rps")) {
@@ -1358,8 +1373,11 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "coin")) {
 
-            if (inCooldown(message, coinflipCooldown)) {
-                message.channel.send(embed("Error", "Try again later. The cooldown is `30s`", "ff0000"))
+            if (inCooldown(message, "coin")) {
+                var timeUntil = getUntilTime(message, "coin") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `30s`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
                 return;
             }
 
@@ -1419,7 +1437,7 @@ client.on("message", (message) => {
                 setCoins(message.author.id, userData[message.author.id].cash - args[1], userData[message.author.id].bank)
                 message.channel.send("Spectacular! You **LOST**! It flipped " + otherPossibility)
             }
-            setCooldown(message, 30000, coinflipCooldown)
+            setCooldown(message, 30, "coin")
         }
 
         if (message.content.startsWith(prefix + "update")) {
@@ -1606,9 +1624,12 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "search")) {
 
-            if (inCooldown(message, searchCooldown)) {
-                message.channel.send(embed("Cooldown?", "There is a cooldown, you know, it's like, `40s`", 'ff0000'))
-                return
+            if (inCooldown(message, "search")) {
+                var timeUntil = getUntilTime(message, "search") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `40s`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
+                return;
             }
 
             if (userData[message.author.id].inventory.Magnif == null || userData[message.author.id].inventory.Magnif < 1) {
@@ -1677,7 +1698,7 @@ client.on("message", (message) => {
                         return
                     }
                     setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
-                    setCooldown(message, 40000, searchCooldown)
+                    setCooldown(message, 40, "search")
                     return
                 } else {
                     message.channel.send("You do realize that that's not a choice.")
