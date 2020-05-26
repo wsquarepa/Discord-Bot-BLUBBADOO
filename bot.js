@@ -1734,7 +1734,9 @@ client.on("message", (message) => {
         if (message.content.startsWith(prefix + "leaderboard")) {
             var leaders = []
             var keys = Object.keys(userData)
-            var dict = userData
+            var dict = {}
+
+            Object.assign(dict, userData)
 
             for (var i = 0; i < keys.length; i++) {
                 if (dict[keys[i]].account.type.toLowerCase() == "admin") {
