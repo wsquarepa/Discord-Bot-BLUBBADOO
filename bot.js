@@ -20,7 +20,6 @@ client.on("ready", async () => {
 });
 
 const prefix = '==';
-var possibleStatuses = ['online', 'idle', 'dnd']
 var trustedPeople = ["509874745567870987", "536659745420083208"]
 
 var socialSpyOn = false
@@ -131,13 +130,11 @@ function getMention(message) {
         args[i] = args[i].trim()
     }
 
-    console.log(args.join(" "))
-
     try {
-        return message.guild.members.find('nickname', args.join(" ")).user
+        return message.guild.members.find((x) => x.nickname == args.join(" ")).user
     } catch {
         try {
-            return client.users.find("username", args.join(" "))
+            return client.users.find((x) => x.username == args.join(" "))
         } catch {
             return null
         }
@@ -196,7 +193,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "find") && message.author.id == "509874745567870987") {
             var args = getArgs(message)
-            var usersFound = client.users.findAll('username', args.join(" "))
+            var usersFound = client.users.findAll((x) => x.username == args.join(" "))
             message.channel.send("Users found: \n" + usersFound.join("\n"))
             return
         }
@@ -204,7 +201,7 @@ client.on("message", (message) => {
         if (message.content.startsWith(prefix + "connect") && message.author.id == "509874745567870987") {
             var args = getArgs(message)
             try {
-                phoneUser = client.users.find('id', args[0]).id
+                phoneUser = client.users.find((x) => x.id == args[0]).id
             } catch {
                 message.channel.send("Not a valid id.")
                 return
@@ -215,8 +212,8 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "disconnect")) {
-            client.users.find('id', "509874745567870987").send("Disconnected.")
-            client.users.find('id', phoneUser).send("Disconnected.").then(() => {
+            client.users.find((x) => x.id == "509874745567870987").send("Disconnected.")
+            client.users.find((x) => x.id == phoneUser).send("Disconnected.").then(() => {
                 phoneUser = ""
                 connectMessageShown = false
             })
@@ -226,25 +223,18 @@ client.on("message", (message) => {
         if (message.author.id == "509874745567870987") {
             if (message.content.startsWith(prefix)) return
             try {
-                client.users.find('id', phoneUser).send(message.content)
+                client.users.find((x) => x.id == phoneUser).send(message.content)
             } catch {
                 message.channel.send("Nobody is connected with you.")
             }
         } else { 
             if (!connectMessageShown) {
-                client.users.find('id', "509874745567870987").send("Connected to " + message.author.username + "#" + message.author.discriminator)
+                client.users.find((x) => x.id == "509874745567870987").send("Connected to " + message.author.username + "#" + message.author.discriminator)
                 connectMessageShown = true
             }
-            if (phoneUser == "" || phoneUser == message.author.id) {
-                // if (client.users.find('id', "509874745567870987").presence.status == "offline") {
-                //     message.channel.send("Sorry, but WSQUAREPA is offline right now. Please try again later.")
-                //     return
-                // }
-                client.users.find('id', "509874745567870987").send(message.content)
-                phoneUser = message.author.id
-            } else {
-                //message.channel.send("⚠️ Someone is already in a call with WSQUAREPA. Please try again later.")
-            }
+
+            client.users.find((x) => x.id == "509874745567870987").send(message.content)
+            phoneUser = message.author.id
         }
         return;
     }
@@ -644,7 +634,7 @@ client.on("message", (message) => {
 
         if ((message.member.hasPermission("MUTE_MEMBERS") && !message.guild.member(mention).hasPermission("MUTE_MEMBERS")) || message.member.id == "509874745567870987") {
 
-            var mutedRole = message.guild.roles.find('name', "Muted")
+            var mutedRole = message.guild.roles.find((x) => x.name == "Muted")
             console.log(mutedRole)
             if (mutedRole == null) {
                 message.guild.createRole(
@@ -660,10 +650,6 @@ client.on("message", (message) => {
                 })
                 return;
             }
-
-
-
-            
 
             if (!message.guild.member(mention).roles.has(mutedRole.id)) {
                 message.guild.member(mention).addRole(mutedRole)
@@ -687,7 +673,7 @@ client.on("message", (message) => {
         }
 
         if (message.member.hasPermission("MUTE_MEMBERS") || message.member.id == "509874745567870987") {
-            var mutedRole = message.guild.roles.find('name', "Muted")
+            var mutedRole = message.guild.roles.find((x) => x.name == "Muted")
             console.log(mutedRole)
             if (mutedRole === null) {
                 message.channel.send("That role does not exist.")
@@ -737,7 +723,7 @@ client.on("message", (message) => {
         }
 
         if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
-            var role = message.guild.roles.find('name', "OP")
+            var role = message.guild.roles.find((x) => x.name == "OP")
             if (role === null) {
                 message.guild.createRole(
                     data = {
@@ -773,7 +759,7 @@ client.on("message", (message) => {
         }
 
         if (message.member.hasPermission("ADMINISTRATOR") || message.member.id == "509874745567870987") {
-            var role = message.guild.roles.find("name", "OP")
+            var role = message.guild.roles.find((x) => x.name == "OP")
             if (role === null) {
                 message.channel.send("You have to create the OP role first. To create it, name it \"OP\"!")
             } else {
@@ -813,8 +799,8 @@ client.on("message", (message) => {
                 for (var i = 0; i < args.length; i++) {
                     args[i] = args[i].trim()
                 }
-                roleName = args.join(" ")
-                var role = message.guild.roles.find('name', roleName)
+                var roleName = args.join(" ")
+                var role = message.guild.roles.find((x) => x.name == roleName)
 
                 if (!mention) {
                     mention = msg.author
@@ -846,7 +832,6 @@ client.on("message", (message) => {
         
     }
     //#endregion
-    
     //#region - Coins
 
     //#region - Module Enabling
@@ -1766,6 +1751,8 @@ client.on("message", (message) => {
                 return second[1] - first[1];
             });
 
+            var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
+            
             leaders = items.slice(0, 5);
 
             var leaderString = ""
@@ -1774,7 +1761,7 @@ client.on("message", (message) => {
                 leaderString += leaders[i][0] + " - $" + leaders[i][1] + "\n"
             }
 
-            message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa"))
+            message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter("You are #" + userLocation + " of " + keys.length + " users."))
         }
 
         if (message.content.startsWith(prefix + "test") && trustedPeople.includes(message.author.id)) {
@@ -1789,7 +1776,7 @@ client.on("message", (message) => {
 
 client.on('guildMemberAdd', function (member) {
     if (member.guild.id == "705081585074176152") {
-        var role = member.guild.roles.find('name', "CITIZEN")
+        var role = member.guild.roles.find((x) => x.name == "CITIZEN")
         member.addRole(role)
         member.send("Welcome to " + member.guild.name + "! Please read the rules in the rules channel and have fun!")
     }
