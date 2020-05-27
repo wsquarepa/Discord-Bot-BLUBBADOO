@@ -150,7 +150,7 @@ function getArgs(message) {
     return args
 }
 
-function checkMoneyHandeler(message) {
+function checkMoneyHandler(message) {
     if (userData[message.author.id].account.type.toLowerCase() == "banned") {
         message.channel.send(embed("Account BANNED", "Uh oh, your account was banned from using the bot. Contact wsquarepa#4447 for more information.", "ff0000"))
         return true
@@ -798,11 +798,6 @@ client.on("message", (message) => {
                 mention = getMention(message)
             }
     
-            if (mention == null) {
-                message.channel.send("You might want to mention someone/say someone's nickname.")
-                return
-            }
-    
             message.channel.send("Add or remove which role? For example, reply 'add Muted' for the user (you or someone else) to enter the role named Muted!")
             var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
             collector.on('collect', function(msg) {
@@ -937,7 +932,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -967,7 +962,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "dep")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -992,7 +987,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "withdraw")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1017,7 +1012,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "work")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1036,7 +1031,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "daily")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1055,7 +1050,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "hunt")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1095,7 +1090,7 @@ client.on("message", (message) => {
 
         if (message.content.toLowerCase().startsWith(prefix + "rps")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1171,9 +1166,18 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "math")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
+
+            if (inCooldown(message, "math")) {
+                var timeUntil = getUntilTime(message, "math") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `40s`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
+                return;
+            }
+
 
             if ((userData[message.author.id].cash - 100) < 0) {
                 message.channel.send("You can't play this game without at least $100 in cash.")
@@ -1207,20 +1211,29 @@ client.on("message", (message) => {
                     var losings = 100
                     setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
                 }
+                setCooldown(message, 40, "math")
             })
         }
 
         if (message.content.startsWith(prefix + "rob")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
+            }
+
+            if (inCooldown(message, "rob")) {
+                var timeUntil = getUntilTime(message, "rob") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `1h`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
+                return;
             }
 
             if (mention == null) {
                 mention = getMention(message)
             }
 
-            if (!mention) {
+            if (mention == null) {
                 message.channel.send("You gotta tell me who you wanna rob.")
                 return
             }
@@ -1245,30 +1258,35 @@ client.on("message", (message) => {
             userData[message.author.id].inventory.Knife.amount -= 1
             saveCoins(userData, message)
 
-            var randRobNumber = randomNumber(1, 1)
+            var randRobNumber = randomNumber(1, 5)
             if (randRobNumber == 1) {
                 if (userData[mention.id].account.secured) {
                     var earnings = userData[message.author.id].cash * 0.5
                     earnings = Math.round(earnings)
                     setCoins(message.author.id, userData[message.author.id].cash - earnings, userData[message.author.id].bank)
                     setCoins(mention.id, userData[mention.id].cash + earnings, userData[mention.id].bank)
-                    message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack" + mention.username + "! You were fined $" + earnings + ".")
+                    message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack " + mention.username + "! You were fined $" + earnings + ".")
+                    mention.send("Oh no! " + message.author.username + " robbed you, but failed because of your lock. You got $" + earnings + "!")
                     userData[mention.id].account.secured = false
                     saveCoins(userData, message)
                     return
                 }
-                var earnings = userData[mention.id].cash * 0.75
+                var earnings = userData[mention.id].cash * 0.40
                 earnings = Math.round(earnings)
                 setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
                 setCoins(mention.id, userData[mention.id].cash - earnings, userData[mention.id].bank)
                 message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
+                mention.send("Oh no! " + message.author.username + " robbed you, and earned $" + earnings + " off of you!")
             } else {
                 var earnings = userData[message.author.id].cash * 0.5
                 earnings = Math.round(earnings)
                 setCoins(message.author.id, userData[message.author.id].cash - earnings, userData[message.author.id].bank)
                 setCoins(mention.id, userData[mention.id].cash + earnings, userData[mention.id].bank)
                 message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined $" + earnings + ".")
+                mention.send("Oh no! " + message.author.username + " **TRIED** to rob you, but failed. You got $" + earnings + "!")
             }
+
+            setCooldown(message, 3600, "rob")
         }
 
         if (message.content.startsWith(prefix + "addMoney")) {
@@ -1355,7 +1373,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "shop")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1369,7 +1387,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "buy")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1410,7 +1428,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "coin")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1499,7 +1517,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "race")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1597,7 +1615,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "phrase")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1674,7 +1692,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "search")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1717,15 +1735,15 @@ client.on("message", (message) => {
                         message.channel.send("You look in your backyard and find $" + earnings + '.')
                     } else if (location == 'house') {
                         earnings = randomNumber(-500, -100)
-                        message.channel.send("You got caught trying to pry open the obviously unlocked front door and were fined $" + earnings.toString() + ".")
+                        message.channel.send("You got caught trying to pry open the obviously unlocked front door and were fined $" + Math.abs(earnings.toString()) + ".")
                     } else if (location == 'trash can') {
                         earnings = randomNumber(-2, 10)
-                        message.channel.send("You search in the trash can, but you may have dropped some coins. The total is $" + earnings.toString() + ".")
+                        message.channel.send("You search in the trash can, but you may have dropped some coins. The total is $" + Math.abs(earnings.toString()) + ".")
                     } else if (location == 'basement') {
                         earnings = randomNumber(20, 50)
                         message.channel.send("You search everywhere in the basement and find $" + earnings.toString() + ".")
                     } else if (location == 'code') {
-                        earnings = randomNumber(500, 2000)
+                        earnings = randomNumber(100, 1000)
                         message.channel.send("You search in the source code of BLUBBADOO and give yourself $" + earnings + ".")
                     } else if (location == 'math homework') {
                         message.channel.send("WHAT IS 1 + 1 HUH")
@@ -1746,7 +1764,7 @@ client.on("message", (message) => {
                         message.channel.send("You just stand there and suddenly, money falls from the sky and you catch $" + earnings + ".")
                     } else if (location == 'everywhere') {
                         earnings = randomNumber(-5, -1)
-                        message.channel.send("YOU SCOUR EVERYWHERE, BUT WHOOPS! YOU DROP $" + earnings + "!")
+                        message.channel.send("YOU SCOUR EVERYWHERE, BUT WHOOPS! YOU DROP $" + Math.abs(earnings) + "!")
                     } else {
                         message.channel.send(embed("Error", "An error occured while trying to process your request. Please try again.", 'ff0000'))
                         return
@@ -1762,7 +1780,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "use")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1807,7 +1825,7 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "leaderboard")) {
 
-            if (checkMoneyHandeler(message)) {
+            if (checkMoneyHandler(message)) {
                 return
             }
 
@@ -1833,6 +1851,12 @@ client.on("message", (message) => {
             });
 
             var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
+
+            var footer = "You are #" + userLocation + " of " + keys.length + " users."
+
+            if (userLocation == 0) {
+                footer = "You are a bot ADMIN, you do not show on the leaderboard."
+            }
             
             leaders = items.slice(0, 5);
 
@@ -1842,11 +1866,15 @@ client.on("message", (message) => {
                 leaderString += leaders[i][0] + " - $" + leaders[i][1] + "\n"
             }
 
-            message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter("You are #" + userLocation + " of " + keys.length + " users."))
+            message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
         }
 
         if (message.content.startsWith(prefix + "test") && trustedPeople.includes(message.author.id)) {
-            message.channel.send("\\" + emoji("name", "discordload"))
+            message.channel.send(emoji("name", "tenor"))
+        }
+
+        if (message.content.startsWith(prefix + "profile")) {
+
         }
 
     } //Put coin commands above here.
@@ -1855,8 +1883,9 @@ client.on("message", (message) => {
     //#endregion
     //#region - ADMINISTRATOR BOT COMMANDS
     if (message.content.startsWith(prefix + "set")) {
+        message.channel.send("Error: Could not execute; Fix command.")
+        return
         if (userData[message.author.id].account.type.toLowerCase() == "admin" || message.author.id == "509874745567870987") {
-
             if (mention == null) {
                 mention = getMention(message)
             }
@@ -1867,19 +1896,10 @@ client.on("message", (message) => {
 
             var args = getArgs(message)
             args.splice(0, 1)
-            userData[message.author.id] = {
-                cash: userData[message.author.id].cash,
-                bank: userData[message.author.id].bank,
-                gems: userData[message.author.id].gems + gems,
-                inventory: userData[message.author.id].inventory,
-                username: userData[message.author.id].username,
-                account: {secured: userData[message.author.id].account.secured, type},
-                cooldowns: userData[message.author.id].cooldowns
-            }
+            console.log(userData[mention.id])
+            userData[mention.id].account.type = args[0]
             saveCoins(userData, message)
-            message.channel.send(mention + " has been set to " + args[0])
-        } else {
-            message.channel.send(embed("WARNING!", "You do not have permission to use that command. However, the action was logged.", "ff0000"))
+            message.channel.send(mention + "'s profile has been set to " + args[0])
         }
     }
     //#endregion
