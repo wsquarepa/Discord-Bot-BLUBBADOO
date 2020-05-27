@@ -149,6 +149,20 @@ function getArgs(message) {
     }
     return args
 }
+
+function checkMoneyHandeler(message) {
+    if (userData[message.author.id].account.type.toLowerCase() == "banned") {
+        message.channel.send(embed("Account BANNED", "Uh oh, your account was banned from using the bot. Contact wsquarepa#4447 for more information.", "ff0000"))
+        return true
+    }
+
+    if (message.author.presence.status == "offline") {
+        message.channel.send("You cannot use money commands while your status is 'Invisible'").then(msg => msg.delete(5000))
+        return true
+    }
+
+    return false
+}
 //#endregion
 
 client.on("message", (message) => {
@@ -173,7 +187,7 @@ client.on("message", (message) => {
     }
 
     if (message.content.startsWith(prefix + 'help')) {
-        message.channel.send(embed("Need help? The commands are here:", "https://wsquarepams.github.io/?location=commands", "ffffff"))
+        message.channel.send(embed("Need help? The commands are here:", "https://wsquarepams.github.io/?location=commands", "ffffff").setFooter("β Beta version 1.8.9"))
     }
 
     if (message.content.toLowerCase().startsWith(prefix + "invite")) {
@@ -921,14 +935,11 @@ client.on("message", (message) => {
             saveCoins(userData, message)
         }
 
-        if (message.content.startsWith(prefix)) {
-            if (message.author.presence.status == "offline") {
-                message.channel.send("You cannot use money commands while your status is 'Invisible'").then(msg => msg.delete(5000))
+        if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
+
+            if (checkMoneyHandeler(message)) {
                 return
             }
-        }
-
-        if (message.content.startsWith(prefix + "money") || message.content.startsWith(prefix + "bal")) {
 
             if (mention == null) {
                 mention = getMention(message)
@@ -956,6 +967,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "dep")) {
 
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             var args = message.content.split(" ")
             args.splice(0, 1)
             if (args[0] == null) {
@@ -976,6 +991,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "withdraw")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             var args = message.content.split(" ")
             args.splice(0, 1)
@@ -998,6 +1017,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "work")) {
 
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             if (inCooldown(message, "work")) {
                 var timeUntil = getUntilTime(message, "work") / 1000 / 60
                 timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
@@ -1013,6 +1036,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "daily")) {
 
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             if (inCooldown(message, "daily")) {
                 var timeUntil = getUntilTime(message, "daily") / 1000 / 60
                 timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
@@ -1027,6 +1054,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "hunt")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             if (inCooldown(message, "hunt")) {
                 var timeUntil = getUntilTime(message, "hunt") / 1000 / 60
@@ -1063,6 +1094,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "rps")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             var options = ["rock", "paper", "scissors"]
             var args = message.content.split(" ")
@@ -1136,6 +1171,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "math")) {
 
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             if ((userData[message.author.id].cash - 100) < 0) {
                 message.channel.send("You can't play this game without at least $100 in cash.")
                 return
@@ -1172,6 +1211,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "rob")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             if (mention == null) {
                 mention = getMention(message)
@@ -1312,6 +1355,10 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "shop")) {
 
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             var keys = Object.keys(shopData)
             var itemString = ""
             for (var i = 0; i < keys.length; i++) {
@@ -1321,6 +1368,11 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "buy")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             var args = message.content.split(" ")
             args.splice(0, 1)
             for (var i = 0; i < args.length; i++) {
@@ -1357,6 +1409,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "coin")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             if (inCooldown(message, "coin")) {
                 var timeUntil = getUntilTime(message, "coin") / 1000 / 60
@@ -1442,6 +1498,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "race")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             if (mention == null) {
                 mention = getMention(message)
@@ -1536,6 +1596,11 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "phrase")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             message.channel.send("For the people who are here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join' within the next " +
                 "10 seconds.")
             const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id && !m.author.bot, {
@@ -1608,6 +1673,10 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "search")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
 
             if (inCooldown(message, "search")) {
                 var timeUntil = getUntilTime(message, "search") / 1000 / 60
@@ -1692,6 +1761,11 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "use")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             var args = getArgs(message)
             if (args[0] == null) {
                 message.channel.send("Next time tell me what you wanna use.")
@@ -1732,6 +1806,11 @@ client.on("message", (message) => {
         }
 
         if (message.content.startsWith(prefix + "leaderboard")) {
+
+            if (checkMoneyHandeler(message)) {
+                return
+            }
+
             var leaders = []
             var keys = Object.keys(userData)
             var dict = {}
@@ -1773,6 +1852,36 @@ client.on("message", (message) => {
     } //Put coin commands above here.
 
 
+    //#endregion
+    //#region - ADMINISTRATOR BOT COMMANDS
+    if (message.content.startsWith(prefix + "set")) {
+        if (userData[message.author.id].account.type.toLowerCase() == "admin" || message.author.id == "509874745567870987") {
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
+            if (mention == null) {
+                message.channel.send("MENTION **SOMEONE**.")
+            }
+
+            var args = getArgs(message)
+            args.splice(0, 1)
+            userData[message.author.id] = {
+                cash: userData[message.author.id].cash,
+                bank: userData[message.author.id].bank,
+                gems: userData[message.author.id].gems + gems,
+                inventory: userData[message.author.id].inventory,
+                username: userData[message.author.id].username,
+                account: {secured: userData[message.author.id].account.secured, type},
+                cooldowns: userData[message.author.id].cooldowns
+            }
+            saveCoins(userData, message)
+            message.channel.send(mention + " has been set to " + args[0])
+        } else {
+            message.channel.send(embed("WARNING!", "You do not have permission to use that command. However, the action was logged.", "ff0000"))
+        }
+    }
     //#endregion
 });
 
