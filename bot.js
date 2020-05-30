@@ -134,7 +134,7 @@ function getMention(message) {
         return message.guild.members.find((x) => x.nickname == args.join(" ")).user
     } catch {
         try {
-            return client.users.find((x) => x.username == args.join(" "))
+            return message.guild.member(client.users.find((x) => x.username == args.join(" "))).user
         } catch {
             return null
         }
@@ -1873,8 +1873,91 @@ client.on("message", (message) => {
             message.channel.send(emoji("name", "tenor"))
         }
 
-        if (message.content.startsWith(prefix + "profile")) {
+        if (message.content.startsWith(prefix + "prof")) {
 
+            if (checkMoneyHandler(message)) {
+                return
+            }
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
+            if (mention == null) {
+                var name = message.author.username
+                var cash = userData[message.author.id].cash
+                var bank = userData[message.author.id].bank
+                var gems = userData[message.author.id].gems
+                var type = userData[message.author.id].account.type
+                var secured = userData[message.author.id].account.secured
+                var keys = Object.keys(userData)
+                var dict = {}
+
+                Object.assign(dict, userData)
+
+                for (var i = 0; i < keys.length; i++) {
+                    if (dict[keys[i]].account.type.toLowerCase() == "admin") {
+                        delete dict[keys[i]]
+                    }
+                }
+
+                // Create items array
+                var items = Object.keys(dict).map(function (key) {
+                    return [dict[key].username, dict[key].cash];
+                });
+
+                items.sort(function (first, second) {
+                    return second[1] - first[1];
+                });
+
+                var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
+                if (userLocation == 0) userLocation = "Not on leaderboard"
+                message.channel.send(
+                embed("Your profile",`
+                    ↳ Username: ${name}
+                    ↳ Cash: ${cash}
+                    ↳ Bank: ${bank}
+                    ↳ Type: ${type}
+                    ↳ Secured? ${secured}
+                    ↳ Leaderboard Location: ${userLocation}
+                `, '000aa0'))
+            } else {
+                var name = mention.username
+                var cash = userData[mention.id].cash
+                var bank = userData[mention.id].bank
+                var gems = userData[mention.id].gems
+                var type = userData[mention.id].account.type
+                var keys = Object.keys(userData)
+                var dict = {}
+
+                Object.assign(dict, userData)
+
+                for (var i = 0; i < keys.length; i++) {
+                    if (dict[keys[i]].account.type.toLowerCase() == "admin") {
+                        delete dict[keys[i]]
+                    }
+                }
+
+                // Create items array
+                var items = Object.keys(dict).map(function (key) {
+                    return [dict[key].username, dict[key].cash];
+                });
+
+                items.sort(function (first, second) {
+                    return second[1] - first[1];
+                });
+
+                var userLocation = items.findIndex((x) => x[0] == mention.username) + 1
+                if (userLocation == 0) userLocation = "Not on leaderboard"
+                message.channel.send(
+                embed("Your profile",`
+                    ↳ Username: ${name}
+                    ↳ Cash: ${cash}
+                    ↳ Bank: ${bank}
+                    ↳ Type: ${type}
+                    ↳ Leaderboard Location: ${userLocation}
+                `, '000aa0'))
+            }
         }
 
     } //Put coin commands above here.
