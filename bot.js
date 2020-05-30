@@ -2027,8 +2027,8 @@ client.on("message", (message) => {
                 var data = buf.toString()
                 if (data != "") {
                     var sendData = data
-                    message.author.send(sendData).then(msg => {
-                        msg.delete(10000)
+                    message.author.send(embed("Recent Actions", sendData, "00ffff")).then(msg => {
+                        msg.delete(60000)
                     }).catch(function() {
                         sendData = data.split("\n")
                         var length = 0
@@ -2039,8 +2039,8 @@ client.on("message", (message) => {
                                 break
                             }
                         }
-                        message.author.send(sendData).then(msg => {
-                            msg.delete(10000)
+                        message.author.send(embed("Recent Actions", sendData, "00ffff")).then(msg => {
+                            msg.delete(60000)
                         })
                     })
                 } else {
