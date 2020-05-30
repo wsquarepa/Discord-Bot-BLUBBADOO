@@ -163,6 +163,10 @@ function checkMoneyHandler(message) {
 
     return false
 }
+
+function log(message) {
+    fs.appendFileSync('./money.log', message + "\n")
+}
 //#endregion
 
 client.on("message", (message) => {
@@ -983,6 +987,7 @@ client.on("message", (message) => {
                 setCoins(message.author.id, userData[message.author.id].cash - parseInt(args[0]), userData[message.author.id].bank + parseInt(args[0]))
             }
             message.channel.send(embed("Complete", "You deposited " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " to the bank.", "00ff00"))
+            log(message.author.username + "#" + message.author.discriminator + " deposited " + (args[0] != "all" ? `$${args[0]}` : "all thier money") + " to the bank.")
         }
 
         if (message.content.startsWith(prefix + "withdraw")) {
@@ -1008,6 +1013,7 @@ client.on("message", (message) => {
                 setCoins(message.author.id, userData[message.author.id].cash + parseInt(args[0]), userData[message.author.id].bank - parseInt(args[0]))
             }
             message.channel.send(embed("Complete", "You withdrew " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " from the bank.", "00ff00"))
+            log(message.author.username + "#" + message.author.discriminator + " withdrew " + (args[0] != "all" ? `$${args[0]}` : "all thier money") + " from the bank.")
         }
 
         if (message.content.startsWith(prefix + "work")) {
@@ -1027,6 +1033,7 @@ client.on("message", (message) => {
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Work", `You work and earn $${earnings}. It's now in your wallet.`, "00ff00"))
             setCooldown(message, 3600, "work")
+            log(message.author.username + "#" + message.author.discriminator + " works and earned $" + earnings)
         }
 
         if (message.content.startsWith(prefix + "daily")) {
@@ -1046,6 +1053,7 @@ client.on("message", (message) => {
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Daily", `Daily money! $${earnings} is now added to your wallet.`, "00ff00"))
             setCooldown(message, 86400, "daily")
+            log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from the daily command.")
         }
 
         if (message.content.startsWith(prefix + "hunt")) {
@@ -1086,6 +1094,7 @@ client.on("message", (message) => {
             setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
             message.channel.send(embed("Hunt", `You successfully hunt a ${animal} and earn $${earnings}!`, "00ff00"))
             setCooldown(message, 40, "hunt")
+            log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from the hunt command.")
         }
 
         if (message.content.toLowerCase().startsWith(prefix + "rps")) {
@@ -1156,9 +1165,11 @@ client.on("message", (message) => {
                     if (win) {
                         var earnings = parseInt(args[0])
                         setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
+                        log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from the rps command.")
                     } else {
                         var losings = parseInt(args[0])
                         setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
+                        log(message.author.username + "#" + message.author.discriminator + " lost $" + losings + " from the rps command.")
                     }
                 }
             })
@@ -1206,10 +1217,12 @@ client.on("message", (message) => {
                     message.channel.send("Correct!")
                     var earnings = 100
                     setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
+                    log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from the math command.")
                 } else {
                     message.channel.send("WRONG!")
                     var losings = 100
                     setCoins(message.author.id, userData[message.author.id].cash - losings, userData[message.author.id].bank)
+                    log(message.author.username + "#" + message.author.discriminator + " lost $" + losings + " from the math command.")
                 }
                 setCooldown(message, 40, "math")
             })
@@ -1269,6 +1282,7 @@ client.on("message", (message) => {
                     mention.send("Oh no! " + message.author.username + " robbed you, but failed because of your lock. You got $" + earnings + "!")
                     userData[mention.id].account.secured = false
                     saveCoins(userData, message)
+                    log(message.author.username + "#" + message.author.discriminator + " failed to rob " + mention.username + "#" + mention.discriminator + " and lost $" + earnings)
                     return
                 }
                 var earnings = userData[mention.id].cash * 0.40
@@ -1277,6 +1291,7 @@ client.on("message", (message) => {
                 setCoins(mention.id, userData[mention.id].cash - earnings, userData[mention.id].bank)
                 message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
                 mention.send("Oh no! " + message.author.username + " robbed you, and earned $" + earnings + " off of you!")
+                log(message.author.username + "#" + message.author.discriminator + " robbed " + mention.username + "#" + mention.discriminator + " and earned $" + earnings)
             } else {
                 var earnings = userData[message.author.id].cash * 0.5
                 earnings = Math.round(earnings)
@@ -1284,13 +1299,14 @@ client.on("message", (message) => {
                 setCoins(mention.id, userData[mention.id].cash + earnings, userData[mention.id].bank)
                 message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined $" + earnings + ".")
                 mention.send("Oh no! " + message.author.username + " **TRIED** to rob you, but failed. You got $" + earnings + "!")
+                log(message.author.username + "#" + message.author.discriminator + " failed to rob " + mention.username + "#" + mention.discriminator + " and lost $" + earnings)
             }
 
             setCooldown(message, 3600, "rob")
         }
 
         if (message.content.startsWith(prefix + "addMoney")) {
-            if (message.author.id != 509874745567870987) {
+            if (userData[message.author.id].account.type.toLowerCase() != "admin") {
                 message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
                 return
             }
@@ -1318,6 +1334,8 @@ client.on("message", (message) => {
                 setCoins(mention.id, userData[mention.id].cash + parseInt(args[0]), userData[mention.id].bank)
             }
             message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null ? "your" : mention.username + "'s") + " cash.", "00ff00"))
+            log(message.author.username + "#" + message.author.discriminator + " added $" + args[0] + " to " + (mention == null ? "their" : mention.username + "#" +
+            mention.discriminator + "'s") + " cash.")
         }
 
         if (message.content.startsWith(prefix + "removeMoney")) {
@@ -1349,6 +1367,8 @@ client.on("message", (message) => {
                 setCoins(mention.id, userData[mention.id].cash - parseInt(args[0]), userData[mention.id].bank)
             }
             message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null ? "your" : mention.username + "'s") + " cash.", "ff0000"))
+            log(message.author.username + "#" + message.author.discriminator + " removed $" + args[0] + " to " + (mention == null ? "their" : mention.username + "#" +
+            mention.discriminator + "'s") + " cash.")
         }
 
         if (message.content.startsWith(prefix + "inv")) {
@@ -1424,6 +1444,7 @@ client.on("message", (message) => {
             saveCoins(userData, message)
             message.channel.send(embed("Success!", `Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`, "00ff00")
                 .setFooter("Sorry for the grammar"))
+            log(message.author.username + "#" + message.author.discriminator + " bought " + `${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}.`)
         }
 
         if (message.content.startsWith(prefix + "coin")) {
@@ -1492,9 +1513,11 @@ client.on("message", (message) => {
             if (win) {
                 setCoins(message.author.id, userData[message.author.id].cash + args[1], userData[message.author.id].bank)
                 message.channel.send("Congrats, you won. It flipped " + args[0])
+                log(message.author.username + "#" + message.author.discriminator + " earned $" + args[1] + " from the coin command.")
             } else {
                 setCoins(message.author.id, userData[message.author.id].cash - args[1], userData[message.author.id].bank)
                 message.channel.send("Spectacular! You **LOST**! It flipped " + otherPossibility)
+                log(message.author.username + "#" + message.author.discriminator + " lost $" + args[1] + " from the coin command.")
             }
             setCooldown(message, 30, "coin")
         }
@@ -1594,6 +1617,7 @@ client.on("message", (message) => {
                                         fs.unlink('./' + filename + '.png', function (error) {
                                             if (error) message.channel.send(embed("Error", error, "ff0000"))
                                         })
+                                        log(message.author.username + "#" + message.author.discriminator + " earned $250 from racing.")
                                     } else {
                                         raceCollectorMsg.delete(2000)
                                         message.channel.send("Incorrect. Try again.").then(mesgi => mesgi.delete(2000))
@@ -1669,6 +1693,7 @@ client.on("message", (message) => {
                                     messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
                                     setCoins(messageCollected.author.id, userData[messageCollected.author.id].cash + 250, userData[messageCollected.author.id].bank)
                                     guessCollect.stop("Game end")
+                                    log(message.author.username + "#" + message.author.discriminator + " earned $250 from a phrase game.")
                                 } else {
                                     number = randomNumber(0, sentenceList.length - 1)
                                     while (usedNumbers.includes(number) && usedNumbers.length == sentenceList.length - 1) {
@@ -1771,6 +1796,7 @@ client.on("message", (message) => {
                     }
                     setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
                     setCooldown(message, 40, "search")
+                    log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from the search command.")
                     return
                 } else {
                     message.channel.send("You do realize that that's not a choice.")
@@ -1808,6 +1834,7 @@ client.on("message", (message) => {
                 var earnings = randomNumber(1000, 2000) * args[1]
                 setCoins(message.author.id, userData[message.author.id].cash + earnings, userData[message.author.id].bank)
                 message.channel.send("Congrats, you earned $" + earnings + " from " + (args[1] > 1? "those":"that") + " " + args[0] + (args[1] > 1? "s":"") + ".")
+                log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from a gem.")
             } else if (args[0].toLowerCase() == "lock") {
 
                 if (userData[message.author.id].account.secured == true) {
@@ -1965,27 +1992,64 @@ client.on("message", (message) => {
 
     //#endregion
     //#region - ADMINISTRATOR BOT COMMANDS
-    if (message.content.startsWith(prefix + "set")) {
-        if (message.author.id == "509874745567870987") {
+    try {
+        var allowed = userData[message.author.id].account.type.toLowerCase() == "admin"
+    } catch {
+        //do nothing
+    }
+    if (allowed || message.author.id == "509874745567870987") {
+        if (message.content.startsWith(prefix + "set")) {
+            if (message.author.id == "509874745567870987") {
 
-            if (mention == null) {
-                message.channel.send("**MENTION** SOMEONE.")
-            }
-
-            var args = getArgs(message)
-            args.splice(0, 1)
-            try {
-                userData[mention.id].account = {
-                    secured: userData[mention.id].account.secured,
-                    type: args[0]
+                if (mention == null) {
+                    message.channel.send("**MENTION** SOMEONE.")
                 }
-                saveCoins(userData, message)
-                message.channel.send(mention + "'s profile has been set to " + args[0])
-            } catch {
-                message.channel.send(embed("Whoopsie Doopsie!", "Whoops! I don't think that user even **HAS** a bank account. Try checking the mention.", "ff0000"))
+
+                var args = getArgs(message)
+                args.splice(0, 1)
+                try {
+                    userData[mention.id].account = {
+                        secured: userData[mention.id].account.secured,
+                        type: args[0]
+                    }
+                    saveCoins(userData, message)
+                    message.channel.send(mention + "'s profile has been set to " + args[0])
+                } catch {
+                    message.channel.send(embed("Whoopsie Doopsie!", "Whoops! I don't think that user even **HAS** a bank account. Try checking the mention.", "ff0000"))
+                }
             }
         }
+
+        if (message.content.startsWith(prefix + "log")) {
+            message.delete()
+            fs.readFile('./money.log', function(err, buf) {
+                if (err) console.log(err)
+                var data = buf.toString()
+                if (data != "") {
+                    var sendData = data
+                    message.author.send(sendData).then(msg => {
+                        msg.delete(10000)
+                    }).catch(function() {
+                        sendData = data.split("\n")
+                        var length = 0
+                        for (var i = 0; i < sendData.length; i++) {
+                            length += sendData[i].length
+                            if (length >= 1500) {
+                                sendData.splice(i - 1)
+                                break
+                            }
+                        }
+                        message.author.send(sendData).then(msg => {
+                            msg.delete(10000)
+                        })
+                    })
+                } else {
+                    message.channel.send("No recent logs.")
+                }
+            })
+        }
     }
+    
     //#endregion
 });
 
