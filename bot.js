@@ -1966,23 +1966,24 @@ client.on("message", (message) => {
     //#endregion
     //#region - ADMINISTRATOR BOT COMMANDS
     if (message.content.startsWith(prefix + "set")) {
-        message.channel.send("Error: Could not execute; Fix command.")
-        return
-        if (userData[message.author.id].account.type.toLowerCase() == "admin" || message.author.id == "509874745567870987") {
-            if (mention == null) {
-                mention = getMention(message)
-            }
+        if (message.author.id == "509874745567870987") {
 
             if (mention == null) {
-                message.channel.send("MENTION **SOMEONE**.")
+                message.channel.send("**MENTION** SOMEONE.")
             }
 
             var args = getArgs(message)
             args.splice(0, 1)
-            console.log(userData[mention.id])
-            userData[mention.id].account.type = args[0]
-            saveCoins(userData, message)
-            message.channel.send(mention + "'s profile has been set to " + args[0])
+            try {
+                userData[mention.id].account = {
+                    secured: userData[mention.id].account.secured,
+                    type: args[0]
+                }
+                saveCoins(userData, message)
+                message.channel.send(mention + "'s profile has been set to " + args[0])
+            } catch {
+                message.channel.send(embed("Whoopsie Doopsie!", "Whoops! I don't think that user even **HAS** a bank account. Try checking the mention.", "ff0000"))
+            }
         }
     }
     //#endregion
