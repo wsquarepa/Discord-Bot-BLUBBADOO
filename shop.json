@@ -26,5 +26,19 @@
         "image":"🔍",
         "uses":3,
         "useable":false
+    },
+
+    "Fishingrod":{
+        "price":100,
+        "image":"🎣",
+        "uses":10,
+        "useable":false
+    },
+
+    "Cage":{
+        "price":200,
+        "image":"cage",
+        "uses":20,
+        "useable":false
     }
 }

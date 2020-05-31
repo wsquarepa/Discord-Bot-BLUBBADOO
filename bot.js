@@ -925,10 +925,12 @@ client.on("message", (message) => {
 
             if (coinAmt == baseAmt && message.author.presence.status != "offline" && !message.author.bot) {
                 setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
+                log(message.author.username + "#" + message.author.discriminator + " earned " + coinAmt + " from chat-money.")
             }
 
             if (message.author.presence.status != "offline" && randomNumber(1, 100) == 23) {
                 addGems(message, 1)
+                log(message.author.username + "#" + message.author.discriminator + " earned 1 gem from chatting.")
             }
 
             saveCoins(userData, message)
@@ -1097,7 +1099,7 @@ client.on("message", (message) => {
             log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from the hunt command.")
         }
 
-        if (message.content.toLowerCase().startsWith(prefix + "rps")) {
+        if (message.content.startsWith(prefix + "rps")) {
 
             if (checkMoneyHandler(message)) {
                 return
@@ -1303,72 +1305,6 @@ client.on("message", (message) => {
             }
 
             setCooldown(message, 3600, "rob")
-        }
-
-        if (message.content.startsWith(prefix + "addMoney")) {
-            if (userData[message.author.id].account.type.toLowerCase() != "admin") {
-                message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
-                return
-            }
-            var args = message.content.split(" ")
-
-            if (mention == null) {
-                mention = getMention(message)
-            }
-
-            if (mention == null) {
-                args.splice(0, 1)
-                if (args[0] == null) {
-                    message.channel.send("Next time, tell me how much money to add.")
-                    return
-                }
-                args[0] = args[0].trim()
-                setCoins(message.author.id, userData[message.author.id].cash + parseInt(args[0]), userData[message.author.id].bank)
-            } else {
-                args.splice(0, 2)
-                if (args[0] == null) {
-                    message.channel.send("Next time, tell me how much money to add.")
-                    return
-                }
-                args[0] = args[0].trim()
-                setCoins(mention.id, userData[mention.id].cash + parseInt(args[0]), userData[mention.id].bank)
-            }
-            message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null ? "your" : mention.username + "'s") + " cash.", "00ff00"))
-            log(message.author.username + "#" + message.author.discriminator + " added $" + args[0] + " to " + (mention == null ? "their" : mention.username + "#" +
-            mention.discriminator + "'s") + " cash.")
-        }
-
-        if (message.content.startsWith(prefix + "removeMoney")) {
-            if (message.author.id != 509874745567870987) {
-                message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
-                return
-            }
-            var args = message.content.split(" ")
-
-            if (mention == null) {
-                mention = getMention(message)
-            }
-
-            if (mention == null) {
-                args.splice(0, 1)
-                if (args[0] == null) {
-                    message.channel.send("Next time, tell me how much money to remove.")
-                    return
-                }
-                args[0] = args[0].trim()
-                setCoins(message.author.id, userData[message.author.id].cash - parseInt(args[0]), userData[message.author.id].bank)
-            } else {
-                args.splice(0, 2)
-                if (args[0] == null) {
-                    message.channel.send("Next time, tell me how much money to remove.")
-                    return
-                }
-                args[0] = args[0].trim()
-                setCoins(mention.id, userData[mention.id].cash - parseInt(args[0]), userData[mention.id].bank)
-            }
-            message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null ? "your" : mention.username + "'s") + " cash.", "ff0000"))
-            log(message.author.username + "#" + message.author.discriminator + " removed $" + args[0] + " to " + (mention == null ? "their" : mention.username + "#" +
-            mention.discriminator + "'s") + " cash.")
         }
 
         if (message.content.startsWith(prefix + "inv")) {
@@ -1896,10 +1832,6 @@ client.on("message", (message) => {
             message.channel.send(embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
         }
 
-        if (message.content.startsWith(prefix + "test") && trustedPeople.includes(message.author.id)) {
-            message.channel.send(emoji("name", "tenor"))
-        }
-
         if (message.content.startsWith(prefix + "prof")) {
 
             if (checkMoneyHandler(message)) {
@@ -1989,6 +1921,80 @@ client.on("message", (message) => {
             }
         }
 
+        if (message.content.startsWith(prefix + "fish")) {
+            if (checkMoneyHandler(message)) {
+                return
+            }
+
+            if (inCooldown(message, "fish")) {
+                var timeUntil = getUntilTime(message, "fish") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `2m`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
+                return;
+            }
+
+            if (userData[message.author.id].inventory["Fishingrod"] == null || userData[message.author.id].inventory["Fishingrod"] < 1) {
+                message.channel.send(embed("Error", "How do you suppose you fish without a Fishingrod?", "ff0000"))
+                return
+            }
+
+            userData[message.author.id].inventory.Fishingrod.uses -= 1
+            if (userData[message.author.id].inventory.Fishingrod.uses < 1) {
+                userData[message.author.id].inventory.Fishingrod.amount -= 1
+                userData[message.author.id].inventory.Fishingrod.uses = shopData.Fishingrod.uses
+            }
+
+            saveCoins(userData, message)
+
+            var msg = new discord.Message()
+            message.channel.send("Okie, fishing...").then(m => msg = m)
+            setTimeout(function() {
+                var earnings = randomNumber(20, 100)
+                msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟")
+                message.channel.send("You sell it for $" + earnings)
+                log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from a fish.")
+                setCooldown(message, 120, "fish")
+            }, 3000)
+        }
+
+        if (message.content.startsWith(prefix + "crab")) {
+            if (checkMoneyHandler(message)) {
+                return
+            }
+
+            if (inCooldown(message, "crab")) {
+                var timeUntil = getUntilTime(message, "crab") / 1000 / 60
+                timeUntil = Math.round((timeUntil + Number.EPSILON) * 100) / 100
+                message.channel.send(embed("Error", "Try again later. The cooldown is `2m`, and you need to wait **" + timeUntil + "** minutes before you can" + 
+                " do that again.", "ff0000"))
+                return;
+            }
+
+            if (userData[message.author.id].inventory["Cage"] == null || userData[message.author.id].inventory["Cage"] < 1) {
+                message.channel.send(embed("Error", "How do you suppose you crab without a Cage?", "ff0000"))
+                return
+            }
+
+            userData[message.author.id].inventory.Cage.uses -= 1
+            if (userData[message.author.id].inventory.Cage.uses < 1) {
+                userData[message.author.id].inventory.Cage.amount -= 1
+                userData[message.author.id].inventory.Cage.uses = shopData.Cage.uses
+            }
+
+            saveCoins(userData, message)
+
+            var msg = new discord.Message()
+            message.channel.send("Okie, crabbing...").then(m => msg = m)
+            setTimeout(function() {
+                var earnings = randomNumber(100, 120)
+                msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀")
+                message.channel.send("You sell it for $" + earnings)
+                setCooldown(message, 120, "crab")
+                log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from a crab.")
+            }, 3000)
+        }
+
     } //Put coin commands above here.
 
 
@@ -2049,6 +2055,72 @@ client.on("message", (message) => {
                     message.channel.send("No recent logs.")
                 }
             })
+        }
+
+        if (message.content.startsWith(prefix + "addMoney")) {
+            if (userData[message.author.id].account.type.toLowerCase() != "admin") {
+                message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
+                return
+            }
+            var args = message.content.split(" ")
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
+            if (mention == null) {
+                args.splice(0, 1)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to add.")
+                    return
+                }
+                args[0] = args[0].trim()
+                setCoins(message.author.id, userData[message.author.id].cash + parseInt(args[0]), userData[message.author.id].bank)
+            } else {
+                args.splice(0, 2)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to add.")
+                    return
+                }
+                args[0] = args[0].trim()
+                setCoins(mention.id, userData[mention.id].cash + parseInt(args[0]), userData[mention.id].bank)
+            }
+            message.channel.send(embed("Complete", "Added $" + args[0] + " to " + (mention == null ? "your" : mention.username + "'s") + " cash.", "00ff00"))
+            log(message.author.username + "#" + message.author.discriminator + " added $" + args[0] + " to " + (mention == null ? "their" : mention.username + "#" +
+            mention.discriminator + "'s") + " cash.")
+        }
+
+        if (message.content.startsWith(prefix + "removeMoney")) {
+            if (message.author.id != 509874745567870987) {
+                message.channel.send(embed("Error", "You can't do that! Only bot administrators can.", "ff0000"))
+                return
+            }
+            var args = message.content.split(" ")
+
+            if (mention == null) {
+                mention = getMention(message)
+            }
+
+            if (mention == null) {
+                args.splice(0, 1)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to remove.")
+                    return
+                }
+                args[0] = args[0].trim()
+                setCoins(message.author.id, userData[message.author.id].cash - parseInt(args[0]), userData[message.author.id].bank)
+            } else {
+                args.splice(0, 2)
+                if (args[0] == null) {
+                    message.channel.send("Next time, tell me how much money to remove.")
+                    return
+                }
+                args[0] = args[0].trim()
+                setCoins(mention.id, userData[mention.id].cash - parseInt(args[0]), userData[mention.id].bank)
+            }
+            message.channel.send(embed("Complete", "Removed $" + args[0] + " from " + (mention == null ? "your" : mention.username + "'s") + " cash.", "ff0000"))
+            log(message.author.username + "#" + message.author.discriminator + " removed $" + args[0] + " to " + (mention == null ? "their" : mention.username + "#" +
+            mention.discriminator + "'s") + " cash.")
         }
     }
     
