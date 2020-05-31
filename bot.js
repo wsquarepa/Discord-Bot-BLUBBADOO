@@ -1937,10 +1937,12 @@ client.on("message", (message) => {
                     return second[1] - first[1];
                 });
 
+                var cmd = message.content.substring(2)
+
                 var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
                 if (userLocation == 0) userLocation = "Not on leaderboard"
                 message.channel.send(
-                embed("Your profile",`
+                embed("Your " + cmd,`
                     ↳ Username: ${name}
                     ↳ Cash: ${cash}
                     ↳ Bank: ${bank}
