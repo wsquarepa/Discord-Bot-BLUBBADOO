@@ -2029,7 +2029,7 @@ client.on("message", (message) => {
                     if (msg.content.toLowerCase() == "yes") {
                         setCoins(message.author.id, userData[message.author.id].cash - 5000, userData[message.author.id].bank)
                         userData[message.author.id].pet = {
-                            food: 100,
+                            food: 500,
                             coins: 0,
                             type: "",
                             name: message.author.username
@@ -2050,32 +2050,56 @@ client.on("message", (message) => {
                         ==pet collect - collect the money your pet earned you
                     `))
                 } else if (args[0] == "feed") {
-                    if (userData[message.author.id].pet.food > 0) {
-                        message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (100 - userData[message.author.id].pet.food) + " hunger.")
+                    if (userData[message.author.id].pet.food > 50) {
+                        message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (500 - userData[message.author.id].pet.food) + " hunger.")
                     }
-                    message.channel.send("Feed your pet for $20?")
+                    message.channel.send("Feed your pet for $100?")
                     var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
                     collector.on('collect', function(msg) {
                         if (msg.content.toLowerCase() == "yes") {
-                            setCoins(message.author.id, userData[message.author.id].cash - 20, userData[message.author.id].bank)
-                            userData[message.author.id].pet.food = 100
-                            message.channel.send("You paid `$20` to feed your pet.")
-                            log(message.author.username + "#" + message.author.discriminator + " fed thier pet for $20")
+                            setCoins(message.author.id, userData[message.author.id].cash - 100, userData[message.author.id].bank)
+                            userData[message.author.id].pet.food = 500
+                            message.channel.send("You paid `$100` to feed your pet.")
+                            log(message.author.username + "#" + message.author.discriminator + " fed their pet for $100")
                         } else {
                             message.channel.send("Welp, that's too bad. Come another time!")
                         }
                     })
                 } else if (args[0] == "collect") {
+                    if (inCooldown(message, "petCollect")) {
+                        message.channel.send(embed("Cooldown", "Cooldown for collecting is `2m`", "ff0000")
+                            .setFooter("Srry I'm lazy it's just not going to tell you how much time. 🥺"))
+                        return
+                    }
                     var coinamt = userData[message.author.id].pet.coins
                     setCoins(message.author.id, userData[message.author.id].cash + coinamt, userData[message.author.id].bank)
                     userData[message.author.id].pet.coins = 0
                     message.channel.send("You took $" + coinamt + " from your pet.")
-                    log(message.author.username + "#" + message.author.discriminator + " took $" + coinamt + " from thier pet.")
+                    log(message.author.username + "#" + message.author.discriminator + " took $" + coinamt + " from their pet.")
+                    setCooldown(message, 120, "petCollect")
+                } else if (args[0] == "name") {
+                    var petName = ""
+                    if (args[1] == null) {
+                        petName = message.author.username
+                    } else {
+                        petName = args[1]
+                    }
+                    userData[message.author.id].pet.name = petName
+                    message.channel.send("Pet name set to " + petName)
+                } else if (args[0] == "type") {
+                    var petType = ""
+                    if (args[1] == null) {
+                        petType = message.author.username
+                    } else {
+                        petType = args[1]
+                    }
+                    userData[message.author.id].pet.type = petType
+                    message.channel.send("Pet type set to " + petType)
                 }
             } catch {
                 if (isEmpty(userData[message.author.id].pet)) return
                 message.channel.send(embed("Your pet " + userData[message.author.id].pet.type, userData[message.author.id].pet.name + "'s petfile:")
-                    .addField("Hunger (out of 100)", 100 - userData[message.author.id].pet.food, false)
+                    .addField("Hunger (out of 500)", 500 - userData[message.author.id].pet.food, false)
                     .addField("Coins", userData[message.author.id].pet.coins, false))
             }
         }
