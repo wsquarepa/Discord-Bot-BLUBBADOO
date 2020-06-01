@@ -101,7 +101,8 @@ function setCoins(userID, cashAmount, bankAmount) {
         inventory: userData[userID].inventory,
         username: userData[userID].username,
         account: userData[userID].account,
-        cooldowns: userData[userID].cooldowns
+        cooldowns: userData[userID].cooldowns,
+        pet: userData[userID].pet
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
@@ -114,7 +115,8 @@ function addGems(message, gems) {
         inventory: userData[message.author.id].inventory,
         username: userData[message.author.id].username,
         account: userData[message.author.id].account,
-        cooldowns: userData[message.author.id].cooldowns
+        cooldowns: userData[message.author.id].cooldowns,
+        pet: userData[userID].pet
     }
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.log(err) : null)
 }
@@ -166,6 +168,14 @@ function checkMoneyHandler(message) {
 
 function log(message) {
     fs.appendFileSync('./money.log', message + "\n")
+}
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
 }
 //#endregion
 
@@ -899,7 +909,8 @@ client.on("message", (message) => {
                         secured: false, 
                         type: "user"
                     },
-                    cooldowns: []
+                    cooldowns: [],
+                    pet: {}
                 }
             }
 
@@ -919,9 +930,19 @@ client.on("message", (message) => {
                 userData[message.author.id].cooldowns = []
             }
 
+            if (userData[message.author.id].pet == null) {
+                userData[message.author.id].pet = {}
+            }
+
             let coinAmt = randomNumber(1, 25)
             let baseAmt = randomNumber(1, 25)
             let previousAmt = userData[message.author.id].cash
+
+            if (!isEmpty(userData[message.author.id].pet) && !userData[message.author.id].pet.food < 1 && !inCooldown(message, "pet")) {
+                userData[message.author.id].pet.food -= 1
+                userData[message.author.id].pet.coins += randomNumber(5, 25)
+                setCooldown(message, 2, "pet")
+            }
 
             if (coinAmt == baseAmt && message.author.presence.status != "offline" && !message.author.bot) {
                 setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
@@ -1993,6 +2014,70 @@ client.on("message", (message) => {
                 setCooldown(message, 120, "crab")
                 log(message.author.username + "#" + message.author.discriminator + " earned $" + earnings + " from a crab.")
             }, 3000)
+        }
+
+        if (message.content.startsWith(prefix + "pet")) {
+            if (isEmpty(userData[message.author.id].pet)) {
+                if (userData[message.author.id].cash < 10000) {
+                    message.channel.send("You don't have enough money to buy a pet.")
+                    return
+                }
+
+                message.channel.send("Buy a pet for $5000?")
+                var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+                collector.on('collect', function(msg) {
+                    if (msg.content.toLowerCase() == "yes") {
+                        setCoins(message.author.id, userData[message.author.id].cash - 5000, userData[message.author.id].bank)
+                        userData[message.author.id].pet = {
+                            food: 100,
+                            coins: 0,
+                            type: "",
+                            name: message.author.username
+                        }
+                        message.channel.send("You bought a pet for `$5000`")
+                        log(message.author.username + "#" + message.author.discriminator + " bought a pet for $5000")
+                    } else {
+                        message.channel.send("Welp, that's too bad. Come another time!")
+                    }
+                })
+            }
+
+            try {
+                var args = getArgs(message)
+                if (args[0].toLowerCase() == "help") {
+                    message.channel.send(embed("Help on pets:", `
+                        ==pet feed - feed your pet,
+                        ==pet collect - collect the money your pet earned you
+                    `))
+                } else if (args[0] == "feed") {
+                    if (userData[message.author.id].pet.food > 0) {
+                        message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (100 - userData[message.author.id].pet.food) + " hunger.")
+                    }
+                    message.channel.send("Feed your pet for $20?")
+                    var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
+                    collector.on('collect', function(msg) {
+                        if (msg.content.toLowerCase() == "yes") {
+                            setCoins(message.author.id, userData[message.author.id].cash - 20, userData[message.author.id].bank)
+                            userData[message.author.id].pet.food = 100
+                            message.channel.send("You paid `$20` to feed your pet.")
+                            log(message.author.username + "#" + message.author.discriminator + " fed thier pet for $20")
+                        } else {
+                            message.channel.send("Welp, that's too bad. Come another time!")
+                        }
+                    })
+                } else if (args[0] == "collect") {
+                    var coinamt = userData[message.author.id].pet.coins
+                    setCoins(message.author.id, userData[message.author.id].cash + coinamt, userData[message.author.id].bank)
+                    userData[message.author.id].pet.coins = 0
+                    message.channel.send("You took $" + coinamt + " from your pet.")
+                    log(message.author.username + "#" + message.author.discriminator + " took $" + coinamt + " from thier pet.")
+                }
+            } catch {
+                if (isEmpty(userData[message.author.id].pet)) return
+                message.channel.send(embed("Your pet " + userData[message.author.id].pet.type, userData[message.author.id].pet.name + "'s petfile:")
+                    .addField("Hunger (out of 100)", 100 - userData[message.author.id].pet.food, false)
+                    .addField("Coins", userData[message.author.id].pet.coins, false))
+            }
         }
 
     } //Put coin commands above here.
