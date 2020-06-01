@@ -925,7 +925,7 @@ client.on("message", (message) => {
 
             if (coinAmt == baseAmt && message.author.presence.status != "offline" && !message.author.bot) {
                 setCoins(message.author.id, previousAmt + coinAmt, userData[message.author.id].bank)
-                log(message.author.username + "#" + message.author.discriminator + " earned " + coinAmt + " from chat-money.")
+                log(message.author.username + "#" + message.author.discriminator + " earned $" + coinAmt + " from chat-money.")
             }
 
             if (message.author.presence.status != "offline" && randomNumber(1, 100) == 23) {
@@ -2035,7 +2035,7 @@ client.on("message", (message) => {
                 var data = buf.toString()
                 if (data != "") {
                     var sendData = data
-                    message.author.send(embed("Recent Actions", sendData, "00ffff")).then(msg => {
+                    message.channel.send("Recent actions: \n" + sendData).then(msg => {
                         msg.delete(60000)
                     }).catch(function() {
                         sendData = data.split("\n")
@@ -2043,11 +2043,12 @@ client.on("message", (message) => {
                         for (var i = 0; i < sendData.length; i++) {
                             length += sendData[i].length
                             if (length >= 1500) {
-                                sendData.splice(i - 1)
+                                sendData = sendData.splice(i - 1)
                                 break
                             }
                         }
-                        message.author.send(embed("Recent Actions", sendData, "00ffff")).then(msg => {
+                        sendData = sendData.join("\n")
+                        message.channel.send("Recent actions: \n" + sendData).then(msg => {
                             msg.delete(60000)
                         })
                     })
