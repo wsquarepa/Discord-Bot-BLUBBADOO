@@ -2018,8 +2018,8 @@ client.on("message", (message) => {
 
         if (message.content.startsWith(prefix + "pet")) {
             if (isEmpty(userData[message.author.id].pet)) {
-                if (userData[message.author.id].cash < 10000) {
-                    message.channel.send("You don't have enough money to buy a pet.")
+                if (userData[message.author.id].gems < 5) {
+                    message.channel.send("You don't have enough **GEMS** to buy a pet.")
                     return
                 }
 
@@ -2027,15 +2027,15 @@ client.on("message", (message) => {
                 var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
                 collector.on('collect', function(msg) {
                     if (msg.content.toLowerCase() == "yes") {
-                        setCoins(message.author.id, userData[message.author.id].cash - 5000, userData[message.author.id].bank)
+                        userData[message.author.id].gems -= 1
                         userData[message.author.id].pet = {
                             food: 500,
                             coins: 0,
                             type: "",
                             name: message.author.username
                         }
-                        message.channel.send("You bought a pet for `$5000`")
-                        log(message.author.username + "#" + message.author.discriminator + " bought a pet for $5000")
+                        message.channel.send("You bought a pet for **5 GEMS**")
+                        log(message.author.username + "#" + message.author.discriminator + " bought a pet for 5 GEMS")
                     } else {
                         message.channel.send("Welp, that's too bad. Come another time!")
                     }
@@ -2047,20 +2047,29 @@ client.on("message", (message) => {
                 if (args[0].toLowerCase() == "help") {
                     message.channel.send(embed("Help on pets:", `
                         ==pet feed - feed your pet,
-                        ==pet collect - collect the money your pet earned you
+                        ==pet collect - collect the money your pet earned you,
+                        ==pet name <name> - Name your pet,
+                        ==pet type <type> - Change your pet type
                     `))
                 } else if (args[0] == "feed") {
+
+                    if (userData[message.author.id].gems < 1) {
+                        message.channel.send("You don't got enough **GEMS**.")
+                        return
+                    }
+
                     if (userData[message.author.id].pet.food > 50) {
                         message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (500 - userData[message.author.id].pet.food) + " hunger.")
                     }
-                    message.channel.send("Feed your pet for $100?")
+
+                    message.channel.send("Feed your pet for **1 GEM**?")
                     var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
                     collector.on('collect', function(msg) {
                         if (msg.content.toLowerCase() == "yes") {
-                            setCoins(message.author.id, userData[message.author.id].cash - 100, userData[message.author.id].bank)
+                            userData[message.author.id].gems -= 1
                             userData[message.author.id].pet.food = 500
-                            message.channel.send("You paid `$100` to feed your pet.")
-                            log(message.author.username + "#" + message.author.discriminator + " fed their pet for $100")
+                            message.channel.send("You paid `1 GEM` to feed your pet.")
+                            log(message.author.username + "#" + message.author.discriminator + " fed their pet for 1 GEM")
                         } else {
                             message.channel.send("Welp, that's too bad. Come another time!")
                         }
