@@ -61,6 +61,7 @@ client.on('message', message => {
 		}
 
 		userData[message.author.id].xp += 1
+		userData[message.author.id].username = message.author.username
 		
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 			userData[message.author.id].xp = 0

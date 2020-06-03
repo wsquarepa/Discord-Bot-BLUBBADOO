@@ -1,1 +1,134 @@
-{"509874745567870987":{"cash":3139,"bank":0,"gems":0,"xp":34,"xpUntil":40,"level":3,"inventory":{"Magnif":{"amount":1,"uses":3},"Fishingrod":{"amount":1,"uses":10}},"username":"wsquarepa","account":{"secured":false,"type":"user"},"pet":{"food":496,"coins":36,"type":"cat","name":"wsquarepa"}}}
+{
+    "509874745567870987": {
+        "cash": 3139,
+        "bank": 0,
+        "gems": 0,
+        "xp": 34,
+        "xpUntil": 40,
+        "level": 3,
+        "inventory": {
+            "Magnif": {
+                "amount": 1,
+                "uses": 3
+            },
+            "Fishingrod": {
+                "amount": 1,
+                "uses": 10
+            }
+        },
+        "username": "wsquarepa",
+        "account": {
+            "secured": false,
+            "type": "admin"
+        },
+        "pet": {
+            "food": 496,
+            "coins": 36,
+            "type": "cat",
+            "name": "wsquarepa"
+        }
+    },
+    "703336679888650371": {
+        "cash": 23876,
+        "bank": 0,
+        "gems": 0,
+        "xp": 0,
+        "xpUntil": 10,
+        "level": 0,
+        "inventory": {
+            "Knife": {
+                "amount": 1,
+                "uses": 2
+            },
+            "Lock": {
+                "amount": 0,
+                "uses": 2
+            },
+            "Coin": {
+                "amount": 0,
+                "uses": 1
+            },
+            "Magnif": {
+                "amount": 4,
+                "uses": 2
+            },
+            "Cage": {
+                "amount": 1,
+                "uses": 14
+            },
+            "Fishingrod": {
+                "amount": 1,
+                "uses": 5
+            }
+        },
+        "username": "The Reverse Flash",
+        "account": {
+            "secured": true,
+            "type": "user"
+        },
+        "pet": {
+            "food": 448,
+            "coins": 25,
+            "type": "fish",
+            "name": "Fishy"
+        }
+    },
+    "510266243316449301": {
+        "cash": 4000,
+        "bank": 0,
+        "gems": 0,
+        "xp": 0,
+        "xpUntil": 10,
+        "level": 0,
+        "inventory": {},
+        "username": "฿Ɇ₮ⱧØ",
+        "account": {
+            "secured": false,
+            "type": "user"
+        },
+        "pet": {}
+    },
+    "497869249549828119": {
+        "cash": 2071,
+        "bank": 7545,
+        "gems": 1,
+        "xp": 0,
+        "xpUntil": 10,
+        "level": 0,
+        "inventory": {
+            "Knife": 0
+        },
+        "username": "deerpaw",
+        "account": {
+            "secured": false,
+            "type": "user"
+        }
+    },
+    "536659745420083208": {
+        "cash": 10016,
+        "bank": 0,
+        "gems": 1,
+        "xp": 0,
+        "xpUntil": 10,
+        "level": 0,
+        "inventory": {
+            "Knife": {
+                "amount": 1,
+                "uses": 1
+            },
+            "Lock": {
+                "amount": 0,
+                "uses": 2
+            },
+            "Coin": {
+                "amount": 1,
+                "uses": 1
+            }
+        },
+        "username": "ミラベル",
+        "account": {
+            "secured": true,
+            "type": "user"
+        }
+    }
+}
