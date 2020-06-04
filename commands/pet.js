@@ -106,7 +106,7 @@ module.exports = {
                 if (args[1] == null || args[1] == "") {
                     petName = message.author.username
                 } else {
-                    petName = args[1]
+                    petName = args.splice(1).join(" ")
                 }
                 userData[message.author.id].pet.name = petName
                 message.channel.send("Pet name set to " + petName)
@@ -116,7 +116,7 @@ module.exports = {
                 if (args[1] == null) {
                     petType = message.author.username
                 } else {
-                    petType = args[1]
+                    petType = args.splice(1).join(" ")
                 }
                 userData[message.author.id].pet.type = petType
                 message.channel.send("Pet type set to " + petType)
