@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const shopData = require("../shop.json")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -28,6 +29,12 @@ module.exports = {
         if (userData[message.author.id].inventory.Magnif == null || userData[message.author.id].inventory.Magnif < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
             return
+        }
+        
+        userData[message.author.id].inventory.Magnif.uses -= 1
+        if (userData[message.author.id].inventory.Magnif.uses < 1) {
+            userData[message.author.id].inventory.Magnif.amount -= 1
+            userData[message.author.id].inventory.Magnif.uses = shopData.Magnif.uses
         }
 
         if (userData[message.author.id].cash < 500) {
