@@ -125,7 +125,7 @@ module.exports = {
                 description: userData[message.author.id].pet.name + "'s petfile:",
                 fields: [
                     {
-                        name: "Hunger (out of 500)",
+                        name: "Energy (out of 500)",
                         value: 500 - userData[message.author.id].pet.food,
                         inline: true
                     },
