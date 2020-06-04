@@ -64,7 +64,7 @@ module.exports = {
         collector.on('collect', collectorMessage => {
             collector.stop()
             if (collectorMessage.content.toLowerCase() == "yes") {
-                var randomString = sentencer.make("{{a_noun}} {{verb}} {{a_noun}}")
+                var randomString = sentencer.make("A {{adjective}} {{verb}}")
                 var filename = makeid(10)
                 textToPicture.convert({
                     text: randomString,

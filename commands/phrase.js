@@ -52,7 +52,7 @@ module.exports = {
                             msg.edit("GET SET")
                             setTimeout(function () {
                                 msg.edit("GOOOOOOO")
-                                var sentence = sentencer.make("{{a_noun}} {{verb}} {{a_noun}}.")
+                                var sentence = sentencer.make("A {{adjective}} {{verb}}")
                                 console.log(sentence)
                                 var revealed = []
                                 var sentenceList = sentence.split("")
