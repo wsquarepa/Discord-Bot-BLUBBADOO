@@ -60,12 +60,17 @@ module.exports = {
 
         try {
             if (args[0].toLowerCase() == "help") {
-                message.channel.send(embed("Help on pets:", `
-                    ==pet feed - feed your pet,
-                    ==pet collect - collect the money your pet earned you,
-                    ==pet name <name> - Name your pet,
-                    ==pet type <type> - Change your pet type
-                `))
+                var embed = new discord.MessageEmbed({
+                    title:"Help on pets:",
+                    description: `
+                        ==pet feed - feed your pet,
+                        ==pet collect - collect the money your pet earned you,
+                        ==pet name <name> - Name your pet,
+                        ==pet type <type> - Change your pet type
+                    `,
+                    color: "00ff00"
+                })
+                message.channel.send(embed)
             } else if (args[0] == "feed") {
 
                 if (userData[message.author.id].gems < 1) {
