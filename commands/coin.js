@@ -1,6 +1,7 @@
 const fs = require('fs');
 var userData = require('../userData.json')
 const discord = require('discord.js')
+const shopData = require('../shop.json')
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
