@@ -16,7 +16,7 @@ function saveCoins() {
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
-        .setAuthor(title)
+        .setTitle(title)
         .setDescription(description)
         .setColor(color)
     return embed
@@ -118,7 +118,7 @@ module.exports = {
                 saveCoins()
             }
         } catch (error) {
-            console.error(error)
+            //console.error(error)
             if (isEmpty(userData[message.author.id].pet)) return
             message.channel.send(embed("Your pet " + userData[message.author.id].pet.type, userData[message.author.id].pet.name + "'s petfile:")
                 .addField("Hunger (out of 500)", 500 - userData[message.author.id].pet.food, true)
