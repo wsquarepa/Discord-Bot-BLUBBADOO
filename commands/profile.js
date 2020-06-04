@@ -21,6 +21,10 @@ module.exports = {
         var mention = message.mentions.users.first()
 
         if (mention == null) {
+            mention = message.guild.member(message.client.users.cache.find(x => x.username === args.join(" "))).user
+        }
+
+        if (mention == null) {
             var name = message.author.username
             var cash = userData[message.author.id].cash
             var bank = userData[message.author.id].bank
