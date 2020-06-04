@@ -120,9 +120,23 @@ module.exports = {
         } catch (error) {
             //console.error(error)
             if (isEmpty(userData[message.author.id].pet)) return
-            message.channel.send(embed("Your pet " + userData[message.author.id].pet.type, userData[message.author.id].pet.name + "'s petfile:")
-                .addField("Hunger (out of 500)", 500 - userData[message.author.id].pet.food, true)
-                .addField("Coins", userData[message.author.id].pet.coins, true))
+            var embed = new discord.MessageEmbed({
+                title: "Your pet " + userData[message.author.id].pet.type,
+                description: userData[message.author.id].pet.name + "'s petfile:",
+                fields: [
+                    {
+                        name: "Hunger (out of 500)",
+                        value: 500 - userData[message.author.id].pet.food,
+                        inline: true
+                    },
+                    {
+                        name: "Coins",
+                        value: userData[message.author.id].pet.coins,
+                        inline: true
+                    }
+                ]
+            })
+            message.channel.send(embed)
         }
     }
 }
