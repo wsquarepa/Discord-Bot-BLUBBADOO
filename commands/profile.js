@@ -21,7 +21,11 @@ module.exports = {
         var mention = message.mentions.users.first()
 
         if (mention == null) {
-            mention = message.guild.member(message.client.users.cache.find(x => x.username === args.join(" "))).user
+            try {
+                mention = message.guild.member(message.client.users.cache.find(x => x.username === args.join(" "))).user
+            } catch {
+                mention = null
+            }
         }
 
         if (mention == null) {
