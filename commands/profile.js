@@ -130,7 +130,7 @@ module.exports = {
             embed.addField("Type", type, true)
             embed.addField("Leaderboard Location", userLocation, true)
             
-            embed.addField("", "\u200b", false)
+            embed.addField("\u200b", "\u200b", false)
 
             embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
             embed.addField("Level", level, true)
