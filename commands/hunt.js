@@ -14,7 +14,7 @@ module.exports = {
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: [''],
+    aliases: [],
     cooldown: 40,
 	execute(message, args) {
         if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
