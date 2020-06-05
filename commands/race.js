@@ -74,7 +74,7 @@ module.exports = {
                     height: 20,
                     color: "black"
                 }).then(function (result) {
-                    result.write('./' + filename + '.png')
+                    result.write('../' + filename + '.png')
                     var editMsg = new discord.Message()
                     collectorMessage.channel.send("GET READY").then(m => editMsg = m)
                     setTimeout(function () {
@@ -82,7 +82,7 @@ module.exports = {
                         setTimeout(function () {
                             editMsg.edit("GOOOOOOO! \n FIRST TO TYPE THIS WINS: ")
                             message.channel.send("", {
-                                files: ['./' + filename + '.png']
+                                files: ['../' + filename + '.png']
                             }).then(msg => editMsg = msg)
                             const raceCollector = new discord.MessageCollector(collectorMessage.channel,
                                 m => m.author.id == mention.id || m.author.id == message.author.id, {
@@ -96,7 +96,7 @@ module.exports = {
                                     raceCollectorMsg.author.send("You earn $250 for that race against " + mention.username + ". Congratulations!")
                                     editMsg.delete()
                                     raceCollector.stop("Listen end.")
-                                    fs.unlink('./' + filename + '.png', function (error) {
+                                    fs.unlink('../' + filename + '.png', function (error) {
                                         if (error) console.error(error)
                                     })
                                 } else {

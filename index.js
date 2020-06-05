@@ -53,9 +53,22 @@ client.on('message', message => {
 				username: message.author.username,
 				account: {
 					secured: false, 
-					type: "user"
+					type: "user",
+					daily: {
+						streak: -1,
+						previousAmt: 0,
+						expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
+					}
 				},
 				pet: {}
+			}
+		}
+
+		if (!userData[message.author.id].account.daily) {
+			userData[message.author.id].account.daily = {
+				streak: -1,
+				previousAmt: 0,
+				expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
 			}
 		}
 
