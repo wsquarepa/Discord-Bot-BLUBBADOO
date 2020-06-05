@@ -77,7 +77,6 @@ module.exports = {
 
             message.channel.send(embed)
         } else {
-            (message.author.id == 509874745567870987? "":() => {return message.channel.send("In fixing, please do not use with mention.")})
             var name = mention.username
             var cash = userData[mention.id].cash
             var bank = userData[mention.id].bank
