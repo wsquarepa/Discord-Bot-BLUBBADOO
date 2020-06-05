@@ -7,7 +7,7 @@ module.exports = {
     name: 'sudo',
 	description: 'Super User - Bot admins only.',
     args: true,
-    usage: '<command> <@mention> [Rest of the command args]',
+    usage: 'help',
     guildOnly: false,
     aliases: ['su', 'bot'],
     cooldown: 0,
@@ -15,7 +15,16 @@ module.exports = {
         if (!config["bot-admins"].includes(message.author.id) || 
             userData[message.author.id].account.type.toLowerCase() != "admin") return message.channel.send("You can't run that.")
 
-        if (args[0] == "addMoney") {
+        if (args[0] == "help") {
+            var embed = new discord.MessageEmbed().setTitle("Help on SUDO").setDescription(`
+                addMoney <@mention> <amount> - add money to mention
+                removeMoney <@mention> <amount> - remove money from mention
+                botBan <@mention> - Ban someone from the bot
+                botUnban <@mention> - Unbans someone from the bot
+                set <@mention> <type> - Sets mention's user type to type
+            `)
+            message.channel.send(embed)
+        } else if (args[0] == "addMoney") {
             try {
                 userData[mention.id][args[1]] += parseInt(args[3])
                 message.channel.send("Complete! Added $" + args[3])
@@ -37,7 +46,23 @@ module.exports = {
             message.channel.send("Complete! " + mention.username + " was unbanned!")
         } else if (args[0] == "set") {
             userData[mention.id].account.type = args.splice(2).join(" ")
-            message.channel.send("Complete! " + mention.username + " is now a " + args.splice(2).join(" ") + "!")
+            message.channel.send("Complete! " + mention.username + " is now a " + userData[mention.id].account.type + "!")
+        } else if (args[0] == "petCtl") {
+            if (args[1] == "nameSet") {
+                userData[mention.id].pet.name = args.splice(3).join(" ")
+                message.channel.send("Complete! " + mention.username + "'s pet is now named " + userData[mention.id].pet.name + "!")
+            } else if (args[1] == "typeSet") {
+                userData[mention.id].pet.type = args.splice(3).join(" ")
+                message.channel.send("Complete! " + mention.username + "'s pet is now typed as " + userData[mention.id].pet.type + "!")
+            } else if (args[1] == "coinSet") {
+                userData[mention.id].pet.coins = parseInt(args[3])
+                message.channel.send("Complete! " + mention.username + "'s pet now has $" + userData[mention.id].pet.coins + "!")
+            } else if (args[1] == "energySet") {
+                userData[mention.id].pet.food = parseInt(args[3])
+                message.channel.send("Complete! " + mention.username + "'s pet's energy is set to " + (userData[mention.id].pet.food) + "!")
+            } else {
+                message.channel.send("That's not a valid petCtl command.")
+            }
         } else {
             message.channel.send("That's not a valid command.")
         }

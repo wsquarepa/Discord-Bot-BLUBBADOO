@@ -79,7 +79,7 @@ module.exports = {
                 }
 
                 if (userData[message.author.id].pet.food > 50) {
-                    message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (500 - userData[message.author.id].pet.food) + " hunger.")
+                    message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (userData[message.author.id].pet.food) + " hunger.")
                 }
 
                 message.channel.send("Feed your pet for **1 GEM**?")
@@ -131,7 +131,7 @@ module.exports = {
                 fields: [
                     {
                         name: "Energy (out of 500)",
-                        value: 500 - userData[message.author.id].pet.food,
+                        value: userData[message.author.id].pet.food,
                         inline: true
                     },
                     {

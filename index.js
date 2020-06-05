@@ -40,6 +40,9 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
+
+	//if (!message.author.id == "509874745567870987") return
+
 	if (!message.author.bot) {
 		if (!userData[message.author.id]) {
 			userData[message.author.id] = {
