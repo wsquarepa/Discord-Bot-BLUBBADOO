@@ -104,7 +104,9 @@ client.on('message', message => {
 	}
 
 	const args = message.content.slice(prefix.length).split(/ +/);
-	const mention = message.mentions.users.first()
+	var mention = message.mentions.users.first()
+
+	const commandName = args.shift().toLowerCase();
 
 	if (mention == null) {
 		try {
@@ -113,8 +115,6 @@ client.on('message', message => {
 			mention = null
 		}
 	}
-
-	const commandName = args.shift().toLowerCase();
 
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
