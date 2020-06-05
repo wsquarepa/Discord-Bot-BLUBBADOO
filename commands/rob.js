@@ -23,9 +23,7 @@ module.exports = {
     guildOnly: true,
     aliases: ['steal'],
     cooldown: 120,
-	execute(message, args) {
-
-        var mention = message.mentions.users.first()
+	execute(message, args, mention) {
 
         if (mention == null) {
             message.channel.send("You gotta tell me who you wanna rob.")

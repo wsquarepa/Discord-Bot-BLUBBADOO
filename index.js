@@ -97,13 +97,23 @@ client.on('message', message => {
 	
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
-	
+
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {
 		message.channel.send("Uh oh, you've been banned from using me. Ask a bot dev for more info.")
 		return
 	}
 
 	const args = message.content.slice(prefix.length).split(/ +/);
+	const mention = message.mentions.users.first()
+
+	if (mention == null) {
+		try {
+			mention = message.guild.member(message.client.users.cache.find(x => x.username === args.join(" "))).user
+		} catch {
+			mention = null
+		}
+	}
+
 	const commandName = args.shift().toLowerCase();
 
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -140,7 +150,7 @@ client.on('message', message => {
 	}
 
 	try {
-		command.execute(message, args);
+		command.execute(message, args, mention) 
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);	
 	} catch (error) {

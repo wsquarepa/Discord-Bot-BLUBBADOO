@@ -30,8 +30,7 @@ module.exports = {
     guildOnly: true,
     aliases: [],
     cooldown: 60,
-	execute(message, args) {
-        var mention = message.mentions.users.first()
+	execute(message, args, mention) {
 
         if (mention == null) {
             message.channel.send("Please mention someone next time.")

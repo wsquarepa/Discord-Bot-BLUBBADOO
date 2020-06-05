@@ -9,8 +9,7 @@ module.exports = {
     guildOnly: false,
     aliases:['bal'],
     cooldown: 0.5,
-	execute(message, args) {
-        var mention = message.mentions.users.first()
+	execute(message, args, mention) {
         
         if (mention) {
             

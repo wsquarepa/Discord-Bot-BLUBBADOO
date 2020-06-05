@@ -16,7 +16,7 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 86400,
-	execute(message, args) {
+	execute(message, args, mention) {
         if (userData[message.author.id].account.daily.expires < (new Date().getTime())) {
             userData[message.author.id].account.daily.streak = -1
         }

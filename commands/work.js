@@ -9,7 +9,7 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 3600,
-	execute(message, args) {
+	execute(message, args, mention) {
         var min = Math.ceil(100);
         var max = Math.floor(500);
         var earnings = Math.floor(Math.random() * (max - min + 1)) + min;

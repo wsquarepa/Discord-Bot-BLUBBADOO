@@ -25,7 +25,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['rod'],
     cooldown: 45,
-	execute(message, args) {
+	execute(message, args, mention) {
         if (userData[message.author.id].inventory["Fishingrod"] == null || userData[message.author.id].inventory["Fishingrod"] < 1) {
             message.channel.send(embed("Error", "How do you suppose you fish without a Fishingrod?", "ff0000"))
             return

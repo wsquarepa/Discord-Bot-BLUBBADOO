@@ -10,7 +10,7 @@ module.exports = {
     guildOnly: true,
     aliases: ['clear', 'delete'],
     cooldown: 2.3,
-	execute(message, args) {
+	execute(message, args, mention) {
         try {
             args[0] = parseInt(args[0])
 

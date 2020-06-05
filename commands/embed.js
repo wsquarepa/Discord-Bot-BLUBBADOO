@@ -8,7 +8,7 @@ module.exports = {
     guildOnly: true,
     aliases: [],
     cooldown: 2,
-	execute(message, args) {
+	execute(message, args, mention) {
         var json = message.content.slice('.embed '.length)
         try {
             var embedJSON = JSON.parse(json)

@@ -18,7 +18,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['coinFlip'],
     cooldown: 70,
-	execute(message, args) {
+	execute(message, args, mention) {
         if (userData[message.author.id].inventory["Coin"] == null || userData[message.author.id].inventory["Coin"] < 1) {
             var embed = new discord.MessageEmbed({
                 title: "Error",

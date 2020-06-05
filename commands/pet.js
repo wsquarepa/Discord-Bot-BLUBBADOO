@@ -31,7 +31,7 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 1,
-	execute(message, args) {
+	execute(message, args, mention) {
         if (isEmpty(userData[message.author.id].pet)) {
             if (userData[message.author.id].gems < 5) {
                 message.channel.send("You don't have enough **GEMS** to buy a pet.")

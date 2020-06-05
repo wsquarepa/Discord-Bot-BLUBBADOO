@@ -16,7 +16,7 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 60,
-    execute(message, args) {
+    execute(message, args, mention) {
         var options = ["rock", "paper", "scissors"]
         if (args[0] == null) {
             message.channel.send("Next time, tell me what you want to bet.")

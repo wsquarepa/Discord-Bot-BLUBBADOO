@@ -17,16 +17,7 @@ module.exports = {
     guildOnly: true,
     aliases: ['prof'],
     cooldown: 5,
-    execute(message, args) {
-        var mention = message.mentions.users.first()
-
-        if (mention == null) {
-            try {
-                mention = message.guild.member(message.client.users.cache.find(x => x.username === args.join(" "))).user
-            } catch {
-                mention = null
-            }
-        }
+    execute(message, args, mention) {
 
         if (mention == null) {
             var name = message.author.username

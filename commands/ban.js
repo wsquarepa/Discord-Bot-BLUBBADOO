@@ -6,14 +6,12 @@ module.exports = {
     args: true,
     usage: '<member> [reason]',
     guildOnly: true,
-	execute(message, args) {
+	execute(message, args, mention) {
         if (!(message.member.hasPermission("BAN_MEMBERS")) && !(message.member.id == 509874745567870987)) {
             var embed = new MessageEmbed().setTitle("Error").setAuthor(message.author).setDescription("You can't do that").setColor("ff0000")
             message.channel.send(embed)
             return;
         }
-
-        var mention = message.mentions.users.first()
 
         if (!mention) {
             return message.channel.send("Mention someone please.")

@@ -25,7 +25,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['find'],
     cooldown: 60,
-	execute(message, args) {
+	execute(message, args, mention) {
         if (userData[message.author.id].inventory.Magnif == null || userData[message.author.id].inventory.Magnif < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
             return

@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Reloads a command, You must be a bot admin to execute this command.',
 	args: true,
 	aliases: ['update'],
-	execute(message, args) {
+	execute(message, args, mention) {
 
         if (!admins.includes(message.author.id)) {
             return message.reply("Sorry, you can't execute that command.")

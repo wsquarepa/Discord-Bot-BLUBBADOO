@@ -11,7 +11,7 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 2,
-	execute(message, args) {
+	execute(message, args, mention) {
         var keys = Object.keys(shopData)
         if (!keys.includes(args[0])) {
             message.channel.send("That's not an item. Items are **CASE SENSITIVE**.")

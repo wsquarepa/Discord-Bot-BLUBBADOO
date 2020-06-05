@@ -17,7 +17,7 @@ module.exports = {
     guildOnly: true,
     aliases: [],
     cooldown: 60,
-    execute(message, args) {
+    execute(message, args, mention) {
         message.channel.send("For the people who are here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join' within the next " +
             "10 seconds.")
         const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id && !m.author.bot, {

@@ -9,7 +9,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['store'],
     cooldown: 1,
-	execute(message, args) {
+	execute(message, args, mention) {
         var keys = Object.keys(shopData)
         var itemString = ""
         for (var i = 0; i < keys.length; i++) {

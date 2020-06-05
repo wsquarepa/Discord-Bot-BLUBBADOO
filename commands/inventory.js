@@ -9,7 +9,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['inv'],
     cooldown: 3,
-	execute(message, args) {
+	execute(message, args, mention) {
         var userInv = userData[message.author.id].inventory
         var keys = Object.keys(userInv)
         var embed = new discord.MessageEmbed()

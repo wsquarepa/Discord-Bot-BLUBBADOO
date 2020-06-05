@@ -16,7 +16,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['muff'],
     cooldown: 40,
-	execute(message, args) {
+	execute(message, args, mention) {
         if ((userData[message.author.id].cash - 100) < 0) {
             message.channel.send("You can't play this game without at least $100 in cash.")
             return

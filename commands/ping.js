@@ -5,7 +5,7 @@ module.exports = {
 	guildOnly: false,
 	cooldown: 5,
 	aliases: ['moo', 'foo'],
-	execute(message, args) {
+	execute(message, args, mention) {
 		message.channel.send('Pong.');
 	},
 };

@@ -18,7 +18,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['leader', 'board'],
     cooldown: 7.5,
-	execute(message, args) {
+	execute(message, args, mention) {
         var leaders = []
         var keys = Object.keys(userData)
         var dict = {}
