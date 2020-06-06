@@ -168,4 +168,31 @@ client.on('message', message => {
 	}
 });
 
+client.on('guildCreate', function(guild) {
+	guild.channels.create("Blubbadoo Welcome Channel", {
+		type: 'text',
+		permissionOverwrites: [
+			{
+				id: guild.roles.everyone.id,
+				deny: ['VIEW_CHANNEL'],
+			},
+			{
+				id: guild.owner.id,
+				allow: ['VIEW_CHANNEL'],
+			},
+		]}).then(function(channel) {
+		var embed = new Discord.MessageEmbed()
+		embed.setTitle("Thank you!")
+		embed.setDescription("I appreciate that you added me! Thank you again. \n" + 
+			"If you don't know how to use me, then please do ==help. \n" + 
+			"Not joking, Blubbadoo actually needs ADMINISTRATOR permissions, otherwise some commands will not be available.")
+		embed.setFooter("This message and channel will self destruct in 1 minute.")
+		channel.send(embed).then(() => {
+			setTimeout(function() {
+				channel.delete().catch()
+			}, 60000)
+		})
+	})
+})
+
 client.login(token);
