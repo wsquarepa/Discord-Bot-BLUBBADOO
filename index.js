@@ -4,6 +4,7 @@ const { prefix, token } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
 var userData = require('./userData.json')
+const modeOfUser = require('../configs/blubbadoo.json')
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -41,7 +42,7 @@ client.once("ready", function () {
 
 client.on('message', message => {
 
-	//if (!message.author.id == "509874745567870987") return
+	if (!message.author.id == "509874745567870987" && modeOfUser.testMode) return
 
 	if (!message.author.bot) {
 		if (!userData[message.author.id]) {
@@ -84,6 +85,7 @@ client.on('message', message => {
 			userData[message.author.id].gems += (userData[message.author.id].level % 5 == 0? 5:1)
 			userData[message.author.id].xpUntil = userData[message.author.id].xpUntil * 2
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
+				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
 		}
 
 		userData[message.author.id].cash += userData[message.author.id].level
