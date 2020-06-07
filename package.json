@@ -1,7 +1,7 @@
 {
-  "name": "Blubbadoo-Beta",
-  "version": "5.3.6",
-  "description": "THE BETA VERSION OF BLUBBADOO",
+  "name": "blubbadoo-beta",
+  "version": "1.0.0",
+  "description": "THE BLUBBADOO",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
