@@ -19,6 +19,7 @@ module.exports = {
 	execute(message, args, mention) {
         if (userData[message.author.id].account.daily.expires < (new Date().getTime())) {
             userData[message.author.id].account.daily.streak = -1
+            userData[message.author.id].account.daily.previousAmt = 0
         }
         userData[message.author.id].account.daily.streak += 1
         var randNum = randomNumber(20, 30)
