@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const config = require('../config.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const execSync = require('child_process').execSync;
 
 module.exports = {
     name: 'sudo',
@@ -63,6 +64,10 @@ module.exports = {
             } else {
                 message.channel.send("That's not a valid petCtl command.")
             }
+        } else if (args[0] == "backup") {
+            execSync('git add userData.json', { encoding: 'utf-8' });
+            execSync('git commit -m backup', { encoding: 'utf-8' })
+            execSync('git push', { encoding: 'utf-8' })
         } else {
             message.channel.send("That's not a valid command.")
         }
