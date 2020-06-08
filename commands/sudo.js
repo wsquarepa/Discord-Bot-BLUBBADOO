@@ -65,9 +65,10 @@ module.exports = {
                 message.channel.send("That's not a valid petCtl command.")
             }
         } else if (args[0] == "backup") {
+            execSync('git pull', { encoding: 'utf-8' })
             execSync('git add userData.json', { encoding: 'utf-8' });
-            execSync('git commit -m backup', { encoding: 'utf-8' })
-            const output = execSync('git push', { encoding: 'utf-8' })
+            const output = execSync('git commit -m backup', { encoding: 'utf-8' })
+            execSync('git push', { encoding: 'utf-8' })
             message.channel.send(output)
         } else {
             message.channel.send("That's not a valid command.")
