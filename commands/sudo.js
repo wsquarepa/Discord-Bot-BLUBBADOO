@@ -65,6 +65,7 @@ module.exports = {
                 message.channel.send("That's not a valid petCtl command.")
             }
         } else if (args[0] == "backup") {
+            message.channel.send("Working...")
             var output = ""
             output += execSync('git pull', { encoding: 'utf-8' })
             output += execSync('git add userData.json', { encoding: 'utf-8' });
