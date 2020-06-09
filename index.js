@@ -5,6 +5,7 @@ const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
 var userData = require('./userData.json')
 const modeOfUser = require('../configs/blubbadoo.json')
+var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -25,15 +26,18 @@ function randomNumber(min, max) {
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
 
 	// set a new item in the Collection
 	// with the key as the command name and the value as the exported module
 	client.commands.set(command.name, command);
+	var commandName = command.name
+	if (!botData[commandName]) {
+		botData[commandName] = {
+			uses: 0,
+			lastUsed: 0
+		}
+	}
+	fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 }
 
 client.once("ready", function () {
@@ -43,6 +47,9 @@ client.once("ready", function () {
 client.on('message', message => {
 
 	if (!message.author.id == "509874745567870987" && modeOfUser.testMode) return
+
+	botData.messagesRecieved++
+	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 
 	if (!message.author.bot) {
 		if (!userData[message.author.id]) {
@@ -129,6 +136,15 @@ client.on('message', message => {
 
 	if (!command) return;
 
+	//#region - Here is the command tracking. 
+
+	const now = Date.now();
+	botData[command.name].uses++
+	botData[command.name].lastUsed = now
+	fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+
+	//#endregion
+
 	if (command.args && !args.length) {
 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
 	}
@@ -141,7 +157,6 @@ client.on('message', message => {
 		cooldowns.set(command.name, new Discord.Collection());
 	}
 	
-	const now = Date.now();
 	const timestamps = cooldowns.get(command.name);
 	const cooldownAmount = (command.cooldown || 1) * 1000;
 	
@@ -192,7 +207,7 @@ client.on('guildCreate', function(guild) {
 				channel.delete().catch()
 			}, 60000)
 		})
-	})
+	}).catch()
 })
 
 client.login(token);
