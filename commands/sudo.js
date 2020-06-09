@@ -65,13 +65,19 @@ module.exports = {
                 message.channel.send("That's not a valid petCtl command.")
             }
         } else if (args[0] == "backup") {
-            message.channel.send("Working...")
-            var output = ""
-            output += execSync('git pull', { encoding: 'utf-8' })
-            output += execSync('git add userData.json', { encoding: 'utf-8' });
-            output += execSync('git commit -m backup', { encoding: 'utf-8' })
-            output += execSync('git push', { encoding: 'utf-8' })
-            message.channel.send(output).catch(message.channel.send("Complete!"))
+            message.channel.send("Working...").then(function() {
+                try {
+                    var output = ""
+                output += execSync('git pull', { encoding: 'utf-8' })
+                output += execSync('git add userData.json', { encoding: 'utf-8' });
+                output += execSync('git commit -m backup', { encoding: 'utf-8' })
+                output += execSync('git push', { encoding: 'utf-8' })
+                message.channel.send(output).catch(message.channel.send("Complete!"))
+                } catch (e) {
+                    message.channel.send(e)
+                }
+            })
+            
         } else {
             message.channel.send("That's not a valid command.")
         }
