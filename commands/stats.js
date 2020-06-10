@@ -52,7 +52,7 @@ module.exports = {
             var timeAgo = now - leaders[i][2]
             timeAgo = timeAgo / 1000 / 60
             timeAgo = Math.round((timeAgo + Number.EPSILON) * 100) / 100
-            leaderString += "==" + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last ≈" + timeAgo + " minutes ago.\n \n"
+            leaderString += "==" + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
         }
 
         message.channel.send(embed("STATS", "**Last 5 used commands:** \n " + leaderString + 
