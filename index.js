@@ -44,7 +44,7 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-	if (!message.author.id == "509874745567870987" && modeOfUser.testMode) return
+	if (message.author.id != "509874745567870987" && modeOfUser.testMode) return
 
 	botData.messagesRecieved++
 	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
@@ -118,12 +118,12 @@ client.on('message', message => {
 
 	const commandName = args.shift().toLowerCase();
 
-	if (mention == null) {
+	if (!mention) {
 		try {
-			mention = message.guild.members.cache.find(x => x.user.username === args.join(" ")).user
+			mention = message.guild.members.cache.find(x => x.user.username == args.join(" ")).user
 		} catch {
 			try {
-				mention = message.guild.members.cache.find(x => x.nickname === args.join(" ")).user
+				mention = message.guild.members.cache.find(x => x.nickname == args.join(" ")).user
 			} catch {
 				mention = null
 			}

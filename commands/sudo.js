@@ -18,8 +18,8 @@ module.exports = {
 
         if (args[0] == "help") {
             var embed = new discord.MessageEmbed().setTitle("Help on SUDO").setDescription(`
-                addMoney <@mention> <amount> - add money to mention
-                removeMoney <@mention> <amount> - remove money from mention
+                addMoney <@mention> <cash|bank> <amount> - add money to mention
+                removeMoney <@mention> <cash|bank> <amount> - remove money from mention
                 botBan <@mention> - Ban someone from the bot
                 botUnban <@mention> - Unbans someone from the bot
                 set <@mention> <type> - Sets mention's user type to type
@@ -29,14 +29,16 @@ module.exports = {
             try {
                 userData[mention.id][args[1]] += parseInt(args[3])
                 message.channel.send("Complete! Added $" + args[3])
-            } catch {
+            } catch(e) {
                 message.channel.send("Error, Something went wrong.")
+                console.error(e)
             }
         } else if (args[0] == "removeMoney") {
             try {
                 userData[mention.id][args[1]] -= parseInt(args[3])
                 message.channel.send("Complete! Removed $" + args[3])
-            } catch {
+            } catch(e) {
+                console.error(e)
                 message.channel.send("Error, Something went wrong.")
             }
         } else if (args[0] == "botBan") {
