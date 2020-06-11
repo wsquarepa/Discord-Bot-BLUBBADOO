@@ -7,7 +7,6 @@ var userData = require('./userData.json')
 const modeOfUser = require('../configs/blubbadoo.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
-
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 function isEmpty(obj) {
@@ -21,7 +20,7 @@ function isEmpty(obj) {
 function randomNumber(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 for (const file of commandFiles) {

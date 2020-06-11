@@ -69,7 +69,7 @@ module.exports = {
                 try {
                     var output = ""
                 output += execSync('git pull', { encoding: 'utf-8' })
-                output += execSync('git add userData.json', { encoding: 'utf-8' });
+                output += execSync('git add .', { encoding: 'utf-8' });
                 output += execSync('git commit -m backup', { encoding: 'utf-8' })
                 output += execSync('git push', { encoding: 'utf-8' })
                 message.channel.send(output).catch(message.channel.send("Complete!"))

@@ -29,7 +29,7 @@ module.exports = {
         delete dict.messagesRecieved
 
         for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "stats" || keys[i] == "sudo" || keys[i] == "reload") {
+            if (keys[i] == "stats" || keys[i] == "sudo" || keys[i] == "reload" || keys[i] == "report") {
                 delete dict[keys[i]]
             }
         }
