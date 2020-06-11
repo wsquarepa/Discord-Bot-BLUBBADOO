@@ -25,7 +25,7 @@ module.exports = {
             args[1] = parseInt(Math.round(args[1]))
             
             if (userData[message.author.id].gems < args[1]) {
-                message.channel.send("Ya don't got enough gems to do that.")
+                message.channel.send("You don't have enough gems to use... try leveling up!")
                 return
             }
 

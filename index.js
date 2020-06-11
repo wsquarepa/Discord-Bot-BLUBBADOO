@@ -87,7 +87,7 @@ client.on('message', message => {
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 			userData[message.author.id].xp = 0
 			userData[message.author.id].level += 1
-			userData[message.author.id].gems += (userData[message.author.id].level % 5 == 0? 5:1)
+			userData[message.author.id].gems += 1
 			userData[message.author.id].xpUntil = userData[message.author.id].xpUntil * 2
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
 				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
