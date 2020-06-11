@@ -18,7 +18,7 @@ module.exports = {
         var itemString = ""
         for (var i = 0; i < keys.length; i++) {
             itemString += (shopData[keys[i]].image.length > 2? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) + 
-            " " + keys[i] + " - $" + shopData[keys[i]].price + "\n \n"
+            " " + keys[i] + " - " + (shopData[keys[i]].price == -1? shopData[keys[i]].gems + " 💎" :"$" + shopData[keys[i]].price) + "\n \n"
         }
 
         var embed = new discord.MessageEmbed()

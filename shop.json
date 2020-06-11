@@ -15,10 +15,11 @@
     },
 
     "lock":{
-        "price":3000,
+        "price":-1,
         "image":"🔒",
         "uses":1,
-        "usable":true
+        "usable":true,
+        "gems":1
     },
 
     "magnif":{

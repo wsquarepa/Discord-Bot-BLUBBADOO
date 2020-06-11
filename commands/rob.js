@@ -37,8 +37,8 @@ module.exports = {
             message.channel.send("Why would you like to rob yourself? You don't earn anything anyway.")
             return
         }
-        if (userData[message.author.id].cash < 2000) {
-            message.channel.send("You cannot rob someone without at least $2000 in cash.")
+        if (userData[message.author.id].cash < 4000) {
+            message.channel.send("You cannot rob someone without at least $4000 in cash.")
             return
         }
 
@@ -57,7 +57,7 @@ module.exports = {
                 userData[message.author.id].cash -= earnings
                 userData[mention.id].cash += earnings
                 message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack " + mention.username + "! You were fined $" + earnings + ".")
-                mention.send("Oh no! " + message.author.username + " robbed you, but failed because of your lock. You got $" + earnings + "!")
+                mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
                 userData[mention.id].account.secured = false
                 fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                 return
