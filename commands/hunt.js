@@ -17,15 +17,15 @@ module.exports = {
     aliases: [],
     cooldown: 40,
 	execute(message, args, mention) {
-        if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
+        if (userData[message.author.id].inventory["knife"] == null || userData[message.author.id].inventory["knife"].amount < 1) {
             message.channel.send("How do you suppose you hunt without a knife?")
             return
         }
 
-        userData[message.author.id].inventory.Knife.uses -= 1
-        if (userData[message.author.id].inventory.Knife.uses < 1) {
-            userData[message.author.id].inventory.Knife.amount -= 1
-            userData[message.author.id].inventory.Knife.uses = shopData.Knife.uses
+        userData[message.author.id].inventory.knife.uses -= 1
+        if (userData[message.author.id].inventory.knife.uses < 1) {
+            userData[message.author.id].inventory.knife.amount -= 1
+            userData[message.author.id].inventory.knife.uses = shopData.knife.uses
         }
 
         var animals = ['wolf', 'deer', 'lion', 'bigfoot', 'rabbit', 'pig', 'cat']

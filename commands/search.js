@@ -26,15 +26,15 @@ module.exports = {
     aliases: ['find'],
     cooldown: 60,
 	execute(message, args, mention) {
-        if (userData[message.author.id].inventory.Magnif == null || userData[message.author.id].inventory.Magnif < 1) {
+        if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
             return
         }
         
-        userData[message.author.id].inventory.Magnif.uses -= 1
-        if (userData[message.author.id].inventory.Magnif.uses < 1) {
-            userData[message.author.id].inventory.Magnif.amount -= 1
-            userData[message.author.id].inventory.Magnif.uses = shopData.Magnif.uses
+        userData[message.author.id].inventory.magnif.uses -= 1
+        if (userData[message.author.id].inventory.magnif.uses < 1) {
+            userData[message.author.id].inventory.magnif.amount -= 1
+            userData[message.author.id].inventory.magnif.uses = shopData.magnif.uses
         }
 
         if (userData[message.author.id].cash < 500) {

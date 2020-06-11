@@ -13,8 +13,9 @@ module.exports = {
     cooldown: 2,
 	execute(message, args, mention) {
         var keys = Object.keys(shopData)
+        args[0] = args[0].toLowerCase()
         if (!keys.includes(args[0])) {
-            message.channel.send("That's not an item. Items are **CASE SENSITIVE**.")
+            message.channel.send("That's not an item.")
             return
         }
 

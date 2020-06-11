@@ -42,12 +42,12 @@ module.exports = {
             return
         }
 
-        if (userData[message.author.id].inventory["Knife"] == null || userData[message.author.id].inventory["Knife"].amount < 1) {
+        if (userData[message.author.id].inventory["knife"] == null || userData[message.author.id].inventory["knife"].amount < 1) {
             message.channel.send(embed("Error", "Try to rob without a knife to defend yourself? **FAIL!**", "ff0000"))
             return
         }
 
-        userData[message.author.id].inventory.Knife.amount -= 1
+        userData[message.author.id].inventory.knife.amount -= 1
 
         var randRobNumber = randomNumber(1, 5)
         if (randRobNumber == 1) {

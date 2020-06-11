@@ -42,8 +42,13 @@ module.exports = {
                 return
             }
 
+            if (userData[message.author.id].inventory.lock.amount < 1) {
+                message.channel.send("You don't got any locks.")
+                return
+            }
+
             message.channel.send("Ok, locking your account...")
-            userData[message.author.id].inventory.Lock.amount -= 1
+            userData[message.author.id].inventory.lock.amount -= 1
             userData[message.author.id].account.secured = true
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
             message.channel.send("Ok, account secured!")

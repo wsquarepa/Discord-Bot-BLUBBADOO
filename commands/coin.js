@@ -52,10 +52,10 @@ module.exports = {
             return
         }
 
-        userData[message.author.id].inventory.Coin.uses -= 1
-        if (userData[message.author.id].inventory.Coin.uses < 1) {
-            userData[message.author.id].inventory.Coin.amount -= 1
-            userData[message.author.id].inventory.Coin.uses = shopData.Coin.uses
+        userData[message.author.id].inventory.coin.uses -= 1
+        if (userData[message.author.id].inventory.coin.uses < 1) {
+            userData[message.author.id].inventory.coin.amount -= 1
+            userData[message.author.id].inventory.coin.uses = shopData.coin.uses
         }
 
         var randNumber = randomNumber(0, userData[message.author.id].cash - 1)

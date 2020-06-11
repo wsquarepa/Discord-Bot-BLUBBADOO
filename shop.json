@@ -1,5 +1,5 @@
 {
-    "Knife":{
+    "knife":{
         "price":100,
         "image":"🔪",
         "description":"A knife to rob and hunt with.",
@@ -7,35 +7,35 @@
         "usable":false
     },
 
-    "Coin":{
+    "coin":{
         "price":20,
         "image":"©️",
         "uses":1,
         "usable":false
     },
 
-    "Lock":{
+    "lock":{
         "price":3000,
         "image":"🔒",
         "uses":1,
         "usable":true
     },
 
-    "Magnif":{
+    "magnif":{
         "price":50,
         "image":"🔍",
         "uses":3,
         "useable":false
     },
 
-    "Fishingrod":{
+    "fishingrod":{
         "price":100,
         "image":"🎣",
         "uses":10,
         "useable":false
     },
 
-    "Cage":{
+    "cage":{
         "price":200,
         "image":"cage",
         "uses":20,

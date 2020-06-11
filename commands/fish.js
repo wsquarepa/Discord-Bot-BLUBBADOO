@@ -26,15 +26,15 @@ module.exports = {
     aliases: ['rod'],
     cooldown: 45,
 	execute(message, args, mention) {
-        if (userData[message.author.id].inventory["Fishingrod"] == null || userData[message.author.id].inventory["Fishingrod"] < 1) {
-            message.channel.send(embed("Error", "How do you suppose you fish without a Fishingrod?", "ff0000"))
+        if (userData[message.author.id].inventory["fishingrod"] == null || userData[message.author.id].inventory["fishingrod"] < 1) {
+            message.channel.send(embed("Error", "How do you suppose you fish without a fishingrod?", "ff0000"))
             return
         }
 
-        userData[message.author.id].inventory.Fishingrod.uses -= 1
-        if (userData[message.author.id].inventory.Fishingrod.uses < 1) {
-            userData[message.author.id].inventory.Fishingrod.amount -= 1
-            userData[message.author.id].inventory.Fishingrod.uses = shopData.Fishingrod.uses
+        userData[message.author.id].inventory.fishingrod.uses -= 1
+        if (userData[message.author.id].inventory.fishingrod.uses < 1) {
+            userData[message.author.id].inventory.fishingrod.amount -= 1
+            userData[message.author.id].inventory.fishingrod.uses = shopData.fishingrod.uses
         }
 
         var msg = new discord.Message()

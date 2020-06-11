@@ -26,15 +26,15 @@ module.exports = {
     aliases: ['cage'],
     cooldown: 45,
 	execute(message, args, mention) {
-        if (userData[message.author.id].inventory["Cage"] == null || userData[message.author.id].inventory["Cage"] < 1) {
-            message.channel.send(embed("Error", "How do you suppose you crab without a Cage?", "ff0000"))
+        if (userData[message.author.id].inventory["cage"] == null || userData[message.author.id].inventory["cage"] < 1) {
+            message.channel.send(embed("Error", "How do you suppose you crab without a cage?", "ff0000"))
             return
         }
 
-        userData[message.author.id].inventory.Cage.uses -= 1
-        if (userData[message.author.id].inventory.Cage.uses < 1) {
-            userData[message.author.id].inventory.Cage.amount -= 1
-            userData[message.author.id].inventory.Cage.uses = shopData.Cage.uses
+        userData[message.author.id].inventory.cage.uses -= 1
+        if (userData[message.author.id].inventory.cage.uses < 1) {
+            userData[message.author.id].inventory.cage.amount -= 1
+            userData[message.author.id].inventory.cage.uses = shopData.cage.uses
         }
 
         var msg = new discord.Message()
