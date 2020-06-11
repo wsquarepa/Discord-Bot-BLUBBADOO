@@ -12,12 +12,14 @@ module.exports = {
     execute(message, args, mention) {
         if (args.join(" ").length < 10) {
             message.channel.send("Sorry, but reports require at least 10 characters. \n Please do not misuse this feature, because you can be banned from the bot.")
+            return
         }
 
         const embed = new Discord.MessageEmbed()
-            .setTitle('New report from ' + message.author.tag + "! id:" + message.author.id)
+            .setTitle('New report from ' + message.author.tag)
             .setDescription(args.join(" "))
-            .setColor('#0000ff');
+            .setColor('#0000ff')
+            .setFooter("User id: " + message.author.id)
 
         webhookClient.send({
             username: 'Blubbadoo Reports',
