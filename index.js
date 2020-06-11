@@ -44,7 +44,6 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-
 	if (!message.author.id == "509874745567870987" && modeOfUser.testMode) return
 
 	botData.messagesRecieved++
