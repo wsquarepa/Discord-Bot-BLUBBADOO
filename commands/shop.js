@@ -17,7 +17,6 @@ module.exports = {
         var keys = Object.keys(shopData)
         var itemString = ""
         for (var i = 0; i < keys.length; i++) {
-            console.log(shopData[keys[i]].image.length)
             itemString += (shopData[keys[i]].image.length > 2? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) + 
             " " + keys[i] + " - $" + shopData[keys[i]].price + "\n \n"
         }
