@@ -87,8 +87,10 @@ client.on('message', message => {
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 			userData[message.author.id].xp = 0
 			userData[message.author.id].level += 1
-			userData[message.author.id].gems += 1
-			userData[message.author.id].xpUntil = userData[message.author.id].xpUntil * 2
+			if (userData[message.author.id].level % 5 == 0) {
+				userData[message.author.id].gems += 1
+			}
+			userData[message.author.id].xpUntil += 10
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
 				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
 		}
@@ -187,18 +189,18 @@ client.on('guildCreate', function(guild) {
 		permissionOverwrites: [
 			{
 				id: guild.roles.everyone.id,
-				deny: ['VIEW_CHANNEL'],
+				deny: ['SEND_MESSAGES'],
 			},
 			{
-				id: guild.owner.id,
-				allow: ['VIEW_CHANNEL'],
-			},
+				id: client.user.id,
+				allow: ['SEND_MESSAGES']
+			}
 		]}).then(function(channel) {
 		var embed = new Discord.MessageEmbed()
 		embed.setTitle("Thank you!")
 		embed.setDescription("I appreciate that you added me! Thank you again. \n" + 
 			"If you don't know how to use me, then please do ==help. \n" + 
-			"Not joking, Blubbadoo actually needs **ADMINISTRATOR** permissions, otherwise some commands will not be available.")
+			"Blubbadoo needs **ADMINISTRATOR** permissions, otherwise some commands will not be available.")
 		embed.setFooter("This message and channel will self destruct in 1 minute.")
 		channel.send(embed).then(() => {
 			setTimeout(function() {
