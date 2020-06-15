@@ -97,11 +97,11 @@ client.on('message', message => {
 
 		userData[message.author.id].cash += userData[message.author.id].level
 
+		var netWorth = userData[message.author.id].cash + userData[message.author.id].bank
 		if (!userData[message.author.id].nextGemCashGoal) {
-			userData[message.author.id].nextGemCashGoal = 5000
+			userData[message.author.id].nextGemCashGoal = (netWorth - (netWorth % 5000)) + 5000
 		}
 
-		var netWorth = userData[message.author.id].cash + userData[message.author.id].bank
 		if (netWorth > userData[message.author.id].nextGemCashGoal) {
 			userData[message.author.id].gems += 1
 			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + userData[message.author.id].nextGemCashGoal + "!")
