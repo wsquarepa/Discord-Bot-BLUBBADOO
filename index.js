@@ -44,7 +44,7 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-	if (message.author.id != "509874745567870987" && modeOfUser.testMode) return
+	//if (message.author.id != "509874745567870987" && modeOfUser.testMode) return
 
 	botData.messagesRecieved++
 	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
@@ -97,15 +97,16 @@ client.on('message', message => {
 
 		userData[message.author.id].cash += userData[message.author.id].level
 
+		if (!userData[message.author.id].nextGemCashGoal) {
+			userData[message.author.id].nextGemCashGoal = 5000
+		}
+
 		var netWorth = userData[message.author.id].cash + userData[message.author.id].bank
-		var offSet = netWorth % 1000
-
-		var netRound = netWorth - offSet
-
-		if (netRound % 5000 == 0) {
+		if (netWorth > userData[message.author.id].nextGemCashGoal) {
 			userData[message.author.id].gems += 1
-			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + netRound + "!")
+			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + userData[message.author.id].nextGemCashGoal + "!")
 				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+				userData[message.author.id].nextGemCashGoal += 5000
 		}
 
 		if (!isEmpty(userData[message.author.id].pet)) {
