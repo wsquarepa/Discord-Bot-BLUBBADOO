@@ -123,7 +123,7 @@ client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {
-		message.channel.send("Uh oh, you've been banned from using me. Ask a bot dev for more info.")
+		message.channel.send("Uh oh, you've been banned from using me. Ask a bot developer for more info.")
 		return
 	}
 

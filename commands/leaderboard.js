@@ -26,7 +26,7 @@ module.exports = {
         Object.assign(dict, userData)
 
         for (var i = 0; i < keys.length; i++) {
-            if (dict[keys[i]].account.type.toLowerCase() == "admin") {
+            if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned") {
                 delete dict[keys[i]]
             }
         }

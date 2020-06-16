@@ -1,0 +1,45 @@
+var userData = require('../userData.json')
+const fs = require('fs');
+const discord = require("discord.js")
+
+module.exports = {
+    name: 'give',
+	description: 'Give money to someone!',
+    args: true,
+    usage: '<@user> <amount>',
+    guildOnly: true,
+    aliases: ['giveMoney'],
+    cooldown: 0,
+	execute(message, args, mention) {
+        if (!mention) {
+            message.channel.send("@mention someone please.")
+            return
+        }
+        
+        if (!userData[mention.id]) {
+            message.channel.send("Sorry, but that user doesn't have a bank account yet.")
+            return
+        }
+
+        var user = userData[message.author.id]
+
+        if (parseInt(args[1]) > user.cash) {
+            message.channel.send("You don't have enough **cash** to give.")
+            return
+        }
+
+        if (parseInt(args[1]) < 1000) {
+            message.channel.send("You have to give **at least** $1000 from your cash.")
+            return
+        }
+
+        var cashAmt = parseInt(args[1])
+
+        userData[mention.id].bank += cashAmt
+        userData[message.author.id].cash -= cashAmt
+
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+
+        message.channel.send("Successfully gave " + mention.username + " $" + cashAmt + ". It is now in their bank.")
+    }
+}
