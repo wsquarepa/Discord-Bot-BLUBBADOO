@@ -56,6 +56,7 @@ module.exports = {
         }
 
         message.channel.send(embed("STATS", "**Last 5 used commands:** \n " + leaderString + 
-        "\n **Number of chat messages recieved:** \n" + botData.messagesRecieved, "fffffa"))
+        "\n **Number of chat messages recieved:** \n" + botData.messagesRecieved + 
+        "\n **Bot Guilds:** " + message.client.guilds.cache.size, "fffffa"))
     }
 }
