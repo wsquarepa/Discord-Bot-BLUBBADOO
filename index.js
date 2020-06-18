@@ -106,7 +106,7 @@ client.on('message', message => {
 			userData[message.author.id].gems += 1
 			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + userData[message.author.id].nextGemCashGoal + "!")
 				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
-				userData[message.author.id].nextGemCashGoal += 5000
+				userData[message.author.id].nextGemCashGoal += 10000
 		}
 
 		if (!isEmpty(userData[message.author.id].pet)) {
