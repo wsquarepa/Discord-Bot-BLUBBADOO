@@ -52,6 +52,32 @@ module.exports = {
             userData[message.author.id].account.secured = true
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
             message.channel.send("Ok, account secured!")
+        } else if (args[0].toLowerCase() == "moneydoubler") {
+
+            if (userData[message.author.id].inventory.moneydoubler.amount < 1) {
+                message.channel.send("You don't got any of those.")
+                return
+            }
+
+            message.channel.send("If you want to double your **cash**, say \"yes\". Otherwise say anything else.")
+
+            var collector = new discord.MessageCollector(message.channel, m => m.author == message.author, {time: 10000})
+            collector.on('collect', msg => {
+                collector.stop()
+                if (msg.content.toLowerCase() == "yes") {
+                    message.channel.send("Ok, doubling your **cash**...")
+                    userData[message.author.id].inventory.moneydoubler.amount -= 1
+                    userData[message.author.id].cash += userData[message.author.id].cash
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    message.channel.send("Ok, action complete!")
+                } else {
+                    message.channel.send("Welp, maybe sometime else huh?")
+                }
+            })
+
+            collector.once("end", () => {
+                message.channel.send("Collect End.")
+            })
         }
     }
 }

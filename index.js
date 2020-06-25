@@ -44,7 +44,7 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-	//if (message.author.id != "509874745567870987" && modeOfUser.testMode) return
+	if (message.author.id != "509874745567870987" && modeOfUser.testMode) return
 
 	botData.messagesRecieved++
 	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)

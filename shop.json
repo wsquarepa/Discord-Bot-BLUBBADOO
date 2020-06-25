@@ -14,14 +14,6 @@
         "usable":false
     },
 
-    "lock":{
-        "price":-1,
-        "image":"🔒",
-        "uses":1,
-        "usable":true,
-        "gems":1
-    },
-
     "magnif":{
         "price":50,
         "image":"🔍",

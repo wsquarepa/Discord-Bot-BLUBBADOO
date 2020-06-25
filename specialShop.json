@@ -1,0 +1,15 @@
+{
+    "lock":{
+        "price":2,
+        "image":"🔒",
+        "uses":1,
+        "useable":true
+    },
+
+    "moneydoubler":{
+        "price":25,
+        "image":"725818375519076462",
+        "uses":1,
+        "useable":true
+    }
+}
