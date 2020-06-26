@@ -46,8 +46,7 @@ module.exports = {
         message.channel.send("Okie, fishing...").then(m => msg = m)
         setTimeout(function() {
             var earnings = randomNumber(20, 100)
-            msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟")
-            message.channel.send("You sell it for $" + earnings)
+            msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
             userData[message.author.id].cash += earnings
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
         }, 3000)
