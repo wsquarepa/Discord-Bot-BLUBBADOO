@@ -35,10 +35,10 @@ module.exports = {
         var earnings = 0
         var gems = false
         try {
-            earnings = Math.floor(shopData[itemName].price * 0.8)
+            earnings = Math.floor(shopData[itemName].price * amount * 0.8)
         } catch {
             try {
-                earnings = specialShopData[itemName].price
+                earnings = specialShopData[itemName].price * amount
                 gems = true
             } catch {
                 message.channel.send("That must be an outdated item, as it doesn't exist in either shops.")
