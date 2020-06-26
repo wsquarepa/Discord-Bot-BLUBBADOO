@@ -1,9 +1,9 @@
 {
     "knife":{
-        "price":100,
+        "price":20,
         "image":"🔪",
         "description":"A knife to rob and hunt with.",
-        "uses":5,
+        "uses":1,
         "usable":false
     },
 
@@ -17,7 +17,7 @@
     "magnif":{
         "price":50,
         "image":"🔍",
-        "uses":3,
+        "uses":1,
         "useable":false
     },
 
@@ -31,7 +31,7 @@
     "cage":{
         "price":200,
         "image":"716687378126864446",
-        "uses":20,
+        "uses":10,
         "useable":false
     }
 }
