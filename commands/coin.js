@@ -26,30 +26,30 @@ module.exports = {
                 color: "ff0000"
             })
             message.channel.send(embed)
-            return
+            return false
         }
 
         if (args[0] === null || args[0] != "heads" && args[0] != "tails") {
             message.channel.send("Enter heads or tails next time.")
-            return
+            return false
         }
 
         args[1] = parseInt(args[1])
         if (!args[1]) {
             message.channel.send("You gotta bet **SOMETHING**")
-            return
+            return false
         }
 
         if (args[1] == NaN) {
             message.channel.send("I'm not sure how you're going to bet that.")
-            return
+            return false
         }
 
         var bet = args[1]
 
         if (bet > userData[message.author.id].cash) {
             message.channel.send("Hey, you can't bet more than you have on hand.")
-            return
+            return false
         }
 
         userData[message.author.id].inventory.coin.uses -= 1

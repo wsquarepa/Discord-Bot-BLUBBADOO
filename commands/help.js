@@ -32,7 +32,8 @@ module.exports = {
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
         if (!command) {
-            return message.reply('that\'s not a valid command!');
+            message.reply('that\'s not a valid command!');
+            return false
         }
 
         data.push(`**Name:** ${command.name}`);
@@ -41,7 +42,7 @@ module.exports = {
         if (command.description) data.push(`**Description:** ${command.description}`);
         if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
 
-        data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
+        data.push(`**Cooldown:** ${command.cooldown || 1} second(s)`);
 
         message.channel.send(data, { split: true });
 	},

@@ -28,7 +28,7 @@ module.exports = {
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory["fishingrod"] == null) {
             message.channel.send(embed("Error", "How do you suppose you fish without a fishingrod?", "ff0000"))
-            return
+            return false
         }
 
         userData[message.author.id].inventory.fishingrod.uses -= 1

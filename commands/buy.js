@@ -19,6 +19,7 @@ module.exports = {
             keys = Object.keys(specialShopData)
             if (!keys.includes(args[0])) {
                 message.channel.send("That's not an item from either shops.")
+                return false
             }
 
             if (args[1] == null) {
@@ -29,7 +30,7 @@ module.exports = {
 
             if (specialShopData[args[0]].price * args[1] > userData[message.author.id].gems) {
                 message.channel.send("You obviously can't buy that. Get more **GEMS**.")
-                return
+                return false
             }
 
             userData[message.author.id].gems -= specialShopData[args[0]].price * args[1]
@@ -48,7 +49,7 @@ module.exports = {
             embed.setColor("00ff00")
             embed.setFooter("Sorry for the grammar it's hard ok?")
             message.channel.send(embed)
-            return
+            return true
         }
 
         if (args[1] == null) {
@@ -59,13 +60,13 @@ module.exports = {
 
         if (shopData[args[0]].price * args[1] > userData[message.author.id].cash) {
             message.channel.send("You obviously can't buy that. Get more **CASH**.")
-            return
+            return false
         }
 
         if (shopData[args[0]].price == -1) {
             if (shopData[args[0]].gems * args[1] > userData[message.author.id].gems) {
                 message.channel.send("You obviously can't buy that. Get more **GEMS**.")
-                return
+                return false
             }
             userData[message.author.id].gems -= shopData[args[0]].gems * args[1]
             if (userData[message.author.id].inventory[args[0]]) {
@@ -83,7 +84,7 @@ module.exports = {
             embed.setColor("00ff00")
             embed.setFooter("Sorry for the grammar it's hard ok?")
             message.channel.send(embed)
-            return
+            return true
         }
 
         userData[message.author.id].cash -= shopData[args[0]].price * args[1]

@@ -41,6 +41,7 @@ for (const file of commandFiles) {
 
 client.once("ready", function () {
 	console.log("Bot logged in!")
+	if (modeOfUser.testMode) client.user.setActivity({name: "In test mode", type: "CUSTOM_STATUS"})
 })
 
 client.on('message', message => {
@@ -186,9 +187,12 @@ client.on('message', message => {
 	}
 
 	try {
-		command.execute(message, args, mention) 
-		timestamps.set(message.author.id, now);
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);	
+		var success = command.execute(message, args, mention) 
+		if (success == null) success = true
+		if (success) {
+			timestamps.set(message.author.id, now);
+			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);	
+		}
 	} catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');

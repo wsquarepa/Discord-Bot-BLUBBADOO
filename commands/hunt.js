@@ -19,7 +19,7 @@ module.exports = {
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory["knife"] == null || userData[message.author.id].inventory["knife"].amount < 1) {
             message.channel.send("How do you suppose you hunt without a knife?")
-            return
+            return false
         }
 
         userData[message.author.id].inventory.knife.uses -= 1

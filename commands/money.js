@@ -14,8 +14,8 @@ module.exports = {
         if (mention) {
             
             if (mention.bot) {
-                message.channel.send("Are you crazy the bot obviously doesn't have money")
-                return;
+                message.channel.send("Fortunatley, bots obviously doesn't have money")
+                return false;
             }
 
             var cash = userData[mention.id].cash

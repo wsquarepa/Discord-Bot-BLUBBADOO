@@ -12,7 +12,7 @@ module.exports = {
     execute(message, args, mention) {
         if (args.join(" ").length < 10) {
             message.channel.send("Sorry, but reports require at least 10 characters. \n Please do not misuse this feature, because you can be banned from the bot.")
-            return
+            return false
         }
 
         const embed = new Discord.MessageEmbed()

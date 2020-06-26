@@ -14,7 +14,7 @@ module.exports = {
             var embedJSON = JSON.parse(json)
         } catch {
             message.channel.send("Whoops! That's not valid JSON!")
-            return
+            return false
         }
 
         var embed = new discord.MessageEmbed(embedJSON)

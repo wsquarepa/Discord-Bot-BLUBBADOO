@@ -40,7 +40,7 @@ module.exports = {
         collector.on('end', function () {
             if (players.length == 1) {
                 message.channel.send("Not enough people joined.")
-                return
+                return false
             }
             message.channel.send("Ok. " + players.length.toString() + " players joined.").then(function () {
                 message.channel.send("So, the point of this game is to guess the sentence first, and the first to guess it earns $250 in their cash! \n" +

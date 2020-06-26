@@ -19,7 +19,7 @@ module.exports = {
 	execute(message, args, mention) {
         if ((userData[message.author.id].cash - 100) < 0) {
             message.channel.send("You can't play this game without at least $100 in cash.")
-            return
+            return false
         }
 
         var number1 = randomNumber(1, 100)
@@ -35,12 +35,12 @@ module.exports = {
                 parseInt(message.content)
             } catch {
                 message.channel.send("Enter a number.");
-                return
+                return false
             }
 
             if (parseInt(message.content) == NaN) {
                 message.channel.send("Enter a number.");
-                return
+                return false
             }
 
             if (parseInt(message) == (number1 + number2)) {

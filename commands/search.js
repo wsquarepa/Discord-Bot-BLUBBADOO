@@ -28,7 +28,7 @@ module.exports = {
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
-            return
+            return false
         }
         
         userData[message.author.id].inventory.magnif.uses -= 1
@@ -39,7 +39,7 @@ module.exports = {
 
         if (userData[message.author.id].cash < 500) {
             message.channel.send("You gotta have at least $500 to search.")
-            return
+            return false
         }
 
         var locations = ['backyard', 'house', 'trash can', 'basement', 'code', 'math homework', 'authy', 'nowhere', 'everywhere']
@@ -99,13 +99,14 @@ module.exports = {
                     message.channel.send("YOU SCOUR EVERYWHERE, BUT WHOOPS! YOU DROP $" + Math.abs(earnings) + "!")
                 } else {
                     message.channel.send(embed("Error", "An error occured while trying to process your request. Please try again.", 'ff0000'))
-                    return
+                    return false
                 }
                 userData[message.author.id].cash += earnings
                 fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                 return
             } else {
                 message.channel.send("You do realize that that's not a choice.")
+                return false
             }
         })
     }

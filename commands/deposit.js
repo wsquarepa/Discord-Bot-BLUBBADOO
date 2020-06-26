@@ -12,7 +12,7 @@ module.exports = {
 	execute(message, args, mention) {
         if (args[0] == null) {
             message.channel.send("Next time, tell me what you want to put in the bank.")
-            return
+            return false
         }
         args[0] = args[0].trim()
         if (args[0] == "all") {
@@ -21,7 +21,7 @@ module.exports = {
         } else if (args[0] != null) {
             if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
                 message.channel.send("You can't deposit more than you have.")
-                return;
+                return false;
             }
             userData[message.author.id].bank += parseInt(args[0])
             userData[message.author.id].cash -= parseInt(args[0])

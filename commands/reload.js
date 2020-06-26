@@ -9,7 +9,8 @@ module.exports = {
 	execute(message, args, mention) {
 
         if (!admins.includes(message.author.id)) {
-            return message.reply("Sorry, you can't execute that command.")
+			message.reply("Sorry, you can't execute that command.")
+			return false
         }
 
 		const commandName = args[0].toLowerCase();
@@ -17,7 +18,8 @@ module.exports = {
 			|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 		if (!command) {
-			return message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
+			message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
+			return false
 		}
 
 		delete require.cache[require.resolve(`./${command.name}.js`)];

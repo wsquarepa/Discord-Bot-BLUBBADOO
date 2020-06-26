@@ -26,7 +26,7 @@ module.exports = {
             
             if (userData[message.author.id].gems < args[1]) {
                 message.channel.send("You don't have enough gems to use... try leveling up!")
-                return
+                return false
             }
 
             message.channel.send("Ok, using " + args[1] + " " + args[0] + (args[1] > 1? "s":"") + " ...")
@@ -39,12 +39,12 @@ module.exports = {
 
             if (userData[message.author.id].account.secured == true) {
                 message.channel.send("Your account is already secured, there's no point re-securing it.")
-                return
+                return false
             }
 
             if (userData[message.author.id].inventory.lock.amount < 1) {
                 message.channel.send("You don't got any locks.")
-                return
+                return false
             }
 
             message.channel.send("Ok, locking your account...")
@@ -56,7 +56,7 @@ module.exports = {
 
             if (userData[message.author.id].inventory.moneydoubler.amount < 1) {
                 message.channel.send("You don't got any of those.")
-                return
+                return false
             }
 
             message.channel.send("If you want to double your **cash**, say \"yes\". Otherwise say anything else.")

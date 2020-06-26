@@ -20,12 +20,12 @@ module.exports = {
         var options = ["rock", "paper", "scissors"]
         if (args[0] == null) {
             message.channel.send("Next time, tell me what you want to bet.")
-            return
+            return false
         }
         args[0] = args[0].trim()
         if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
-            message.channel.send("Ya can't bet more than you have on hand.")
-            return
+            message.channel.send("You can't bet more than you have on hand.")
+            return false
         }
         message.channel.send("Choose `rock`, `paper` or `scissors`.")
         const collector = new discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {
@@ -35,8 +35,8 @@ module.exports = {
         collector.on('collect', message => {
             collector.stop("Collect end")
             if (!options.includes(message.content.toLowerCase())) {
-                message.channel.send("Wat you thinking that's not an option")
-                return
+                message.channel.send("Option not recognised, try again.")
+                return false
             }
             var compOpt = options[randomNumber(1, 3) - 1]
             message.channel.send("I choose " + compOpt + ".")

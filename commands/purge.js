@@ -23,8 +23,6 @@ module.exports = {
                 args[0] = 100
             }
     
-            console.log(args[0])
-    
             message.channel.bulkDelete(args[0], true).catch(function(error) {
                 console.error(error)
                 message.channel.send("Uh oh, it seems like I don't have permissions to do that!")

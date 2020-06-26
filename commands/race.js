@@ -34,22 +34,22 @@ module.exports = {
 
         if (mention == null) {
             message.channel.send("Please mention someone next time.")
-            return;
+            return false;
         }
 
         if (mention.id == message.author.id) {
             message.channel.send("What's the point in racing yourself? You'd tie anyway.")
-            return
+            return false
         }
 
         if (mention.bot) {
             message.channel.send("You do realize that the bot would win, right?")
-            return
+            return false
         }
 
         if (mention.presence.status == "offline") {
-            message.channel.send("I don't think you'd like it if someone tried to race you while you were offline.")
-            return
+            message.channel.send("There's no point trying to race someone offline; they won't be able to say \"yes\".")
+            return false
         }
 
         message.channel.send("Are you ready, <@" + mention.id + ">?")

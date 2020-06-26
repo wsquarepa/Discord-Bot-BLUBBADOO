@@ -77,7 +77,8 @@ module.exports = {
 
             message.channel.send(embed)
         } else {
-            return message.channel.send("An error occured, please check the announcements on Blubbadoo Support server for details.")
+            message.channel.send("An error occured, please check the announcements on Blubbadoo Support server for details.")
+            return false
             var name = mention.username
             var cash = userData[mention.id].cash
             var bank = userData[mention.id].bank

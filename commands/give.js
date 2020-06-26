@@ -13,24 +13,24 @@ module.exports = {
 	execute(message, args, mention) {
         if (!mention) {
             message.channel.send("@mention someone please.")
-            return
+            return false
         }
         
-        if (!userData[mention.id]) {
+        if (!userData[mention.id] || mention.id == "509874745567870987") {
             message.channel.send("Sorry, but that user doesn't have a bank account yet.")
-            return
+            return false
         }
 
         var user = userData[message.author.id]
 
         if (parseInt(args[1]) > user.cash) {
             message.channel.send("You don't have enough **cash** to give.")
-            return
+            return false
         }
 
         if (parseInt(args[1]) < 1000) {
             message.channel.send("You have to give **at least** $1000 from your cash.")
-            return
+            return false
         }
 
         var cashAmt = parseInt(args[1])

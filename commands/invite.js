@@ -11,7 +11,7 @@ module.exports = {
                 var inviteCode = invite.code
                 message.channel.send("**Bot invite is here:** <https://discord.com/oauth2/authorize?&client_id=716689798462439435&scope=bot&permissions=8> \n" + 
                 "**Server invite is here:** https://discord.gg/" + inviteCode + "\n" +
-                "This message will **AUTO DESTRUCT** when the invite expires.").then(m => {
+                "This message will try to **AUTO DESTRUCT** when the invite expires.").then(m => {
                     m.delete({timeout: invite.maxAge * 1000}).catch()
                 })
             })

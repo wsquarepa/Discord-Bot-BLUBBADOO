@@ -27,24 +27,24 @@ module.exports = {
 
         if (mention == null) {
             message.channel.send("You gotta tell me who you wanna rob.")
-            return
+            return false
         }
-        if (!userData[mention.id]) {
+        if (!userData[mention.id] || mention.id == "509874745567870987") {
             message.channel.send("That person doesn't have a bank account yet.")
-            return;
+            return false;
         }
         if (message.author.id == mention.id) {
             message.channel.send("Why would you like to rob yourself? You don't earn anything anyway.")
-            return
+            return false
         }
         if (userData[message.author.id].cash < 4000) {
             message.channel.send("You cannot rob someone without at least $4000 in cash.")
-            return
+            return false
         }
 
         if (userData[message.author.id].inventory["knife"] == null || userData[message.author.id].inventory["knife"].amount < 1) {
-            message.channel.send(embed("Error", "Try to rob without a knife to defend yourself? **FAIL!**", "ff0000"))
-            return
+            message.channel.send(embed("Error", "Please buy a knife before robbing someone.", "ff0000"))
+            return false
         }
 
         userData[message.author.id].inventory.knife.amount -= 1
@@ -55,7 +55,7 @@ module.exports = {
                 var earnings = userData[message.author.id].cash * 0.5
                 earnings = Math.round(earnings)
                 userData[message.author.id].cash -= earnings
-                userData[mention.id].cash += earnings
+                userData[mention.id].bank += earnings
                 message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack " + mention.username + "! You were fined $" + earnings + ".")
                 mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
                 userData[mention.id].account.secured = false
@@ -64,7 +64,7 @@ module.exports = {
             }
             var earnings = userData[mention.id].cash * 0.40
             earnings = Math.round(earnings)
-            serData[message.author.id].cash += earnings
+            serData[message.author.id].bank += earnings
             userData[mention.id].cash -= earnings
             message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
             mention.send("Oh no! " + message.author.username + " robbed you, and earned $" + earnings + " off of you!")
@@ -73,7 +73,7 @@ module.exports = {
             var earnings = userData[message.author.id].cash * 0.5
             earnings = Math.round(earnings)
             userData[message.author.id].cash -= earnings
-            userData[mention.id].cash += earnings
+            userData[mention.id].bank += earnings
             message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined $" + earnings + ".")
             mention.send("Oh no! " + message.author.username + " **TRIED** to rob you, but failed. You got $" + earnings + "!")
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
