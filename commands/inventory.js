@@ -20,8 +20,11 @@ module.exports = {
         } else {
             var itemString = ""
             for (var i = 0; i < keys.length; i++) {
-                itemString += keys[i] + " - " + userInv[keys[i]].amount + "\n \n"
+                if (!userInv[keys[i]].amount < 1) {
+                    itemString += keys[i] + " - " + userInv[keys[i]].amount + "\n \n"
+                }
             }
+
             if (itemString == "") {
                 embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("ff0000")
                 message.channel.send(embed)
