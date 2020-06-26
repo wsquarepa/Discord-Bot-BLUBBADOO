@@ -51,7 +51,7 @@ module.exports = {
         else 
             userData[message.author.id].cash += earnings
         
-        message.channel.send("You sold " + amount + " " + itemName + "(s) for $" + earnings)
+        message.channel.send("You sold " + amount + " " + itemName + "(s) for " + (gems? "💎 ":"$") + earnings)
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
     }
 }
