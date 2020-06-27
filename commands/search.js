@@ -109,5 +109,11 @@ module.exports = {
                 return false
             }
         })
+
+        collector.on('end', function(collectMsgs) {
+            if (collectMsgs.size < 1) {
+                message.channel.send("You were too slow to answer.")
+            }
+        })
     }
 }

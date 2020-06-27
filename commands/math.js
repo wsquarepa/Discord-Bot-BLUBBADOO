@@ -55,5 +55,10 @@ module.exports = {
 
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
         })
+        collector.on('end', function(collectMsgs) {
+            if (collectMsgs.size < 1) {
+                message.channel.send("You were too slow to answer.")
+            }
+        })
     }
 }
