@@ -145,8 +145,8 @@ client.on('message', message => {
 		}
 	}
 
-	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
+	var command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	
 	if (!command) return;
 
 	//#region - Here is the command tracking. 
@@ -195,7 +195,7 @@ client.on('message', message => {
 		}
 	} catch (error) {
 		console.error(error);
-		message.reply('there was an error trying to execute that command!');
+		message.reply('There was an error trying to execute that command!');
 	}
 });
 

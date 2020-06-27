@@ -17,15 +17,8 @@ module.exports = {
                 description: "`" + commands.map(command => command.name).join('`, `') + "`"
             }).setFooter(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`)
             
-            return message.author.send(embed)
-                .then(() => {
-                    if (message.channel.type === 'dm') return;
-                    message.reply('I\'ve sent you a DM with all my commands!');
-                })
-                .catch(error => {
-                    console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
-                });
+            message.channel.send(embed)
+            return;
         }
 
         const name = args[0].toLowerCase();
