@@ -5,6 +5,7 @@ module.exports = {
 	name: 'reload',
 	description: 'Reloads a command, You must be a bot admin to execute this command.',
 	args: true,
+	usage:'[command name]',
 	aliases: ['update'],
 	execute(message, args, mention) {
 

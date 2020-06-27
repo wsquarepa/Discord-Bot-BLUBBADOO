@@ -66,7 +66,7 @@ module.exports = {
         const name = args[0].toLowerCase();
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
-        if (!command || command.name == "sudo") {
+        if (!command || command.name == "sudo" || command.name == "reload") {
             message.reply('that\'s not a valid command!');
             return false
         }
