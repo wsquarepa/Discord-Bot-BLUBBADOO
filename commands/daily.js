@@ -21,8 +21,10 @@ module.exports = {
             userData[message.author.id].account.daily.streak = -1
             userData[message.author.id].account.daily.previousAmt = 0
         }
-        userData[message.author.id].account.daily.streak += 1
-        var randNum = randomNumber(20, 30)
+        var max = userData[message.author.id].account.daily.streak == 30? true:false
+        if (!max) userData[message.author.id].account.daily.streak += 1
+        var randNum = 0
+        if (!max) randNum = randomNumber(10, 20)
         var earnings = 1500 + userData[message.author.id].account.daily.previousAmt + (randNum * userData[message.author.id].account.daily.streak)
         userData[message.author.id].account.daily.previousAmt += (randNum * userData[message.author.id].account.daily.streak)
         userData[message.author.id].cash += earnings
@@ -31,7 +33,9 @@ module.exports = {
             description: `You got $${earnings} as a daily gift!`,
             color: "00ff00"
         })
-        embed.setFooter(`Streak: ${userData[message.author.id].account.daily.streak} day(s). (+$${userData[message.author.id].account.daily.previousAmt})`)
+
+        var streakText = `${max? "MAX":`${userData[message.author.id].account.daily.streak} day(s)`}`
+        embed.setFooter(`Streak: ${streakText}. (+$${userData[message.author.id].account.daily.previousAmt})`)
         message.channel.send(embed)
         userData[message.author.id].account.daily.expires = new Date().getTime() + 1000 * 60 * 60 * (24 + 24)
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
