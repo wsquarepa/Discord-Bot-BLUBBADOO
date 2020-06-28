@@ -9,7 +9,7 @@ module.exports = {
     aliases: [],
     cooldown: 2,
 	execute(message, args, mention) {
-        var json = message.content.slice('.embed '.length)
+        var json = message.content.slice('==embed '.length)
         try {
             var embedJSON = JSON.parse(json)
         } catch {
