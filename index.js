@@ -117,6 +117,19 @@ client.on('message', message => {
 			}
 		}
 
+		//TODO: Add inventory check for <1 items.
+
+		//#region - Inv check
+
+		var keys = Object.keys(userData[message.author.id].inventory)
+		for (var i = 0; i < keys.length; i++) {
+			if (userData[message.author.id].inventory[keys[i]].amount < 1) {
+				delete userData[message.author.id].inventory[keys[i]]
+			}
+		}
+
+		//#endregion
+
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}
 	
