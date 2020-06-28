@@ -45,10 +45,15 @@ module.exports = {
         var msg = new discord.Message()
         message.channel.send("Okie, fishing...").then(m => msg = m)
         setTimeout(function() {
-            var earnings = randomNumber(20, 100)
-            msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
-            userData[message.author.id].cash += earnings
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            var chance = randomNumber(0, 2)
+            if (chance > 0) {
+                var earnings = randomNumber(20, 100)
+                msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
+                userData[message.author.id].cash += earnings
+                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            } else {
+                msg.edit("Uh oh, unfourtunatley no fish wanted you to catch them. Try again in approx 42 seconds!")
+            }
         }, 3000)
     }
 }

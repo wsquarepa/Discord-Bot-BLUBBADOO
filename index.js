@@ -50,7 +50,7 @@ client.on('message', message => {
 	botData.messagesRecieved++
 	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 
-	if (!message.author.bot) {
+	if (!message.author.bot && !modeOfUser.testMode) {
 		if (!userData[message.author.id]) {
 			userData[message.author.id] = {
 				cash: 0,
@@ -149,13 +149,13 @@ client.on('message', message => {
 	
 	if (!command) return;
 
-	//#region - Here is the command tracking. 
-
 	const now = Date.now();
-	botData[command.name].uses++
-	botData[command.name].lastUsed = now
-	fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
-
+	//#region - Here is the command tracking. 
+	if (!modeOfUser.testMode) {
+		botData[command.name].uses++
+		botData[command.name].lastUsed = now
+		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+	}
 	//#endregion
 
 	if (command.args && !args.length) {

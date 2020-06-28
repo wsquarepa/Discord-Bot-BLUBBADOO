@@ -40,10 +40,16 @@ module.exports = {
         var msg = new discord.Message()
         message.channel.send("Okie, crabbing...").then(m => msg = m)
         setTimeout(function() {
-            var earnings = randomNumber(20, 100)
-            msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
-            userData[message.author.id].cash += earnings
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            var chance = randomNumber(0, 3)
+            if (chance > 0) {
+                var earnings = randomNumber(20, 100)
+                msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
+                userData[message.author.id].cash += earnings
+                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            } else {
+                msg.edit("No crabs fell for your trap.")
+            }
+            
         }, 3000)
     }
 }
