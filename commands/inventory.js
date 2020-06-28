@@ -20,7 +20,7 @@ module.exports = {
         } else {
             var itemString = ""
             for (var i = 0; i < keys.length; i++) {
-                if (userInv[keys[i]].amount > 1) {
+                if (userInv[keys[i]].amount > 0) {
                     itemString += userInv[keys[i]].amount + " " + keys[i] + "(s) - " + userInv[keys[i]].uses + " uses for current item left." + "\n \n"
                 }
             }
