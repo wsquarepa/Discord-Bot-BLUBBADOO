@@ -14,6 +14,8 @@ module.exports = {
         msg = args.join(" ")
         message.client.channels.cache.get(channelMention).send(msg).catch(() =>
             message.channel.send("An error occured, maybe I don't have access to that channel?")
-        )
+        ).then(function() {
+            message.channel.send("👍")
+        })
     }
 }
