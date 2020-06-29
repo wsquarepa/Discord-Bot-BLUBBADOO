@@ -42,7 +42,7 @@ module.exports = {
         var chance = randomNumber(0, 3)
         var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith("==") && m.content != "==fish")
         collector.on("collect", function() {
-            message.channel.send("You can't multitask.")
+            msg.edit("You can't multitask.")
             collector.stop()
             chance = 0
             clearTimeout(timeoutkey)
