@@ -57,7 +57,7 @@ module.exports = {
                 } else {
                     userData[message.author.id].inventory["chest"] = {
                         amount: 1,
-                        uses: Infinity
+                        uses: 1
                     }
                 }
 
