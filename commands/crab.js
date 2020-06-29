@@ -49,6 +49,7 @@ module.exports = {
             return;
         })
         timeoutkey = setTimeout(function() {
+            collector.stop()
             if (chance > 0) {
                 var earnings = randomNumber(20, 100)
                 msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
