@@ -8,6 +8,14 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function embed(title, description, color) {
+    var embed = new discord.MessageEmbed()
+        .setAuthor(title)
+        .setDescription(description)
+        .setColor(color)
+    return embed
+}
+
 module.exports = {
     name: 'explore',
 	description: 'Explore for goods!',
@@ -29,10 +37,11 @@ module.exports = {
 
         message.channel.send("Exploring... Please wait...").then(m => msg = m)
 
-        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id)
+        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id && m.content.startsWith("=="))
 
         collector.on("collect", function() {
             collector.stop()
+            clearTimeout(timeout)
             msg.edit("You can't do anything while you're exploring.")
             return;
         })
