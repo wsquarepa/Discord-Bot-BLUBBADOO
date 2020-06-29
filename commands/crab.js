@@ -36,11 +36,19 @@ module.exports = {
             userData[message.author.id].inventory.cage.amount -= 1
             userData[message.author.id].inventory.cage.uses = shopData.cage.uses
         }
-
+        var timeoutkey = 0
         var msg = new discord.Message()
         message.channel.send("Okie, crabbing...").then(m => msg = m)
-        setTimeout(function() {
-            var chance = randomNumber(0, 3)
+        var chance = randomNumber(0, 3)
+        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith("==") && m.content != "==fish")
+        collector.on("collect", function() {
+            message.channel.send("You can't multitask.")
+            collector.stop()
+            chance = 0
+            clearTimeout(timeoutkey)
+            return;
+        })
+        timeoutkey = setTimeout(function() {
             if (chance > 0) {
                 var earnings = randomNumber(20, 100)
                 msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)

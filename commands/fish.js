@@ -36,11 +36,20 @@ module.exports = {
             userData[message.author.id].inventory.fishingrod.amount -= 1
             userData[message.author.id].inventory.fishingrod.uses = shopData.fishingrod.uses
         }
-
+        var timeoutkey = 0
         var msg = new discord.Message()
         message.channel.send("Okie, fishing...").then(m => msg = m)
-        setTimeout(function() {
-            var chance = randomNumber(0, 2)
+        var chance = randomNumber(0, 2)
+        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith("=="))
+        collector.on("collect", function() {
+            msg.edit("You can't multitask.")
+            collector.stop()
+            chance = 0
+            clearTimeout(timeoutkey)
+            return;
+        })
+        timeoutkey = setTimeout(function() {
+            collector.stop()
             if (chance > 0) {
                 var earnings = randomNumber(20, 100)
                 msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
