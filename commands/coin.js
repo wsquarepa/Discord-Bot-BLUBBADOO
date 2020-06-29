@@ -19,7 +19,7 @@ module.exports = {
     aliases: ['coinFlip'],
     cooldown: 70,
 	execute(message, args, mention) {
-        if (userData[message.author.id].inventory["coin"] == null || userData[message.author.id].inventory["coin"] < 1) {
+        if (userData[message.author.id].inventory["coin"] == null || userData[message.author.id].inventory["coin"].amount < 1) {
             var embed = new discord.MessageEmbed({
                 title: "Error",
                 description: "How do you suppose you filp a coin without a coin?",

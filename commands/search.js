@@ -26,7 +26,7 @@ module.exports = {
     aliases: ['find'],
     cooldown: 60,
 	execute(message, args, mention) {
-        if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif < 1) {
+        if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif.amount < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
             return false
         }
@@ -37,7 +37,7 @@ module.exports = {
             userData[message.author.id].inventory.magnif.uses = shopData.magnif.uses
         }
 
-        if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif < 1) {
+        if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif.amount < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
             return false
         }
