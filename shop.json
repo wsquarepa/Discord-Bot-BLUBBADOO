@@ -33,5 +33,19 @@
         "image":"716687378126864446",
         "uses":10,
         "useable":false
+    },
+
+    "map":{
+        "price":10,
+        "image":"🗺️",
+        "uses":1,
+        "useable":false
+    },
+
+    "key":{
+        "price":240,
+        "image":"🔑",
+        "uses":1,
+        "useable":false
     }
 }

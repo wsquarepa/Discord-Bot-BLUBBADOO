@@ -1,4 +1,5 @@
 var userData = require('../userData.json')
+const shopData = require('../shop.json')
 const fs = require('fs');
 const discord = require("discord.js")
 
@@ -78,6 +79,57 @@ module.exports = {
             collector.once("end", () => {
                 message.channel.send("Collect End.")
             })
+        } else if (args[0].toLowerCase() == "chest") {
+            if (userData[message.author.id].inventory.chest.amount < 1) {
+                message.channel.send("You don't got any of those.")
+                return false
+            }
+
+            var msg = new discord.Message()
+            message.channel.send("Opening the chest...").then(m => msg = m)
+
+            setTimeout(function(){
+                var chance = randomNumber(1, 10)
+                if (!userData[message.author.id].inventory.key || userData[message.author.id].inventory.key.amount < 1) {
+                    msg.edit("Hmm... get a key; you need one to open a chest.")
+                    return false
+                }
+
+                if (chance == 3) {
+                    msg.edit("Umm... unfourtunatley, someone already raided this chest. You keep your key though!")
+                    return;
+                }
+
+                userData[message.author.id].inventory.key.amount--
+                userData[message.author.id].inventory.chest.amount--
+
+                var cash = randomNumber(0, 5000)
+                var gems = randomNumber(0, 5)
+                var item = Object.keys(shopData)[randomNumber(0, Object.keys(shopData).length - 1)]
+
+                userData[message.author.id].cash += cash
+                userData[message.author.id].gems += gems
+
+                if (userData[message.author.id].inventory[item]) {
+                    userData[message.author.id].inventory[item].amount += 1
+                } else {
+                    userData[message.author.id].inventory[item] = {
+                        amount: 1,
+                        uses: shopData[item].uses
+                    }
+                }
+
+                var embed = new discord.MessageEmbed()
+                embed.setTitle("Chest successfully opened!")
+                embed.setDescription(`**Your earnings:**
+                **Cash:** +$${cash}
+                **Gems:** +${gems} 💎
+                **Item found:** 1 ${item}`)
+                embed.setColor("00ff00")
+                
+                msg.edit("", {embed: embed})
+                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            }, 2500)
         }
     }
 }

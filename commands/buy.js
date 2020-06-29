@@ -99,7 +99,7 @@ module.exports = {
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
         var embed = new discord.MessageEmbed()
         embed.setTitle("Success!")
-        embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`)
+        embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "(s)":""}!`)
         embed.setColor("00ff00")
         embed.setFooter("Sorry for the grammar it's hard ok?")
         message.channel.send(embed)
