@@ -11,6 +11,12 @@ function embed(title, description, color) {
     return embed
 }
 
+function randomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = {
     name: 'craft',
 	description: 'Craft items!',
@@ -192,7 +198,12 @@ module.exports = {
                             uses: craftables[args[0]].result[args[0]].uses
                         }
                     }
-                    message.channel.send("Complete! You created " + craftables[args[0]].result[args[0]].amount * args[1] + " " + args[0] + "(s). \n It's now in your inventory!")
+
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+
+                    var sendEmbed = embed("Crafting complete", "You created " + craftables[args[0]].result[args[0]].amount * args[1] + " " + args[0] + 
+                        "(s). \n It's now in your inventory!", "00ff00").setFooter("+" + (randomNumber(5, 10) * args[1]) + " EXP")
+                    message.channel.send(sendEmbed)
                 }, args[1] * 1000)
             }
         })

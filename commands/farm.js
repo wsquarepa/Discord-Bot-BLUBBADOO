@@ -14,7 +14,7 @@ module.exports = {
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: [],
+    aliases: ['harvest'],
     cooldown: 60,
 	execute(message, args, mention) {
         var earnings = randomNumber(30, 100)
