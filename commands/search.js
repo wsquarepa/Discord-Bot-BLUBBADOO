@@ -25,6 +25,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['find'],
     cooldown: 60,
+    levelRequirement: 4,
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif.amount < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
@@ -36,12 +37,7 @@ module.exports = {
             userData[message.author.id].inventory.magnif.amount -= 1
             userData[message.author.id].inventory.magnif.uses = shopData.magnif.uses
         }
-
-        if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif.amount < 1) {
-            message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
-            return false
-        }
-
+        
         if (userData[message.author.id].cash < 500) {
             message.channel.send("You gotta have at least $500 to search.")
             return false

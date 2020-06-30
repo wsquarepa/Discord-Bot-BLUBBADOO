@@ -10,6 +10,7 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 0,
+    levelRequirement: 0,
 	execute(message, args, mention) {
 
     }

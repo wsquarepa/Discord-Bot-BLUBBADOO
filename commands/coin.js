@@ -18,6 +18,7 @@ module.exports = {
     guildOnly: false,
     aliases: ['coinFlip'],
     cooldown: 70,
+    levelRequirement: 4,
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory["coin"] == null || userData[message.author.id].inventory["coin"].amount < 1) {
             var embed = new discord.MessageEmbed({

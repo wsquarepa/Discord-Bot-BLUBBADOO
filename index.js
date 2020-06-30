@@ -172,6 +172,12 @@ client.on('message', message => {
 		cooldowns.set(command.name, new Discord.Collection());
 	}
 	
+	const levelRequirement = (command.levelRequirement || 0)
+	if (userData[message.author.id].level < levelRequirement) {
+		message.reply("that command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!")
+		return
+	}
+	
 	const timestamps = cooldowns.get(command.name);
 	const cooldownAmount = (command.cooldown || 1) * 1000;
 	
@@ -211,7 +217,7 @@ client.on('guildCreate', function(guild) {
 			},
 			{
 				id: client.user.id,
-				allow: ['SEND_MESSAGES']
+				allow: ['SEND_MESSAGES', 'MANAGE_CHANNEL']
 			}
 		]}).then(function(channel) {
 		var embed = new Discord.MessageEmbed()
