@@ -49,7 +49,7 @@ client.on('message', message => {
 
 	if (!modeOfUser.testMode) {
 		botData.messagesRecieved++
-		fs.writeFile("./botData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
 	
 
