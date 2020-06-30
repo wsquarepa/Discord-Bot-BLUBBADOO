@@ -20,8 +20,8 @@ module.exports = {
     aliases: ['create', "make"],
 	execute(message, args, mention) {
 
-        if (userData[message.author.id].inventory["craftingtable"] == null || userData[message.author.id].inventory["craftingtable"].amount < 1) {
-            message.channel.send(embed("Error", "How do you suppose you craft anything without a craftingtable?", "ff0000"))
+        if (userData[message.author.id].inventory["craftingbench"] == null || userData[message.author.id].inventory["craftingbench"].amount < 1) {
+            message.channel.send(embed("Error", "How do you suppose you craft anything without a craftingbench?", "ff0000"))
             return false
         }
 
