@@ -1,8 +1,8 @@
 {
     "knife":{
         "recipie":{
-            "iron":1,
-            "wood":1,
+            "iron":4,
+            "wood":2,
             "glass":0,
             "string":0
         },
@@ -20,7 +20,7 @@
 
     "coin":{
         "recipie":{
-            "iron":1,
+            "iron":5,
             "wood":0,
             "glass":0,
             "string":0
@@ -40,8 +40,8 @@
     "magnif":{
         "recipie":{
             "iron":0,
-            "wood":1,
-            "glass":1,
+            "wood":2,
+            "glass":3,
             "string":0
         },
         "result":{
@@ -61,7 +61,7 @@
             "iron":1,
             "wood":2,
             "glass":0,
-            "string":1
+            "string":5
         },
         "result":{
             "fishingrod":{
@@ -77,7 +77,7 @@
 
     "cage":{
         "recipie":{
-            "iron":5,
+            "iron":15,
             "wood":0,
             "glass":0,
             "string":1
@@ -97,7 +97,7 @@
     "map":{
         "recipie":{
             "iron":0,
-            "wood":0,
+            "wood":5,
             "glass":0,
             "string":10
         },
@@ -115,7 +115,7 @@
 
     "key":{
         "recipie":{
-            "iron":1,
+            "iron":4,
             "wood":0,
             "glass":0,
             "string":0
@@ -134,7 +134,7 @@
 
     "axe":{
         "recipie":{
-            "iron":1,
+            "iron":5,
             "wood":2,
             "glass":0,
             "string":0
@@ -153,7 +153,7 @@
 
     "pickaxe":{
         "recipie":{
-            "iron":2,
+            "iron":10,
             "wood":2,
             "glass":0,
             "string":0

@@ -34,7 +34,7 @@ module.exports = {
             userData[message.author.id].inventory.axe.uses = shopData.axe.uses
         }
 
-        var wood = randomNumber(2, 10)
+        var wood = randomNumber(2, 4)
 
         if (userData[message.author.id].inventory["wood"]) {
             userData[message.author.id].inventory["wood"].amount += wood
