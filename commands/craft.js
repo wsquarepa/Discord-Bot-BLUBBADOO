@@ -19,6 +19,12 @@ module.exports = {
     guildOnly: false,
     aliases: ['create', "make"],
 	execute(message, args, mention) {
+
+        if (userData[message.author.id].inventory["craftingtable"] == null || userData[message.author.id].inventory["craftingtable"].amount < 1) {
+            message.channel.send(embed("Error", "How do you suppose you craft anything without a craftingtable?", "ff0000"))
+            return false
+        }
+
         var keys = Object.keys(craftables)
         const userLevel = userData[message.author.id].level
         const userGems = userData[message.author.id].gems
