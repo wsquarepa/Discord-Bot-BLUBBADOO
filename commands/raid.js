@@ -1,5 +1,6 @@
 var userData = require('../userData.json')
 const fs = require('fs');
+const shopData = require('../shop.json')
 const discord = require("discord.js")
 
 function randomNumber(min, max) {
