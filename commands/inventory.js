@@ -21,7 +21,8 @@ module.exports = {
             var itemString = ""
             for (var i = 0; i < keys.length; i++) {
                 if (!(parseInt(userInv[keys[i]].amount) < 1)) {
-                    itemString += userInv[keys[i]].amount + " " + keys[i] + "(s) - " + userInv[keys[i]].uses + " use(s) for current item left." + "\n \n"
+                    var usesDisplay =  "- " + userInv[keys[i]].uses + " use(s) for current item left."
+                    itemString += userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1? "":usesDisplay) + "\n \n"
                 }
             }
 
