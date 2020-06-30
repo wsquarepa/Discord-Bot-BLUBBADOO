@@ -159,7 +159,7 @@ module.exports = {
 
         collector.on("collect", function(msg) {
             collector.stop()
-            if (msg.content.toLowerCase() == "yes") {
+            if (msg.content.toLowerCase() == "yes" || msg.content.toLowerCase() == "ok") {
 
                 message.channel.send("Since each item you craft takes 1 second, crafting " + args[1] + " " + args[0] + "(s) will take " + args[1] + " second(s). \n" +
                 "Please wait...")
