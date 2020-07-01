@@ -12,6 +12,8 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "eslint": "^7.1.0",
+    "ffmpeg-static": "^4.2.5",
+    "opusscript": "0.0.7",
     "sentencer": "^0.2.1",
     "text-to-picture": "^1.0.0"
   }
