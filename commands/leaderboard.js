@@ -65,7 +65,7 @@ module.exports = {
             })
         } else if (args[0].startsWith("team")) {
             var leaders = []
-            var keys = Object.keys(userData)
+            var keys = Object.keys(teamData)
             var dict = {}
 
             message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
