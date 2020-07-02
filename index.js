@@ -5,6 +5,7 @@ const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
 var userData = require('./userData.json')
 const modeOfUser = require('../configs/blubbadoo.json')
+const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -73,7 +74,8 @@ client.on('message', message => {
 						expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
 					}
 				},
-				pet: {}
+				pet: {},
+				team: ""
 			}
 		}
 
@@ -85,8 +87,11 @@ client.on('message', message => {
 			}
 		}
 
+		if (!userData[message.author.id].team) {
+			userData[message.author.id].team = ""
+		}
+
 		userData[message.author.id].xp += 1
-		userData[message.author.id].username = message.author.username
 		
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 			userData[message.author.id].xp = 0
@@ -119,6 +124,13 @@ client.on('message', message => {
 				userData[message.author.id].pet.coins += randomNumber(5, 25)
 			}
 		}
+
+		if (teamData[userData[message.author.id].team]) {
+			userData[message.author.id].username = "[" + teamData[userData[message.author.id].team].tag + "] " + message.author.username
+		} else {
+			userData[message.author.id].username = message.author.username
+		}
+
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}
 	
