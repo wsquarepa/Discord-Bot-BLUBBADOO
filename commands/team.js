@@ -188,7 +188,7 @@ module.exports = {
                     .setDescription("Creator: " + userData[teamData[userData[message.author.id].team].creator].username +
                     "\n Join key: " + userData[message.author.id].team + 
                     "\n Total team members: " + teamData[userData[message.author.id].team].members.length +
-                    "\n \n Team money: $" + teamData[userData[message.author.id].team].money)
+                    "\n Team money: $" + teamData[userData[message.author.id].team].money)
                 for (var i = 0; i < teamData[userData[message.author.id].team].members.length; i++) {
                     var dispmod, dispadmin, dispcreator = false
                     if (team.moderators.includes(team.members[i])) dispmod = true
