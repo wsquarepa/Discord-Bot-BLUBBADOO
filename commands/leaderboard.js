@@ -83,7 +83,7 @@ module.exports = {
                 var footer = ""
                 if (!userData[message.author.id].team == "") {
                     var userLocation = items.findIndex((x) => x[0] == teamData[userData[message.author.id].team].name) + 1
-                    footer = "Your team is #" + userLocation + " of " + keys.length + " users."
+                    footer = "Your team is #" + userLocation + " of " + keys.length + " teams."
                 } else {
                     footer = "You are not in a team, so I can't tell you your team location."
                 }

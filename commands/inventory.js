@@ -1,5 +1,10 @@
 const userData = require('../userData.json')
 const discord = require('discord.js')
+const shopData = require('../shop.json')
+
+function emoji(id, message) {
+    return message.client.emojis.cache.find(x => x.id == id).toString()
+}
 
 module.exports = {
     name: 'inventory',
@@ -22,7 +27,8 @@ module.exports = {
             for (var i = 0; i < keys.length; i++) {
                 if (!(parseInt(userInv[keys[i]].amount) < 1)) {
                     var usesDisplay =  "- " + userInv[keys[i]].uses + " use(s) for current item left."
-                    itemString += userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1? "":usesDisplay) + "\n \n"
+                    itemString += (shopData[keys[i]].image.length > 5? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) 
+                        + " " + userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1? "":usesDisplay) + "\n \n"
                 }
             }
 
