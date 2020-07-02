@@ -84,6 +84,10 @@ module.exports = {
 
                 var footer = "Your team is #" + userLocation + " of " + keys.length + " users."
 
+                if (userLocation == 0) {
+                    footer = "You are not in a team, so I can't tell you your team location."
+                }
+
                 leaders = items.slice(0, 5);
 
                 var leaderString = ""
