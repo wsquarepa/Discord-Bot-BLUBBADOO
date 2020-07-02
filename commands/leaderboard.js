@@ -1,4 +1,5 @@
-var userData = require('../userData.json')
+const userData = require('../userData.json')
+const teamData = require('../teams.json')
 const fs = require('fs');
 const discord = require("discord.js")
 
@@ -12,53 +13,88 @@ function embed(title, description, color) {
 
 module.exports = {
     name: 'leaderboard',
-	description: 'See the world\'s leaders!',
+    description: 'See the world\'s leaders!',
     args: false,
     usage: '',
     guildOnly: false,
     aliases: ['leader', 'board'],
     cooldown: 5,
-	execute(message, args, mention) {
-        var leaders = []
-        var keys = Object.keys(userData)
-        var dict = {}
+    execute(message, args, mention) {
 
-        message.channel.send("Creating leaderboard... please wait.").then(function(msg) {
-            Object.assign(dict, userData)
+        if (!args.length) {
+            var leaders = []
+            var keys = Object.keys(userData)
+            var dict = {}
 
-            for (var i = 0; i < keys.length; i++) {
-                if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned") {
-                    delete dict[keys[i]]
+            message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
+                Object.assign(dict, userData)
+
+                for (var i = 0; i < keys.length; i++) {
+                    if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned") {
+                        delete dict[keys[i]]
+                    }
                 }
-            }
-    
-            // Create items array
-            var items = Object.keys(dict).map(function (key) {
-                return [dict[key].username, dict[key].cash];
-            });
-    
-            items.sort(function (first, second) {
-                return second[1] - first[1];
-            });
-    
-            var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
-    
-            var footer = "You are #" + userLocation + " of " + keys.length + " users."
-    
-            if (userLocation == 0) {
-                footer = "You are a bot ADMIN, you do not show on the leaderboard."
-            }
-            
-            leaders = items.slice(0, 5);
-            
-            var leaderString = ""
-    
-            for (var i = 0; i < leaders.length; i++) {
-                leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
-            }
 
-            msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
-            
-        })
+                // Create items array
+                var items = Object.keys(dict).map(function (key) {
+                    return [dict[key].username, dict[key].cash];
+                });
+
+                items.sort(function (first, second) {
+                    return second[1] - first[1];
+                });
+
+                var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
+
+                var footer = "You are #" + userLocation + " of " + keys.length + " users."
+
+                if (userLocation == 0) {
+                    footer = "You are a bot ADMIN, you do not show on the leaderboard."
+                }
+
+                leaders = items.slice(0, 5);
+
+                var leaderString = ""
+
+                for (var i = 0; i < leaders.length; i++) {
+                    leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
+                }
+
+                msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
+
+            })
+        } else if (args[0] == "teams") {
+            var leaders = []
+            var keys = Object.keys(userData)
+            var dict = {}
+
+            message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
+                Object.assign(dict, teamData)
+
+                // Create items array
+                var items = Object.keys(dict).map(function (key) {
+                    return [dict[key].name, dict[key].money];
+                });
+
+                items.sort(function (first, second) {
+                    return second[1] - first[1];
+                });
+
+                var userLocation = items.findIndex((x) => x[0] == userData[message.author.id].team) + 1
+
+                var footer = "Your team is #" + userLocation + " of " + keys.length + " users."
+
+                leaders = items.slice(0, 5);
+
+                var leaderString = ""
+
+                for (var i = 0; i < leaders.length; i++) {
+                    leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
+                }
+
+                msg.edit({embed: embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "fffffa").setFooter(footer)})
+
+            })
+        }
     }
 }
