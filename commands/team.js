@@ -415,6 +415,68 @@ module.exports = {
                         messageDestroy.channel.send("Team saved.")
                     }
                 })
+            } else {
+                var helpembed = new discord.MessageEmbed()
+                    .setTitle(args[0] + " is not a valid command.")
+                    .setDescription("Here are the commands")
+                    .addFields([
+                        {
+                            name: "==team deposit <money amount>",
+                            description: "Deposit money into the team to be first!"
+                        },
+
+                        {
+                            name: "==team withdraw <money amount>",
+                            description: "Feeling greedy? Withdraw money from the team!"
+                        },
+
+                        {
+                            name: "==team ban <@mention>",
+                            description: "Ban a naughty user in your team."
+                        },
+
+                        {
+                            name: "==team unban <@mention>",
+                            description: "Unban someone banned."
+                        },
+
+                        {
+                            name: "==team kick <@mention>",
+                            description: "Kick a naughty user in your team"
+                        },
+                        
+                        {
+                            name: "==team addMod <@mention>",
+                            description: "Add a moderator to your team."
+                        },
+
+                        {
+                            name: "==team removeMod <@mention>",
+                            description: "Remove a moderator from your team."
+                        },
+
+                        {
+                            name: "==team addAdmin <@mention>",
+                            description: "Add an admin to your team."
+                        },
+
+                        {
+                            name: "==team removeAdmin <@mention>",
+                            description: "Remove an admin from your team."
+                        },
+
+                        {
+                            name: "==team leave",
+                            description: "Leave your team."
+                        },
+
+                        {
+                            name: "==team destroy",
+                            description: "Destroy your team forever; you should `==team with all` first though."
+                        }
+                    ])
+                
+                message.channel.send(helpembed)
             }
         }
 

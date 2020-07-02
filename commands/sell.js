@@ -22,7 +22,7 @@ module.exports = {
             return false;
         }
 
-        if (amount == NaN && args[1].toLowerCase() == "all") {
+        if (args[1].toLowerCase() == "all") {
             amount = userData[message.author.id].inventory[itemName].amount
         }
 
