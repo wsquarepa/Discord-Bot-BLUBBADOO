@@ -186,6 +186,7 @@ module.exports = {
                 var teamInfoEmbed = new discord.MessageEmbed()
                     .setTitle(team.name + ":")
                     .setDescription("Creator: " + userData[teamData[userData[message.author.id].team].creator].username +
+                    "Join key: " + userData[message.author.id].team +
                     "\n Team money: $" + teamData[userData[message.author.id].team].money)
                 for (var i = 0; i < teamData[userData[message.author.id].team].members.length; i++) {
                     var dispmod, dispadmin, dispcreator = false
