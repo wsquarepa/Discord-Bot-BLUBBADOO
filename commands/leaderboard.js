@@ -63,7 +63,7 @@ module.exports = {
                 msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
 
             })
-        } else if (args[0] == "teams") {
+        } else if (args[0].startsWith("team")) {
             var leaders = []
             var keys = Object.keys(userData)
             var dict = {}
