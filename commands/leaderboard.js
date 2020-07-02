@@ -80,11 +80,11 @@ module.exports = {
                     return second[1] - first[1];
                 });
 
-                var userLocation = items.findIndex((x) => x[0] == userData[message.author.id].team) + 1
-
-                var footer = "Your team is #" + userLocation + " of " + keys.length + " users."
-
-                if (userLocation == 0) {
+                var footer = ""
+                if (!userData[message.author.id].team == "") {
+                    var userLocation = items.findIndex((x) => x[0] == teamData[userData[message.author.id].team].name) + 1
+                    footer = "Your team is #" + userLocation + " of " + keys.length + " users."
+                } else {
                     footer = "You are not in a team, so I can't tell you your team location."
                 }
 
@@ -96,7 +96,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit({embed: embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "fffffa").setFooter(footer)})
+                msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "fffffa").setFooter(footer))
 
             })
         }
