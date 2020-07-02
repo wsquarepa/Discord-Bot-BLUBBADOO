@@ -416,6 +416,23 @@ module.exports = {
                         messageDestroy.channel.send("Team saved.")
                     }
                 })
+            } else if (args[0] == "edit") {
+                if (!args[2]) {
+                    message.channel.send("You gotta enter some argument...")
+                }
+
+                if (args[1] == "name") {
+                    var name = args.splice(2).join(" ")
+                    team.name = name
+                } else if (args[1] == "description") {
+                    var description = args.splice(2).join(" ")
+                    team.description = description
+                } else if (args[1] == "tag") {
+                    var tag = args.splice(2).join(" ")
+                    team.tag = tag
+                } else {
+                    message.channel.send("That's not editable.")
+                }
             } else {
                 var helpembed = new discord.MessageEmbed()
                     .setTitle(args[0] + " is not a valid command.")
@@ -423,57 +440,57 @@ module.exports = {
                     .addFields([
                         {
                             name: "==team deposit <money amount>",
-                            description: "Deposit money into the team to be first!"
+                            value: "Deposit money into the team to be first!"
                         },
 
                         {
                             name: "==team withdraw <money amount>",
-                            description: "Feeling greedy? Withdraw money from the team!"
+                            value: "Feeling greedy? Withdraw money from the team!"
                         },
 
                         {
                             name: "==team ban <@mention>",
-                            description: "Ban a naughty user in your team."
+                            value: "Ban a naughty user in your team."
                         },
 
                         {
                             name: "==team unban <@mention>",
-                            description: "Unban someone banned."
+                            value: "Unban someone banned."
                         },
 
                         {
                             name: "==team kick <@mention>",
-                            description: "Kick a naughty user in your team"
+                            value: "Kick a naughty user in your team"
                         },
                         
                         {
                             name: "==team addMod <@mention>",
-                            description: "Add a moderator to your team."
+                            value: "Add a moderator to your team."
                         },
 
                         {
                             name: "==team removeMod <@mention>",
-                            description: "Remove a moderator from your team."
+                            value: "Remove a moderator from your team."
                         },
 
                         {
                             name: "==team addAdmin <@mention>",
-                            description: "Add an admin to your team."
+                            value: "Add an admin to your team."
                         },
 
                         {
                             name: "==team removeAdmin <@mention>",
-                            description: "Remove an admin from your team."
+                            value: "Remove an admin from your team."
                         },
 
                         {
                             name: "==team leave",
-                            description: "Leave your team."
+                            value: "Leave your team."
                         },
 
                         {
                             name: "==team destroy",
-                            description: "Destroy your team forever; you should `==team with all` first though."
+                            value: "Destroy your team forever; you should `==team with all` first though."
                         }
                     ])
                 
