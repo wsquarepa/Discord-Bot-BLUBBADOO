@@ -12,6 +12,11 @@ module.exports = {
     cooldown: 2.3,
 	execute(message, args, mention) {
 
+        if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGES")) {
+            message.reply("you can't do that!")
+            return false;
+        }
+ 
         message.delete().then(function() {
             try {
                 args[0] = parseInt(args[0])
