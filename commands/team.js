@@ -417,22 +417,29 @@ module.exports = {
                     }
                 })
             } else if (args[0] == "edit") {
-                if (!args[2]) {
-                    message.channel.send("You gotta enter some argument...")
+
+                if (!creator) {
+                    message.reply("you can't do that.")
+                    return false
                 }
 
+                if (!args[2]) {
+                    message.channel.send("You gotta enter some argument...")
+                    return false;
+                }
+
+                var setting = args.splice(2).join(" ")
                 if (args[1] == "name") {
-                    var name = args.splice(2).join(" ")
-                    team.name = name
+                    team.name = setting
                 } else if (args[1] == "description") {
-                    var description = args.splice(2).join(" ")
-                    team.description = description
+                    team.description = setting
                 } else if (args[1] == "tag") {
-                    var tag = args.splice(2).join(" ")
-                    team.tag = tag
+                    team.tag = setting
                 } else {
                     message.channel.send("That's not editable.")
                 }
+
+                message.channel.send("Team " + args[1] + " was set to `" + setting + "`")
             } else {
                 var helpembed = new discord.MessageEmbed()
                     .setTitle(args[0] + " is not a valid command.")
@@ -481,6 +488,11 @@ module.exports = {
                         {
                             name: "==team removeAdmin <@mention>",
                             value: "Remove an admin from your team."
+                        },
+
+                        {
+                            name: "==team edit <name | description | tag> <value>",
+                            value: "Edit one of your team fields. (Discord invites can be put in descriptions!)"
                         },
 
                         {
