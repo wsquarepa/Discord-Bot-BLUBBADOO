@@ -199,10 +199,13 @@ module.exports = {
                         }
                     }
 
+                    var xp = (randomNumber(5, 10) * args[1])
+                    userData[message.author.id].xp += xp
+
                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 
                     var sendEmbed = embed("Crafting complete", "You created " + craftables[args[0]].result[args[0]].amount * args[1] + " " + args[0] + 
-                        "(s). \n It's now in your inventory!", "00ff00").setFooter("+" + (randomNumber(5, 10) * args[1]) + " EXP")
+                        "(s). \n It's now in your inventory!", "00ff00").setFooter("+" + xp + " EXP")
                     message.channel.send(sendEmbed)
                 }, args[1] * 1000)
             }
