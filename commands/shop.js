@@ -44,6 +44,8 @@ module.exports = {
             " " + keys[i] + " - $" + shopData[keys[i]].price, shopData[keys[i]].description)
         }
 
+        embed.setFooter("Shop page #" + (page + 1) + " out of " + pages.length + " pages.")
+
         message.channel.send(embed)
     }
 }
