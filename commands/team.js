@@ -431,10 +431,25 @@ module.exports = {
 
                 var setting = args.splice(2).join(" ")
                 if (args[1] == "name") {
+                    if (setting.length > 15) {
+                        message.channel.send("That's too long.")
+                        return false;
+                    }
+
                     team.name = setting
                 } else if (args[1] == "description") {
+                    if (setting.length > 25) {
+                        message.channel.send("That's too long.")
+                        return false;
+                    }
+
                     team.description = setting
                 } else if (args[1] == "tag") {
+                    if (setting.length > 5) {
+                        message.channel.send("That's too long.")
+                        return false;
+                    }
+
                     team.tag = setting
                 } else {
                     message.channel.send("That's not editable.")

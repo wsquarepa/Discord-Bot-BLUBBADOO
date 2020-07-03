@@ -14,18 +14,36 @@ module.exports = {
     aliases: ['store'],
     cooldown: 1,
 	execute(message, args, mention) {
+        var pages = []
         var keys = Object.keys(shopData)
-        var itemString = ""
-        for (var i = 0; i < keys.length; i++) {
-            console.log(shopData[keys[i]].image.length > 5? true:false)
-            itemString += (shopData[keys[i]].image.length > 5? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) + 
-            " " + keys[i] + " - " + (shopData[keys[i]].price == -1? shopData[keys[i]].gems + " 💎" :"$" + shopData[keys[i]].price) + "\n \n"
+        var keysLength = keys.length
+        for (var i = 0; i < (keysLength / 5); i++) {
+            try {
+                pages.push(keys.splice(0, 5))
+            } catch {
+                //pass
+            }
+        }
+
+        console.log(pages)
+
+        var page = (args[0] == null? 0:parseInt(args[0]) - 1)
+        console.log(page)
+        keys = pages[page]
+        if (!keys) {
+            message.channel.send("That page doesn't exist.")
+            return false
         }
 
         var embed = new discord.MessageEmbed()
             .setTitle("Welcome to the shop!")
-            .setDescription(itemString)
+            .setDescription("$$$ THIS SHOP IS A **MONEY** SHOP $$$")
             .setColor("00ff00")
+        for (var i = 0; i < keys.length; i++) {
+            embed.addField((shopData[keys[i]].image.length > 5? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) + 
+            " " + keys[i] + " - $" + shopData[keys[i]].price, shopData[keys[i]].description)
+        }
+
         message.channel.send(embed)
     }
 }

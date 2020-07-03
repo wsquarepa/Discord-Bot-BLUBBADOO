@@ -2,7 +2,7 @@
     "knife":{
         "price":20,
         "image":"🔪",
-        "description":"A knife to rob and hunt with.",
+        "description":"A knife to rob, raid and hunt with.",
         "uses":1,
         "usable":false
     },
@@ -10,6 +10,7 @@
     "coin":{
         "price":20,
         "image":"©️",
+        "description":"A coin to flip.",
         "uses":1,
         "usable":false
     },
@@ -17,6 +18,7 @@
     "magnif":{
         "price":50,
         "image":"🔍",
+        "description":"Search using this special magnifying glass.",
         "uses":1,
         "useable":false
     },
@@ -24,6 +26,7 @@
     "fishingrod":{
         "price":100,
         "image":"🎣",
+        "description":"Fish?",
         "uses":10,
         "useable":false
     },
@@ -31,6 +34,7 @@
     "cage":{
         "price":200,
         "image":"716687378126864446",
+        "description":"Crab?",
         "uses":10,
         "useable":false
     },
@@ -38,6 +42,7 @@
     "map":{
         "price":10,
         "image":"🗺️",
+        "description":"Go exploring!",
         "uses":1,
         "useable":false
     },
@@ -45,6 +50,7 @@
     "key":{
         "price":240,
         "image":"🔑",
+        "description":"Open chests!",
         "uses":1,
         "useable":false
     },
@@ -52,6 +58,7 @@
     "wood":{
         "price":10,
         "image":"727569979427389462",
+        "description":"CRAFTING ITEM",
         "uses":1,
         "useable":false
     },
@@ -59,6 +66,7 @@
     "iron":{
         "price":100,
         "image":"727309313462370314",
+        "description":"CRAFTING ITEM",
         "uses":1,
         "useable":false
     },
@@ -66,6 +74,7 @@
     "craftingbench":{
         "price":50,
         "image":"727310383379120178",
+        "description":"Crafting tool",
         "uses":1,
         "useable":false
     },
@@ -73,6 +82,7 @@
     "carrot":{
         "price":10,
         "image":"🥕",
+        "description":"Sell them.",
         "uses":1,
         "useable":false
     },
@@ -80,6 +90,7 @@
     "axe":{
         "price":75,
         "image":"🪓",
+        "description":"Chop some trees for wood.",
         "uses":10,
         "useable":false
     },
@@ -87,6 +98,7 @@
     "pickaxe":{
         "price":150,
         "image":"⛏️",
+        "description":"Mine for rare earth elements.",
         "uses":15,
         "useable":false
     },
@@ -94,6 +106,7 @@
     "gold":{
         "price":200,
         "image":"727314706267635724",
+        "description":"CRAFTING ITEM",
         "uses":1,
         "useable":false
     },
@@ -101,6 +114,7 @@
     "glass":{
         "price":35,
         "image":"727541387796676608",
+        "description":"CRAFTING ITEM",
         "uses":1,
         "useable":false
     },
@@ -108,6 +122,7 @@
     "string":{
         "price":20,
         "image":"727542601213018162",
+        "description":"CRAFTING ITEM",
         "uses":1,
         "useable":false
     }
