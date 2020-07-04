@@ -18,6 +18,11 @@ module.exports = {
                 return false;
             }
 
+            if (!userData[mention.id]) {
+                message.channel.send("That user doesn't have a bank account yet.")
+                return false;
+            }
+
             var cash = userData[mention.id].cash
             var bank = userData[mention.id].bank
             var gems = userData[mention.id].gems
