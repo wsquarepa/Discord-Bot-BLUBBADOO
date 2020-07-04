@@ -99,6 +99,53 @@ module.exports = {
                 msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "fffffa").setFooter(footer))
 
             })
+        } else if (args[0].startsWith("server")) {
+            var leaders = []
+            var keys = Object.keys(userData)
+            var dict = {}
+
+            message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
+                Object.assign(dict, userData)
+
+                for (var i = 0; i < keys.length; i++) {
+                    if 
+                    (
+                        dict[keys[i]].account.type.toLowerCase() == "admin" || 
+                        dict[keys[i]].account.type.toLowerCase() == "banned" || 
+                        message.guild.members.cache.find(y => y.id == keys[i]) == null
+                    ) {
+                        delete dict[keys[i]]
+                    }
+                }
+
+                // Create items array
+                var items = Object.keys(dict).map(function (key) {
+                    return [dict[key].username, dict[key].cash];
+                });
+
+                items.sort(function (first, second) {
+                    return second[1] - first[1];
+                });
+
+                var userLocation = items.findIndex((x) => x[0] == message.author.username) + 1
+
+                var footer = "You are #" + userLocation + " of " + keys.length + " users."
+
+                if (userLocation == 0) {
+                    footer = "You are a bot ADMIN, you do not show on the leaderboard."
+                }
+
+                leaders = items.slice(0, 5);
+
+                var leaderString = ""
+
+                for (var i = 0; i < leaders.length; i++) {
+                    leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
+                }
+
+                msg.edit("", embed("THE SERVER'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
+
+            })
         }
     }
 }
