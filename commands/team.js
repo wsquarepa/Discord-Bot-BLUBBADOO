@@ -470,7 +470,7 @@ module.exports = {
 
                 message.channel.send("Team " + args[1] + " was set to `" + setting + "`")
             } else if (args[0] == "message") {
-                if (!creator || !admin) {
+                if (!creator && !admin) {
                     message.reply("you can't do that.")
                     return false
                 }
