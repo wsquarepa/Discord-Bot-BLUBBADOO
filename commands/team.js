@@ -195,7 +195,7 @@ module.exports = {
                     "Creator: " + userData[teamData[userData[message.author.id].team].creator].username +
                     "\n Join key: **" + userData[message.author.id].team + "**" + 
                     "\n Total team members: " + teamData[userData[message.author.id].team].members.length +
-                    "\n Team message: " + teamData[userData[message.author.id].team].message +
+                    "\n Team message: " + (teamData[userData[message.author.id].team].message.length > 0? teamData[userData[message.author.id].team].message.length:"none") +
                     "\n Team money: $" + teamData[userData[message.author.id].team].money)
                 for (var i = 0; i < teamData[userData[message.author.id].team].members.length; i++) {
                     var dispmod, dispadmin, dispcreator = false
