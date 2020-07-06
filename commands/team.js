@@ -476,11 +476,11 @@ module.exports = {
                 }
 
                 var msg = args[1]
-                if (msg.length > 50 || msg.length < 5) {
+                if (msg.length > 50 || msg.length < 5 && !msg == "clear") {
                     message.channel.send("Messages can be a maximum of **50** characters and a minimum of **5** characters.")
                 }
 
-                team.message = msg
+                team.message = (msg == "clear"? "":msg)
                 message.channel.send("Team message set to: `" + msg + "`")
             } else {
                 var helpembed = new discord.MessageEmbed()
