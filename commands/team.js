@@ -177,7 +177,7 @@ module.exports = {
                 userData[message.author.id].team = ""
                 return false;
             }
-            
+
             var mod, admin, creator = false
 
             if (team.moderators.includes(message.author.id)) mod = true
@@ -224,6 +224,11 @@ module.exports = {
                 }
                 message.channel.send("You deposited " + (args[1] != "all" ? `$${args[1]}` : "all the money") + " to the team.")
             } else if (args[0].startsWith("with")) {
+                if (!creator && !admin) {
+                    message.reply("you can't do that!")
+                    return false
+                }
+
                 if (args[1] == null) {
                     message.channel.send("Next time, tell me what you want to take out of the team.")
                     return false
