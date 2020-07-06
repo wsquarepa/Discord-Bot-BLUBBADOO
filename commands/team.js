@@ -481,7 +481,7 @@ module.exports = {
                 }
 
                 team.message = (msg == "clear"? "":msg)
-                message.channel.send("Team message set to: `" + msg + "`")
+                message.channel.send("Team message set to: `" + (msg == "clear"? "**MESSAGE CLEARED**":msg) + "`")
             } else {
                 var helpembed = new discord.MessageEmbed()
                     .setTitle(args[0] + " is not a valid team command.")
