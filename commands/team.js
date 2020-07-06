@@ -195,6 +195,7 @@ module.exports = {
                     "Creator: " + userData[teamData[userData[message.author.id].team].creator].username +
                     "\n Join key: **" + userData[message.author.id].team + "**" + 
                     "\n Total team members: " + teamData[userData[message.author.id].team].members.length +
+                    "\n Team message: " + teamData[userData[message.author.id].team].message +
                     "\n Team money: $" + teamData[userData[message.author.id].team].money)
                 for (var i = 0; i < teamData[userData[message.author.id].team].members.length; i++) {
                     var dispmod, dispadmin, dispcreator = false
@@ -468,9 +469,21 @@ module.exports = {
                 }
 
                 message.channel.send("Team " + args[1] + " was set to `" + setting + "`")
+            } else if (args[0] == "message") {
+                if (!creator || !admin) {
+                    message.reply("you can't do that.")
+                    return false
+                }
+
+                var msg = args[1]
+                if (msg.length > 50 || msg.length < 5) {
+                    message.channel.send("Messages can be a maximum of **50** characters and a minimum of **5** characters.")
+                }
+
+                team.message = msg
             } else {
                 var helpembed = new discord.MessageEmbed()
-                    .setTitle(args[0] + " is not a valid command.")
+                    .setTitle(args[0] + " is not a valid team command.")
                     .setDescription("Here are the commands")
                     .addFields([
                         {
@@ -521,6 +534,11 @@ module.exports = {
                         {
                             name: "==team edit <name | description | tag> <value>",
                             value: "Edit one of your team fields. (Discord invites can be put in descriptions!)"
+                        },
+
+                        {
+                            name: "==team message <message>",
+                            value: "Leave a message for your team!"
                         },
 
                         {
