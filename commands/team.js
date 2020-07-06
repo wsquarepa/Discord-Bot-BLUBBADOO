@@ -172,6 +172,12 @@ module.exports = {
             }
         } else {
             var team = teamData[userData[message.author.id].team]
+            if (team == null) {
+                message.channel.send("An error occurred, team field reset.")
+                userData[message.author.id].team = ""
+                return false;
+            }
+            
             var mod, admin, creator = false
 
             if (team.moderators.includes(message.author.id)) mod = true
