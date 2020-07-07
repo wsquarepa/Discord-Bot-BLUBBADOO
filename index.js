@@ -269,7 +269,7 @@ client.on('message', message => {
 				message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
 					.then(m => m.delete({
 						timeout: 5000
-					}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+					}).catch(err => message.channel.send("An error occurred while trying to delete that message.")))
 			}
 		}
 	}

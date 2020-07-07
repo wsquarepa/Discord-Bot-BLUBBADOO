@@ -1,5 +1,5 @@
-var userData = require('../userData.json')
-var discord = require('discord.js')
+const userData = require('../userData.json')
+const discord = require('discord.js')
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -77,13 +77,11 @@ module.exports = {
 
             message.channel.send(embed)
         } else {
-            message.channel.send("An error occured, please check the announcements on Blubbadoo Support server for details.")
-            return false
             var name = mention.username
             var cash = userData[mention.id].cash
             var bank = userData[mention.id].bank
             var gems = userData[mention.id].gems
-            var type = userData[mention.id].account.type
+            var type = userData[mention.id].account.title
             var xp = userData[mention.id].xp
             var xpUntil = userData[mention.id].xpUntil
             var level = userData[mention.id].level
@@ -114,24 +112,20 @@ module.exports = {
                 color: "000aa0"
             })
 
-            var xpChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
+            var xpChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
 
-            var loc = (xp - (xp % 10)) / 10
-            while (((xp - (xp % 10)) / 10).toString().length > 1) {
-                loc = (xp - (xp % 10)) / 10
-            }
+            var loc = parseInt(10.0 * (xp / xpUntil) + 0.5)
 
-            xpChart.splice(loc + 1, 0, '**|**')
+            xpChart[loc] = "**|**"
 
             //embed.addField("Username:", name, false)
             embed.addField("Cash", cash, true)
             embed.addField("Bank", bank, true)
             embed.addField("Gems", gems, true)
             //embed.addField("\u200b", "\u200b", false)
-            embed.addField("Type", type, true)
+            embed.addField("Title", type, true)
             embed.addField("Leaderboard Location", userLocation, true)
-            
-            embed.addField("\u200b", "\u200b", false)
+            embed.addField("Secured?", "Access Denied", true)
 
             embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
             embed.addField("Level", level, true)

@@ -18,7 +18,7 @@ module.exports = {
     },
 
     "Report something": {
-        description: "==report <report>",
+        description: "I wanna tell you sth...",
         toGet: {
             cash: 0,
             bank: 0,
@@ -36,7 +36,7 @@ module.exports = {
     },
 
     "Store $10000 into the bank": {
-        description: "==dep 10000",
+        description: "Bank: \"Uh thanks?\"",
         toGet: {
             cash: 0,
             bank: 10000,
@@ -50,6 +50,24 @@ module.exports = {
             gems: 0,
             item: "",
             title: "I want my money safe"
+        }
+    },
+
+    "Craft something": {
+        description: "KLANG KLANG KLANG",
+        toGet: {
+            cash: 0,
+            bank: 0,
+            total: 0,
+            gems: 0,
+            command: "craft"
+        },
+
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "craftingbench",
+            title: "Blacksmith"
         }
     }
 }
