@@ -4,18 +4,18 @@ const discord = require("discord.js")
 const achivements = require("../jsHelpers/achivements")
 
 module.exports = {
-    name: 'achivements',
-	description: 'View your achivements!',
+    name: 'achievements',
+	description: 'View your achievements!',
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: [],
+    aliases: ['achivements'],
     cooldown: 5,
     levelRequirement: 0,
 	execute(message, args, mention) {
         var userAchivements = userData[message.author.id].achivements
         var embed = new discord.MessageEmbed()
-            .setTitle("Your achivements:")
+            .setTitle("Your achievements:")
             .setColor("00ff00")
 
         for (var i = 0; i < userAchivements.length; i++) {
