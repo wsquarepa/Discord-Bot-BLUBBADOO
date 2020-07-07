@@ -249,6 +249,7 @@ client.on('message', message => {
 
 			if (
 				commandName == requirementStuff.command &&
+				requirementStuff.command != "" &&
 				!userData[message.author.id].achivements.includes(i)
 			) {
 				userData[message.author.id].achivements.push(i)
