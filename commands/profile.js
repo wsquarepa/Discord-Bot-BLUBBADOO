@@ -24,7 +24,7 @@ module.exports = {
             var cash = userData[message.author.id].cash
             var bank = userData[message.author.id].bank
             var gems = userData[message.author.id].gems
-            var type = userData[message.author.id].account.type
+            var type = userData[message.author.id].account.title
             var secured = userData[message.author.id].account.secured
             var xp = userData[message.author.id].xp
             var xpUntil = userData[message.author.id].xpUntil
@@ -68,7 +68,7 @@ module.exports = {
             embed.addField("Bank", bank, true)
             embed.addField("Gems", gems, true)
             //embed.addField("\u200b", "\u200b", false)
-            embed.addField("Type", type, true)
+            embed.addField("Title", type, true)
             embed.addField("Secured?", secured, true)
             embed.addField("Leaderboard Location", userLocation, true)
             //space

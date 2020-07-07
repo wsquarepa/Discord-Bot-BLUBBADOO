@@ -1,6 +1,9 @@
 const Discord = require('discord.js')
 const fs = require('fs');
-const { prefix, token } = require('./config.json');
+const {
+	prefix,
+	token
+} = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
 var userData = require('./userData.json')
@@ -10,17 +13,19 @@ var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+modeOfUser.testMode = false
+
 function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
+	for (var key in obj) {
+		if (obj.hasOwnProperty(key))
+			return false;
+	}
+	return true;
 }
 
 function randomNumber(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
+	min = Math.ceil(min);
+	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -42,9 +47,14 @@ for (const file of commandFiles) {
 
 client.once("ready", function () {
 	console.log("Bot logged in!")
-	if (modeOfUser.testMode) client.user.setActivity({name: "In test mode", type: "CUSTOM_STATUS"})
-		.catch(function(error) {console.error(error)})
-		.then(function() {
+	if (modeOfUser.testMode) client.user.setActivity({
+			name: "In test mode",
+			type: "CUSTOM_STATUS"
+		})
+		.catch(function (error) {
+			console.error(error)
+		})
+		.then(function () {
 			console.log("Custom status go.")
 		})
 })
@@ -56,9 +66,9 @@ client.on('message', message => {
 		botData.messagesRecieved++
 		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
-	
 
-	if (!message.author.bot && !modeOfUser.testMode) {
+
+	if (!message.author.bot && !modeOfUser.testMode && userData[message.author.id].account.type.toLowerCase() != "banned") {
 		if (!userData[message.author.id]) {
 			userData[message.author.id] = {
 				cash: 0,
@@ -70,16 +80,18 @@ client.on('message', message => {
 				inventory: {},
 				username: message.author.username,
 				account: {
-					secured: false, 
+					secured: false,
 					type: "user",
 					daily: {
 						streak: -1,
 						previousAmt: 0,
 						expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
-					}
+					},
+					title: ""
 				},
 				pet: {},
-				team: ""
+				team: "",
+				achivements: []
 			}
 		}
 
@@ -95,8 +107,16 @@ client.on('message', message => {
 			userData[message.author.id].team = ""
 		}
 
+		if (userData[message.author.id].achivements == null) {
+			userData[message.author.id].achivements = []
+		}
+
+		if (userData[message.author.id].account.title == null) {
+			userData[message.author.id].account.title = ""
+		}
+
 		userData[message.author.id].xp += 1
-		
+
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 			userData[message.author.id].xp = userData[message.author.id].xpUntil - userData[message.author.id].xp
 			userData[message.author.id].level += 1
@@ -105,7 +125,9 @@ client.on('message', message => {
 			}
 			userData[message.author.id].xpUntil += 10
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
-				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+				.then(m => m.delete({
+					timeout: 5000
+				}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
 		}
 
 		userData[message.author.id].cash += userData[message.author.id].level
@@ -118,8 +140,10 @@ client.on('message', message => {
 		if (netWorth > userData[message.author.id].nextGemCashGoal) {
 			userData[message.author.id].gems += 1
 			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + userData[message.author.id].nextGemCashGoal + "!")
-				.then(m => m.delete({timeout: 5000}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
-				userData[message.author.id].nextGemCashGoal = userData[message.author.id].cash + 10000
+				.then(m => m.delete({
+					timeout: 5000
+				}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+			userData[message.author.id].nextGemCashGoal = userData[message.author.id].cash + 10000
 		}
 
 		if (!isEmpty(userData[message.author.id].pet)) {
@@ -135,9 +159,59 @@ client.on('message', message => {
 			userData[message.author.id].username = message.author.username
 		}
 
+		var achivements = require('./jsHelpers/achivements')
+		for (var i in achivements) {
+			var requirements = {
+				cash: achivements[i].toGet.cash,
+				bank: achivements[i].toGet.bank,
+				total: achivements[i].toGet.total,
+				gems: achivements[i].toGet.gems
+			}
+
+			var currently = {
+				cash: userData[message.author.id].cash,
+				bank: userData[message.author.id].bank,
+				total: userData[message.author.id].cash + userData[message.author.id].bank,
+				gems: userData[message.author.id].gems
+			}
+
+			if (
+				currently.cash >= requirements.cash &&
+				currently.bank >= requirements.bank &&
+				currently.total >= requirements.total &&
+				currently.gems >= requirements.gems &&
+				!userData[message.author.id].achivements.includes(i)
+			) {
+				userData[message.author.id].achivements.push(i)
+
+				var stuffEarn = achivements[i].reward
+				userData[message.author.id].bank += stuffEarn.money
+				userData[message.author.id].gems += stuffEarn.gems
+				if (stuffEarn.item != "") {
+					if (userData[message.author.id].inventory[stuffEarn.item]) {
+						userData[message.author.id].inventory[stuffEarn.item].amount += 1
+					} else {
+						userData[message.author.id].inventory[stuffEarn.item] = {
+							amount: 1,
+							uses: 1
+						}
+					}
+				}
+
+				if (stuffEarn.title != "") {
+					userData[message.author.id].account.title = stuffEarn.title
+				}
+
+				message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+					.then(m => m.delete({
+						timeout: 5000
+					}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+			}
+		}
+
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}
-	
+
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -164,8 +238,42 @@ client.on('message', message => {
 	}
 
 	var command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	
+
 	if (!command) return;
+
+	if (!modeOfUser.testMode) {
+		for (var i in achivements) {
+			var requirementStuff = {
+				command: achivements[i].toGet.command
+			}
+
+			if (
+				commandName == requirementStuff.command &&
+				!userData[message.author.id].achivements.includes(i)
+			) {
+				userData[message.author.id].achivements.push(i)
+
+				var stuffEarn = achivements[i].reward
+				userData[message.author.id].bank += stuffEarn.money
+				userData[message.author.id].gems += stuffEarn.gems
+				if (stuffEarn.item != "") {
+					if (userData[message.author.id].inventory[stuffEarn.item]) {
+						userData[message.author.id].inventory[stuffEarn.item].amount += 1
+					} else {
+						userData[message.author.id].inventory[stuffEarn.item] = {
+							amount: 1,
+							uses: 1
+						}
+					}
+				}
+				message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+					.then(m => m.delete({
+						timeout: 5000
+					}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+			}
+		}
+	}
+
 
 	const now = Date.now();
 	//#region - Here is the command tracking. 
@@ -187,19 +295,19 @@ client.on('message', message => {
 	if (!cooldowns.has(command.name)) {
 		cooldowns.set(command.name, new Discord.Collection());
 	}
-	
+
 	const levelRequirement = (command.levelRequirement || 0)
 	if (userData[message.author.id].level < levelRequirement) {
 		message.reply("that command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!")
 		return
 	}
-	
+
 	const timestamps = cooldowns.get(command.name);
 	const cooldownAmount = (command.cooldown || 1) * 1000;
-	
+
 	if (timestamps.has(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-	
+
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			const embed = new Discord.MessageEmbed()
@@ -211,11 +319,11 @@ client.on('message', message => {
 	}
 
 	try {
-		var success = command.execute(message, args, mention) 
+		var success = command.execute(message, args, mention)
 		if (success == null) success = true
 		if (success) {
 			timestamps.set(message.author.id, now);
-			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);	
+			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		}
 	} catch (error) {
 		console.error(error);
@@ -223,11 +331,10 @@ client.on('message', message => {
 	}
 });
 
-client.on('guildCreate', function(guild) {
+client.on('guildCreate', function (guild) {
 	guild.channels.create("Blubbadoo Welcome Channel", {
 		type: 'text',
-		permissionOverwrites: [
-			{
+		permissionOverwrites: [{
 				id: guild.roles.everyone.id,
 				deny: ['SEND_MESSAGES'],
 			},
@@ -235,15 +342,16 @@ client.on('guildCreate', function(guild) {
 				id: client.user.id,
 				allow: ['SEND_MESSAGES', 'MANAGE_CHANNELS']
 			}
-		]}).then(function(channel) {
+		]
+	}).then(function (channel) {
 		var embed = new Discord.MessageEmbed()
 		embed.setTitle("Thank you!")
-		embed.setDescription("I appreciate that you added me! Thank you again. \n" + 
-			"If you don't know how to use me, then please do ==help. \n" + 
+		embed.setDescription("I appreciate that you added me! Thank you again. \n" +
+			"If you don't know how to use me, then please do ==help. \n" +
 			"Blubbadoo needs **ADMINISTRATOR** permissions, otherwise some commands will not be available.")
 		embed.setFooter("This message and channel will self destruct in 1 minute.")
 		channel.send(embed).then(() => {
-			setTimeout(function() {
+			setTimeout(function () {
 				channel.delete().catch()
 			}, 60000)
 		})
