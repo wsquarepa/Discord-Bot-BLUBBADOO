@@ -161,51 +161,56 @@ client.on('message', message => {
 
 		var achivements = require('./jsHelpers/achivements')
 		for (var i in achivements) {
-			var requirements = {
-				cash: achivements[i].toGet.cash,
-				bank: achivements[i].toGet.bank,
-				total: achivements[i].toGet.total,
-				gems: achivements[i].toGet.gems
-			}
 
-			var currently = {
-				cash: userData[message.author.id].cash,
-				bank: userData[message.author.id].bank,
-				total: userData[message.author.id].cash + userData[message.author.id].bank,
-				gems: userData[message.author.id].gems
-			}
+			if (achivements[i].toGet.command == "") {
+				var requirements = {
+					cash: achivements[i].toGet.cash,
+					bank: achivements[i].toGet.bank,
+					total: achivements[i].toGet.total,
+					gems: achivements[i].toGet.gems
+				}
 
-			if (
-				currently.cash >= requirements.cash &&
-				currently.bank >= requirements.bank &&
-				currently.total >= requirements.total &&
-				currently.gems >= requirements.gems &&
-				!userData[message.author.id].achivements.includes(i)
-			) {
-				userData[message.author.id].achivements.push(i)
+				var currently = {
+					cash: userData[message.author.id].cash,
+					bank: userData[message.author.id].bank,
+					total: userData[message.author.id].cash + userData[message.author.id].bank,
+					gems: userData[message.author.id].gems
+				}
 
-				var stuffEarn = achivements[i].reward
-				userData[message.author.id].bank += stuffEarn.money
-				userData[message.author.id].gems += stuffEarn.gems
-				if (stuffEarn.item != "") {
-					if (userData[message.author.id].inventory[stuffEarn.item]) {
-						userData[message.author.id].inventory[stuffEarn.item].amount += 1
-					} else {
-						userData[message.author.id].inventory[stuffEarn.item] = {
-							amount: 1,
-							uses: 1
+				if (
+					currently.cash >= requirements.cash &&
+					currently.bank >= requirements.bank &&
+					currently.total >= requirements.total &&
+					currently.gems >= requirements.gems &&
+					!userData[message.author.id].achivements.includes(i)
+				) {
+					userData[message.author.id].achivements.push(i)
+
+					var stuffEarn = achivements[i].reward
+					userData[message.author.id].bank += stuffEarn.money
+					userData[message.author.id].gems += stuffEarn.gems
+					if (stuffEarn.item != "") {
+						if (userData[message.author.id].inventory[stuffEarn.item]) {
+							userData[message.author.id].inventory[stuffEarn.item].amount += 1
+						} else {
+							userData[message.author.id].inventory[stuffEarn.item] = {
+								amount: 1,
+								uses: 1
+							}
 						}
 					}
+
+					if (stuffEarn.title != "") {
+						userData[message.author.id].account.title = stuffEarn.title
+					}
+
+					message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+						.then(m => m.delete({
+							timeout: 5000
+						}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
 				}
 
-				if (stuffEarn.title != "") {
-					userData[message.author.id].account.title = stuffEarn.title
-				}
 
-				message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
-					.then(m => m.delete({
-						timeout: 5000
-					}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
 			}
 		}
 
