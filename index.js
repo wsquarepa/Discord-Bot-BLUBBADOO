@@ -233,7 +233,7 @@ client.on('guildCreate', function(guild) {
 			},
 			{
 				id: client.user.id,
-				allow: ['SEND_MESSAGES', 'MANAGE_CHANNEL']
+				allow: ['SEND_MESSAGES', 'MANAGE_CHANNELS']
 			}
 		]}).then(function(channel) {
 		var embed = new Discord.MessageEmbed()
