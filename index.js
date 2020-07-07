@@ -111,8 +111,8 @@ client.on('message', message => {
 			userData[message.author.id].achivements = []
 		}
 
-		if (userData[message.author.id].account.title == null) {
-			userData[message.author.id].account.title = ""
+		if (userData[message.author.id].account.title == null || userData[message.author.id].account.title == "") {
+			userData[message.author.id].account.title = "none"
 		}
 
 		userData[message.author.id].xp += 1
