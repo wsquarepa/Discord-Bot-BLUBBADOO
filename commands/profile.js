@@ -118,14 +118,13 @@ module.exports = {
 
             xpChart[loc] = "**|**"
 
-            //embed.addField("Username:", name, false)
             embed.addField("Cash", cash, true)
             embed.addField("Bank", bank, true)
             embed.addField("Gems", gems, true)
-            //embed.addField("\u200b", "\u200b", false)
+
             embed.addField("Title", type, true)
-            embed.addField("Leaderboard Location", userLocation, true)
             embed.addField("Secured?", "Access Denied", true)
+            embed.addField("Leaderboard Location", userLocation, true)
 
             embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
             embed.addField("Level", level, true)
