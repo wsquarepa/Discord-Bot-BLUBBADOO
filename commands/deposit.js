@@ -9,6 +9,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['dep'],
     cooldown: 1.5,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (args[0] == null) {
             message.channel.send("Next time, tell me what you want to put in the bank.")

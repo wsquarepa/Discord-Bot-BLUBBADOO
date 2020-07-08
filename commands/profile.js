@@ -17,6 +17,8 @@ module.exports = {
     guildOnly: true,
     aliases: ['prof'],
     cooldown: 5,
+    category: "economy",
+    adminOnly: false,
     execute(message, args, mention) {
 
         if (mention == null) {

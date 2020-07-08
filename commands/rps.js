@@ -16,6 +16,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 60,
+    category: "economy",
+    adminOnly: false,
     execute(message, args, mention) {
         var options = ["rock", "paper", "scissors"]
         if (args[0] == null) {

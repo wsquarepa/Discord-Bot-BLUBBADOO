@@ -7,6 +7,8 @@ module.exports = {
 	args: true,
 	usage:'[command name]',
 	aliases: ['update'],
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
 
         if (!admins.includes(message.author.id)) {

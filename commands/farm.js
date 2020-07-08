@@ -16,6 +16,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['harvest'],
     cooldown: 60,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         var earnings = randomNumber(30, 100)
         if (userData[message.author.id].inventory["carrot"]) {

@@ -8,6 +8,8 @@ module.exports = {
     guildOnly: true,
     aliases: [],
     cooldown: 2,
+    category: "moderation",
+    adminOnly: false,
 	execute(message, args, mention) {
         var json = message.content.slice('==embed '.length)
         try {

@@ -9,6 +9,8 @@ module.exports = {
     guildOnly: false,
     aliases:['bal'],
     cooldown: 0.5,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         
         if (mention) {

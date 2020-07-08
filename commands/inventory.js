@@ -15,6 +15,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['inv'],
     cooldown: 3,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (!mention) {
             var userInv = userData[message.author.id].inventory

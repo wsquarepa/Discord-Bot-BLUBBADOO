@@ -13,6 +13,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['store'],
     cooldown: 1,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         var pages = []
         var keys = Object.keys(shopData)

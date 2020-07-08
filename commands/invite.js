@@ -3,6 +3,8 @@ module.exports = {
 	name: 'invite',
 	description: 'Invite for the bot!',
 	args: false,
+    category: "info",
+    adminOnly: false,
     execute(message, args, mention) {
         message.client.guilds.cache.find(x => x.id == "712438988547555448")
             .channels.cache.find(x => x.id == "714151494491963473").createInvite({

@@ -12,6 +12,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 2,
+    category: "economy",
+    adminOnly: false,
     execute(message, args, mention) {
         var keys = Object.keys(shopData)
         args[0] = args[0].toLowerCase()

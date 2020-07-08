@@ -18,6 +18,8 @@ module.exports = {
     aliases: [],
     cooldown: 0,
     levelRequirement: 0,
+    category: "music",
+    adminOnly: true,
 	execute(message, args, mention) {
 
         if (!message.author.id == "509874745567870987") {

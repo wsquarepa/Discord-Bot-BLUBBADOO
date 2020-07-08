@@ -19,6 +19,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['leader', 'board'],
     cooldown: 5,
+    category: "economy",
+    adminOnly: false,
     execute(message, args, mention) {
 
         if (!args.length) {

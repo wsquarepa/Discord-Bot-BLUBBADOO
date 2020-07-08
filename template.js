@@ -11,6 +11,8 @@ module.exports = {
     aliases: [],
     cooldown: 0,
     levelRequirement: 0,
+    category: "",
+    adminOnly: false,
 	execute(message, args, mention) {
 
     }

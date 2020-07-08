@@ -9,6 +9,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 3600,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         var min = Math.ceil(100);
         var max = Math.floor(500);

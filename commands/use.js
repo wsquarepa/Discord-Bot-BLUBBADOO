@@ -17,6 +17,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['activate'],
     cooldown: 3.3,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (args[0].toLowerCase() == "gem") {
 

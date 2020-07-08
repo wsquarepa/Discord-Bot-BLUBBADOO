@@ -25,6 +25,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 60,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
 
         if (userData[message.author.id].inventory["pickaxe"] == null || userData[message.author.id].inventory["pickaxe"].amount < 1) {

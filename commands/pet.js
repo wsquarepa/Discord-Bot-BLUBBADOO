@@ -31,6 +31,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 1,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (isEmpty(userData[message.author.id].pet)) {
             if (userData[message.author.id].gems < 5) {

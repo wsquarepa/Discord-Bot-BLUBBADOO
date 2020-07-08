@@ -12,6 +12,8 @@ module.exports = {
     aliases: ['achivements'],
     cooldown: 5,
     levelRequirement: 0,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         var userAchivements = userData[message.author.id].achivements
         var embed = new discord.MessageEmbed()

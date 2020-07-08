@@ -10,6 +10,8 @@ module.exports = {
     guildOnly: true,
     aliases: ['clear', 'delete'],
     cooldown: 2.3,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
 
         if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGES")) {

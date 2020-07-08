@@ -25,6 +25,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 60,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory["knife"] == null || userData[message.author.id].inventory["knife"].amount < 1) {
             message.channel.send("How do you suppose you raid without a knife?")

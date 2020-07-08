@@ -24,6 +24,8 @@ module.exports = {
     usage: '[item]',
     guildOnly: false,
     aliases: ['create', "make"],
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
 
         if (userData[message.author.id].inventory["craftingbench"] == null || userData[message.author.id].inventory["craftingbench"].amount < 1) {

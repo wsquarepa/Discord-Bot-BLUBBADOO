@@ -10,6 +10,8 @@ module.exports = {
     guildOnly: true,
     aliases: ['giveMoney'],
     cooldown: 0,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (!mention) {
             message.channel.send("@mention someone please.")

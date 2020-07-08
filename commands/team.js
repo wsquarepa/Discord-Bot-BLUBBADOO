@@ -41,6 +41,8 @@ module.exports = {
     aliases: ['party'],
     cooldown: 1,
     levelRequirement: 5,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (userData[message.author.id].team == "") {
             console.log("no team")

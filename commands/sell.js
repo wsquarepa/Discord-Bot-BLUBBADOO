@@ -12,6 +12,8 @@ module.exports = {
     guildOnly: false,
     aliases: [],
     cooldown: 3,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         var itemName = args[0].toLowerCase()
         var amount = (args[1] == null? 1 : parseInt(args[1]))

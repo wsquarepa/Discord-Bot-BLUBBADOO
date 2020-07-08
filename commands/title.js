@@ -12,6 +12,8 @@ module.exports = {
     aliases: [],
     cooldown: 3,
     levelRequirement: 0,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (!args.length) {
             var availableTags = []

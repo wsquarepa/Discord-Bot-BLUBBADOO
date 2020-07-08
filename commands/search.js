@@ -26,6 +26,8 @@ module.exports = {
     aliases: ['find'],
     cooldown: 60,
     levelRequirement: 4,
+    category: "economy",
+    adminOnly: false,
 	execute(message, args, mention) {
         if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif.amount < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")

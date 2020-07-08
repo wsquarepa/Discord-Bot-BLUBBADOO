@@ -6,6 +6,8 @@ module.exports = {
 	guildOnly: false,
 	cooldown: 5,
 	aliases: ['v'],
+    category: "info",
+    adminOnly: false,
 	execute(message, args, mention) {
 		message.channel.send("Blubbadoo is on V" + parcel.version + "!");
 	},

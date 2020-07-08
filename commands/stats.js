@@ -19,6 +19,8 @@ module.exports = {
     guildOnly: false,
     aliases: ['polls'],
     cooldown: 2,
+    category: "info",
+    adminOnly: false,
     execute(message, args, mention) {
         const { commands } = message.client;
         if (!args.length) {
