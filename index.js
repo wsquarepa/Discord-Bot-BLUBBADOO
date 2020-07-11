@@ -9,11 +9,9 @@ const client = new Discord.Client();
 var userData = require('./userData.json')
 const modeOfUser = require('../configs/blubbadoo.json')
 const teamData = require('./teams.json')
-var botData = require('./botData.json')
+var botData = JSON.parse(fs.readFileSync("./botData.json"))
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-modeOfUser.testMode = false
 
 function isEmpty(obj) {
 	for (var key in obj) {
@@ -283,11 +281,9 @@ client.on('message', message => {
 
 	const now = Date.now();
 	//#region - Here is the command tracking. 
-	if (!modeOfUser.testMode) {
-		botData[command.name].uses++
-		botData[command.name].lastUsed = now
-		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
-	}
+	botData[command.name].uses++
+	botData[command.name].lastUsed = now
+	fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	//#endregion
 
 	if (command.args && !args.length) {
