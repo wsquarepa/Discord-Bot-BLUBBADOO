@@ -9,9 +9,11 @@ const client = new Discord.Client();
 var userData = require('./userData.json')
 const modeOfUser = require('../configs/blubbadoo.json')
 const teamData = require('./teams.json')
-var botData = JSON.parse(fs.readFileSync("./botData.json"))
+var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+modeOfUser.testMode = false
 
 function isEmpty(obj) {
 	for (var key in obj) {
@@ -40,7 +42,9 @@ for (const file of commandFiles) {
 			lastUsed: 0
 		}
 	}
-	fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+	if (botData != "" || botData != null || !isEmpty(botData)) {
+		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+	}
 }
 
 client.once("ready", function () {
@@ -62,7 +66,9 @@ client.on('message', message => {
 
 	if (!modeOfUser.testMode) {
 		botData.messagesRecieved++
-		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+		if (botData != "" || botData != null || !isEmpty(botData)) {
+			fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+		}
 	}
 
 
@@ -283,7 +289,9 @@ client.on('message', message => {
 	//#region - Here is the command tracking. 
 	botData[command.name].uses++
 	botData[command.name].lastUsed = now
-	fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+	if (botData != "" || botData != null || !isEmpty(botData)) {
+		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+	}
 	//#endregion
 
 	if (command.args && !args.length) {
