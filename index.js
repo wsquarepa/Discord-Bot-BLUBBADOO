@@ -71,8 +71,7 @@ client.on('message', message => {
 		}
 	}
 
-
-	if (!message.author.bot && !modeOfUser.testMode && userData[message.author.id].account.type.toLowerCase() != "banned") {
+	if (!message.author.bot && !modeOfUser.testMode) {
 		if (!userData[message.author.id]) {
 			userData[message.author.id] = {
 				cash: 0,
