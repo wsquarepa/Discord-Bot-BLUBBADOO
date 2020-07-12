@@ -12,6 +12,15 @@ const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+// const Sequelize = require('sequelize');
+
+// const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
+// 	host: '104.248.218.189',
+// 	dialect: 'sqlite',
+// 	logging: false,
+// 	// SQLite only
+// 	storage: 'database.sqlite',
+// });
 
 modeOfUser.testMode = false
 
