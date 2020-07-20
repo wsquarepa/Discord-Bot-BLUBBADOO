@@ -139,7 +139,7 @@ client.on('message', message => {
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
 				.then(m => m.delete({
 					timeout: 5000
-				}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+				}).catch()).catch()
 		}
 
 		userData[message.author.id].cash += userData[message.author.id].level
@@ -154,7 +154,7 @@ client.on('message', message => {
 			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + userData[message.author.id].nextGemCashGoal + "!")
 				.then(m => m.delete({
 					timeout: 5000
-				}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+				}).catch()).catch()
 			userData[message.author.id].nextGemCashGoal = userData[message.author.id].cash + 10000
 		}
 
@@ -219,7 +219,7 @@ client.on('message', message => {
 					message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
 						.then(m => m.delete({
 							timeout: 5000
-						}).catch(err => message.channel.send("I can't delete messages, so I cannot remove that message.")))
+						}).catch()).catch()
 				}
 
 
@@ -233,7 +233,7 @@ client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {
-		message.channel.send("Uh oh, you've been banned from using me. Ask a bot developer for more info.")
+		message.channel.send("Uh oh, you've been banned from using me. Ask a bot developer for more info.").catch()
 		return
 	}
 
@@ -287,7 +287,7 @@ client.on('message', message => {
 				message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
 					.then(m => m.delete({
 						timeout: 5000
-					}).catch(err => message.channel.send("An error occurred while trying to delete that message.")))
+					}).catch()).catch()
 			}
 		}
 	}
@@ -303,11 +303,11 @@ client.on('message', message => {
 	//#endregion
 
 	if (command.args && !args.length) {
-		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		return message.channel.send(`You didn't provide any arguments, ${message.author}!`).catch()
 	}
 
 	if (command.guildOnly && message.channel.type !== 'text') {
-		return message.reply('I can\'t execute that command inside DMs!');
+		return message.reply('I can\'t execute that command inside DMs!').catch()
 	}
 
 	if (!cooldowns.has(command.name)) {
@@ -316,7 +316,7 @@ client.on('message', message => {
 
 	const levelRequirement = (command.levelRequirement || 0)
 	if (userData[message.author.id].level < levelRequirement) {
-		message.reply("that command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!")
+		message.reply("that command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!").catch()
 		return
 	}
 
@@ -332,7 +332,7 @@ client.on('message', message => {
 			embed.setTitle("Error")
 			embed.setDescription(`You have to wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`)
 			embed.setColor("ff0000")
-			return message.channel.send(embed)
+			return message.channel.send(embed).catch()
 		}
 	}
 
@@ -345,7 +345,7 @@ client.on('message', message => {
 		}
 	} catch (error) {
 		console.error(error);
-		message.reply('There was an error trying to execute that command!');
+		message.reply('There was an error trying to execute that command!').catch()
 	}
 });
 
