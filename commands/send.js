@@ -6,7 +6,7 @@ module.exports = {
     guildOnly: true,
     aliases: ['broadcast'],
     cooldown: 2,
-    category: "info",
+    category: "moderation",
     adminOnly: false,
 	execute(message, args, mention) {
         var channelMention = args[0]
