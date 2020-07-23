@@ -1275,7 +1275,7 @@
         "username": "marco_rennmaus | Rennmoose2",
         "account": {
             "secured": false,
-            "type": "user",
+            "type": "Bot Acceptee",
             "daily": {
                 "streak": -1,
                 "previousAmt": 0,
