@@ -71,7 +71,7 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-	if ((message.author.id != "509874745567870987" && modeOfUser.testMode) || !message.guild.member(client.user).hasPermission("SEND_MESSAGES")) return
+	if ((message.author.id != "509874745567870987" && modeOfUser.testMode)) return
 
 	if (!modeOfUser.testMode) {
 		botData.messagesRecieved++
@@ -142,7 +142,11 @@ client.on('message', message => {
 				}).catch()).catch()
 		}
 
-		userData[message.author.id].cash += userData[message.author.id].level
+		//#region - chat money
+
+			//userData[message.author.id].cash += userData[message.author.id].level
+
+		//#endregion
 
 		var netWorth = userData[message.author.id].cash + userData[message.author.id].bank
 		if (!userData[message.author.id].nextGemCashGoal) {
