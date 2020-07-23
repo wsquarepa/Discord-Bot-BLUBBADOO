@@ -11,7 +11,7 @@ module.exports = {
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: ['specialStore'],
+    aliases: ['specialstore'],
     cooldown: 1,
     category: "economy",
     adminOnly: false,
