@@ -71,7 +71,7 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-	if ((message.author.id != "509874745567870987" && modeOfUser.testMode) || !message.guild.member(client).hasPermission("SEND_MESSAGES")) return
+	if ((message.author.id != "509874745567870987" && modeOfUser.testMode) || !message.guild.member(client.user).hasPermission("SEND_MESSAGES")) return
 
 	if (!modeOfUser.testMode) {
 		botData.messagesRecieved++
