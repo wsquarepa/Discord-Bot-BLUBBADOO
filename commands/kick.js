@@ -23,9 +23,9 @@ module.exports = {
         var reason = args.splice(1)
         reason = reason.join(" ")
 
-        message.channel.send(mention.username + " has been kicked for the reason " + reason)
-        mention.send("You have been kicked from " + message.guild.name + " for \n" + reason).then(function() {
-            message.guild.member(mention).kick({reason: reason})
+        message.channel.send("<@" + mention.id + ">" + " has been kicked for the reason `" + reason + "`")
+        mention.send("You have been kicked from " + message.guild.name + " for: \n`" + reason + "`").then(function() {
+            message.guild.member(mention).kick({reason: reason}).catch(() => message.channel.send("I don't have permission to kick members."))
         })
     }
 }
