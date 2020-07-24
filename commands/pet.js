@@ -3,8 +3,8 @@ const fs = require('fs');
 const discord = require("discord.js")
 
 function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key))
             return false;
     }
     return true;
@@ -25,7 +25,7 @@ function embed(title, description, color) {
 
 module.exports = {
     name: 'pet',
-	description: 'Do stuff with your pet!',
+    description: 'Do stuff with your pet!',
     args: false,
     usage: '[command]',
     guildOnly: false,
@@ -33,7 +33,7 @@ module.exports = {
     cooldown: 1,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+    execute(message, args, mention) {
         if (isEmpty(userData[message.author.id].pet)) {
             if (userData[message.author.id].gems < 5) {
                 message.channel.send("You don't have enough **GEMS** to buy a pet.")
@@ -41,8 +41,10 @@ module.exports = {
             }
 
             message.channel.send("Buy a pet for 5 GEMS?")
-            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
-            collector.on('collect', function(msg) {
+            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {
+                maxMatches: 1
+            })
+            collector.on('collect', function (msg) {
                 collector.stop()
                 if (msg.content.toLowerCase() == "yes") {
                     userData[message.author.id].gems -= 5
@@ -63,7 +65,7 @@ module.exports = {
         try {
             if (args[0].toLowerCase() == "help") {
                 var embed = new discord.MessageEmbed({
-                    title:"Help on pets:",
+                    title: "Help on pets:",
                     description: `
                         ==pet feed - feed your pet,
                         ==pet collect - collect the money your pet earned you,
@@ -74,21 +76,32 @@ module.exports = {
                 })
                 message.channel.send(embed)
             } else if (args[0] == "feed") {
-
-                if (userData[message.author.id].gems < 1) {
-                    message.channel.send("You don't got enough **GEMS**.")
-                    return
+                if 
+                (
+                    userData[message.author.id].gems < 1 || 
+                    userData[message.author.id].inventory["carrot"] == null || 
+                    userData[message.author.id].inventory["carrot"].amount < 500
+                ) {
+                    message.channel.send("You don't got enough **GEMS** or **CARROTS**.")
+                    return false
                 }
 
                 if (userData[message.author.id].pet.food > 50) {
                     message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (userData[message.author.id].pet.food) + " hunger.")
                 }
 
-                message.channel.send("Feed your pet for **1 GEM**?")
-                var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {maxMatches: 1})
-                collector.on('collect', function(msg) {
+                message.channel.send("Feed your pet for **1 GEM** or **500 CARROTS**? Type out what you want to feed it with.")
+                var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {
+                    maxMatches: 1
+                })
+                collector.on('collect', function (msg) {
                     collector.stop()
-                    if (msg.content.toLowerCase() == "yes") {
+                    if (msg.content.toLowerCase().startsWith("carrot")) {
+                        userData[message.author.id].inventory.carrot.amount -= 500
+                        userData[message.author.id].pet.food = 500
+                        message.channel.send("You paid `500 CARROTS` to feed your pet.")
+                        saveCoins()
+                    } else if (msg.content.toLowerCase().startsWith("gem")) {
                         userData[message.author.id].gems -= 1
                         userData[message.author.id].pet.food = 500
                         message.channel.send("You paid `1 GEM` to feed your pet.")
@@ -130,8 +143,7 @@ module.exports = {
             var embed = new discord.MessageEmbed({
                 title: "Your pet " + userData[message.author.id].pet.type,
                 description: userData[message.author.id].pet.name + "'s petfile:",
-                fields: [
-                    {
+                fields: [{
                         name: "Energy (out of 500)",
                         value: userData[message.author.id].pet.food,
                         inline: true
