@@ -103,7 +103,8 @@ client.on('message', message => {
 				},
 				pet: {},
 				team: "",
-				achivements: []
+				achivements: [],
+				codesUsed: []
 			}
 		}
 
@@ -125,6 +126,10 @@ client.on('message', message => {
 
 		if (userData[message.author.id].account.title == null || userData[message.author.id].account.title == "") {
 			userData[message.author.id].account.title = "none"
+		}
+
+		if (userData[message.author.id].codesUsed == null) {
+			userData[message.author.id].codesUsed = []
 		}
 
 		userData[message.author.id].xp += 1

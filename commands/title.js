@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const achivements = require('../jsHelpers/achivements')
 const fs = require('fs');
 const discord = require("discord.js")
+const codes = require("../jsHelpers/codes")
 
 module.exports = {
     name: 'title',
@@ -22,6 +23,12 @@ module.exports = {
                     availableTags.push("ID: " + i + " - " + achivements[userData[message.author.id].achivements[i]].reward.title)
                 }
             }
+
+            for (var z = 0; z < userData[message.author.id].codesUsed.length; z++) {
+                if (codes[userData[message.author.id].codesUsed[z]].title != "") {
+                    availableTags.push("ID: " + (i + z) + " - " + codes[userData[message.author.id].codesUsed[z]].title)
+                }
+            }
             message.channel.send("Available titles: (use ==title [title id] to set your title) \n" + availableTags.join("\n"))
         } else {
             var id = parseInt(args[0])
@@ -29,8 +36,12 @@ module.exports = {
             try {
                 tag = achivements[userData[message.author.id].achivements[id]].reward.title
             } catch {
-                message.channel.send("Enter a valid id!")
-                return false;
+                try {
+                    tag = codes[userData[message.author.id].codesUsed[id - userData[message.author.id].achivements.length]].title
+                } catch {
+                    message.channel.send("Enter a valid id!")
+                    return false;
+                }
             }
             userData[message.author.id].account.title = tag
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
