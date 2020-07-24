@@ -164,7 +164,7 @@ client.on('message', message => {
 				.then(m => m.delete({
 					timeout: 5000
 				}).catch()).catch()
-			userData[message.author.id].nextGemCashGoal = userData[message.author.id].cash + 10000
+			userData[message.author.id].nextGemCashGoal = netWorth + 10000
 		}
 
 		if (!isEmpty(userData[message.author.id].pet)) {
@@ -353,7 +353,9 @@ client.on('message', message => {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		}
 	} catch (error) {
-		console.error(error);
+		if (modeOfUser.testMode) {
+			console.error(error);
+		}
 		message.reply('There was an error trying to execute that command!').catch()
 	}
 });
