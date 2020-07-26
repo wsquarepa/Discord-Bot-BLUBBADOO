@@ -22,7 +22,7 @@ module.exports = {
                 var embed = new discord.MessageEmbed()
                     .setTitle("Thanks for voting!")
                     .setDescription("You earned 1 gem! If possible, [vote again](https://top.gg/bot/596715111511490560 'My voting site') in 12 hours!")
-                    .setColor("ff0000")
+                    .setColor("00ff00")
                 message.channel.send(embed)
             } else {
                 var embed = new discord.MessageEmbed()
