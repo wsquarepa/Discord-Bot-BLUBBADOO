@@ -22,7 +22,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 // 	storage: 'database.sqlite',
 // });
 
-modeOfUser.testMode = false
+//modeOfUser.testMode = false
 
 function isEmpty(obj) {
 	for (var key in obj) {
