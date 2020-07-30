@@ -2,7 +2,8 @@ const Discord = require('discord.js')
 const fs = require('fs');
 const {
 	prefix,
-	token
+	token,
+	bannedServers
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
@@ -71,6 +72,7 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
+	if (bannedServers.includes(message.guild.id)) return;
 	if ((message.author.id != "509874745567870987" && modeOfUser.testMode)) return
 
 	if (!modeOfUser.testMode) {
@@ -149,7 +151,7 @@ client.on('message', message => {
 
 		//#region - chat money
 
-			//userData[message.author.id].cash += userData[message.author.id].level
+			userData[message.author.id].cash += userData[message.author.id].level
 
 		//#endregion
 
