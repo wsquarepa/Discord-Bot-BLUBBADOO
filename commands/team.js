@@ -486,7 +486,7 @@ module.exports = {
                     return false
                 }
 
-                var msg = args[1]
+                var msg = args.splice(1).join(" ")
                 if (msg.length > 50 || msg.length < 5 && !msg == "clear") {
                     message.channel.send("Messages can be a maximum of **50** characters and a minimum of **5** characters.")
                 }
