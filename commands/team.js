@@ -200,7 +200,9 @@ module.exports = {
                     "\n Team message: " + (teamData[userData[message.author.id].team].message.length > 0? teamData[userData[message.author.id].team].message:"none") +
                     "\n Team money: $" + teamData[userData[message.author.id].team].money)
                 for (var i = 0; i < teamData[userData[message.author.id].team].members.length; i++) {
-                    var dispmod, dispadmin, dispcreator = false
+                    var dispmod = false
+                    var dispadmin = false
+                    var dispcreator = false
                     if (team.moderators.includes(team.members[i])) dispmod = true
                     else if (team.admins.includes(team.members[i])) dispadmin = true
                     else if (team.creator == team.members[i]) dispcreator = true
