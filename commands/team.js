@@ -204,8 +204,15 @@ module.exports = {
                     if (team.moderators.includes(team.members[i])) dispmod = true
                     else if (team.admins.includes(team.members[i])) dispadmin = true
                     else if (team.creator == team.members[i]) dispcreator = true
-                    teamInfoEmbed.addField(userData[teamData[userData[message.author.id].team].members[i]].username, 
-                        (dispcreator? "Creator":dispadmin? "Administrator":dispmod? "Moderator":"Member"))
+
+                    var backname;
+
+                    if (dispcreator) backname = "Creator"
+                    else if (dispadmin) backname = "Administrator"
+                    else if (dispmod) backname = "Moderator"
+                    else backname = "Member"
+
+                    teamInfoEmbed.addField(userData[teamData[userData[message.author.id].team].members[i]].username, backname)
                 }
                 message.channel.send(teamInfoEmbed)
             } else if (args[0].startsWith("dep")) {
