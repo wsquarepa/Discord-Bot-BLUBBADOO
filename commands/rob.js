@@ -31,10 +31,16 @@ module.exports = {
             message.channel.send("You gotta tell me who you wanna rob.")
             return false
         }
-        if (!userData[mention.id] || mention.id == "509874745567870987") {
+        if (!userData[mention.id]) {
             message.channel.send("That person doesn't have a bank account yet.")
             return false;
         }
+
+        if (userData[mention.id].account.type.toLowerCase() == "admin") {
+            message.channel.send("Robbing an admin isn't fair as they have indefinite money, so you can't rob admins.")
+            return false;
+        }
+
         if (message.author.id == mention.id) {
             message.channel.send("Why would you like to rob yourself? You don't earn anything anyway.")
             return false
