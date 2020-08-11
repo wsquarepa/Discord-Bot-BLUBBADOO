@@ -85,6 +85,6 @@ module.exports = {
         } else {
             message.channel.send("That's not a valid command.")
         }
-        fs.writeFile("../userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
     }
 }
