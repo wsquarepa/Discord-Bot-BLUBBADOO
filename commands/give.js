@@ -18,7 +18,7 @@ module.exports = {
             return false
         }
         
-        if (!userData[mention.id] || mention.id == "509874745567870987") {
+        if (!userData[mention.id]) {
             message.channel.send("Sorry, but that user doesn't have a bank account yet.")
             return false
         }
