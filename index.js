@@ -3,7 +3,9 @@ const fs = require('fs');
 const {
 	prefix,
 	token,
-	bannedServers
+	bannedServers,
+	dblToken,
+	dblPassword
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
@@ -13,6 +15,19 @@ const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const http = require('http')
+const DBL = require('dblapi.js')
+const dbl = new DBL(dblToken, client);
+
+const server = http.createServer((req, res) => {
+	res.writeHead(200, {
+		'content-type': 'text/html;charset=utf-8',
+	});
+	res.write("200 OK");
+	res.end();
+}).listen(8080)
+
+const dblWebhook = new DBL(dblToken, { webhookPort: 8080, webhookAuth: dblPassword, webhookServer: server})
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -69,6 +84,10 @@ client.once("ready", function () {
 		.then(function () {
 			console.log("Custom status go.")
 		})
+
+	setInterval(() => {
+		dbl.postStats(client.guilds.size, client.shards.Id, client.shards.total);
+	}, 1800000);
 })
 
 client.on('message', message => {
@@ -151,7 +170,7 @@ client.on('message', message => {
 
 		//#region - chat money
 
-			userData[message.author.id].cash += userData[message.author.id].level
+		userData[message.author.id].cash += userData[message.author.id].level
 
 		//#endregion
 
@@ -349,6 +368,7 @@ client.on('message', message => {
 
 	try {
 		var success = command.execute(message, args, mention)
+		console.log(success)
 		if (success == null) success = true
 		if (success) {
 			timestamps.set(message.author.id, now);
@@ -360,6 +380,15 @@ client.on('message', message => {
 		}
 		message.reply('There was an error trying to execute that command!').catch()
 	}
+});
+
+dblWebhook.webhook.on('ready', hook => {
+	console.log(`Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`);
+});
+
+dblWebhook.webhook.on('vote', vote => {
+	userData[vote.user].gems++
+	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 });
 
 client.on('guildCreate', function (guild) {
