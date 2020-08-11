@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
 	});
 	res.write("200 OK");
 	res.end();
-}).listen(8080)
+}).listen(8080, "104.248.218.189")
 
 const dblWebhook = new DBL(dblToken, { webhookPort: 8080, webhookAuth: dblPassword, webhookServer: server})
 // const Sequelize = require('sequelize');
