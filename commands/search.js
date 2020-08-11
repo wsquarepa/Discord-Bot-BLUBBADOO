@@ -78,8 +78,7 @@ module.exports = {
                     earnings = randomNumber(100, 1000)
                     message.channel.send("You search in the source code of BLUBBADOO and give yourself $" + earnings + ".")
                 } else if (location == 'math homework') {
-                    message.channel.send("WHAT IS 1 + 1 HUH")
-                    message.channel.send(`I wonder why you searched in your math homework, but anyway, you found nothing.`)
+                    message.channel.send("WHAT IS 1 + 1 HUH" + `\n I wonder why you searched in your math homework, but anyway, you found nothing.`)
                 } else if (location == 'authy') {
                     if (randomNumber(0, 5) == 4) {
                         message.channel.send("You try to search in your authenticator app, authy, but instead it shoots a lock at your face.")
