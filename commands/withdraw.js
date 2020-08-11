@@ -25,6 +25,12 @@ module.exports = {
                 message.channel.send("You can't withdraw more than you have.")
                 return false;
             }
+
+            if (parseInt(args[0]) == NaN) {
+                message.channel.send("You can't deposit that.")
+                return false;
+            }
+            
             userData[message.author.id].bank -= parseInt(args[0])
             userData[message.author.id].cash += parseInt(args[0])
         }
