@@ -18,16 +18,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const http = require('http')
 const DBL = require('dblapi.js')
 const dbl = new DBL(dblToken, client);
-
-const server = http.createServer((req, res) => {
-	res.writeHead(200, {
-		'content-type': 'text/html;charset=utf-8',
-	});
-	res.write("200 OK");
-	res.end();
-}).listen(8080, "104.248.218.189")
-
-const dblWebhook = new DBL(dblToken, { webhookPort: 8080, webhookAuth: dblPassword, webhookServer: server})
+const dblWebhook = new DBL(dblToken, { webhookPort: 8080, webhookAuth: dblPassword})
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
