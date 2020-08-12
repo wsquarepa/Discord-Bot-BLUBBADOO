@@ -1,0 +1,206 @@
+<<<<<<< HEAD
+=======
+{
+    "messagesRecieved": 301869,
+    "ban": {
+        "uses": 0,
+        "lastUsed": 0
+    },
+    "buy": {
+        "uses": 200,
+        "lastUsed": 1597251195909
+    },
+    "coin": {
+        "uses": 8,
+        "lastUsed": 1593795490284
+    },
+    "crab": {
+        "uses": 219,
+        "lastUsed": 1597252112353
+    },
+    "daily": {
+        "uses": 98,
+        "lastUsed": 1596665860790
+    },
+    "deposit": {
+        "uses": 18,
+        "lastUsed": 1597250845527
+    },
+    "embed": {
+        "uses": 0,
+        "lastUsed": 0
+    },
+    "fish": {
+        "uses": 236,
+        "lastUsed": 1597252124548
+    },
+    "help": {
+        "uses": 82,
+        "lastUsed": 1597250310670
+    },
+    "hunt": {
+        "uses": 398,
+        "lastUsed": 1597252128466
+    },
+    "inventory": {
+        "uses": 98,
+        "lastUsed": 1597250285897
+    },
+    "invite": {
+        "uses": 19,
+        "lastUsed": 1597251089698
+    },
+    "kick": {
+        "uses": 2,
+        "lastUsed": 1595544020504
+    },
+    "leaderboard": {
+        "uses": 88,
+        "lastUsed": 1597250936431
+    },
+    "math": {
+        "uses": 14,
+        "lastUsed": 1595967174673
+    },
+    "money": {
+        "uses": 220,
+        "lastUsed": 1597251705592
+    },
+    "pet": {
+        "uses": 40,
+        "lastUsed": 1595967370147
+    },
+    "phrase": {
+        "uses": 1,
+        "lastUsed": 1595609636348
+    },
+    "profile": {
+        "uses": 77,
+        "lastUsed": 1597189965656
+    },
+    "purge": {
+        "uses": 56,
+        "lastUsed": 1596659844184
+    },
+    "race": {
+        "uses": 3,
+        "lastUsed": 1595102492727
+    },
+    "reload": {
+        "uses": 66,
+        "lastUsed": 1597254851671
+    },
+    "rob": {
+        "uses": 8,
+        "lastUsed": 1597252078949
+    },
+    "rps": {
+        "uses": 8,
+        "lastUsed": 1592859092557
+    },
+    "search": {
+        "uses": 289,
+        "lastUsed": 1597252132733
+    },
+    "send": {
+        "uses": 4,
+        "lastUsed": 1594933072763
+    },
+    "shop": {
+        "uses": 84,
+        "lastUsed": 1597252127740
+    },
+    "stats": {
+        "uses": 60,
+        "lastUsed": 1595544317518
+    },
+    "sudo": {
+        "uses": 36,
+        "lastUsed": 1597254886569
+    },
+    "use": {
+        "uses": 18,
+        "lastUsed": 1594139174569
+    },
+    "version": {
+        "uses": 3,
+        "lastUsed": 1595369389881
+    },
+    "withdraw": {
+        "uses": 14,
+        "lastUsed": 1597250921494
+    },
+    "work": {
+        "uses": 121,
+        "lastUsed": 1597250440317
+    },
+    "report": {
+        "uses": 9,
+        "lastUsed": 1594143252664
+    },
+    "give": {
+        "uses": 1,
+        "lastUsed": 1592266769778
+    },
+    "specialShop": {
+        "uses": 0,
+        "lastUsed": 0
+    },
+    "specialshop": {
+        "uses": 8,
+        "lastUsed": 1597201025599
+    },
+    "sell": {
+        "uses": 59,
+        "lastUsed": 1597192512191
+    },
+    "chop": {
+        "uses": 65,
+        "lastUsed": 1597252147379
+    },
+    "craft": {
+        "uses": 109,
+        "lastUsed": 1597252119872
+    },
+    "explore": {
+        "uses": 10,
+        "lastUsed": 1594745894332
+    },
+    "farm": {
+        "uses": 30,
+        "lastUsed": 1596564802916
+    },
+    "mine": {
+        "uses": 105,
+        "lastUsed": 1597252149958
+    },
+    "raid": {
+        "uses": 35,
+        "lastUsed": 1597252145662
+    },
+    "music": {
+        "uses": 9,
+        "lastUsed": 1594073533621
+    },
+    "team": {
+        "uses": 59,
+        "lastUsed": 1594081332962
+    },
+    "achievements": {
+        "uses": 0,
+        "lastUsed": 0
+    },
+    "title": {
+        "uses": 17,
+        "lastUsed": 1596730360005
+    },
+    "code": {
+        "uses": 8,
+        "lastUsed": 1595961165362
+    },
+    "vote": {
+        "uses": 3,
+        "lastUsed": 1595782558996
+    }
+}
+>>>>>>> 6125611fd858eb616183c7b89fa4da0b52e90a19
