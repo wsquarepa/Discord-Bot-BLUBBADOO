@@ -1,7 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
-const shopData = require("../shop.json")
+const shopData = require("../specialShop.json")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()

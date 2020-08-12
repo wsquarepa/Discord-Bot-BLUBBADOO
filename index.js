@@ -77,14 +77,13 @@ client.once("ready", function () {
 
 	setInterval(() => {
 		dbl.postStats(client.guilds.size);
-		// try {
-		// 	execSync('git pull', { encoding: 'utf-8' })
-		// 	execSync('git add .', { encoding: 'utf-8' });
-		// 	execSync('git commit -m backup', { encoding: 'utf-8' })
-		// 	execSync('git push', { encoding: 'utf-8' })
-		// } catch (e) {
-		// 	console.error(e)
-		// }
+		try {
+			execSync('git pull', { encoding: 'utf-8' })
+			execSync('git add .', { encoding: 'utf-8' });
+			execSync('git commit -m backup', { encoding: 'utf-8' })
+		} catch (e) {
+			console.error(e)
+		}
 	}, 1800000);
 })
 
