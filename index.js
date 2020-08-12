@@ -18,7 +18,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const http = require('http')
 const DBL = require('dblapi.js')
 const dbl = new DBL(dblToken, client);
-const dblWebhook = new DBL(dblToken, { webhookPort: 8080, webhookAuth: dblPassword})
+const execSync = require('child_process').execSync;
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -77,7 +77,15 @@ client.once("ready", function () {
 		})
 
 	setInterval(() => {
-		dbl.postStats(client.guilds.size, client.shards.Id, client.shards.total);
+		dbl.postStats(client.guilds.size);
+		try {
+			execSync('git pull', { encoding: 'utf-8' })
+			execSync('git add .', { encoding: 'utf-8' });
+			execSync('git commit -m backup', { encoding: 'utf-8' })
+			execSync('git push', { encoding: 'utf-8' })
+		} catch (e) {
+			console.error(e)
+		}
 	}, 1800000);
 })
 
