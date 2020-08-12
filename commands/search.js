@@ -82,12 +82,12 @@ module.exports = {
                 } else if (location == 'authy') {
                     if (randomNumber(0, 5) == 4) {
                         message.channel.send("You try to search in your authenticator app, authy, but instead it shoots a lock at your face.")
-                        if (userData[message.author.id].inventory['Lock']) {
-                            userData[message.author.id].inventory['Lock'].amount += 1
+                        if (userData[message.author.id].inventory['lock']) {
+                            userData[message.author.id].inventory['lock'].amount += 1
                         } else {
-                            userData[message.author.id].inventory['Lock'] = {
+                            userData[message.author.id].inventory['lock'] = {
                                 amount: 1,
-                                uses: shopData['Lock'].uses
+                                uses: shopData['lock'].uses
                             }
                         }
                     } else {
