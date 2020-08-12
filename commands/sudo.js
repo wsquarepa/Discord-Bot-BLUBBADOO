@@ -82,6 +82,22 @@ module.exports = {
                 }
             })
             
+        } else if (args[0] == "purgeUsers") {
+            message.channel.send("Working...").then(function(msg) {
+                const keys = Object.keys(userData)
+                var usersPurged = 0
+                for (var i = 0; i < keys.length; i++) {
+                    const userCheckCash = userData[keys[i]].cash
+                    const userCheckBank = userData[keys[i]].bank
+                    const userCheckGems = userData[keys[i]].gems
+
+                    if ((userCheckCash + userCheckBank + userCheckGems) <= 0) {
+                        delete userData[keys[i]]
+                        usersPurged++
+                    }
+                }
+                msg.edit("Complete! Purged " + usersPurged + " users.") 
+            })
         } else {
             message.channel.send("That's not a valid command.")
         }
