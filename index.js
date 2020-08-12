@@ -372,9 +372,7 @@ client.on('message', message => {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		}
 	} catch (error) {
-		if (modeOfUser.testMode && message.guild.id != "264445053596991498") {
-			console.error(error);
-		}
+		console.error(error);
 		message.reply('There was an error trying to execute that command!').catch()
 	}
 });
