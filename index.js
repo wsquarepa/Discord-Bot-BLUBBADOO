@@ -15,7 +15,6 @@ const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const http = require('http')
 const DBL = require('dblapi.js')
 const dbl = new DBL(dblToken, client);
 const execSync = require('child_process').execSync;
@@ -379,15 +378,6 @@ client.on('message', message => {
 		}
 		message.reply('There was an error trying to execute that command!').catch()
 	}
-});
-
-dblWebhook.webhook.on('ready', hook => {
-	console.log(`Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`);
-});
-
-dblWebhook.webhook.on('vote', vote => {
-	userData[vote.user].gems++
-	fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 });
 
 client.on('guildCreate', function (guild) {
