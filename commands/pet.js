@@ -42,7 +42,8 @@ module.exports = {
 
             message.channel.send("Buy a pet for 5 GEMS?")
             var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {
-                maxMatches: 1
+                maxMatches: 1,
+                time: 10000
             })
             collector.on('collect', function (msg) {
                 collector.stop()
@@ -78,8 +79,8 @@ module.exports = {
             } else if (args[0] == "feed") {
                 if 
                 (
-                    userData[message.author.id].gems < 1 || 
-                    userData[message.author.id].inventory["carrot"] == null || 
+                    userData[message.author.id].gems < 1 &&
+                    userData[message.author.id].inventory["carrot"] == null &&
                     userData[message.author.id].inventory["carrot"].amount < 500
                 ) {
                     message.channel.send("You don't got enough **GEMS** or **CARROTS**.")
@@ -92,7 +93,8 @@ module.exports = {
 
                 message.channel.send("Feed your pet for **1 GEM** or **500 CARROTS**? Type out what you want to feed it with.")
                 var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {
-                    maxMatches: 1
+                    maxMatches: 1,
+                    time: 10000
                 })
                 collector.on('collect', function (msg) {
                     collector.stop()
