@@ -88,7 +88,9 @@ client.once("ready", function () {
 })
 
 client.on('message', message => {
-	if (bannedServers.includes(message.guild.id)) return;
+	if (!message.channel.type == 'dm') {
+		if (bannedServers.includes(message.guild.id)) return;
+	}
 	if ((message.author.id != "509874745567870987" && modeOfUser.testMode)) return
 
 	if (!modeOfUser.testMode) {
