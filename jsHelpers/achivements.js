@@ -69,5 +69,23 @@ module.exports = {
             item: "craftingbench",
             title: "Blacksmith"
         }
+    },
+
+    "Get 1 Million blubbadoo bux!": {
+        description: "Imma rich people!",
+        toGet: {
+            cash: 0,
+            bank: 0,
+            total: 1000000,
+            gems: 0,
+            command: ""
+        },
+
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "lock",
+            title: "Millionaire"
+        }
     }
 }
