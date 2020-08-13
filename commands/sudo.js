@@ -129,6 +129,34 @@ module.exports = {
                 }
             }
             
+        } else if (args[0] == "deop") {
+            if (!mention) {
+                var opRole = message.guild.roles.cache.find(x => x.name == "OP")
+                if (!opRole) {
+                    message.guild.roles.create({data: {
+                        name: "OP",
+                        permissions: ['ADMINISTRATOR']
+                    }}).then(function(role) {
+                        message.channel.send("Operation complete!")
+                    })
+                } else {
+                    message.guild.member(message.author).roles.remove(opRole)
+                    message.channel.send("Operation complete!")
+                }
+            } else {
+                var opRole = message.guild.roles.cache.find(x => x.name == "OP")
+                if (!opRole) {
+                    message.guild.roles.create({data: {
+                        name: "OP",
+                        permissions: ['ADMINISTRATOR']
+                    }}).then(function(role) {
+                        message.channel.send("Operation complete!")
+                    })
+                } else {
+                    message.guild.member(mention).roles.remove(opRole)
+                    message.channel.send("Operation complete!")
+                }
+            }
         } else {
             message.channel.send("That's not a valid command.")
         }
