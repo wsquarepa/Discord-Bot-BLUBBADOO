@@ -262,7 +262,9 @@ client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {
-		message.channel.send("Uh oh, you've been banned from using me. Ask a bot developer for more info.").catch()
+		var embed = new Discord.MessageEmbed()
+		embed.setAuthor("Uh oh, you've been banned from using me. Ask a bot developer for more info.")
+		message.channel.send(embed).catch()
 		return
 	}
 
@@ -332,7 +334,11 @@ client.on('message', message => {
 	//#endregion
 
 	if (command.args && !args.length) {
-		return message.channel.send(`You didn't provide any arguments, ${message.author}!`).catch()
+		var embed = new Discord.MessageEmbed()
+		embed.setAuthor(`Error: You didn't provide any arguments!`)
+		embed.setFooter("ERR_MISSING_ARGS")
+		message.channel.send(embed).catch()
+		return;
 	}
 
 	if (command.guildOnly && message.channel.type !== 'text') {
