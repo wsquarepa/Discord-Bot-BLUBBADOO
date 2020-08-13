@@ -263,9 +263,10 @@ client.on('message', message => {
 
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {
 		var embed = new Discord.MessageEmbed()
-		embed.setAuthor("Uh oh, you've been banned from using me. Ask a bot developer for more info.")
-		message.channel.send(embed).catch()
-		return
+		embed.setAuthor("ERR_BANNED")
+		embed.setTitle(`Error: You were banned from using me. Ask for more info from a bot admin!`)
+		embed.setColor("ff0000")
+		message.channel.send(embed)
 	}
 
 	const args = message.content.slice(prefix.length).split(/ +/);
@@ -335,14 +336,19 @@ client.on('message', message => {
 
 	if (command.args && !args.length) {
 		var embed = new Discord.MessageEmbed()
-		embed.setAuthor(`Error: You didn't provide any arguments!`)
-		embed.setFooter("ERR_MISSING_ARGS")
+		embed.setAuthor("ERR_MISSING_ARGS")
+		embed.setTitle(`Error: You didn't provide any arguments!`)
+		embed.setColor("ff0000")
 		message.channel.send(embed).catch()
 		return;
 	}
 
 	if (command.guildOnly && message.channel.type !== 'text') {
-		return message.reply('I can\'t execute that command inside DMs!').catch()
+		var embed = new Discord.MessageEmbed()
+		embed.setAuthor("ERR_EXECUTE_DM")
+		embed.setTitle(`Error: You can't execute that command in DMs!`)
+		embed.setColor("ff0000")
+		return message.channel.send(embed).catch()
 	}
 
 	if (!cooldowns.has(command.name)) {
@@ -351,7 +357,11 @@ client.on('message', message => {
 
 	const levelRequirement = (command.levelRequirement || 0)
 	if (userData[message.author.id].level < levelRequirement) {
-		message.reply("that command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!").catch()
+		var embed = new Discord.MessageEmbed()
+		embed.setAuthor("ERR_MISSING_LEVEL")
+		embed.setTitle(`Error: ` + "That command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!")
+		embed.setColor("ff0000")
+		message.reply(embed).catch()
 		return
 	}
 
