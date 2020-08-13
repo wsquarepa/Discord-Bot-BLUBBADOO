@@ -1,7 +1,8 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
-const shopData = require("../specialShop.json")
+const specialShopData = require("../specialShop.json")
+const shopData = require("../shop.json")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -87,7 +88,7 @@ module.exports = {
                         } else {
                             userData[message.author.id].inventory['lock'] = {
                                 amount: 1,
-                                uses: shopData['lock'].uses
+                                uses: specialShopData['lock'].uses
                             }
                         }
                     } else {
