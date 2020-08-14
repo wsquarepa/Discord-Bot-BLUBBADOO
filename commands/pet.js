@@ -77,11 +77,10 @@ module.exports = {
                 })
                 message.channel.send(embed)
             } else if (args[0] == "feed") {
-                if 
-                (
+                if (
                     userData[message.author.id].gems < 1 &&
-                    userData[message.author.id].inventory["carrot"] == null &&
-                    userData[message.author.id].inventory["carrot"].amount < 500
+                    (userData[message.author.id].inventory["carrot"] == null ||
+                        userData[message.author.id].inventory["carrot"].amount < 500)
                 ) {
                     message.channel.send("You don't got enough **GEMS** or **CARROTS**.")
                     return false
@@ -99,11 +98,24 @@ module.exports = {
                 collector.on('collect', function (msg) {
                     collector.stop()
                     if (msg.content.toLowerCase().startsWith("carrot")) {
+                        if (
+                            userData[message.author.id].inventory["carrot"] == null ||
+                            userData[message.author.id].inventory["carrot"].amount < 500
+                        ) {
+                            message.channel.send("Not enough carrots.")
+                            return;
+                        }
                         userData[message.author.id].inventory.carrot.amount -= 500
                         userData[message.author.id].pet.food = 500
                         message.channel.send("You paid `500 CARROTS` to feed your pet.")
                         saveCoins()
                     } else if (msg.content.toLowerCase().startsWith("gem")) {
+                        if (
+                            userData[message.author.id].gems < 1
+                        ) {
+                            message.channel.send("Not enough gems.")
+                            return;
+                        }
                         userData[message.author.id].gems -= 1
                         userData[message.author.id].pet.food = 500
                         message.channel.send("You paid `1 GEM` to feed your pet.")
