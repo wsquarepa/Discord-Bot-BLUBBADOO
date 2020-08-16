@@ -64,7 +64,7 @@ module.exports = {
 
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 
-        message.channel.send(embed("Successfull raid!", `
+        message.channel.send(embed("Successful raid!", `
         **Glass:** ${glass}
         **String:** ${string}
         `, "00ff00"))
