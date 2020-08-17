@@ -8,9 +8,9 @@ module.exports = {
     execute(message, args, mention) {
         message.client.guilds.cache.find(x => x.id == "712438988547555448")
             .channels.cache.find(x => x.id == "714151494491963473").createInvite({
-                maxAge: 300
+                maxAge: 900
             }).then((invite) => {
-                var inviteCode = invite.code
+                const inviteCode = invite.code
                 message.channel.send("**Bot invite is here:** <https://discord.com/oauth2/authorize?&client_id=596715111511490560&scope=bot&permissions=8> \n" + 
                 "**Server invite is here:** https://discord.gg/" + inviteCode + "\n" +
                 "This message will try to **AUTO DESTRUCT** when the invite expires.").then(m => {
