@@ -21,6 +21,7 @@ module.exports = {
                 .setDescription("[Vote](https://top.gg/bot/596715111511490560 'My voting site') again 12 hours!")
                 .setColor("ff0000")
             message.channel.send(embed)
+            return;
         }
 
         const dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5NjcxNTExMTUxMTQ5MDU2MCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTk1NzgxOTAxfQ.bbb9DPH39Q2roE1jKpRxZNMnzyFJQ_ivLJTxoB10cv4', message.client);
