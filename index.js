@@ -15,9 +15,6 @@ const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const DBL = require('dblapi.js')
-const dbl = new DBL(dblToken, client);
-const execSync = require('child_process').execSync;
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -124,7 +121,8 @@ client.on('message', message => {
 				pet: {},
 				team: "",
 				achivements: [],
-				codesUsed: []
+				codesUsed: [],
+				nextVoteTime: 0
 			}
 		}
 
@@ -136,6 +134,10 @@ client.on('message', message => {
 			}
 		}
 
+		if (!userData[message.author.id].nextVoteTime) {
+			userData[message.author.id].nextVoteTime = 0
+		}
+ 
 		if (!userData[message.author.id].team) {
 			userData[message.author.id].team = ""
 		}
