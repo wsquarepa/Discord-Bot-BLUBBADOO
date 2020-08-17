@@ -160,7 +160,7 @@ client.on('message', message => {
 			if (userData[message.author.id].level % 2 == 0) {
 				userData[message.author.id].gems += 1
 			}
-			userData[message.author.id].xpUntil += 10
+			userData[message.author.id].xpUntil += (userData[message.author.id].level * 5)
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
 				.then(m => m.delete({
 					timeout: 5000
