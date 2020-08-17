@@ -24,7 +24,7 @@ module.exports = {
                 return false
             }
 
-            if (args[1] == null) {
+            if (!args[1]) {
                 args[1] = 1
             }
 
