@@ -25,7 +25,7 @@ module.exports = {
 
         var user = userData[message.author.id]
 
-        if (parseInt(args[1]) == NaN) {
+        if (!parseInt(args[1])) {
             message.channel.send("Choose something to give!")
             return false
         }
