@@ -19,7 +19,7 @@ module.exports = {
             const voteAgainTime = (userData[message.author.id].nextVoteTime - Date.now()) / (1000 * 60 * 60)
             var embed = new discord.MessageEmbed()
                 .setTitle("You've already voted!")
-                .setDescription("[Vote](https://top.gg/bot/596715111511490560 'My voting site') again in " + voteAgainTime + " hours!")
+                .setDescription("[Vote](https://top.gg/bot/596715111511490560 'My voting site') again in " + voteAgainTime.toFixed(2) + " hours!")
                 .setColor("ff0000")
             message.channel.send(embed)
             return;
