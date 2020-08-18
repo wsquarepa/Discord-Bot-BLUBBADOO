@@ -63,7 +63,7 @@ setInterval(function() {
 	shopKeys.splice(0, 1)
 	const now = Date.now()
 	for (var i = 0; i < shopKeys.length; i++) {
-		if (shopData[shopKeys[i]].stock.remaining <= 0) {
+		if (shopData[shopKeys[i]].stock.remaining <= 0 && shopData[shopKeys[i]].stock.nextRestock < now) {
 			shopData[shopKeys[i]].stock.remaining = 0
 			shopData[shopKeys[i]].stock.nextRestock = shopData[shopKeys[i]].stock.restockMinutes * 60 * 1000
 		} else if (shopData[shopKeys[i]].stock.nextRestock <= now) {
