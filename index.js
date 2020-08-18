@@ -13,6 +13,7 @@ const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+var shop = require('./shop.json')
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -57,7 +58,18 @@ for (const file of commandFiles) {
 	}
 }
 
-
+setInterval(function() {
+	const shopKeys = Object.keys(shop)
+	const now = Date.now()
+	for (var i = 0; i < shopKeys.length; i++) {
+		if (shop[shopKeys[i]].stock.nextRestock <= now) {
+			shop[shopKeys[i]].stock.remaining = shop[shopKeys[i]].stock.max
+		} else if (shop[shopKeys[i]].stock.remaining <= 0) {
+			shop[shopKeys[i]].stock.remaining = 0
+			shop[shopKeys[i]].stock.nextRestock = shop[shopKeys[i]].stock.restockMinutes * 60 * 1000
+		}
+	}
+}, 1000)
 
 client.once("ready", function () {
 	console.log("Bot logged in!")
@@ -74,13 +86,6 @@ client.once("ready", function () {
 
 	setInterval(() => {
 		dbl.postStats(client.guilds.size);
-		// try {
-		// 	execSync('git pull', { encoding: 'utf-8' })
-		// 	execSync('git add .', { encoding: 'utf-8' });
-		// 	execSync('git commit -m backup', { encoding: 'utf-8' })
-		// } catch (e) {
-		// 	console.error(e)
-		// }
 	}, 1800000);
 })
 
