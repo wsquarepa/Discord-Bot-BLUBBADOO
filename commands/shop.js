@@ -18,6 +18,7 @@ module.exports = {
 	execute(message, args, mention) {
         var pages = []
         var keys = Object.keys(shopData)
+        keys.splice(0, 1)
         var keysLength = keys.length
         for (var i = 0; i < (keysLength / 5); i++) {
             try {
@@ -39,11 +40,13 @@ module.exports = {
 
         var embed = new discord.MessageEmbed()
             .setTitle("Welcome to the shop!")
-            .setDescription("$$$ THIS SHOP IS A **MONEY** SHOP $$$")
+            .setDescription("Shop balance: $" + shopData.shopBalance)
             .setColor("00ff00")
         for (var i = 0; i < keys.length; i++) {
             embed.addField((shopData[keys[i]].image.length > 5? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) + 
-            " " + keys[i] + " - $" + shopData[keys[i]].price, shopData[keys[i]].description)
+            " " + keys[i] + " - $" + shopData[keys[i]].price, shopData[keys[i]].description + `
+            Stock remaining: ${shopData[keys[i]].stock.remaining}
+            `)
         }
 
         embed.setFooter("Shop page #" + (page + 1) + " out of " + pages.length + " pages.")

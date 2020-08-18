@@ -33,7 +33,7 @@ module.exports = {
             return false;
         }
 
-        userData[message.author.id].inventory[itemName].amount -= amount
+        
         var earnings = 0
         var gems = false
         try {
@@ -48,12 +48,21 @@ module.exports = {
             }
         }
 
-        if (gems) 
+        if (!gems) {
+            if (shopData.shopBalance < earnings) {
+                message.channel.send("The shop doesn't have enough money! They can't buy your item.")
+            }
+        }
+
+        if (gems) {
             userData[message.author.id].gems += earnings
-        else 
+        } else {
             userData[message.author.id].cash += earnings
-        
+            shopData.shopBalance -= earnings
+        }
+        userData[message.author.id].inventory[itemName].amount -= amount
         message.channel.send("You sold " + amount + " " + itemName + "(s) for " + (gems? "💎 ":"$") + earnings)
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
     }
 }

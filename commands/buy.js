@@ -1,4 +1,4 @@
-const shopData = require('../shop.json')
+var shopData = require('../shop.json')
 const fs = require('fs');
 var userData = require('../userData.json')
 const discord = require('discord.js')
@@ -45,6 +45,7 @@ module.exports = {
                 }
             }
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
             var embed = new discord.MessageEmbed()
             embed.setTitle("Success!")
             embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`)
@@ -65,31 +66,14 @@ module.exports = {
             return false
         }
 
-        if (shopData[args[0]].price == -1) {
-            if (shopData[args[0]].gems * args[1] > userData[message.author.id].gems) {
-                message.channel.send("You obviously can't buy that. Get more **GEMS**.")
-                return false
-            }
-            userData[message.author.id].gems -= shopData[args[0]].gems * args[1]
-            if (userData[message.author.id].inventory[args[0]]) {
-                userData[message.author.id].inventory[args[0]].amount += args[1]
-            } else {
-                userData[message.author.id].inventory[args[0]] = {
-                    amount: args[1],
-                    uses: shopData[args[0]].uses
-                }
-            }
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-            var embed = new discord.MessageEmbed()
-            embed.setTitle("Success!")
-            embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`)
-            embed.setColor("00ff00")
-            embed.setFooter("Sorry for the grammar it's hard ok?")
-            message.channel.send(embed)
-            return true
+        if (shopData[args[0]].stock.remaining < args[1]) {
+            message.channel.send("Uh oh! The shop doesn't have enough stock!")
+            return false
         }
 
         userData[message.author.id].cash -= shopData[args[0]].price * args[1]
+        shopData.shopBalance += shopData[args[0]].price * args[1]
+        shopData[args[0]].stock.remaining -= args[1]
         if (userData[message.author.id].inventory[args[0]]) {
             userData[message.author.id].inventory[args[0]].amount += args[1]
         } else {
@@ -99,6 +83,7 @@ module.exports = {
             }
         }
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
         var embed = new discord.MessageEmbed()
         embed.setTitle("Success!")
         embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "(s)":""}!`)

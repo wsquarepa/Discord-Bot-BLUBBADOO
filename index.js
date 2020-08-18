@@ -13,7 +13,7 @@ const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-var shop = require('./shop.json')
+var shopData = require('./shop.json')
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -59,16 +59,18 @@ for (const file of commandFiles) {
 }
 
 setInterval(function() {
-	const shopKeys = Object.keys(shop)
+	const shopKeys = Object.keys(shopData)
+	shopKeys.splice(0, 1)
 	const now = Date.now()
 	for (var i = 0; i < shopKeys.length; i++) {
-		if (shop[shopKeys[i]].stock.nextRestock <= now) {
-			shop[shopKeys[i]].stock.remaining = shop[shopKeys[i]].stock.max
-		} else if (shop[shopKeys[i]].stock.remaining <= 0) {
-			shop[shopKeys[i]].stock.remaining = 0
-			shop[shopKeys[i]].stock.nextRestock = shop[shopKeys[i]].stock.restockMinutes * 60 * 1000
+		if (shopData[shopKeys[i]].stock.remaining <= 0) {
+			shopData[shopKeys[i]].stock.remaining = 0
+			shopData[shopKeys[i]].stock.nextRestock = shopData[shopKeys[i]].stock.restockMinutes * 60 * 1000
+		} else if (shopData[shopKeys[i]].stock.nextRestock <= now) {
+			shopData[shopKeys[i]].stock.remaining = shopData[shopKeys[i]].stock.max
 		}
 	}
+	fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
 }, 1000)
 
 client.once("ready", function () {
