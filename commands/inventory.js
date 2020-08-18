@@ -35,6 +35,9 @@ module.exports = {
                         if (!item) {
                             item = specialShopData[keys[i]]
                         }
+
+                        if (!item.image) item.image = "?"
+
                         itemString += (item.image.length > 5? emoji(item.image, message):item.image) 
                             + " " + userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1? "":usesDisplay) + "\n \n"
                     }
@@ -59,7 +62,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
 
             if (keys.toString() == "[]") {
-                embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("ff0000")
+                embed.setTitle(mention.tag + "'s inventory").setDescription("They have nothing!").setColor("ff0000")
                 message.channel.send(embed)
             } else {
                 var itemString = ""
@@ -70,17 +73,20 @@ module.exports = {
                         if (!item) {
                             item = specialShopData[keys[i]]
                         }
+                        
+                        if (!item.image) item.image = "?"
+                        
                         itemString += (item.image.length > 5? emoji(item.image, message):item.image) 
                             + " " + userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1? "":usesDisplay) + "\n \n"
                     }
                 }
 
                 if (itemString == "") {
-                    embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("ff0000")
+                    embed.setTitle(mention.tag + "'s inventory").setDescription("They have nothing!").setColor("ff0000")
                     message.channel.send(embed)
                     return
                 }
-                embed.setTitle("Your inventory").setDescription(itemString).setColor("00ff00")
+                embed.setTitle(mention.tag + "'s inventory").setDescription(itemString).setColor("00ff00")
                 message.channel.send(embed)
             }
         }
