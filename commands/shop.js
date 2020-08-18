@@ -46,6 +46,7 @@ module.exports = {
             embed.addField((shopData[keys[i]].image.length > 5? emoji(shopData[keys[i]].image, message):shopData[keys[i]].image) + 
             " " + keys[i] + " - $" + shopData[keys[i]].price, shopData[keys[i]].description + `
             Stock remaining: ${shopData[keys[i]].stock.remaining}
+            ${shopData[keys[i]].stock.remaining == 0? "Next reload in " + ((shopData[keys[i]].stock.nextRestock - Date.now())/1000).toFixed(1) + " seconds.":""}
             `)
         }
 
