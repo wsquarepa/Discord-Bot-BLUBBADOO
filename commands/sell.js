@@ -16,7 +16,9 @@ module.exports = {
     adminOnly: false,
 	execute(message, args, mention) {
         var itemName = args[0].toLowerCase()
-        var amount = (args[1] == null? 1 : parseInt(args[1]))
+        var amount = parseInt(args[1])
+
+        if (!amount) amount = 1
         
         var invKeys = Object.keys(userData[message.author.id].inventory)
         if (!invKeys.includes(itemName)) {
