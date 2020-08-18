@@ -97,15 +97,14 @@ module.exports = {
                     return false
                 }
 
+                userData[message.author.id].inventory.chest.amount--
                 if (chance == 3) {
                     msg.edit("Umm... unfourtunatley, someone already raided this chest. You keep your key though!")
                     return;
                 }
-
                 userData[message.author.id].inventory.key.amount--
-                userData[message.author.id].inventory.chest.amount--
-
-                var cash = randomNumber(0, 5000)
+                
+                var cash = randomNumber(0, 50000)
                 var gems = randomNumber(0, 5)
                 var item = Object.keys(shopData)[randomNumber(0, Object.keys(shopData).length - 1)]
 

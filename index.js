@@ -3,9 +3,7 @@ const fs = require('fs');
 const {
 	prefix,
 	token,
-	bannedServers,
-	dblToken,
-	dblPassword
+	bannedServers
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
@@ -58,6 +56,8 @@ for (const file of commandFiles) {
 		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
 }
+
+
 
 client.once("ready", function () {
 	console.log("Bot logged in!")
