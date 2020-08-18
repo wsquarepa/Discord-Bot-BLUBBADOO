@@ -53,6 +53,7 @@ module.exports = {
         if (!gems) {
             if (shopData.shopBalance < earnings) {
                 message.channel.send("The shop doesn't have enough money! They can't buy your item.")
+                return false
             }
         }
 
