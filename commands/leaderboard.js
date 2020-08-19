@@ -22,13 +22,13 @@ module.exports = {
     category: "economy",
     adminOnly: false,
     execute(message, args, mention) {
+        message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
+            if (!args.length) {
+                var leaders = []
+                var keys = Object.keys(userData)
+                var dict = {}
 
-        if (!args.length) {
-            var leaders = []
-            var keys = Object.keys(userData)
-            var dict = {}
 
-            message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
                 Object.assign(dict, userData)
 
                 for (var i = 0; i < keys.length; i++) {
@@ -63,14 +63,10 @@ module.exports = {
                 }
 
                 msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer))
-
-            })
-        } else if (args[0].startsWith("team")) {
-            var leaders = []
-            var keys = Object.keys(teamData)
-            var dict = {}
-
-            message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
+            } else if (args[0].startsWith("team")) {
+                var leaders = []
+                var keys = Object.keys(teamData)
+                var dict = {}
                 Object.assign(dict, teamData)
 
                 // Create items array
@@ -99,21 +95,17 @@ module.exports = {
                 }
 
                 msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "2f3237").setFooter(footer))
+            } else if (args[0].startsWith("server")) {
+                var leaders = []
+                var keys = Object.keys(userData)
+                var dict = {}
 
-            })
-        } else if (args[0].startsWith("server")) {
-            var leaders = []
-            var keys = Object.keys(userData)
-            var dict = {}
-
-            message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
                 Object.assign(dict, userData)
 
                 for (var i = 0; i < keys.length; i++) {
-                    if 
-                    (
-                        dict[keys[i]].account.type.toLowerCase() == "admin" || 
-                        dict[keys[i]].account.type.toLowerCase() == "banned" || 
+                    if (
+                        dict[keys[i]].account.type.toLowerCase() == "admin" ||
+                        dict[keys[i]].account.type.toLowerCase() == "banned" ||
                         message.guild.members.cache.find(y => y.id == keys[i]) == null
                     ) {
                         delete dict[keys[i]]
@@ -146,8 +138,7 @@ module.exports = {
                 }
 
                 msg.edit("", embed("THE SERVER'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer))
-
-            })
-        }
+            }
+        })
     }
 }
