@@ -33,7 +33,7 @@ module.exports = {
         var embed = new discord.MessageEmbed({
             title: "Daily",
             description: `You got $${earnings} as a daily gift!`,
-            color: "00ff00"
+            color: "2f3237"
         })
 
         var streakText = `${max? "MAX":`${userData[message.author.id].account.daily.streak} day(s)`}`

@@ -25,7 +25,7 @@ module.exports = {
                 botBan <@mention> - Ban someone from the bot
                 botUnban <@mention> - Unbans someone from the bot
                 set <@mention> <type> - Sets mention's user type to type
-            `)
+            `).setColor("2f3237")
             message.channel.send(embed)
         } else if (args[0] == "addMoney") {
             try {

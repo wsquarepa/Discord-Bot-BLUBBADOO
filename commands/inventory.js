@@ -24,7 +24,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
 
             if (keys.toString() == "[]") {
-                embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("ff0000")
+                embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("2f3237")
                 message.channel.send(embed)
             } else {
                 var itemString = ""
@@ -44,11 +44,11 @@ module.exports = {
                 }
 
                 if (itemString == "") {
-                    embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("ff0000")
+                    embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("2f3237")
                     message.channel.send(embed)
                     return
                 }
-                embed.setTitle("Your inventory").setDescription(itemString).setColor("00ff00")
+                embed.setTitle("Your inventory").setDescription(itemString).setColor("2f3237")
                 message.channel.send(embed)
             }
         } else {
@@ -62,7 +62,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
 
             if (keys.toString() == "[]") {
-                embed.setTitle(mention.tag + "'s inventory").setDescription("They have nothing!").setColor("ff0000")
+                embed.setTitle(mention.tag + "'s inventory").setDescription("They have nothing!").setColor("2f3237")
                 message.channel.send(embed)
             } else {
                 var itemString = ""
@@ -73,7 +73,7 @@ module.exports = {
                         if (!item) {
                             item = specialShopData[keys[i]]
                         }
-                        
+
                         if (!item.image) item.image = "?"
                         
                         itemString += (item.image.length > 5? emoji(item.image, message):item.image) 
@@ -82,11 +82,11 @@ module.exports = {
                 }
 
                 if (itemString == "") {
-                    embed.setTitle(mention.tag + "'s inventory").setDescription("They have nothing!").setColor("ff0000")
+                    embed.setTitle(mention.tag + "'s inventory").setDescription("They have nothing!").setColor("2f3237")
                     message.channel.send(embed)
                     return
                 }
-                embed.setTitle(mention.tag + "'s inventory").setDescription(itemString).setColor("00ff00")
+                embed.setTitle(mention.tag + "'s inventory").setDescription(itemString).setColor("2f3237")
                 message.channel.send(embed)
             }
         }
