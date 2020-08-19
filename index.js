@@ -387,7 +387,7 @@ client.on('message', message => {
 			const embed = new Discord.MessageEmbed()
 			embed.setAuthor("ERR_TIMEOUT")
 			embed.setTitle("Error: ")
-			embed.setDescription(`You have to wait ${timeLeft.toFixed(0)} more second(s) before reusing the \`${command.name}\` command.`)
+			embed.setDescription(`You have to wait ${timeLeft.toFixed(0)} more second(s) before reusing the \`${prefix}${command.name}\` command.`)
 			embed.setColor("ff0000")
 			return message.channel.send(embed).catch()
 		}
