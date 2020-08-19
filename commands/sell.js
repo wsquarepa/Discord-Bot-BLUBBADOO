@@ -62,6 +62,7 @@ module.exports = {
         } else {
             userData[message.author.id].cash += earnings
             shopData.shopBalance -= earnings
+            shopData[itemName].stock.remaining += amount
         }
         userData[message.author.id].inventory[itemName].amount -= amount
         message.channel.send("You sold " + amount + " " + itemName + "(s) for " + (gems? "💎 ":"$") + earnings)
