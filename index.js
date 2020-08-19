@@ -385,8 +385,9 @@ client.on('message', message => {
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			const embed = new Discord.MessageEmbed()
-			embed.setTitle("Error")
-			embed.setDescription(`You have to wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`)
+			embed.setAuthor("ERR_TIMEOUT")
+			embed.setTitle("Error: ")
+			embed.setDescription(`You have to wait ${timeLeft.toFixed(0)} more second(s) before reusing the \`${command.name}\` command.`)
 			embed.setColor("ff0000")
 			return message.channel.send(embed).catch()
 		}
