@@ -59,7 +59,7 @@ module.exports = {
                 leaderString += "==" + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
             }
 
-            message.channel.send(embed("STATS", "**Last 5 used commands:** \n " + leaderString +
+            message.channel.send(embed("STATS", "**5 most used commands:** \n " + leaderString +
                 "\n **Number of chat messages recieved:** \n" + botData.messagesRecieved +
                 "\n **Bot Guilds:** " + message.client.guilds.cache.size, "fffffa"))
             return
