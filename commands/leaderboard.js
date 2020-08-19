@@ -62,7 +62,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
+                msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer))
 
             })
         } else if (args[0].startsWith("team")) {
@@ -98,7 +98,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "fffffa").setFooter(footer))
+                msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "2f3237").setFooter(footer))
 
             })
         } else if (args[0].startsWith("server")) {
@@ -145,7 +145,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit("", embed("THE SERVER'S LEADERS: FIRST 5", leaderString, "fffffa").setFooter(footer))
+                msg.edit("", embed("THE SERVER'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer))
 
             })
         }

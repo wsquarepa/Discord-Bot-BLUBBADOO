@@ -20,7 +20,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
                 .setTitle("You've already voted!")
                 .setDescription("[Vote](https://top.gg/bot/596715111511490560/vote 'My voting site') again in " + voteAgainTime.toFixed(2) + " hours!")
-                .setColor("ff0000")
+                .setColor("2f3237")
             message.channel.send(embed)
             return;
         }
@@ -33,13 +33,13 @@ module.exports = {
                 var embed = new discord.MessageEmbed()
                     .setTitle("Thanks for voting!")
                     .setDescription("You earned 1 gem! If possible, [vote again](https://top.gg/bot/596715111511490560/vote 'My voting site') in 12 hours!")
-                    .setColor("00ff00")
+                    .setColor("2f3237")
                 message.channel.send(embed)
             } else {
                 var embed = new discord.MessageEmbed()
                     .setTitle("You haven't voted!")
                     .setDescription("You can vote [here](https://top.gg/bot/596715111511490560/vote 'My voting site')")
-                    .setColor("ff0000")
+                    .setColor("2f3237")
                 message.channel.send(embed)
                 return false
             }
