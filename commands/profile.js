@@ -56,7 +56,7 @@ module.exports = {
 
             var embed = new discord.MessageEmbed({
                 title: "Your profile",
-                color: "000aa0"
+                color: "2f3237"
             })
 
             var xpChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
@@ -111,7 +111,7 @@ module.exports = {
             if (userLocation == 0) userLocation = "Not on leaderboard"
             var embed = new discord.MessageEmbed({
                 title: name + "'s profile",
-                color: "000aa0"
+                color: "2f3237"
             })
 
             var xpChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
