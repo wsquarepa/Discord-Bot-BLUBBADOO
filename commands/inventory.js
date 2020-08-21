@@ -36,6 +36,10 @@ module.exports = {
                             item = specialShopData[keys[i]]
                         }
 
+                        if (!item) {
+                            item = {image: "?"}
+                        }
+
                         if (!item.image) item.image = "?"
 
                         itemString += (item.image.length > 5? emoji(item.image, message):item.image) 
@@ -72,6 +76,10 @@ module.exports = {
                         var item = shopData[keys[i]]
                         if (!item) {
                             item = specialShopData[keys[i]]
+                        }
+
+                        if (!item) {
+                            item = {image: "?"}
                         }
 
                         if (!item.image) item.image = "?"
