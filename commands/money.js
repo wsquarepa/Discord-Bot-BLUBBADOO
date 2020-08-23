@@ -7,7 +7,7 @@ module.exports = {
     args: false,
     usage: '',
     guildOnly: false,
-    aliases:['bal'],
+    aliases:['bal', 'balance'],
     cooldown: 0.5,
     category: "economy",
     adminOnly: false,
@@ -16,7 +16,7 @@ module.exports = {
         if (mention) {
             
             if (mention.bot) {
-                message.channel.send("Fortunatley, bots obviously doesn't have money")
+                message.channel.send("Fortunately, bots obviously doesn't have money")
                 return false;
             }
 
