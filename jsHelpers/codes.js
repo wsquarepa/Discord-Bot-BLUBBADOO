@@ -18,5 +18,12 @@ module.exports = {
         gems: 0,
         item: "knife",
         title: "Hackr"
+    },
+
+    SeCrEtE_cOdE: {
+        money: 50000,
+        gems: 25,
+        item: "lock",
+        title: "SWA AAA AAAA AA??"
     }
 }
