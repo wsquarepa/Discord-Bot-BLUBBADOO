@@ -15,7 +15,7 @@ module.exports = {
     category: "admincmd",
     adminOnly: true,
 	execute(message, args, mention) {
-        if (!config["bot-admins"].includes(message.author.id) || 
+        if (!config["bot-admins"].includes(message.author.id) &&
             userData[message.author.id].account.type.toLowerCase() != "admin") return message.channel.send("You can't run that.")
 
         if (args[0] == "help") {
@@ -30,7 +30,7 @@ module.exports = {
         } else if (args[0] == "addMoney") {
             try {
                 userData[mention.id][args[1]] += parseInt(args[3])
-                message.channel.send("Complete! Added $" + args[3])
+                message.channel.send("Complete! Added $" + args[3] + "\n Current user status: \n ```json\n" + userData[mention.id] + "\n```")
             } catch(e) {
                 message.channel.send("Error, Something went wrong.")
                 console.error(e)
@@ -38,7 +38,7 @@ module.exports = {
         } else if (args[0] == "removeMoney") {
             try {
                 userData[mention.id][args[1]] -= parseInt(args[3])
-                message.channel.send("Complete! Removed $" + args[3])
+                message.channel.send("Complete! Removed $" + args[3] + "\n Current user status: \n ```json\n" + userData[mention.id] + "\n```")
             } catch(e) {
                 console.error(e)
                 message.channel.send("Error, Something went wrong.")
