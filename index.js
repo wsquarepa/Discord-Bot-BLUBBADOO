@@ -111,6 +111,10 @@ client.once("ready", function () {
 			console.error(e)
 		}
 	})
+
+	schedule.scheduleJob("*/30 * * * *", ()=> {
+		shopData.shopBalance += 500
+	})
 })
 
 client.on('message', message => {

@@ -39,7 +39,7 @@ module.exports = {
         var earnings = 0
         var gems = false
         try {
-            earnings = Math.floor(shopData[itemName].price * amount * 0.8)
+            earnings = Math.floor(shopData[itemName].price * amount * 0.5)
         } catch {
             try {
                 earnings = specialShopData[itemName].price * amount
