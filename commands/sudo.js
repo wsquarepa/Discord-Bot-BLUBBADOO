@@ -27,22 +27,6 @@ module.exports = {
                 set <@mention> <type> - Sets mention's user type to type
             `).setColor("2f3237")
             message.channel.send(embed)
-        } else if (args[0] == "addMoney") {
-            try {
-                userData[mention.id][args[1]] += parseInt(args[3])
-                message.channel.send("Complete! Added $" + args[3] + "\n Current user status: ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
-            } catch(e) {
-                message.channel.send("Error, Something went wrong.")
-                console.error(e)
-            }
-        } else if (args[0] == "removeMoney") {
-            try {
-                userData[mention.id][args[1]] -= parseInt(args[3])
-                message.channel.send("Complete! Removed $" + args[3] + "\n Current user status: \n ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
-            } catch(e) {
-                console.error(e)
-                message.channel.send("Error, Something went wrong.")
-            }
         } else if (args[0] == "botBan") {
             userData[mention.id].account.type = "banned"
             message.channel.send("Complete! " + mention.username + " was banned!")
