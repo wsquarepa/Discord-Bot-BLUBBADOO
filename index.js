@@ -14,6 +14,8 @@ var botData = require('./botData.json')
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 var shopData = require('./shop.json')
+import schedule from 'node-schedule'
+const execSync = require('child_process').execSync
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -56,6 +58,25 @@ for (const file of commandFiles) {
 	if (botData != "" || botData != null || !isEmpty(botData)) {
 		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
+
+	schedule.scheduleJob('0 0 * * *', () => { 
+		if (JSON.stringify(botData) == "" && JSON.stringify(userData) == "") {
+			try {
+				client.channels.cache.get("720427122480644149").send("**WARNING** \n A FILE HAS BEEN CLEARED!")
+			} catch {
+				//pass
+			}
+			return;
+		}
+
+		try {
+			execSync('git pull', { encoding: 'utf-8' })
+			execSync('git add .', { encoding: 'utf-8' });
+			execSync('git commit -m backup', { encoding: 'utf-8' })
+		} catch(e) {
+			console.error(e)
+		}
+	})
 }
 
 setInterval(function() {

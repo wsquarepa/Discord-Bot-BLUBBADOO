@@ -30,7 +30,7 @@ module.exports = {
         } else if (args[0] == "addMoney") {
             try {
                 userData[mention.id][args[1]] += parseInt(args[3])
-                message.channel.send("Complete! Added $" + args[3] + "\n Current user status: \n ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
+                message.channel.send("Complete! Added $" + args[3] + "\n Current user status: ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
             } catch(e) {
                 message.channel.send("Error, Something went wrong.")
                 console.error(e)
