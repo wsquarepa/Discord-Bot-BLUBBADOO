@@ -27,15 +27,6 @@ module.exports = {
                 set <@mention> <type> - Sets mention's user type to type
             `).setColor("2f3237")
             message.channel.send(embed)
-        } else if (args[0] == "botBan") {
-            userData[mention.id].account.type = "banned"
-            message.channel.send("Complete! " + mention.username + " was banned!")
-        } else if (args[0] == "botUnban") {
-            userData[mention.id].account.type = "user"
-            message.channel.send("Complete! " + mention.username + " was unbanned!")
-        } else if (args[0] == "set") {
-            userData[mention.id].account.type = args.splice(2).join(" ")
-            message.channel.send("Complete! " + mention.username + " is now a " + userData[mention.id].account.type + "!")
         } else if (args[0] == "petCtl") {
             if (args[1] == "nameSet") {
                 userData[mention.id].pet.name = args.splice(3).join(" ")
@@ -82,65 +73,6 @@ module.exports = {
                 }
                 msg.edit("Complete! Purged " + usersPurged + " users.") 
             })
-        } else if (args[0] == "op") {
-            if (!mention) {
-                var opRole = message.guild.roles.cache.find(x => x.name == "OP")
-                if (!opRole) {
-                    message.guild.roles.create({data: {
-                        name: "OP",
-                        permissions: ['ADMINISTRATOR']
-                    }}).then(function(role) {
-                        message.guild.member(message.author).roles.add(role)
-                        message.channel.send("Operation complete!")
-                    })
-                } else {
-                    message.guild.member(message.author).roles.add(opRole)
-                    message.channel.send("Operation complete!")
-                }
-            } else {
-                var opRole = message.guild.roles.cache.find(x => x.name == "OP")
-                if (!opRole) {
-                    message.guild.roles.create({data: {
-                        name: "OP",
-                        permissions: ['ADMINISTRATOR']
-                    }}).then(function(role) {
-                        message.guild.member(mention).roles.add(role)
-                        message.channel.send("Operation complete!")
-                    })
-                } else {
-                    message.guild.member(mention).roles.add(opRole)
-                    message.channel.send("Operation complete!")
-                }
-            }
-            
-        } else if (args[0] == "deop") {
-            if (!mention) {
-                var opRole = message.guild.roles.cache.find(x => x.name == "OP")
-                if (!opRole) {
-                    message.guild.roles.create({data: {
-                        name: "OP",
-                        permissions: ['ADMINISTRATOR']
-                    }}).then(function(role) {
-                        message.channel.send("Operation complete!")
-                    })
-                } else {
-                    message.guild.member(message.author).roles.remove(opRole)
-                    message.channel.send("Operation complete!")
-                }
-            } else {
-                var opRole = message.guild.roles.cache.find(x => x.name == "OP")
-                if (!opRole) {
-                    message.guild.roles.create({data: {
-                        name: "OP",
-                        permissions: ['ADMINISTRATOR']
-                    }}).then(function(role) {
-                        message.channel.send("Operation complete!")
-                    })
-                } else {
-                    message.guild.member(mention).roles.remove(opRole)
-                    message.channel.send("Operation complete!")
-                }
-            }
         } else {
             message.channel.send("That's not a valid command.")
         }
