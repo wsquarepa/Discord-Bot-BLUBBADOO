@@ -14,7 +14,7 @@ module.exports = {
     category: "moderation",
     adminOnly: false,
 	execute(message, args, mention) {
-        if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES') && message.author.id != "509874745567870987") {
+        if (!message.guild.member(message.author).hasPermission('ADMINISTRATOR') && message.author.id != "509874745567870987") {
             message.reply("you can't do that!")
             return
         }
