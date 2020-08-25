@@ -19,7 +19,7 @@ module.exports = {
             return
         }
 
-        if (!message.guild.member(message.client).hasPermission("MANAGE_ROLES")) {
+        if (!message.guild.member(message.client.user).hasPermission("MANAGE_ROLES")) {
             message.reply("i can't do that!")
             return
         }
