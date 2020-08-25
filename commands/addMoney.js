@@ -3,7 +3,7 @@ const fs = require('fs');
 const discord = require("discord.js")
 
 module.exports = {
-    name: 'addMoney',
+    name: 'addmoney',
 	description: 'Add money to a user',
     args: true,
     usage: '<@mention> <cash|bank> <amount>',
