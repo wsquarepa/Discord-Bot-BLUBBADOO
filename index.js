@@ -376,8 +376,16 @@ client.on('message', message => {
 
 	if (command.guildOnly && message.channel.type !== 'text') {
 		var embed = new Discord.MessageEmbed()
-		embed.setAuthor("ERR_EXECUTE_DM")
-		embed.setTitle(`Error: You can't execute that command in DMs!`)
+		embed.setAuthor("ERR_EXECUTE_NOT_TEXT")
+		embed.setTitle(`Error: You can't execute that command in non-text channels!`)
+		embed.setColor("ff0000")
+		return message.channel.send(embed).catch()
+	}
+
+	if (command.adminOnly) {
+		var embed = new Discord.MessageEmbed()
+		embed.setAuthor("ERR_MISSING_PERMS")
+		embed.setTitle(`Error: You don't have permission to execute that command!`)
 		embed.setColor("ff0000")
 		return message.channel.send(embed).catch()
 	}
