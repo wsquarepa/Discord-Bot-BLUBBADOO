@@ -57,7 +57,7 @@ module.exports = {
             message.channel.send("Ok, account secured!")
         } else if (args[0].toLowerCase() == "moneydoubler") {
 
-            if (userData[message.author.id].inventory.moneydoubler.amount < 1) {
+            if (userData[message.author.id].inventory.moneydoubler == null || userData[message.author.id].inventory.moneydoubler.amount < 1) {
                 message.channel.send("You don't got any of those.")
                 return false
             }
