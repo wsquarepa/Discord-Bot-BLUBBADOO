@@ -60,7 +60,7 @@ for (const file of commandFiles) {
 	}
 }
 
-setInterval(function() {
+setInterval(function () {
 	const shopKeys = Object.keys(shopData)
 	shopKeys.splice(0, 1)
 	const now = Date.now()
@@ -68,7 +68,7 @@ setInterval(function() {
 		if (shopData[shopKeys[i]].stock.remaining <= 0 && shopData[shopKeys[i]].stock.nextRestock == -1) {
 			shopData[shopKeys[i]].stock.nextRestock = now + shopData[shopKeys[i]].stock.restockMinutes * 60 * 1000
 		}
-		
+
 		if (shopData[shopKeys[i]].stock.nextRestock < now && shopData[shopKeys[i]].stock.nextRestock != -1) {
 			shopData[shopKeys[i]].stock.remaining = shopData[shopKeys[i]].stock.max
 			shopData[shopKeys[i]].stock.nextRestock = -1
@@ -93,7 +93,8 @@ client.once("ready", function () {
 	setInterval(() => {
 		dbl.postStats(client.guilds.size);
 	}, 1800000);
-	schedule.scheduleJob('0 0 * * *', () => { 
+
+	schedule.scheduleJob('0 0 * * *', () => {
 		if (JSON.stringify(botData) == "" && JSON.stringify(userData) == "") {
 			try {
 				client.channels.cache.get("720427122480644149").send("**WARNING** \n A FILE HAS BEEN CLEARED!")
@@ -104,16 +105,57 @@ client.once("ready", function () {
 		}
 
 		try {
-			execSync('git pull', { encoding: 'utf-8' })
-			execSync('git add .', { encoding: 'utf-8' });
-			execSync('git commit -m backup', { encoding: 'utf-8' })
-		} catch(e) {
+			execSync('git pull', {
+				encoding: 'utf-8'
+			})
+			execSync('git add .', {
+				encoding: 'utf-8'
+			});
+			execSync('git commit -m backup', {
+				encoding: 'utf-8'
+			})
+		} catch (e) {
 			console.error(e)
 		}
 	})
 
-	schedule.scheduleJob("*/30 * * * *", ()=> {
+	schedule.scheduleJob("*/30 * * * *", () => {
 		shopData.shopBalance += 500
+	})
+
+	schedule.scheduleJob('* * * * 0', () => {
+		var leaders = []
+		var keys = Object.keys(userData)
+		var dict = {}
+
+
+		Object.assign(dict, userData)
+
+		for (var i = 0; i < keys.length; i++) {
+			if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned") {
+				delete dict[keys[i]]
+			}
+		}
+
+		// Create items array
+		var items = Object.keys(dict).map(function (key) {
+			return [key, dict[key].cash];
+		});
+
+		items.sort(function (first, second) {
+			return second[1] - first[1];
+		});
+
+		leaders = items.slice(0, 3);
+
+		userData[leaders[0][0]].gems += 5
+		userData[leaders[1][0]].gems += 3
+		userData[leaders[2][0]].gems += 1
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+
+		client.users.cache.get(leaders[0][0]).send("Congratulations! You got **5 gems** for being **FIRST PLACE** on the world leaderboard!").catch()
+		client.users.cache.get(leaders[1][0]).send("Congratulations! You got **3 gems** for being **SECOND PLACE** on the world leaderboard!").catch()
+		client.users.cache.get(leaders[2][0]).send("Congratulations! You got **1 gem** for being **THIRD PLACE** on the world leaderboard!").catch()
 	})
 })
 
@@ -393,7 +435,7 @@ client.on('message', message => {
 			embed.setAuthor("ERR_TIMEOUT")
 			embed.setTitle("Error: ")
 			embed.setDescription(`You have to wait ${timeLeftDate.getHours()} hour(s), ${timeLeftDate.getMinutes()} minute(s) and ${timeLeftDate.getSeconds()} more second(s) ` +
-			`before reusing the \`${prefix}${command.name}\` command.`)
+				`before reusing the \`${prefix}${command.name}\` command.`)
 			embed.setColor("ff0000")
 			return message.channel.send(embed).catch()
 		}
