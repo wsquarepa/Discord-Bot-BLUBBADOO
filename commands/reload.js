@@ -1,5 +1,5 @@
 const config = require("../config.json")
-const admins = config["bot-admins"]
+const admins = config["botAdmins"]
 
 module.exports = {
 	name: 'reload',
