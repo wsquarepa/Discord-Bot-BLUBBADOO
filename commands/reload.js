@@ -7,15 +7,9 @@ module.exports = {
 	args: true,
 	usage:'[command name]',
 	aliases: ['update'],
-    category: "economy",
-    adminOnly: false,
+    category: "info",
+    adminOnly: true,
 	execute(message, args, mention) {
-
-        if (!admins.includes(message.author.id)) {
-			message.reply("Sorry, you can't execute that command.")
-			return false
-        }
-
 		const commandName = args[0].toLowerCase();
 		const command = message.client.commands.get(commandName)
 			|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
