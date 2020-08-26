@@ -11,7 +11,7 @@ module.exports = {
     name: 'inventory',
     description: 'Check your inventory!',
     args: false,
-    usage: '',
+    usage: '[@mention] [page]',
     guildOnly: false,
     aliases: ['inv'],
     cooldown: 3,
