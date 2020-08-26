@@ -85,7 +85,27 @@ module.exports = {
             }
 
             var userInv = userData[mention.id].inventory
+            var pages = []
             var keys = Object.keys(userInv)
+            var keysLength = keys.length
+            for (var i = 0; i < (keysLength / 5); i++) {
+                try {
+                    pages.push(keys.splice(0, 5))
+                } catch {
+                    //pass
+                }
+            }
+
+            console.log(pages)
+
+            var page = (args[1] == null ? 0 : parseInt(args[1]) - 1)
+            console.log(page)
+            keys = pages[page]
+            if (!keys) {
+                message.channel.send("That page doesn't exist.")
+                return false
+            }
+
             var embed = new discord.MessageEmbed()
 
             if (keys.toString() == "[]") {
@@ -120,6 +140,7 @@ module.exports = {
                     return
                 }
                 embed.setTitle(mention.tag + "'s inventory").setDescription(itemString).setColor("2f3237")
+                embed.setFooter("Inventory page #" + (page + 1) + " out of " + pages.length + " pages.")
                 message.channel.send(embed)
             }
         }
