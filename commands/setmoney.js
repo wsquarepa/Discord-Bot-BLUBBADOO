@@ -33,7 +33,7 @@ module.exports = {
         try {
             userData[mention.id][args[1]] = amount
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-            message.channel.send("Complete! Set " + mention.tag + "'s" + args[1] + " to " + args[3] + ".\n Current user status: ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
+            message.channel.send("Complete! Set " + mention.tag + "'s " + args[1] + " to " + args[2] + ".\n Current user status: ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
         } catch(e) {
             message.channel.send("Error, Something went wrong.")
             console.error(e)
