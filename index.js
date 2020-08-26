@@ -159,34 +159,6 @@ client.on('message', message => {
 			}
 		}
 
-		if (!userData[message.author.id].account.daily) {
-			userData[message.author.id].account.daily = {
-				streak: -1,
-				previousAmt: 0,
-				expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
-			}
-		}
-
-		if (!userData[message.author.id].nextVoteTime) {
-			userData[message.author.id].nextVoteTime = 0
-		}
- 
-		if (!userData[message.author.id].team) {
-			userData[message.author.id].team = ""
-		}
-
-		if (userData[message.author.id].achivements == null) {
-			userData[message.author.id].achivements = []
-		}
-
-		if (userData[message.author.id].account.title == null || userData[message.author.id].account.title == "") {
-			userData[message.author.id].account.title = "none"
-		}
-
-		if (userData[message.author.id].codesUsed == null) {
-			userData[message.author.id].codesUsed = []
-		}
-
 		userData[message.author.id].xp += 1
 
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
@@ -419,7 +391,7 @@ client.on('message', message => {
 			const embed = new Discord.MessageEmbed()
 			embed.setAuthor("ERR_TIMEOUT")
 			embed.setTitle("Error: ")
-			embed.setDescription(`You have to wait ${timeLeft.toFixed(0)} more second(s) before reusing the \`${prefix}${command.name}\` command.`)
+			embed.setDescription(`You have to wait ${new Date(timeLeft * 1000).toTimeString()} more second(s) before reusing the \`${prefix}${command.name}\` command.`)
 			embed.setColor("ff0000")
 			return message.channel.send(embed).catch()
 		}
