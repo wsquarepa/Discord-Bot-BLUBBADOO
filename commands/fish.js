@@ -53,7 +53,7 @@ module.exports = {
         timeoutkey = setTimeout(function() {
             collector.stop()
             if (chance > 0) {
-                var earnings = randomNumber(20, 100)
+                var earnings = randomNumber(100, 500)
                 msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
                 userData[message.author.id].cash += earnings
                 fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)

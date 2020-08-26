@@ -20,7 +20,23 @@ module.exports = {
 	execute(message, args, mention) {
         if (!mention) {
             var userInv = userData[message.author.id].inventory
+            var pages = []
             var keys = Object.keys(userInv)
+
+            for (var i = 0; i < (keys.length / 5); i++) {
+                try {
+                    pages.push(keys.splice(0, 5))
+                } catch {
+                    //pass
+                }
+            }
+            var page = (args[0] == null? 0:parseInt(args[0]) - 1)
+            keys = pages[page]
+            if (!keys) {
+                message.channel.send("That page doesn't exist.")
+                return false
+            }
+
             var embed = new discord.MessageEmbed()
 
             if (keys.toString() == "[]") {
@@ -53,6 +69,7 @@ module.exports = {
                     return
                 }
                 embed.setTitle("Your inventory").setDescription(itemString).setColor("2f3237")
+                embed.setFooter("Shop page #" + (page + 1) + " out of " + pages.length + " pages.")
                 message.channel.send(embed)
             }
         } else {
