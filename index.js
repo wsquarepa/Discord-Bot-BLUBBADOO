@@ -4,7 +4,8 @@ const {
 	prefix,
 	token,
 	bannedServers,
-	dblToken
+	dblToken,
+	botAdmins
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
@@ -403,7 +404,7 @@ client.on('message', message => {
 		return message.channel.send(embed).catch()
 	}
 
-	if (command.adminOnly) {
+	if (command.adminOnly && !botAdmins.includes(message.author.id) && userData[message.author.id].account.type.toLowerCase() != "admin") {
 		var embed = new Discord.MessageEmbed()
 		embed.setAuthor("ERR_MISSING_PERMS")
 		embed.setTitle(`Error: You don't have permission to execute that command!`)
