@@ -3,7 +3,8 @@ const fs = require('fs');
 const {
 	prefix,
 	token,
-	bannedServers
+	bannedServers,
+	dblToken
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const client = new Discord.Client();
@@ -16,6 +17,8 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 var shopData = require('./shop.json')
 const schedule = require('node-schedule')
 const execSync = require('child_process').execSync
+const dblApi = require('dblapi.js')
+const dbl = new dblApi(dblToken, client)
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
