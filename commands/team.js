@@ -70,7 +70,7 @@ module.exports = {
                         members:[message.author.id]
                     }
 
-                    var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id)
+                    var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000 })
                     message.channel.send("Creating a team costs **5** gems. \n Say cancel if you want to cancel. \n What should the team name be? MAX 15 chars")
                     collector.on("collect", function(msg) {
                         if (msg.content == "cancel") {

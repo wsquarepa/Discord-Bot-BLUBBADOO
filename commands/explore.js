@@ -36,6 +36,7 @@ module.exports = {
 
         var msg = new discord.Message()
         var timeout = 0
+        var chance = randomNumber(0, 5)
 
         message.channel.send("Exploring... Please wait...").then(m => msg = m)
 
@@ -45,12 +46,13 @@ module.exports = {
             collector.stop()
             clearTimeout(timeout)
             msg.edit("You can't do anything while you're exploring.")
+            chance = 0
             return;
         })
 
+       
         timeout = setTimeout(function() {
             collector.stop()
-            var chance = randomNumber(0, 5)
             if (chance == 3) {
                 msg.edit("Hmm... what's that shiny thingy? OH WAIT ITS A TREASURE CHEST WOOOOOOOOOO!!!! It's in your inventory now; do `==use chest` to open it!")
 

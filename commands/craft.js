@@ -23,7 +23,7 @@ module.exports = {
     args: false,
     usage: '[item]',
     guildOnly: false,
-    aliases: ['create', "make"],
+    aliases: ['create'],
     category: "economy",
     adminOnly: false,
 	execute(message, args, mention) {
