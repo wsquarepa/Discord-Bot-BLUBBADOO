@@ -19,17 +19,6 @@ module.exports = {
     category: "economy",
     adminOnly: false,
 	execute(message, args, mention) {
-        if ((userData[message.author.id].account.daily.expires - (1000 * 60 * 60 * 24)) > Date.now()) {
-            const embed = new discord.MessageEmbed()
-			embed.setAuthor("ERR_TIMEOUT")
-			embed.setTitle("Error: ")
-            embed.setDescription(`You have to wait ${(((userData[message.author.id].account.daily.expires - (1000 * 60 * 60 * 24)) - Date.now()) / 1000).toFixed(0)} more` + 
-            ` second(s) before reusing the \`daily\` command.`)
-            embed.setColor("ff0000")
-            message.channel.send(embed)
-            return;
-        }
-
         if (userData[message.author.id].account.daily.expires < (new Date().getTime())) {
             userData[message.author.id].account.daily.streak = -1
             userData[message.author.id].account.daily.previousAmt = 0

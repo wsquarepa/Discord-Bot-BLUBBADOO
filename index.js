@@ -388,10 +388,12 @@ client.on('message', message => {
 
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
+			const timeLeftDate = new Date(timeLeft * 1000)
 			const embed = new Discord.MessageEmbed()
 			embed.setAuthor("ERR_TIMEOUT")
 			embed.setTitle("Error: ")
-			embed.setDescription(`You have to wait ${new Date(timeLeft * 1000).toTimeString().slice(0, 7)} more second(s) before reusing the \`${prefix}${command.name}\` command.`)
+			embed.setDescription(`You have to wait ${timeLeftDate.getHours()} hour(s), ${timeLeftDate.getMinutes()} minute(s) and ${timeLeftDate.getSeconds()} more second(s)` +
+			`before reusing the \`${prefix}${command.name}\` command.`)
 			embed.setColor("ff0000")
 			return message.channel.send(embed).catch()
 		}
