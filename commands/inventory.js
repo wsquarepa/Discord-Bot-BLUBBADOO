@@ -67,24 +67,22 @@ module.exports = {
             } else {
                 var itemString = ""
                 for (var i = 0; i < keys.length; i++) {
-                    if (!(parseInt(userInv[keys[i]].amount) < 1)) {
-                        var usesDisplay = "- " + userInv[keys[i]].uses + " use(s) for current item left."
-                        var item = shopData[keys[i]]
-                        if (!item) {
-                            item = specialShopData[keys[i]]
-                        }
-
-                        if (!item) {
-                            item = {
-                                image: "?"
-                            }
-                        }
-
-                        if (!item.image) item.image = "?"
-
-                        itemString += (item.image.length > 5 ? emoji(item.image, message) : item.image) +
-                            " " + userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1 ? "" : usesDisplay) + "\n \n"
+                    var usesDisplay = "- " + userInv[keys[i]].uses + " use(s) for current item left."
+                    var item = shopData[keys[i]]
+                    if (!item) {
+                        item = specialShopData[keys[i]]
                     }
+
+                    if (!item) {
+                        item = {
+                            image: "?"
+                        }
+                    }
+
+                    if (!item.image) item.image = "?"
+
+                    itemString += (item.image.length > 5 ? emoji(item.image, message) : item.image) +
+                        " " + userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1 ? "" : usesDisplay) + "\n \n"
                 }
 
                 if (itemString == "") {
