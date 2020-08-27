@@ -29,6 +29,7 @@ module.exports = {
             for (var l = 0; l < keysLength; l++) {
                 if (userInv[keys[l]].amount < 1) {
                     delete userInv[keys[l]]
+                    keys.splice(keys.indexOf(keys[l]), 1)
                 }
             }
 
