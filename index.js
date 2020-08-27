@@ -20,6 +20,7 @@ const schedule = require('node-schedule')
 const execSync = require('child_process').execSync
 const dblApi = require('dblapi.js')
 const dbl = new dblApi(dblToken, client)
+
 // const Sequelize = require('sequelize');
 
 // const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
@@ -161,6 +162,22 @@ client.once("ready", function () {
 		client.users.cache.get(leaders[1][0]).send("Congratulations! You got **3 gems** for being **SECOND PLACE** on the world leaderboard!").catch()
 		client.users.cache.get(leaders[2][0]).send("Congratulations! You got **1 gem** for being **THIRD PLACE** on the world leaderboard!").catch()
 	})
+
+	schedule.scheduleJob("0 0 * * *", () => {
+		const keys = Object.keys(userData)
+
+		for (var i = 0; i < keys.length; i++) {
+			if (userData[keys[i]].houses.length > 0) {
+				const userHouses = userData[keys[i]].houses
+				for (var j = 0; j < userHouses.length; j++) {
+					userData[keys[i]].houses[j].durability -= 100
+					userData[keys[i]].bank += 100000
+				}
+			}
+		}
+
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+	})
 })
 
 client.on('message', message => {
@@ -169,14 +186,12 @@ client.on('message', message => {
 	}
 	if ((message.author.id != "509874745567870987" && modeOfUser.testMode)) return
 
-	if (!modeOfUser.testMode) {
-		botData.messagesRecieved++
-		if (botData != "" || botData != null || !isEmpty(botData)) {
-			fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
-		}
+	botData.messagesRecieved++
+	if (botData != "" || botData != null || !isEmpty(botData)) {
+		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
 
-	if (!message.author.bot && !modeOfUser.testMode) {
+	if (!message.author.bot) {
 		if (!userData[message.author.id]) {
 			userData[message.author.id] = {
 				cash: 0,
@@ -198,6 +213,7 @@ client.on('message', message => {
 					title: ""
 				},
 				pet: {},
+				houses: [],
 				team: "",
 				achivements: [],
 				codesUsed: [],
@@ -205,14 +221,16 @@ client.on('message', message => {
 			}
 		}
 
+		if (!userData[message.author.id].houses) {
+			userData[message.author.id].houses = []
+		}
+
 		userData[message.author.id].xp += 1
 
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 			userData[message.author.id].xp = userData[message.author.id].xpUntil - userData[message.author.id].xp
 			userData[message.author.id].level += 1
-			if (userData[message.author.id].level % 2 == 0) {
-				userData[message.author.id].gems += 1
-			}
+			userData[message.author.id].gems += 1
 			userData[message.author.id].xpUntil += (userData[message.author.id].level * 5)
 			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
 				.then(m => m.delete({
@@ -305,6 +323,23 @@ client.on('message', message => {
 				}
 
 
+			}
+		}
+
+		if (userData[message.author.id].houses.length > 0) {
+			const houses = userData[message.author.id].houses
+			for (var a = 0; a < houses.length; a++) {
+				if (!userData[message.author.id].houses[a].durability < 1) {
+					userData[message.author.id].houses[a].durability -= 1
+					userData[message.author.id].houses[a].xp += 1
+					userData[message.author.id].bank += (randomNumber(100, 1000) * userData[message.author.id].houses[a].level)
+
+					if (userData[message.author.id].houses[a].xp > userData[message.author.id].houses[a].xpUntil) {
+						userData[message.author.id].houses[a].level++
+						userData[message.author.id].houses[a].xp = userData[message.author.id].houses[a].xpUntil - userData[message.author.id].houses[a].xp
+						userData[message.author.id].houses[a].xpUntil = userData[message.author.id].houses[a].level * 5
+					}
+				}
 			}
 		}
 
@@ -422,7 +457,7 @@ client.on('message', message => {
 		embed.setAuthor("ERR_MISSING_LEVEL")
 		embed.setTitle(`Error: ` + "That command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!")
 		embed.setColor("ff0000")
-		message.reply(embed).catch()
+		message.channel.send(embed).catch()
 		return
 	}
 
@@ -447,7 +482,6 @@ client.on('message', message => {
 
 	try {
 		var success = command.execute(message, args, mention)
-		console.log(success)
 		if (success == null) success = true
 		if (success) {
 			timestamps.set(message.author.id, now);
