@@ -38,6 +38,8 @@ module.exports = {
                 keys.splice(thingstodelete[m], 1)
             }
 
+            keysLength = keys.length
+
             for (var i = 0; i < (keysLength / 5); i++) {
                 try {
                     pages.push(keys.splice(0, 5))
