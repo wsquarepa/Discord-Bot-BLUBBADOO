@@ -19,10 +19,18 @@ module.exports = {
     adminOnly: false,
     execute(message, args, mention) {
         if (!mention) {
-            var userInv = userData[message.author.id].inventory
+            var userInv = {}
+            Object.assign(userInv, userData[message.author.id].inventory)
             var pages = []
             var keys = Object.keys(userInv)
             var keysLength = keys.length
+
+            for (var l = 0; l < keysLength; l++) {
+                if (userInv[keys[l]].amount < 1) {
+                    delete userInv[keys[l]]
+                }
+            }
+
             for (var i = 0; i < (keysLength / 5); i++) {
                 try {
                     pages.push(keys.splice(0, 5))
@@ -45,6 +53,7 @@ module.exports = {
 
             if (keys.toString() == "[]") {
                 embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("2f3237")
+                embed.setFooter("Inventory page #" + (page + 1) + " out of " + pages.length + " pages.")
                 message.channel.send(embed)
             } else {
                 var itemString = ""
