@@ -21,6 +21,7 @@ module.exports = {
         if (!mention) {
             var userInv = {}
             Object.assign(userInv, userData[message.author.id].inventory)
+            console.log(userInv)
             var pages = []
             var keys = Object.keys(userInv)
             var keysLength = keys.length
