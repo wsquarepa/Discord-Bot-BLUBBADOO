@@ -26,11 +26,16 @@ module.exports = {
             var keys = Object.keys(userInv)
             var keysLength = keys.length
 
+            var thingstodelete = []
             for (var l = 0; l < keysLength; l++) {
                 if (userInv[keys[l]].amount < 1) {
                     delete userInv[keys[l]]
-                    keys.splice(keys.indexOf(keys[l]), 1)
+                    thingstodelete.push(keys.indexOf(keys[l]))
                 }
+            }
+
+            for (var m = 0; m < thingstodelete.length; m++) {
+                keys.splice(thingstodelete[m], 1)
             }
 
             for (var i = 0; i < (keysLength / 5); i++) {
