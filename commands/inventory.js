@@ -31,8 +31,8 @@ module.exports = {
             }
 
             for (i = 0; i < keysToDelete.length; i++) {
-                delete userInv[keysToDelete[i]]
                 keys.splice(keys.indexOf(keysToDelete[i], 1))
+                delete userInv[keysToDelete[i]]
             }
 
             const pageNumber = ((parseInt(args[0]) - 1) || 0)
@@ -60,16 +60,18 @@ module.exports = {
                 message.channel.send("Not a valid page!")
                 return
             }
-
-            const embed = new discord.MessageEmbed()
-            embed.setTitle("Your inventory:")
             
-            if (page.length < 1 && pageNumber == 0) {
+            if (!page || (page.length < 1 && pageNumber == 0)) {
                 embed.setDescription("You have nothing!")
                 embed.setColor("2f3237")
                 message.channel.send(embed)
                 return
             }
+
+            const embed = new discord.MessageEmbed()
+            embed.setTitle("Your inventory:")
+            
+            
 
             for (i = 0; i < page.length; i++) {
                 var item = shopData[page[i]]
