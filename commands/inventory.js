@@ -21,26 +21,24 @@ module.exports = {
         if (!mention) {
             var userInv = {}
             Object.assign(userInv, userData[message.author.id].inventory)
-            console.log(userInv)
-            var pages = []
             var keys = Object.keys(userInv)
-            var keysLength = keys.length
 
-            var thingstodelete = []
-            for (var l = 0; l < keysLength; l++) {
-                if (userInv[keys[l]].amount < 1) {
-                    delete userInv[keys[l]]
-                    thingstodelete.push(keys.indexOf(keys[l]))
+            var keysToDelete = []
+            for (var i = 0; i < keys.length; i++) {
+                if (userInv[keys[i]].amount < 1) {
+                    keysToDelete.push(keys[i])
                 }
             }
 
-            for (var m = 0; m < thingstodelete.length; m++) {
-                keys.splice(thingstodelete[m], 1)
+            for (i = 0; i < keysToDelete.length; i++) {
+                delete userInv[keysToDelete[i]]
+                keys.splice(keys.indexOf(keysToDelete[i], 1))
             }
 
-            keysLength = keys.length
+            const pageNumber = ((parseInt(args[0]) - 1) || 0)
+            var pages = []
 
-            for (var i = 0; i < (keysLength / 5); i++) {
+            for (var i = 0; i < (keys.length / 5); i++) {
                 try {
                     pages.push(keys.splice(0, 5))
                 } catch {
@@ -48,52 +46,37 @@ module.exports = {
                 }
             }
 
-            console.log(pages)
-
-            var page = (args[0] == null ? 0 : parseInt(args[0]) - 1)
-            console.log(page)
-            keys = pages[page]
-            if (!keys) {
-                message.channel.send("That page doesn't exist.")
-                return false
+            const page = pages[pageNumber]
+            if (!page) {
+                message.channel.send("Not a valid page!")
+                return
             }
 
-            var embed = new discord.MessageEmbed()
+            const embed = new discord.MessageEmbed()
+            embed.setTitle("Your inventory:")
 
-            if (keys.toString() == "[]") {
-                embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("2f3237")
-                embed.setFooter("Inventory page #" + (page + 1) + " out of " + pages.length + " pages.")
-                message.channel.send(embed)
-            } else {
-                var itemString = ""
-                for (var i = 0; i < keys.length; i++) {
-                    var usesDisplay = "- " + userInv[keys[i]].uses + " use(s) for current item left."
-                    var item = shopData[keys[i]]
-                    if (!item) {
-                        item = specialShopData[keys[i]]
-                    }
-
-                    if (!item) {
-                        item = {
-                            image: "?"
-                        }
-                    }
-
-                    if (!item.image) item.image = "?"
-
-                    itemString += (item.image.length > 5 ? emoji(item.image, message) : item.image) +
-                        " " + userInv[keys[i]].amount + " " + keys[i] + "(s) " + (userInv[keys[i]].uses == 1 ? "" : usesDisplay) + "\n \n"
+            for (i = 0; i < page.length; i++) {
+                var item = shopData[keys[i]]
+                if (!item) {
+                    item = specialShopData[keys[i]]
                 }
+                
+                if (!item.image) item.image = "?"
 
-                if (itemString == "") {
-                    embed.setTitle("Your inventory").setDescription("You have nothing!").setColor("2f3237")
-                    message.channel.send(embed)
-                    return
+                if (!item) {
+                    item = {
+                        image: "?"
+                    }
                 }
-                embed.setTitle("Your inventory").setDescription(itemString).setColor("2f3237")
-                embed.setFooter("Inventory page #" + (page + 1) + " out of " + pages.length + " pages.")
-                message.channel.send(embed)
+                
+                var usesDisplay = "Uses: " + userInv[keys[i]].uses + " left."
+                embed.addField((item.image.length > 5 ? emoji(item.image, message) : item.image) + keys[i], 
+                `Amount: ${userInv[keys[i]].amount}
+                ${(userInv[keys[i]].uses == 1 ? "" : usesDisplay)}
+                `)
             }
+            
+            message.channel.send(embed)
         } else {
             if (!userData[mention.id]) {
                 message.channel.send("That person doesn't have a bank account yet!")
