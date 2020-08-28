@@ -60,8 +60,6 @@ module.exports = {
                 if (!item) {
                     item = specialShopData[keys[i]]
                 }
-                
-                if (!item.image) item.image = "?"
 
                 if (!item) {
                     item = {
