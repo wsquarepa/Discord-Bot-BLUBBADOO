@@ -31,12 +31,15 @@ module.exports = {
             }
 
             for (i = 0; i < keysToDelete.length; i++) {
-                keys.splice(keys.indexOf(keysToDelete[i], 1))
+                keys.splice(keys.indexOf(keysToDelete[i]), 1)
                 delete userInv[keysToDelete[i]]
             }
 
             const pageNumber = ((parseInt(args[0]) - 1) || 0)
             var pages = []
+            
+            const embed = new discord.MessageEmbed()
+            embed.setTitle("Your inventory:")
 
             for (var i = 0; i < (keys.length / 5); i++) {
                 try {
@@ -45,9 +48,16 @@ module.exports = {
                     //pass
                 }
             }
-            
+
             if (keys.length) {
                 pages.push(keys)
+            }
+
+            if (!pages[0]) {
+                embed.setDescription("You have nothing!")
+                embed.setColor("2f3237")
+                message.channel.send(embed)
+                return
             }
             
             if (!pages[0].length) {
@@ -55,19 +65,12 @@ module.exports = {
                 pages.splice(1, 1)
             }
 
-            console.log(pages)
-
             const page = pages[pageNumber]
-            console.log(page)
-
             
             if (!page && pageNumber != 0) {
                 message.channel.send("Not a valid page!")
                 return
             }
-            
-            const embed = new discord.MessageEmbed()
-            embed.setTitle("Your inventory:")
             
             if (!page || (page.length < 1 && pageNumber == 0)) {
                 embed.setDescription("You have nothing!")
@@ -117,10 +120,7 @@ module.exports = {
                 }
             }
 
-            console.log(pages)
-
             var page = (args[1] == null ? 0 : parseInt(args[1]) - 1)
-            console.log(page)
             keys = pages[page]
             if (!keys) {
                 message.channel.send("That page doesn't exist.")
