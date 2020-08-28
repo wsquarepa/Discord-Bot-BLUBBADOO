@@ -210,7 +210,7 @@ client.on('message', message => {
 						previousAmt: 0,
 						expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
 					},
-					title: ""
+					title: "none"
 				},
 				pet: {},
 				houses: [],
@@ -225,6 +225,10 @@ client.on('message', message => {
 			userData[message.author.id].houses = []
 		}
 
+		if (userData[message.author.id].account.title == "") {
+			userData[message.author.id].account.title = "none"
+		}
+ 
 		userData[message.author.id].xp += 1
 
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {

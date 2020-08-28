@@ -19,6 +19,6 @@ module.exports = {
             return;
         }
 
-        message.channel.send(JSON.stringify(userData[mention.id]))
+        message.channel.send("```JSON \n" + JSON.stringify(userData[mention.id]) + "\n```")
     }
 }
