@@ -46,7 +46,10 @@ module.exports = {
                 }
             }
             
-            pages.push(keys)
+            if (keys.length > 0) {
+                pages.push(keys)
+            }
+            
             console.log(pages)
 
             const page = pages[pageNumber]
@@ -61,7 +64,7 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
             
-            if (page.toString() == "[]" && pageNumber == 0) {
+            if (page.length < 1 && pageNumber == 0) {
                 embed.setDescription("You have nothing!")
                 embed.setColor("2f3237")
                 message.channel.send(embed)
@@ -87,7 +90,7 @@ module.exports = {
                 `)
             }
             embed.setColor("2f3237")
-            embed.setFooter("Inventory page #" + (pageNumber + 1) + " out of " + pages.length + " pages.")
+            embed.setFooter("Inventory page #" + (pageNumber + 1) + " out of " + pages.length + " page(s).")
             message.channel.send(embed)
         } else {
             message.channel.send("Inventory for other users is not complete yet. Sorry!")

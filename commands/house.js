@@ -52,6 +52,7 @@ module.exports = {
                     Level: ${userHouses[keys[i]].level}
                 `)
             }
+            embed.setColor("2f3237")
             message.channel.send(embed)
         } else if (args[0] == "buy") {
 
