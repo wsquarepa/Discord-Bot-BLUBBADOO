@@ -341,7 +341,7 @@ client.on('message', message => {
 					if (userData[message.author.id].houses[a].xp > userData[message.author.id].houses[a].xpUntil) {
 						userData[message.author.id].houses[a].level++
 						userData[message.author.id].houses[a].xp = userData[message.author.id].houses[a].xpUntil - userData[message.author.id].houses[a].xp
-						userData[message.author.id].houses[a].xpUntil = userData[message.author.id].houses[a].level * 5
+						userData[message.author.id].houses[a].xpUntil = userData[message.author.id].houses[a].xpUntil + userData[message.author.id].houses[a].level * 5
 					}
 				}
 			}
