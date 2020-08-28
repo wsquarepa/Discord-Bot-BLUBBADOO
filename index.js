@@ -119,6 +119,7 @@ client.once("ready", function () {
 			execSync('git commit -m backup', {
 				encoding: 'utf-8'
 			})
+			execSync('git push', { encoding: 'utf-8' })
 		} catch (e) {
 			console.error(e)
 		}
