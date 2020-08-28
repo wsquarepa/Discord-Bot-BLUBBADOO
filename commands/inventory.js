@@ -46,6 +46,7 @@ module.exports = {
                 }
             }
             
+            pages.push(keys)
             console.log(pages)
 
             const page = pages[pageNumber]
