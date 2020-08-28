@@ -62,6 +62,8 @@ module.exports = {
             
             if (!page && pageNumber == 0) {
                 embed.setDescription("You have nothing!")
+                message.channel.send(embed)
+                return
             }
 
             for (i = 0; i < page.length; i++) {
