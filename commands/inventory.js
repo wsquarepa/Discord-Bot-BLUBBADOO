@@ -46,10 +46,15 @@ module.exports = {
                 }
             }
             
-            if (keys.length > 0) {
+            if (keys.length) {
                 pages.push(keys)
             }
             
+            if (!pages[0].length) {
+                pages[0] = keys
+                pages.splice(1, 1)
+            }
+
             console.log(pages)
 
             const page = pages[pageNumber]
