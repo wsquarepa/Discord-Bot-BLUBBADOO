@@ -14,7 +14,7 @@ module.exports = {
     usage: '[@mention] [page]',
     guildOnly: false,
     aliases: ['inv'],
-    cooldown: 3,
+    cooldown: 1,
     category: "economy",
     adminOnly: false,
     execute(message, args, mention) {
