@@ -153,32 +153,44 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                 }
             })
         } else if (args[0] == "fix") {
-            message.channel.send("Currently, you can only fix it with gems; as well as all of them at a time; " +
-                "but later, you can fix it with other things! \n Fix all for **25 GEMS**?")
-            const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {
+            message.channel.send("Which house to fix? Type in house number (e.g. 1)")
+            var collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {
                 time: 10000
             })
 
             var messageCollected = ""
+            var stage = 1
             collector.on("collect", (msg) => {
                 messageCollected = msg.content
                 collector.stop()
             })
 
             collector.on("end", () => {
-                if (messageCollected.startsWith("y")) {
-                    if (userData[message.author.id].gems < 25) {
-                        message.channel.send("You don't have enough gems to fix your house!")
-                        return
+                if (stage == 1) {
+                    if (!userData[message.author.id].houses[parseInt(messageCollected)]) {
+                        message.channel.send("Not a valid house id.")
+                        return;
                     }
 
-                    userData[message.author.id].gems -= 25
-                    for (var i = 0; i < userData[message.author.id].houses.length; i++) {
-                        userData[message.author.id].houses[i].durability = 1000000
-                    }
-                    message.channel.send("Fixed all houses for 25 gems.")
+                    message.channel.send("Pay **25 gems** to fix house?")
+                    collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {
+                        time: 10000
+                    })
                 } else {
-                    message.channel.send("Welp, that's too bad, maybe another time?")
+                    if (messageCollected.startsWith("y")) {
+                        if (userData[message.author.id].gems < 25) {
+                            message.channel.send("You don't have enough gems to fix your house!")
+                            return
+                        }
+
+                        userData[message.author.id].gems -= 25
+                        for (var i = 0; i < userData[message.author.id].houses.length; i++) {
+                            userData[message.author.id].houses[i].durability = 1000000
+                        }
+                        message.channel.send("Fixed house for 25 gems.")
+                    } else {
+                        message.channel.send("Welp, that's too bad, maybe another time?")
+                    }
                 }
             })
         }
