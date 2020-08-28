@@ -62,6 +62,7 @@ module.exports = {
             
             if (!page && pageNumber == 0) {
                 embed.setDescription("You have nothing!")
+                embed.setColor("2f3237")
                 message.channel.send(embed)
                 return
             }
@@ -88,6 +89,8 @@ module.exports = {
             embed.setFooter("Inventory page #" + (pageNumber + 1) + " out of " + pages.length + " pages.")
             message.channel.send(embed)
         } else {
+            message.channel.send("Inventory for other users is not complete yet. Sorry!")
+            return false;
             if (!userData[mention.id]) {
                 message.channel.send("That person doesn't have a bank account yet!")
                 return false;
