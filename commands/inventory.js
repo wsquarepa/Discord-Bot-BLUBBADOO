@@ -61,17 +61,15 @@ module.exports = {
                 return
             }
             
+            const embed = new discord.MessageEmbed()
+            embed.setTitle("Your inventory:")
+            
             if (!page || (page.length < 1 && pageNumber == 0)) {
                 embed.setDescription("You have nothing!")
                 embed.setColor("2f3237")
                 message.channel.send(embed)
                 return
             }
-
-            const embed = new discord.MessageEmbed()
-            embed.setTitle("Your inventory:")
-            
-            
 
             for (i = 0; i < page.length; i++) {
                 var item = shopData[page[i]]
