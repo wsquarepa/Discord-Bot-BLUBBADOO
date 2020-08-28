@@ -50,7 +50,12 @@ module.exports = {
 
             const page = pages[pageNumber]
             console.log(page)
-            if (!page) {
+
+            if (!page && pageNumber == 0) {
+                embed.setDescription("You have nothing!")
+            }
+
+            if (!page && pageNumber != 0) {
                 message.channel.send("Not a valid page!")
                 return
             }
@@ -77,7 +82,7 @@ module.exports = {
                 `)
             }
             embed.setColor("2f3237")
-            embed.setFooter("Inventory page #" + (page + 1) + " out of " + pages.length + " pages.")
+            embed.setFooter("Inventory page #" + (pageNumber + 1) + " out of " + pages.length + " pages.")
             message.channel.send(embed)
         } else {
             if (!userData[mention.id]) {
