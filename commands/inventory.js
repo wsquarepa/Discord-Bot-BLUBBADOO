@@ -45,8 +45,11 @@ module.exports = {
                     //pass
                 }
             }
+            
+            console.log(pages)
 
             const page = pages[pageNumber]
+            console.log(page)
             if (!page) {
                 message.channel.send("Not a valid page!")
                 return
@@ -56,9 +59,9 @@ module.exports = {
             embed.setTitle("Your inventory:")
 
             for (i = 0; i < page.length; i++) {
-                var item = shopData[keys[i]]
+                var item = shopData[page[i]]
                 if (!item) {
-                    item = specialShopData[keys[i]]
+                    item = specialShopData[page[i]]
                 }
 
                 if (!item) {
@@ -67,13 +70,14 @@ module.exports = {
                     }
                 }
                 
-                var usesDisplay = "Uses: " + userInv[keys[i]].uses + " left."
-                embed.addField((item.image.length > 5 ? emoji(item.image, message) : item.image) + keys[i], 
-                `Amount: ${userInv[keys[i]].amount}
-                ${(userInv[keys[i]].uses == 1 ? "" : usesDisplay)}
+                var usesDisplay = "Uses: " + userInv[page[i]].uses + " left."
+                embed.addField((item.image.length > 5 ? emoji(item.image, message) : item.image) + page[i], 
+                `Amount: ${userInv[page[i]].amount}
+                ${(userInv[page[i]].uses == 1 ? "" : usesDisplay)}
                 `)
             }
-            
+            embed.setColor("2f3237")
+            embed.setFooter("Inventory page #" + (page + 1) + " out of " + pages.length + " pages.")
             message.channel.send(embed)
         } else {
             if (!userData[mention.id]) {
