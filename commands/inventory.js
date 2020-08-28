@@ -51,10 +51,7 @@ module.exports = {
             const page = pages[pageNumber]
             console.log(page)
 
-            if (!page && pageNumber == 0) {
-                embed.setDescription("You have nothing!")
-            }
-
+            
             if (!page && pageNumber != 0) {
                 message.channel.send("Not a valid page!")
                 return
@@ -62,6 +59,10 @@ module.exports = {
 
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
+            
+            if (!page && pageNumber == 0) {
+                embed.setDescription("You have nothing!")
+            }
 
             for (i = 0; i < page.length; i++) {
                 var item = shopData[page[i]]
