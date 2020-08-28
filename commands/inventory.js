@@ -61,7 +61,7 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
             
-            if (page == [] && pageNumber == 0) {
+            if (page.toString() == "[]" && pageNumber == 0) {
                 embed.setDescription("You have nothing!")
                 embed.setColor("2f3237")
                 message.channel.send(embed)
