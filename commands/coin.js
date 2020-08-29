@@ -43,7 +43,7 @@ module.exports = {
             return false
         }
 
-        if (args[1] == NaN) {
+        if (isNaN(args[1])) {
             message.channel.send("I'm not sure how you're going to bet that.")
             return false
         }

@@ -23,7 +23,7 @@ module.exports = {
             try {
                 args[0] = parseInt(args[0])
     
-                if (args[0].toString() == "NaN") {
+                if (isNaN(args[0])) {
                     args[0] = 100
                 }
             } catch {

@@ -40,7 +40,7 @@ module.exports = {
                 return false
             }
 
-            if (parseInt(message.content) == NaN) {
+            if (isNaN(parseInt(message.content))) {
                 message.channel.send("Enter a number.");
                 return false
             }
