@@ -26,7 +26,7 @@ module.exports = {
                 return false;
             }
 
-            if (parseInt(args[0]) == NaN) {
+            if (isNaN(parseInt(args[0]))) {
                 message.channel.send("You can't deposit that.")
                 return false;
             }
