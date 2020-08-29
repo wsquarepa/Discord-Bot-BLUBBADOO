@@ -218,12 +218,17 @@ client.on('message', message => {
 				team: "",
 				achivements: [],
 				codesUsed: [],
-				nextVoteTime: 0
+				nextVoteTime: 0,
+				loan: {}
 			}
 		}
 
 		if (!userData[message.author.id].houses) {
 			userData[message.author.id].houses = []
+		}
+
+		if (!userData[message.author.id].loan) {
+			userData[message.author.id].loan = {}
 		}
 
 		if (userData[message.author.id].account.title == "") {
@@ -342,7 +347,7 @@ client.on('message', message => {
 					if (userData[message.author.id].houses[a].xp > userData[message.author.id].houses[a].xpUntil) {
 						userData[message.author.id].houses[a].level++
 						userData[message.author.id].houses[a].xp = userData[message.author.id].houses[a].xpUntil - userData[message.author.id].houses[a].xp
-						userData[message.author.id].houses[a].xpUntil = userData[message.author.id].houses[a].xpUntil + userData[message.author.id].houses[a].level * 10
+						userData[message.author.id].houses[a].xpUntil = userData[message.author.id].houses[a].xpUntil + userData[message.author.id].houses[a].level * 100
 					}
 				}
 			}
