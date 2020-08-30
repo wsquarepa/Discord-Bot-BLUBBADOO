@@ -129,7 +129,7 @@ client.once("ready", function () {
 		shopData.shopBalance += 500
 	})
 
-	schedule.scheduleJob('* * * * 0', () => {
+	schedule.scheduleJob('0 0 * * 0', () => {
 		var leaders = []
 		var keys = Object.keys(userData)
 		var dict = {}
