@@ -65,10 +65,10 @@ module.exports = {
 Three options:
     1: Build house (Materials)
     Requires:
-        a: 500 Iron
-        b: 500 Wood
-        c: 200 String
-        d: 250 Glass
+        a: 2.5K Iron
+        b: 3K Wood
+        c: 750 String
+        d: 500 Glass
 
     2: Buy house (Cash)
     Requires:
@@ -101,19 +101,19 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                     const userInv = userData[message.author.id].inventory
 
                     if (
-                        (!userInv["iron"] || userInv["iron"].amount < 500) ||
-                        (!userInv["wood"] || userInv["wood"].amount < 500) ||
-                        (!userInv["string"] || userInv["string"].amount < 200) ||
-                        (!userInv["glass"] || userInv["glass"].amount < 250)
+                        (!userInv["iron"] || userInv["iron"].amount < 2500) ||
+                        (!userInv["wood"] || userInv["wood"].amount < 3000) ||
+                        (!userInv["string"] || userInv["string"].amount < 750) ||
+                        (!userInv["glass"] || userInv["glass"].amount < 500)
                     ) {
                         message.channel.send("You don't have enough materials to build with.")
                         return;
                     }
 
-                    userInv["iron"].amount -= 500
-                    userInv["wood"].amount -= 500
-                    userInv["string"].amount -= 200
-                    userInv["glass"].amount -= 250
+                    userInv["iron"].amount -= 2500
+                    userInv["wood"].amount -= 3000
+                    userInv["string"].amount -= 750
+                    userInv["glass"].amount -= 500
 
                     userData[message.author.id].houses.push({
                         durability: 1000000,
