@@ -49,6 +49,8 @@ module.exports = {
                 return false;
             }
 
+            const paypercent = (userData[message.author.id].loan.amount / amount).toFixed(2) * 100
+
             userData[message.author.id].loan.amount -= amount
             userData[message.author.id].cash -= amount
 
@@ -58,7 +60,7 @@ module.exports = {
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
             
             embed.setTitle("Complete!")
-            embed.setDescription("You paid off " + (userData[message.author.id].loan.amount / amount).toFixed(2) * 100 + "% of your loan!")
+            embed.setDescription("You paid off " + paypercent + "% of your loan!")
             embed.setColor("2f3237")
             message.channel.send(embed)
         } else {
