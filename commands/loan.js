@@ -49,7 +49,7 @@ module.exports = {
                 return false;
             }
 
-            const paypercent = (userData[message.author.id].loan.amount / amount).toFixed(2) * 100
+            const paypercent = (amount / userData[message.author.id].loan.amount).toFixed(2) * 100
 
             userData[message.author.id].loan.amount -= amount
             userData[message.author.id].cash -= amount
