@@ -179,6 +179,18 @@ client.once("ready", function () {
 
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	})
+
+	setInterval(() => {
+		const keys = Object.keys(userData)
+		for (var i = 0; i < keys.length; i++) {
+			const loan = userData[keys[i]].loan
+			if (loan.expires < Date.now()) {
+				userData[keys[i]].cash -= loan.amount
+				userData[keys[i]].loan = {}
+			}
+		}
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+	}, 60000)
 })
 
 client.on('message', message => {
