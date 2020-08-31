@@ -80,7 +80,7 @@ module.exports = {
                 return false;
             }
 
-            userData[message.author.id].loan.amount = amount * 1.07
+            userData[message.author.id].loan.amount = (amount * 1.07).toFixed(0)
             userData[message.author.id].loan.expires = Date.now() + (1000 * 60 * 60 * 24 * 14) //one week
             userData[message.author.id].cash += amount
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
