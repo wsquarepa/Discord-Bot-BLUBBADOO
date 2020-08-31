@@ -23,7 +23,7 @@ module.exports = {
     adminOnly: false,
 	execute(message, args, mention) {
         const embed = new discord.MessageEmbed()
-        if (!isEmpty(userData[message.author.id].loan)) {
+        if (!isEmpty(userData[message.author.id].loan) && !args.length) {
             embed.setTitle("Your active loan:")
             embed.setDescription(
             `Amount: ${userData[message.author.id].loan.amount}
