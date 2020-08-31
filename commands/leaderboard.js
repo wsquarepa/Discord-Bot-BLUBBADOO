@@ -17,7 +17,7 @@ module.exports = {
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: ['leader', 'board'],
+    aliases: ['leader', 'board', 'lb'],
     cooldown: 5,
     category: "economy",
     adminOnly: false,
@@ -32,7 +32,7 @@ module.exports = {
                 Object.assign(dict, userData)
 
                 for (var i = 0; i < keys.length; i++) {
-                    if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned") {
+                    if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned" || !isEmpty(dict[keys[i]].loan)) {
                         delete dict[keys[i]]
                     }
                 }

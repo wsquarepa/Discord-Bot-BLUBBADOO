@@ -138,7 +138,7 @@ client.once("ready", function () {
 		Object.assign(dict, userData)
 
 		for (var i = 0; i < keys.length; i++) {
-			if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned") {
+			if (dict[keys[i]].account.type.toLowerCase() == "admin" || dict[keys[i]].account.type.toLowerCase() == "banned" || !isEmpty(dict[keys[i]].loan)) {
 				delete dict[keys[i]]
 			}
 		}
