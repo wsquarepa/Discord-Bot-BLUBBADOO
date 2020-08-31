@@ -31,7 +31,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
                 .setTitle(mention.username + "'s balance:")
                 .setDescription("Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎")
-                .setColor("00ff00")
+                .setColor("2f3237")
             message.channel.send(embed)
             return
         }
@@ -41,7 +41,7 @@ module.exports = {
         var embed = new discord.MessageEmbed()
                 .setTitle("Your balance:")
                 .setDescription("Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎")
-                .setColor("00ff00")
+                .setColor("2f3237")
                 .setFooter("Account status - locked: " + userData[message.author.id].account.secured)
         message.channel.send(embed)
     }
