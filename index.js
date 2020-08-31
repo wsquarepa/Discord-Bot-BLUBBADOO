@@ -119,7 +119,9 @@ client.once("ready", function () {
 			execSync('git commit -m backup', {
 				encoding: 'utf-8'
 			})
-			execSync('git push', { encoding: 'utf-8' })
+			execSync('git push', {
+				encoding: 'utf-8'
+			})
 		} catch (e) {
 			console.error(e)
 		}
@@ -184,10 +186,13 @@ client.once("ready", function () {
 		const keys = Object.keys(userData)
 		for (var i = 0; i < keys.length; i++) {
 			const loan = userData[keys[i]].loan
-			if (loan.expires < Date.now()) {
-				userData[keys[i]].cash -= loan.amount
-				userData[keys[i]].loan = {}
+			if (!isEmpty(loan)) {
+				if (loan.expires < Date.now()) {
+					userData[keys[i]].cash -= loan.amount
+					userData[keys[i]].loan = {}
+				}
 			}
+
 		}
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}, 60000)
@@ -246,7 +251,7 @@ client.on('message', message => {
 		if (userData[message.author.id].account.title == "") {
 			userData[message.author.id].account.title = "none"
 		}
- 
+
 		userData[message.author.id].xp += 1
 
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {

@@ -11,6 +11,14 @@ function embed(title, description, color) {
     return embed
 }
 
+function isEmpty(obj) {
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 module.exports = {
     name: 'leaderboard',
     description: 'See the world\'s leaders!',
