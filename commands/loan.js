@@ -80,6 +80,11 @@ module.exports = {
                 return false;
             }
 
+            if (amount < 10000) {
+                message.channel.send("To keep the integrity of the economy, you cannot loan money below $10000.")
+                return false
+            }
+
             userData[message.author.id].loan.amount = (amount * 1.07).toFixed(0)
             userData[message.author.id].loan.expires = Date.now() + (1000 * 60 * 60 * 24 * 14) //one week
             userData[message.author.id].cash += amount
