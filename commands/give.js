@@ -8,7 +8,7 @@ module.exports = {
     args: true,
     usage: '<@user> <amount>',
     guildOnly: true,
-    aliases: ['giveMoney'],
+    aliases: ['givemoney'],
     cooldown: 0,
     category: "economy",
     adminOnly: false,
