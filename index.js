@@ -382,6 +382,7 @@ client.on('message', message => {
 		embed.setTitle(`Error: You were banned from using me. Ask for more info from a bot admin!`)
 		embed.setColor("ff0000")
 		message.channel.send(embed)
+		return
 	}
 
 	const args = message.content.slice(prefix.length).split(/ +/);
