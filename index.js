@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 const fs = require('fs');
 const {
-	prefix,
 	token,
 	bannedServers,
 	dblToken,
@@ -20,6 +19,7 @@ const schedule = require('node-schedule')
 const execSync = require('child_process').execSync
 const dblApi = require('dblapi.js')
 const dbl = new dblApi(dblToken, client)
+var guildData = require("./guildData.json")
 
 // const Sequelize = require('sequelize');
 
@@ -209,6 +209,19 @@ client.on('message', message => {
 		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
 
+	if (!guildData[message.guild.id]) {
+		guildData[message.guild.id] = {
+			prefix: "==",
+			warnings: [],
+			settings: {
+				levelUpMessages: true,
+				moneyExceedMessage: true,
+				raceCompletionMessage: true,
+				achivementMessage: true
+			}
+		}
+	}
+
 	if (!message.author.bot) {
 		if (!userData[message.author.id]) {
 			userData[message.author.id] = {
@@ -259,10 +272,13 @@ client.on('message', message => {
 			userData[message.author.id].level += 1
 			userData[message.author.id].gems += 1
 			userData[message.author.id].xpUntil += (userData[message.author.id].level * 5)
-			message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
+			if (guildData[message.guild.id].settings.levelUpMessages) {
+				message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
 				.then(m => m.delete({
 					timeout: 5000
 				}).catch()).catch()
+			}
+			
 		}
 
 		//#region - chat money
@@ -278,10 +294,13 @@ client.on('message', message => {
 
 		if (netWorth > userData[message.author.id].nextGemCashGoal) {
 			userData[message.author.id].gems += 1
-			message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " + userData[message.author.id].nextGemCashGoal + "!")
-				.then(m => m.delete({
-					timeout: 5000
-				}).catch()).catch()
+			if (guildData[message.guild.id].settings.moneyExceedMessage) {
+				message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " +
+						userData[message.author.id].nextGemCashGoal + "!")
+					.then(m => m.delete({
+						timeout: 5000
+					}).catch()).catch()
+			}
 			userData[message.author.id].nextGemCashGoal = netWorth + 10000
 		}
 
@@ -343,13 +362,13 @@ client.on('message', message => {
 						userData[message.author.id].account.title = stuffEarn.title
 					}
 
-					message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+					if (guildData[message.guild.id].settings.achivementMessage) {
+						message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
 						.then(m => m.delete({
 							timeout: 5000
 						}).catch()).catch()
+					}	
 				}
-
-
 			}
 		}
 
@@ -373,7 +392,7 @@ client.on('message', message => {
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}
 
-
+	const prefix = guildData[message.guild.id].prefix
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {

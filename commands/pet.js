@@ -90,7 +90,7 @@ module.exports = {
                     message.channel.send("Do you **ACTUALLY** want to feed your pet it's at " + (userData[message.author.id].pet.food) + " hunger.")
                 }
 
-                message.channel.send("Feed your pet for **1 GEM** or **500 CARROTS**? Type out what you want to feed it with.")
+                message.channel.send("Feed your pet for **1 GEM** or **500 CARROTS**? Type out what you want to feed it with. *(GEMS or CARROTS)*")
                 var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {
                     maxMatches: 1,
                     time: 10000
