@@ -33,11 +33,11 @@ module.exports = {
             reason = args.slice(1).join(" ")
         }
 
-        guildData[message.guild.id].warnings.push({
+        guildData[message.guild.id].warnings[functions.makeid(10)] = {
             user: mention.id,
             reason: reason,
             moderator: message.author.id
-        })
+        }
         fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error(err) : null)
 
         mention.send("You were warned in **" + message.guild.name + "** for: `" + reason + "`.")

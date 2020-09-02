@@ -212,7 +212,7 @@ client.on('message', message => {
 	if (!guildData[message.guild.id]) {
 		guildData[message.guild.id] = {
 			prefix: "==",
-			warnings: [],
+			warnings: {},
 			settings: {
 				levelUpMessages: true,
 				moneyExceedMessage: true,

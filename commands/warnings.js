@@ -18,19 +18,18 @@ module.exports = {
         if (!mention) {
             const guild = guildData[message.guild.id]
             var warnings = {}
-
+            const keys = Object.keys(guild.warnings)
             var intNumber = 0
             for (var i = 0; i < guild.warnings.length; i++) {
-                if (guild.warnings[i].user == message.author.id) {
-                    warnings[intNumber] = guild.warnings[i]
+                if (guild.warnings[keys[i]].user == message.author.id) {
+                    warnings[intNumber] = guild.warnings[keys[i]]
                     intNumber++
                 }
             }
 
             const pageNumber = ((parseInt(args[1]) - 1) || 0)
             var pages = []
-            const keys = Object.keys(warnings)
-            
+           
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your warnings:")
 
