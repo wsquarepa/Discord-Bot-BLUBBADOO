@@ -1,6 +1,6 @@
 const fs = require('fs');
 const discord = require("discord.js")
-const functions = require("./jsHelpers/functions")
+const functions = require("../jsHelpers/functions")
 var guildData = require("../guildData.json")
 
 module.exports = {
@@ -35,7 +35,8 @@ module.exports = {
 
         guildData[message.guild.id].warnings.push({
             user: mention.id,
-            reason: reason
+            reason: reason,
+            moderator: message.author.id
         })
         fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error(err) : null)
 
