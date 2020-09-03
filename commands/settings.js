@@ -108,7 +108,11 @@ module.exports = {
                 return
             }
 
-            message.channel.send("Turned setting " + args[1] + " " + args[2])
+            if (args[1] != "all") {
+                message.channel.send("Turned setting " + args[1] + " " + args[2])
+            } else {
+                message.channel.send("Turned all settings " + args[2])
+            }
         } else if (args[0] == "help") {
             message.channel.send("**SETTINGS HELP** \n" + 
             "*==settings* - shows your server settings \n" + 
