@@ -45,6 +45,7 @@ module.exports = {
             if (args[1] == "levelup") {
                 if (!args[2] || (args[2] != "on" && args[2] != "off")) {
                     message.channel.send("You have to choose `on` or `off`")
+                    return
                 }
 
                 if (args[2] == "on") {
@@ -55,6 +56,7 @@ module.exports = {
             } else if (args[1] == "moneyexceed") {
                 if (!args[2] || (args[2] != "on" && args[2] != "off")) {
                     message.channel.send("You have to choose `on` or `off`")
+                    return
                 }
 
                 if (args[2] == "on") {
@@ -65,6 +67,7 @@ module.exports = {
             } else if (args[1] == "racecompletion") {
                 if (!args[2] || (args[2] != "on" && args[2] != "off")) {
                     message.channel.send("You have to choose `on` or `off`")
+                    return
                 }
 
                 if (args[2] == "on") {
@@ -75,6 +78,7 @@ module.exports = {
             } else if (args[1] == "achivements") {
                 if (!args[2] || (args[2] != "on" && args[2] != "off")) {
                     message.channel.send("You have to choose `on` or `off`")
+                    return
                 }
 
                 if (args[2] == "on") {
@@ -84,12 +88,16 @@ module.exports = {
                 }
             } else {
                 message.channel.send("Could not find setting.")
+                return
             }
+
+            message.channel.send("Turned setting " + args[1] + " " + args[2])
         } else if (args[0] == "help") {
             message.channel.send("**SETTINGS HELP** \n" + 
             "*==settings* - shows your server settings \n" + 
             "*==settings prefix <prefix>* - set server prefix \n" + 
             "*==settings messages <levelup | moneyexceed | racecompletion | achivements> <on | off>* - toggle messages")
         }
+        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error(err) : null)
     }
 }
