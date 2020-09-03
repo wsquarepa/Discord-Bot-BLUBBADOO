@@ -59,5 +59,7 @@ module.exports = {
                 return false;
         }
         return true;
-    }
+    },
+
+    globalEmbedColor: "2f3237"
 }

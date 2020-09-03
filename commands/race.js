@@ -1,8 +1,9 @@
-var discord = require('discord.js')
-var sentencer = require('sentencer')
-var textToPicture = require("text-to-picture")
+const discord = require('discord.js')
+const sentencer = require('sentencer')
+const textToPicture = require("text-to-picture")
 var userData = require("../userData.json")
-var fs = require("fs")
+const fs = require("fs")
+const guildData = require("../guildData.json")
 
 function makeid(length) {
     var result = '';
@@ -94,7 +95,10 @@ module.exports = {
                                     raceCollectorMsg.channel.send("CONGRATULATIONS! <@" + raceCollectorMsg.author.id + "> WON THE RACE!!!")
                                     userData[raceCollectorMsg.author.id].cash += 250
                                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-                                    raceCollectorMsg.author.send("You earn $250 for that race against " + mention.username + ". Congratulations!")
+                                    if (guildData[message.guild.id].settings.raceCompletionMessage) {
+                                        raceCollectorMsg.author.send("You earn $250 for that race against **" + 
+                                        (raceCollectorMsg.author.id == message.author.id? mention.tag:message.author.tag) + "**. Congratulations!")
+                                    }
                                     editMsg.delete()
                                     raceCollector.stop("Listen end.")
                                     fs.unlink('../' + filename + '.png', function (error) {
