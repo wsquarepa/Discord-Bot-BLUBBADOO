@@ -59,11 +59,7 @@ module.exports = {
                 var footer = "You are #" + userLocation + " of " + keys.length + " users."
 
                 if (userLocation == 0) {
-                    if (dict[keys[i]].account.type.toLowerCase() == "admin") {
-                        footer = "You are a bot ADMIN, you do not show on the leaderboard."
-                    } else {
-                        footer = "You loaned something, so you don't show on the leaderboard."
-                    }
+                    footer = "You don't show on the leaderboard either because you loaned something or you are a bot admin."
                 }
 
                 leaders = items.slice(0, 5);
