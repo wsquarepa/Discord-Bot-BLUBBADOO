@@ -29,7 +29,7 @@ module.exports = {
             embed.addField("Level up messages: ", guild.settings.levelUpMessages? "ON":"OFF")
             embed.addField("Money exceeding messages: ", guild.settings.moneyExceedMessage? "ON":"OFF")
             embed.addField("Race completion DM message: ", guild.settings.raceCompletionMessage? "ON":"OFF")
-            embed.addField("Achivement earned message: ", guild.settings.achivementMessage? "ON":"OFF")
+            embed.addField("Achievement earned message: ", guild.settings.achivementMessage? "ON":"OFF")
             embed.setColor(functions.globalEmbedColor)
             embed.setFooter("==settings help - for help")
             message.channel.send(embed)
@@ -75,7 +75,7 @@ module.exports = {
                 } else {
                     guildData[message.guild.id].settings.raceCompletionMessage = false
                 }
-            } else if (args[1] == "achivements") {
+            } else if (args[1] == "achievements") {
                 if (!args[2] || (args[2] != "on" && args[2] != "off")) {
                     message.channel.send("You have to choose `on` or `off`")
                     return
@@ -96,7 +96,7 @@ module.exports = {
             message.channel.send("**SETTINGS HELP** \n" + 
             "*==settings* - shows your server settings \n" + 
             "*==settings prefix <prefix>* - set server prefix \n" + 
-            "*==settings messages <levelup | moneyexceed | racecompletion | achivements> <on | off>* - toggle messages")
+            "*==settings messages <levelup | moneyexceed | racecompletion | achievements> <on | off>* - toggle messages")
         }
         fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error(err) : null)
     }
