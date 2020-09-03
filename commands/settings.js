@@ -86,6 +86,23 @@ module.exports = {
                 } else {
                     guildData[message.guild.id].settings.achivementMessage = false
                 }
+            } else if (args[1] == "all") {
+                if (!args[2] || (args[2] != "on" && args[2] != "off")) {
+                    message.channel.send("You have to choose `on` or `off`")
+                    return
+                }
+
+                if (args[2] == "on") {
+                    guildData[message.guild.id].settings.levelUpMessages = true
+                    guildData[message.guild.id].settings.moneyExceedMessage = true
+                    guildData[message.guild.id].settings.raceCompletionMessage = true
+                    guildData[message.guild.id].settings.achivementMessage = true
+                } else {
+                    guildData[message.guild.id].settings.levelUpMessages = false
+                    guildData[message.guild.id].settings.moneyExceedMessage = false
+                    guildData[message.guild.id].settings.raceCompletionMessage = false
+                    guildData[message.guild.id].settings.achivementMessage = false
+                }
             } else {
                 message.channel.send("Could not find setting.")
                 return
@@ -96,7 +113,7 @@ module.exports = {
             message.channel.send("**SETTINGS HELP** \n" + 
             "*==settings* - shows your server settings \n" + 
             "*==settings prefix <prefix>* - set server prefix \n" + 
-            "*==settings messages <levelup | moneyexceed | racecompletion | achievements> <on | off>* - toggle messages")
+            "*==settings messages <levelup | moneyexceed | racecompletion | achievements | **ALL**> <on | off>* - toggle messages")
         }
         fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error(err) : null)
     }
