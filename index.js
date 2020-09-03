@@ -209,15 +209,17 @@ client.on('message', message => {
 		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
 	}
 
-	if (!guildData[message.guild.id]) {
-		guildData[message.guild.id] = {
-			prefix: "==",
-			warnings: {},
-			settings: {
-				levelUpMessages: true,
-				moneyExceedMessage: true,
-				raceCompletionMessage: true,
-				achivementMessage: true
+	if (message.channel.type != "dm") {
+		if (!guildData[message.guild.id]) {
+			guildData[message.guild.id] = {
+				prefix: "==",
+				warnings: {},
+				settings: {
+					levelUpMessages: true,
+					moneyExceedMessage: true,
+					raceCompletionMessage: true,
+					achivementMessage: true
+				}
 			}
 		}
 	}
@@ -272,13 +274,14 @@ client.on('message', message => {
 			userData[message.author.id].level += 1
 			userData[message.author.id].gems += 1
 			userData[message.author.id].xpUntil += (userData[message.author.id].level * 5)
-			if (guildData[message.guild.id].settings.levelUpMessages) {
-				message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
-				.then(m => m.delete({
-					timeout: 5000
-				}).catch()).catch()
+			if (message.channel.type != "dm") {
+				if (guildData[message.guild.id].settings.levelUpMessages) {
+					message.channel.send("Congratulations, " + message.author.username + ", you leveled up to level " + userData[message.author.id].level + "!")
+						.then(m => m.delete({
+							timeout: 5000
+						}).catch()).catch()
+				}
 			}
-			
 		}
 
 		//#region - chat money
@@ -294,12 +297,14 @@ client.on('message', message => {
 
 		if (netWorth > userData[message.author.id].nextGemCashGoal) {
 			userData[message.author.id].gems += 1
-			if (guildData[message.guild.id].settings.moneyExceedMessage) {
-				message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " +
-						userData[message.author.id].nextGemCashGoal + "!")
-					.then(m => m.delete({
-						timeout: 5000
-					}).catch()).catch()
+			if (message.channel.type != "dm") {
+				if (guildData[message.guild.id].settings.moneyExceedMessage) {
+					message.channel.send("Congratulations, " + message.author.username + ", you earned one gem because you just exceeded  " +
+							userData[message.author.id].nextGemCashGoal + "!")
+						.then(m => m.delete({
+							timeout: 5000
+						}).catch()).catch()
+				}
 			}
 			userData[message.author.id].nextGemCashGoal = netWorth + 10000
 		}
@@ -362,12 +367,14 @@ client.on('message', message => {
 						userData[message.author.id].account.title = stuffEarn.title
 					}
 
-					if (guildData[message.guild.id].settings.achivementMessage) {
-						message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
-						.then(m => m.delete({
-							timeout: 5000
-						}).catch()).catch()
-					}	
+					if (message.channel.type != "dm") {
+						if (guildData[message.guild.id].settings.achivementMessage) {
+							message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+								.then(m => m.delete({
+									timeout: 5000
+								}).catch()).catch()
+						}
+					}
 				}
 			}
 		}
@@ -392,7 +399,12 @@ client.on('message', message => {
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}
 
-	const prefix = guildData[message.guild.id].prefix
+	if (message.channel.type != "dm") {
+		const prefix = guildData[message.guild.id].prefix
+	} else {
+		const prefix = "=="
+	}
+
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (userData[message.author.id].account.type.toLowerCase() == "banned") {
