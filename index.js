@@ -100,7 +100,7 @@ client.once("ready", function () {
 	}, 1800000);
 
 	schedule.scheduleJob('0 0 * * *', () => {
-		if (JSON.stringify(botData) == "" && JSON.stringify(userData) == "") {
+		if (JSON.stringify(botData) == "" || JSON.stringify(userData) == "") {
 			try {
 				client.channels.cache.get("720427122480644149").send("**WARNING** \n A FILE HAS BEEN CLEARED!")
 			} catch {
@@ -399,10 +399,10 @@ client.on('message', message => {
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}
 
+	var prefix = "=="
+
 	if (message.channel.type != "dm") {
-		const prefix = guildData[message.guild.id].prefix
-	} else {
-		const prefix = "=="
+		prefix = guildData[message.guild.id].prefix
 	}
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
