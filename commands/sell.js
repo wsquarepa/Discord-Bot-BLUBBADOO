@@ -26,6 +26,10 @@ module.exports = {
             return false;
         }
 
+        if (!args[1]) {
+            args[1] = "1"
+        }
+
         if (args[1].toLowerCase() == "all") {
             amount = userData[message.author.id].inventory[itemName].amount
         }
