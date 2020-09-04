@@ -272,6 +272,10 @@ client.on('message', message => {
 			userData[message.author.id].intellegencePoints = 1
 		}
 
+		if (userData[message.author.id].team != "") {
+			userData[message.author.id].team = ""
+		}
+
 		userData[message.author.id].xp += 1
 
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
