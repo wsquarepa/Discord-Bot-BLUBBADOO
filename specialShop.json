@@ -14,7 +14,7 @@
     },
 
     "goldenbook":{
-        "price":1,
+        "price":10,
         "image":"📙",
         "uses":1,
         "useable":false
