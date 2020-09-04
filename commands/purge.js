@@ -4,7 +4,7 @@ const discord = require("discord.js")
 
 module.exports = {
     name: 'purge',
-	description: 'Purge/Clear messages!',
+    description: 'Purge/Clear messages!',
     args: false,
     usage: '[messages]',
     guildOnly: true,
@@ -12,30 +12,57 @@ module.exports = {
     cooldown: 2.3,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+    execute(message, args, mention) {
 
         if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGES") && message.author.id != "509874745567870987") {
             message.reply("you can't do that!")
             return false;
         }
- 
-        message.delete().then(function() {
+
+        message.delete().then(function () {
             try {
                 args[0] = parseInt(args[0])
-    
+
                 if (isNaN(args[0])) {
                     args[0] = 100
                 }
             } catch {
                 args[0] = 100
             }
-    
-            message.channel.bulkDelete(args[0], true).catch(function(error) {
-                console.error(error)
-                message.channel.send("Uh oh, it seems like I don't have permissions to do that!")
-            }).then(function(messages) {
-                message.channel.send(messages.size + " message(s) deleted!").then(m => m.delete({timeout: 2000}))
-            })
+
+            const times = 1
+            if (args[0] > 100) {
+                times = (args[0] - args[0] % 100) / 100
+            }
+
+            if (times == 1) {
+                message.channel.bulkDelete(args[0], true).catch(function (error) {
+                    console.error(error)
+                    message.channel.send("Uh oh, it seems like I don't have permissions to do that!")
+                }).then(function (messages) {
+                    message.channel.send((messages.size == 0 ? 1 : messages.size) + " message(s) deleted!").then(m => m.delete({
+                        timeout: 2000
+                    }))
+                })
+            } if (times > 10) {
+                message.channel.send("Size too great. (" + args[1] + " > 1000)")
+                return;
+            }else {
+                message.channel.send("Deleting...").then(msg2 => {
+                    var totalMessagesDeleted = 0
+                    for (var i = 0; i < times; i++){
+                        message.channel.bulkDelete(100, true).catch(function (error) {
+                            message.channel.send("An error occurred while trying to execute that; here's the error: \n ```\n" + error.toString() + "\n```")
+                            i = times
+                        }).then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
+                    }
+                    
+                    if ((args[0] - args[0] % 100) != 0) {
+                        message.channel.bulkDelete(args[0] - args[0] % 100, true).catch().then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
+                    }
+                    msg2.edit("Complete! Purged " + totalMessagesDeleted + " messages.")
+                })
+            }
         })
     }
 }
