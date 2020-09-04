@@ -45,7 +45,7 @@ module.exports = {
                     }))
                 })
             } else if (times > 10) {
-                message.channel.send("Size too large. (" + args[1] + " > 1000)")
+                message.channel.send("Size too large. (" + args[0] + " > 1000)")
                 return;
             } else {
                 message.channel.send("Deleting...").then(msg2 => {
@@ -57,8 +57,8 @@ module.exports = {
                         }).then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
                     }
                     
-                    if ((args[0] - args[0] % 100) != 0) {
-                        message.channel.bulkDelete(args[0] - args[0] % 100, true).catch().then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
+                    if (args[0] % 100 != 0) {
+                        message.channel.bulkDelete(args[0] % 100, true).catch().then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
                     }
                     msg2.edit("Complete! Purged " + totalMessagesDeleted + " messages.")
                 })
