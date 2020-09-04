@@ -30,7 +30,7 @@ module.exports = {
             const xp = userData[message.author.id].xp
             const xpUntil = userData[message.author.id].xpUntil
             const level = userData[message.author.id].level
-            const intellect = userData[mention.id].intellegencePoints
+            const intellect = userData[message.author.id].intellegencePoints
             var keys = Object.keys(userData)
             var dict = {}
 
