@@ -11,5 +11,12 @@
         "image":"725818375519076462",
         "uses":1,
         "useable":true
+    },
+
+    "goldenbook":{
+        "price":1,
+        "image":"📙",
+        "uses":1,
+        "useable":false
     }
 }

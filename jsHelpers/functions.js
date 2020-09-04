@@ -1,4 +1,5 @@
 const discord = require('discord.js')
+const fs = require('fs')
 
 module.exports = {
     embed: function embed(title, description, color) {
@@ -25,8 +26,8 @@ module.exports = {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
 
-    saveCoins: function saveCoins() {
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+    save: function save(filePath, object) {
+        fs.writeFile(filePath, JSON.stringify(object), (err) => err !== null ? console.error(err) : null)
     },
 
     shuffle: function shuffle(array) {

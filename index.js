@@ -251,7 +251,8 @@ client.on('message', message => {
 				achivements: [],
 				codesUsed: [],
 				nextVoteTime: 0,
-				loan: {}
+				loan: {},
+				intellegencePoints: 1
 			}
 		}
 
@@ -265,6 +266,10 @@ client.on('message', message => {
 
 		if (userData[message.author.id].account.title == "") {
 			userData[message.author.id].account.title = "none"
+		}
+
+		if (!userData[message.author.id].intellegencePoints) {
+			userData[message.author.id].intellegencePoints = 1
 		}
 
 		userData[message.author.id].xp += 1

@@ -22,15 +22,15 @@ module.exports = {
     execute(message, args, mention) {
 
         if (mention == null) {
-            var name = message.author.username
-            var cash = userData[message.author.id].cash
-            var bank = userData[message.author.id].bank
-            var gems = userData[message.author.id].gems
-            var type = userData[message.author.id].account.title
-            var secured = userData[message.author.id].account.secured
-            var xp = userData[message.author.id].xp
-            var xpUntil = userData[message.author.id].xpUntil
-            var level = userData[message.author.id].level
+            const cash = userData[message.author.id].cash
+            const bank = userData[message.author.id].bank
+            const gems = userData[message.author.id].gems
+            const type = userData[message.author.id].account.title
+            const secured = userData[message.author.id].account.secured
+            const xp = userData[message.author.id].xp
+            const xpUntil = userData[message.author.id].xpUntil
+            const level = userData[message.author.id].level
+            const intellect = userData[mention.id].intellegencePoints
             var keys = Object.keys(userData)
             var dict = {}
 
@@ -61,7 +61,7 @@ module.exports = {
 
             var xpChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
 
-            var loc = parseInt(10.0 * (xp / xpUntil) + 0.5)
+            const loc = parseInt(10.0 * (xp / xpUntil) + 0.5)
 
             xpChart[loc] = "**|**"
 
@@ -76,17 +76,19 @@ module.exports = {
             //space
             embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
             embed.addField("Level", level, true)
+            embed.addField("Intellect", intellect, true)
 
             message.channel.send(embed)
         } else {
-            var name = mention.username
-            var cash = userData[mention.id].cash
-            var bank = userData[mention.id].bank
-            var gems = userData[mention.id].gems
-            var type = userData[mention.id].account.title
-            var xp = userData[mention.id].xp
-            var xpUntil = userData[mention.id].xpUntil
-            var level = userData[mention.id].level
+            const name = mention.tag
+            const cash = userData[mention.id].cash
+            const bank = userData[mention.id].bank
+            const gems = userData[mention.id].gems
+            const type = userData[mention.id].account.title
+            const xp = userData[mention.id].xp
+            const xpUntil = userData[mention.id].xpUntil
+            const level = userData[mention.id].level
+            const intellect = userData[mention.id].intellegencePoints
             var keys = Object.keys(userData)
             var dict = {}
 
@@ -116,7 +118,7 @@ module.exports = {
 
             var xpChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
 
-            var loc = parseInt(10.0 * (xp / xpUntil) + 0.5)
+            const loc = parseInt(10.0 * (xp / xpUntil) + 0.5)
 
             xpChart[loc] = "**|**"
 
@@ -130,6 +132,7 @@ module.exports = {
 
             embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
             embed.addField("Level", level, true)
+            embed.addField("Intellect", intellect, true)
 
             message.channel.send(embed)
         }

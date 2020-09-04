@@ -22,7 +22,7 @@ module.exports = {
 	execute(message, args, mention) {
         const makeables = ['video', 'cake', 'cookie', 'game', 'website', 'discord bot']
         const making = makeables[randomNumber(0, makeables.length - 1)]
-        const earnings = randomNumber(100, 1000)
+        const earnings = randomNumber(100, 1000) * userData[message.author.id].intellegencePoints
 
         userData[message.author.id].cash += earnings
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
