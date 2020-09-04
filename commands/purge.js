@@ -30,7 +30,7 @@ module.exports = {
                 args[0] = 100
             }
 
-            const times = 1
+            var times = 1
             if (args[0] > 100) {
                 times = (args[0] - args[0] % 100) / 100
             }
@@ -44,10 +44,10 @@ module.exports = {
                         timeout: 2000
                     }))
                 })
-            } if (times > 10) {
-                message.channel.send("Size too great. (" + args[1] + " > 1000)")
+            } else if (times > 10) {
+                message.channel.send("Size too large. (" + args[1] + " > 1000)")
                 return;
-            }else {
+            } else {
                 message.channel.send("Deleting...").then(msg2 => {
                     var totalMessagesDeleted = 0
                     for (var i = 0; i < times; i++){
