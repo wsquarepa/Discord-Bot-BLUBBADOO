@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const guildData = require('../guildData.json')
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -40,7 +41,7 @@ module.exports = {
 
         message.channel.send("Exploring... Please wait...").then(m => msg = m)
 
-        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id && m.content.startsWith("=="))
+        var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id && m.content.startsWith(guildData[message.guild.id].prefix))
 
         collector.on("collect", function() {
             collector.stop()
@@ -54,7 +55,8 @@ module.exports = {
         timeout = setTimeout(function() {
             collector.stop()
             if (chance == 3) {
-                msg.edit("Hmm... what's that shiny thingy? OH WAIT ITS A TREASURE CHEST WOOOOOOOOOO!!!! It's in your inventory now; do `==use chest` to open it!")
+                msg.edit("Hmm... what's that shiny thingy? OH WAIT ITS A TREASURE CHEST WOOOOOOOOOO!!!! It's in your inventory now; do `" + guildData[message.guild.id].prefix 
+                + "use chest` to open it!")
 
                 if (userData[message.author.id].inventory["chest"]) {
                     userData[message.author.id].inventory["chest"].amount += 1

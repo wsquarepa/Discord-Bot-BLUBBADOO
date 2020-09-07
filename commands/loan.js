@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const guildData = require('../guildData.json')
 
 function isEmpty(obj) {
     for (var key in obj) {
@@ -34,7 +35,7 @@ module.exports = {
             embed.setTitle("Your active loan:")
             embed.setDescription("You don't have a loan yet!")
             embed.setColor("2f3237")
-            embed.setFooter("To get one, do ==loan [amount]!")
+            embed.setFooter("To get one, do " + guildData[message.guild.id].prefix + "loan [amount]!")
             message.channel.send(embed)
         } else if (args[0] == "pay") {
             const amount = parseInt(args[1])

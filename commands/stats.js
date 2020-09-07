@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const botData = require('../botData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const guildData = require('../guildData.json')
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -56,7 +57,7 @@ module.exports = {
                 var timeAgo = now - leaders[i][2]
                 timeAgo = timeAgo / 1000 / 60
                 timeAgo = Math.round((timeAgo + Number.EPSILON) * 100) / 100
-                leaderString += "==" + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
+                leaderString += guildData[message.guild.id].prefix + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
             }
 
             message.channel.send(embed("STATS", "**5 most used commands:** \n " + leaderString +
@@ -79,7 +80,7 @@ module.exports = {
         timeAgo = Math.round((timeAgo + Number.EPSILON) * 100) / 100
 
         var data = []
-        data.push("**==" + command.name + " " + command.usage +"**")
+        data.push("**" + guildData[message.guild.id].prefix + command.name + " " + command.usage +"**")
         data.push("Used **" + botData[command.name].uses + "** times")
         data.push("Last used **≈" + timeAgo + "** minutes ago.")
 

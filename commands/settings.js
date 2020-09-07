@@ -31,7 +31,7 @@ module.exports = {
             embed.addField("Race completion DM message: ", guild.settings.raceCompletionMessage? "ON":"OFF")
             embed.addField("Achievement earned message: ", guild.settings.achivementMessage? "ON":"OFF")
             embed.setColor(functions.globalEmbedColor)
-            embed.setFooter("==settings help - for help")
+            embed.setFooter(guildData[message.guild.id].prefix + "settings help - for help")
             message.channel.send(embed)
         } else if (args[0] == "prefix") {
             if (!args[1]) {
@@ -120,9 +120,9 @@ module.exports = {
             }
         } else if (args[0] == "help") {
             message.channel.send("**SETTINGS HELP** \n" + 
-            "*==settings* - shows your server settings \n" + 
-            "*==settings prefix <prefix>* - set server prefix \n" + 
-            "*==settings messages <levelup | moneyexceed | racecompletion | achievements | **ALL**> <on | off>* - toggle messages")
+            "*" + guildData[message.guild.id].prefix + "settings* - shows your server settings \n" + 
+            "*" + guildData[message.guild.id].prefix + "settings prefix <prefix>* - set server prefix \n" + 
+            "*" + guildData[message.guild.id].prefix + "settings messages <levelup | moneyexceed | racecompletion | achievements | **ALL**> <on | off>* - toggle messages")
         }
         fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error(err) : null)
     }

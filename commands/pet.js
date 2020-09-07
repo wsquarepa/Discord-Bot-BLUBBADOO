@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const guildData = require('../guildData.json')
 
 function isEmpty(obj) {
     for (var key in obj) {
@@ -65,13 +66,14 @@ module.exports = {
 
         try {
             if (args[0].toLowerCase() == "help") {
+                const prefix = guildData[message.guild.id].prefix
                 var embed = new discord.MessageEmbed({
                     title: "Help on pets:",
                     description: `
-                        ==pet feed - feed your pet,
-                        ==pet collect - collect the money your pet earned you,
-                        ==pet name <name> - Name your pet,
-                        ==pet type <type> - Change your pet type
+                        ${prefix}pet feed - feed your pet,
+                        ${prefix}pet collect - collect the money your pet earned you,
+                        ${prefix}pet name <name> - Name your pet,
+                        ${prefix}pet type <type> - Change your pet type
                     `,
                     color: "00ff00"
                 })

@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const shopData = require('../shop.json')
+const guildData = require('../guildData.json')
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -42,7 +43,7 @@ module.exports = {
         var msg = new discord.Message()
         message.channel.send("Okie, fishing...").then(m => msg = m)
         var chance = randomNumber(0, 2)
-        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith("=="))
+        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith(guildData[message.guild.id].prefix))
         collector.on("collect", function() {
             msg.edit("You can't multitask.")
             collector.stop()

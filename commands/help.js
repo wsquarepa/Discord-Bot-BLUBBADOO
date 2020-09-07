@@ -1,4 +1,4 @@
-const { prefix } = require('../config.json');
+const guildData = require('../guildData.json')
 const discord = require ('discord.js')
 const categoriesDescriptionInfoThingyThatIsAHelperFileThatHelpsMeALot = require('../jsHelpers/categories')
 
@@ -11,6 +11,7 @@ module.exports = {
     category: "info",
     adminOnly: false,
 	execute(message, args, mention) {
+        const prefix = guildData[message.guild.id].prefix
 		const data = [];
         const { commands } = message.client;
 

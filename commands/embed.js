@@ -1,4 +1,5 @@
 const discord = require('discord.js')
+const guildData = require('../guildData.json')
 
 module.exports = {
     name: 'embed',
@@ -11,7 +12,7 @@ module.exports = {
     category: "moderation",
     adminOnly: false,
 	execute(message, args, mention) {
-        var json = message.content.slice('==embed '.length)
+        var json = message.content.slice((guildData[message.guild.id].prefix + 'embed ').length)
         try {
             var embedJSON = JSON.parse(json)
         } catch {

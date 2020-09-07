@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const webhookClient = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS-2uN7rucTK6UZl6xh0FgHqLoFXPm2_HJ6LNYDBBTDcTna2N8OYm1ZTmZ");
+const guildData = require('../guildData.json')
 
 module.exports = {
     name: 'report',
@@ -28,6 +29,7 @@ module.exports = {
             embeds: [embed],
         });
 
-        message.channel.send("Your report has been logged. \n For further assistance, join Blubbadoo Support Server! \n Invite links are provided with ==invite.")
+        message.channel.send("Your report has been logged. \n For further assistance, join Blubbadoo Support Server! \n Invite links are provided with " + 
+        guildData[message.guild.id].prefix + "invite.")
     }
 }

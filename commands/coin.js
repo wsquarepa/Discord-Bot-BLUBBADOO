@@ -32,7 +32,7 @@ module.exports = {
             return false
         }
 
-        if (args[0] === null || args[0] != "heads" && args[0] != "tails") {
+        if (args[0] == null || args[0] != "heads" && args[0] != "tails") {
             message.channel.send("Enter heads or tails next time.")
             return false
         }

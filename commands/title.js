@@ -3,6 +3,7 @@ const achivements = require('../jsHelpers/achivements')
 const fs = require('fs');
 const discord = require("discord.js")
 const codes = require("../jsHelpers/codes")
+const guildData = require('../guildData.json')
 
 module.exports = {
     name: 'title',
@@ -29,7 +30,7 @@ module.exports = {
                     availableTags.push("ID: " + (i + z) + " - " + codes[userData[message.author.id].codesUsed[z]].title)
                 }
             }
-            message.channel.send("Available titles: (use ==title [title id] to set your title) \n" + availableTags.join("\n"))
+            message.channel.send("Available titles: (use " + guildData[message.guild.id].prefix + "title [title id] to set your title) \n" + availableTags.join("\n"))
         } else {
             var id = parseInt(args[0])
             var tag = ""
