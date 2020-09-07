@@ -21,18 +21,6 @@ const dblApi = require('dblapi.js')
 const dbl = new dblApi(dblToken, client)
 var guildData = require("./guildData.json")
 
-// const Sequelize = require('sequelize');
-
-// const sequelize = new Sequelize('database', 'blubbadoo', 'awesomeMuppy123', {
-// 	host: '104.248.218.189',
-// 	dialect: 'sqlite',
-// 	logging: false,
-// 	// SQLite only
-// 	storage: 'database.sqlite',
-// });
-
-//modeOfUser.testMode = false
-
 function isEmpty(obj) {
 	for (var key in obj) {
 		if (obj.hasOwnProperty(key))

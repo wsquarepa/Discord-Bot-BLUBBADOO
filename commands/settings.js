@@ -40,6 +40,11 @@ module.exports = {
             }
 
             guildData[message.guild.id].prefix = args.slice(1).join(" ")
+            if (args.slice(1).join(" ") != "==") {
+                message.member.setNickname("[" + args.slice(1).join(" ") + "] Blubbadoo")
+            } else {
+                message.member.setNickname("Blubbadoo")
+            }
             message.channel.send("Complete! Server prefix set to `" + args.slice(1).join(" ") + "`!")
         } else if (args[0] == "messages") {
             if (args[1] == "levelup") {
