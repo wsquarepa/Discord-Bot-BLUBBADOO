@@ -460,10 +460,14 @@ client.on('message', message => {
 						}
 					}
 				}
-				message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
-					.then(m => m.delete({
-						timeout: 5000
-					}).catch()).catch()
+				if (message.channel.type != "dm") {
+					if (guildData[message.guild.id].settings.achivementMessage) {
+						message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+							.then(m => m.delete({
+								timeout: 5000
+							}).catch()).catch()
+					}
+				}
 			}
 		}
 	}
