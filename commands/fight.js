@@ -25,6 +25,12 @@ module.exports = {
                 message.channel.send("Whoopsies! You failed and had to pay $2500")
             }
         } else {
+            if (mention.bot) {
+                message.channel.send("Failed fight. **" + mention.tag + "** earned $" + userData[message.author.id].cash + "! \n" + 
+                "Just don't fight bots. They always beat you")
+                return
+            }
+
             if (mention.presence.status == "offline") {
                 message.channel.send("You can't fight someone offline")
                 return false
