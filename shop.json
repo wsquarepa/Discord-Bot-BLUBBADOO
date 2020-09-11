@@ -1,1 +1,219 @@
-{"shopBalance":463074,"knife":{"price":20,"image":"🔪","description":"A knife to rob, raid and hunt with.","uses":1,"stock":{"remaining":202,"max":250,"restockMinutes":2,"nextRestock":-1}},"coin":{"price":20,"image":"©️","description":"A coin to flip.","uses":1,"stock":{"remaining":245,"max":250,"restockMinutes":2,"nextRestock":-1}},"magnif":{"price":50,"image":"🔍","description":"Search using this special magnifying glass.","uses":1,"stock":{"remaining":76,"max":100,"restockMinutes":3,"nextRestock":-1}},"fishingrod":{"price":100,"image":"🎣","description":"Fish?","uses":10,"stock":{"remaining":77,"max":85,"restockMinutes":7,"nextRestock":-1}},"cage":{"price":200,"image":"716687378126864446","description":"Crab?","uses":10,"stock":{"remaining":65,"max":44,"restockMinutes":8,"nextRestock":-1}},"map":{"price":10,"image":"🗺️","description":"Go exploring!","uses":1,"stock":{"remaining":431,"max":500,"restockMinutes":10,"nextRestock":-1}},"key":{"price":240,"image":"🔑","description":"Open chests!","uses":1,"stock":{"remaining":108,"max":120,"restockMinutes":6,"nextRestock":-1}},"wood":{"price":10,"image":"727569979427389462","description":"CRAFTING ITEM","uses":1,"stock":{"remaining":680,"max":200,"restockMinutes":4,"nextRestock":-1}},"iron":{"price":100,"image":"727309313462370314","description":"CRAFTING ITEM","uses":1,"stock":{"remaining":590,"max":89,"restockMinutes":7,"nextRestock":-1}},"craftingbench":{"price":50,"image":"727310383379120178","description":"Crafting tool","uses":1,"stock":{"remaining":9,"max":10,"restockMinutes":2,"nextRestock":-1}},"carrot":{"price":10,"image":"🥕","description":"Sell them.","uses":1,"stock":{"remaining":3908,"max":1000,"restockMinutes":15,"nextRestock":-1}},"axe":{"price":75,"image":"🪓","description":"Chop some trees for wood.","uses":10,"stock":{"remaining":30,"max":46,"restockMinutes":8,"nextRestock":-1}},"pickaxe":{"price":150,"image":"⛏️","description":"Mine for rare earth elements.","uses":15,"stock":{"remaining":85,"max":97,"restockMinutes":10,"nextRestock":-1}},"gold":{"price":200,"image":"727314706267635724","description":"CRAFTING ITEM","uses":1,"stock":{"remaining":122,"max":20,"restockMinutes":7,"nextRestock":-1}},"glass":{"price":35,"image":"727541387796676608","description":"CRAFTING ITEM","uses":1,"stock":{"remaining":444,"max":350,"restockMinutes":7,"nextRestock":-1}},"string":{"price":20,"image":"727542601213018162","description":"CRAFTING ITEM","uses":1,"stock":{"remaining":539,"max":390,"restockMinutes":6,"nextRestock":-1}}}
+{
+    "shopBalance": 463074,
+    "knife": {
+        "price": 20,
+        "image": "🔪",
+        "description": "A knife to rob, raid and hunt with.",
+        "uses": 1,
+        "stock": {
+            "remaining": 202,
+            "max": 250,
+            "restockMinutes": 2,
+            "nextRestock": -1
+        }
+    },
+    "coin": {
+        "price": 20,
+        "image": "©️",
+        "description": "A coin to flip.",
+        "uses": 1,
+        "stock": {
+            "remaining": 245,
+            "max": 250,
+            "restockMinutes": 2,
+            "nextRestock": -1
+        }
+    },
+    "magnif": {
+        "price": 50,
+        "image": "🔍",
+        "description": "Search using this special magnifying glass.",
+        "uses": 1,
+        "stock": {
+            "remaining": 76,
+            "max": 100,
+            "restockMinutes": 3,
+            "nextRestock": -1
+        }
+    },
+    "fishingrod": {
+        "price": 100,
+        "image": "🎣",
+        "description": "Fish?",
+        "uses": 10,
+        "stock": {
+            "remaining": 77,
+            "max": 85,
+            "restockMinutes": 7,
+            "nextRestock": -1
+        }
+    },
+    "cage": {
+        "price": 200,
+        "image": "716687378126864446",
+        "description": "Crab?",
+        "uses": 10,
+        "stock": {
+            "remaining": 65,
+            "max": 44,
+            "restockMinutes": 8,
+            "nextRestock": -1
+        }
+    },
+    "map": {
+        "price": 10,
+        "image": "🗺️",
+        "description": "Go exploring!",
+        "uses": 1,
+        "stock": {
+            "remaining": 431,
+            "max": 500,
+            "restockMinutes": 10,
+            "nextRestock": -1
+        }
+    },
+    "key": {
+        "price": 240,
+        "image": "🔑",
+        "description": "Open chests!",
+        "uses": 1,
+        "stock": {
+            "remaining": 108,
+            "max": 120,
+            "restockMinutes": 6,
+            "nextRestock": -1
+        }
+    },
+    "wood": {
+        "price": 10,
+        "image": "727569979427389462",
+        "description": "CRAFTING ITEM",
+        "uses": 1,
+        "stock": {
+            "remaining": 680,
+            "max": 200,
+            "restockMinutes": 4,
+            "nextRestock": -1
+        }
+    },
+    "iron": {
+        "price": 100,
+        "image": "727309313462370314",
+        "description": "CRAFTING ITEM",
+        "uses": 1,
+        "stock": {
+            "remaining": 590,
+            "max": 89,
+            "restockMinutes": 7,
+            "nextRestock": -1
+        }
+    },
+    "craftingbench": {
+        "price": 50,
+        "image": "727310383379120178",
+        "description": "Crafting tool",
+        "uses": 1,
+        "stock": {
+            "remaining": 9,
+            "max": 10,
+            "restockMinutes": 2,
+            "nextRestock": -1
+        }
+    },
+    "carrot": {
+        "price": 10,
+        "image": "🥕",
+        "description": "Sell them.",
+        "uses": 1,
+        "stock": {
+            "remaining": 3908,
+            "max": 1000,
+            "restockMinutes": 15,
+            "nextRestock": -1
+        }
+    },
+    "axe": {
+        "price": 75,
+        "image": "🪓",
+        "description": "Chop some trees for wood.",
+        "uses": 10,
+        "stock": {
+            "remaining": 30,
+            "max": 46,
+            "restockMinutes": 8,
+            "nextRestock": -1
+        }
+    },
+    "pickaxe": {
+        "price": 150,
+        "image": "⛏️",
+        "description": "Mine for rare earth elements.",
+        "uses": 15,
+        "stock": {
+            "remaining": 85,
+            "max": 97,
+            "restockMinutes": 10,
+            "nextRestock": -1
+        }
+    },
+    "gold": {
+        "price": 200,
+        "image": "727314706267635724",
+        "description": "CRAFTING ITEM",
+        "uses": 1,
+        "stock": {
+            "remaining": 122,
+            "max": 20,
+            "restockMinutes": 7,
+            "nextRestock": -1
+        }
+    },
+    "glass": {
+        "price": 35,
+        "image": "727541387796676608",
+        "description": "CRAFTING ITEM",
+        "uses": 1,
+        "stock": {
+            "remaining": 444,
+            "max": 350,
+            "restockMinutes": 7,
+            "nextRestock": -1
+        }
+    },
+    "string": {
+        "price": 20,
+        "image": "727542601213018162",
+        "description": "CRAFTING ITEM",
+        "uses": 1,
+        "stock": {
+            "remaining": 539,
+            "max": 390,
+            "restockMinutes": 6,
+            "nextRestock": -1
+        }
+    },
+    "dumbbell": {
+        "price": 20000,
+        "image": "753981673414328390",
+        "description": "Workout item",
+        "uses": 5,
+        "stock": {
+            "remaining": 0,
+            "max": 20,
+            "restockMinutes": 10,
+            "nextRestock": 0
+        }
+    },
+    "gloves": {
+        "price": 15000,
+        "image": "🥊",
+        "description": "Workout item",
+        "uses": 5,
+        "stock": {
+            "remaining": 0,
+            "max": 25,
+            "restockMinutes": 10,
+            "nextRestock": 0
+        }
+    }
+}

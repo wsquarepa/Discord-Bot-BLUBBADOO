@@ -240,7 +240,9 @@ client.on('message', message => {
 				codesUsed: [],
 				nextVoteTime: 0,
 				loan: {},
-				intellegencePoints: 1
+				intellegencePoints: 1,
+				strength: 0,
+				defence: 0
 			}
 		}
 
@@ -262,6 +264,14 @@ client.on('message', message => {
 
 		if (userData[message.author.id].team != "") {
 			userData[message.author.id].team = ""
+		}
+
+		if (!userData[message.author.id].strength) {
+			userData[message.author.id].strength = 0
+		}
+
+		if (!userData[message.author.id].defence) {
+			userData[message.author.id].defence = 0
 		}
 
 		userData[message.author.id].xp += 1
