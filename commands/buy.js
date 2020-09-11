@@ -3,6 +3,7 @@ const fs = require('fs');
 var userData = require('../userData.json')
 const discord = require('discord.js')
 const specialShopData = require('../specialShop.json')
+const functions = require("../jsHelpers/functions")
 
 module.exports = {
     name: 'buy',
@@ -49,7 +50,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
             embed.setTitle("Success!")
             embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`)
-            embed.setColor("00ff00")
+            embed.setColor(functions.globalEmbedColor)
             embed.setFooter("Sorry for the grammar it's hard ok?")
             message.channel.send(embed)
             return true
@@ -87,7 +88,7 @@ module.exports = {
         var embed = new discord.MessageEmbed()
         embed.setTitle("Success!")
         embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "(s)":""}!`)
-        embed.setColor("00ff00")
+        embed.setColor(functions.globalEmbedColor)
         embed.setFooter("Sorry for the grammar it's hard ok?")
         message.channel.send(embed)
     }

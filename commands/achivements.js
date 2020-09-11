@@ -2,6 +2,7 @@ const userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const achivements = require("../jsHelpers/achivements")
+const functions = require("../jsHelpers/functions")
 
 module.exports = {
     name: 'achievements',
@@ -18,7 +19,7 @@ module.exports = {
         var userAchivements = userData[message.author.id].achivements
         var embed = new discord.MessageEmbed()
             .setTitle("Your achievements:")
-            .setColor("00ff00")
+            .setColor(functions.globalEmbedColor)
 
         for (var i = 0; i < userAchivements.length; i++) {
             embed.addField(userAchivements[i], achivements[userAchivements[i]].description)

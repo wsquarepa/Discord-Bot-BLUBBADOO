@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const codes = require("../jsHelpers/codes")
+const functions = require("../jsHelpers/functions")
 
 module.exports = {
     name: 'code',
@@ -40,7 +41,7 @@ module.exports = {
             var embed = new discord.MessageEmbed()
                 .setTitle("WINNER!")
                 .setDescription("The code exists!")
-                .setColor("00ff00")
+                .setColor(functions.globalEmbedColor)
                 .addField("Money: ", stuffEarn.money)
                 .addField("Gems: ", stuffEarn.gems)
 
@@ -55,7 +56,7 @@ module.exports = {
             message.channel.send(embed)
         } else {
             var embed = new discord.MessageEmbed()
-                .setTitle("Upsies!")
+                .setTitle("Error!")
                 .setDescription("Not a valid code.")
                 .setColor("ff0000")
             

@@ -47,7 +47,7 @@ module.exports = {
         collector.on("collect", function() {
             msg.edit("You can't multitask.")
             collector.stop()
-            chance = 0
+            chance = -1
             clearTimeout(timeoutkey)
             return;
         })
@@ -59,6 +59,10 @@ module.exports = {
                 userData[message.author.id].cash += earnings
                 fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
             } else {
+                if (chance == -1) {
+                    return; 
+                }
+
                 msg.edit("Uh oh, unfourtunatley no fish wanted you to catch them. Try again in approx 42 seconds!")
             }
         }, 3000)
