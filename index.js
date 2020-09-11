@@ -242,7 +242,8 @@ client.on('message', message => {
 				loan: {},
 				intellegencePoints: 1,
 				strength: 0,
-				defence: 0
+				defence: 0,
+				maxHP: 0
 			}
 		}
 
@@ -272,6 +273,10 @@ client.on('message', message => {
 
 		if (!userData[message.author.id].defence) {
 			userData[message.author.id].defence = 0
+		}
+
+		if (!userData[message.author.id].maxHP) {
+			userData[message.author.id].maxHP = 100
 		}
 
 		userData[message.author.id].xp += 1

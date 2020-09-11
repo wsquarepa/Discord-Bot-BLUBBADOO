@@ -31,6 +31,9 @@ module.exports = {
             const xpUntil = userData[message.author.id].xpUntil
             const level = userData[message.author.id].level
             const intellect = userData[message.author.id].intellegencePoints
+            const strength = userData[message.author.id].strength
+            const defence = userData[message.author.id].defence
+            const maxHP = userData[message.author.id].maxHP
             var keys = Object.keys(userData)
             var dict = {}
 
@@ -78,6 +81,10 @@ module.exports = {
             embed.addField("Level", level, true)
             embed.addField("Intellect", intellect, true)
 
+            embed.addField("Strength", strength, true)
+            embed.addField("Defence", defence, true)
+            embed.addField("Max HP", maxHP, true)
+
             message.channel.send(embed)
         } else {
             const name = mention.tag
@@ -89,6 +96,9 @@ module.exports = {
             const xpUntil = userData[mention.id].xpUntil
             const level = userData[mention.id].level
             const intellect = userData[mention.id].intellegencePoints
+            const strength = userData[mention.id].strength
+            const defence = userData[mention.id].defence
+            const maxHP = userData[mention.id].maxHP
             var keys = Object.keys(userData)
             var dict = {}
 
@@ -133,6 +143,10 @@ module.exports = {
             embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
             embed.addField("Level", level, true)
             embed.addField("Intellect", intellect, true)
+
+            embed.addField("Strength", strength, true)
+            embed.addField("Defence", defence, true)
+            embed.addField("Max HP", maxHP, true)
 
             message.channel.send(embed)
         }
