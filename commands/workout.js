@@ -4,6 +4,8 @@ const discord = require("discord.js")
 const functions = require("../jsHelpers/functions")
 const shopData = require("../shop.json")
 
+const embed = functions.embed
+
 module.exports = {
     name: 'workout',
 	description: 'Work out to up your strength and defence!',
