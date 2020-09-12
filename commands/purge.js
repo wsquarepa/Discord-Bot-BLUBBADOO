@@ -60,13 +60,16 @@ module.exports = {
                         message.channel.bulkDelete(100, true).catch(function (error) {
                             message.channel.send("An error occurred while trying to execute that; here's the error: \n ```\n" + error.toString() + "\n```")
                             i = times
-                        }).then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
+                        }).then(msgsDeleted => {
+                            totalMessagesDeleted += msgsDeleted.size
+                            if (args[0] % 100 != 0 && (i - 1) == times) {
+                                message.channel.bulkDelete(args[0] % 100, true).catch().then(msgsDeleted => {
+                                    totalMessagesDeleted += msgsDeleted.size
+                                    message.channel.send("Complete! Purged " + totalMessagesDeleted + " messages.")
+                                })
+                            }
+                        })
                     }
-                    
-                    if (args[0] % 100 != 0) {
-                        message.channel.bulkDelete(args[0] % 100, true).catch().then(msgsDeleted => totalMessagesDeleted += msgsDeleted.size)
-                    }
-                    msg2.edit("Complete! Purged " + totalMessagesDeleted + " messages.")
                 })
             }
         })
