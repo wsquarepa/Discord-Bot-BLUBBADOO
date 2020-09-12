@@ -36,6 +36,12 @@ module.exports = {
                 return false
             }
 
+            if (mention.id == message.author.id) {
+                userData[message.author.id].cash -= 25
+                message.channel.send("You punch yourself and lose $25")
+                return false
+            }
+
             message.channel.send("<@" + mention.id + ">, do you want to fight " + message.author.tag + "?")
             const collector = new discord.MessageCollector(message.channel, x => x.author.id == mention.id, {
                 time: 10000
@@ -80,5 +86,7 @@ module.exports = {
                 }
             })
         }
+
+        functions.save("./userData.json", userData)
     }
 }
