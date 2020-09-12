@@ -9,7 +9,7 @@ module.exports = {
     args: false,
     usage: '[setting] [value]',
     guildOnly: true,
-    aliases: [':gear:'],
+    aliases: ['⚙️'],
     cooldown: 1,
     levelRequirement: 0,
     category: "moderation",
