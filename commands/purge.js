@@ -35,7 +35,7 @@ module.exports = {
             var times = 1
             console.log(args[0] > 100)
             if (args[0] > 100) {
-                times = Math.ceil(args[0] / 100)
+                times = (args[0] - (args[0] % 100)) / 100
             }
 
             console.log(times)
