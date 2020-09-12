@@ -34,8 +34,10 @@ module.exports = {
 
             var times = 1
             if (args[0] > 100) {
-                times = (args[0] - (args[0] % 100)) / 100
+                times = Math.ceil((args[0] - (args[0] % 100)) / 100)
             }
+
+            console.log(times)
 
             if (times == 1) {
                 console.log("times 1 called")
