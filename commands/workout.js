@@ -10,7 +10,7 @@ module.exports = {
     name: 'workout',
 	description: 'Work out to up your strength and defence!',
     args: false,
-    usage: '[strength | defence]',
+    usage: '[strength | defence | cardio]',
     guildOnly: false,
     aliases: ['exercise'],
     cooldown: 20,
@@ -19,7 +19,7 @@ module.exports = {
     adminOnly: false,
 	execute(message, args, mention) {
         if (!args.length) args[0] = "s"
-        if (!args[0].startsWith("s") && !args[0].startsWith("d")) args[0] = "s"
+        if (!args[0].startsWith("s") && !args[0].startsWith("d") && !args[0].startsWith("c")) args[0] = "s"
 
         if (args[0].startsWith("s")) {
             if (userData[message.author.id].inventory["dumbbell"] == null || userData[message.author.id].inventory["dumbbell"].amount < 1) {
@@ -35,7 +35,7 @@ module.exports = {
 
             userData[message.author.id].strength++
             message.channel.send("Gettin' buff here at " + userData[message.author.id].strength + " strength.")
-        } else {
+        } else if (args[0].startsWith("d")) {
             if (userData[message.author.id].inventory["gloves"] == null || userData[message.author.id].inventory["gloves"].amount < 1) {
                 message.channel.send(embed("Error", "You cannot do that without gloves.", "ff0000"))
                 return false
@@ -49,6 +49,20 @@ module.exports = {
 
             userData[message.author.id].defence++
             message.channel.send("Gettin' protec here at " + userData[message.author.id].defence + " defence.")
+        } else {
+            if (userData[message.author.id].inventory["shoes"] == null || userData[message.author.id].inventory["shoes"].amount < 1) {
+                message.channel.send(embed("Error", "You cannot do that without shoes.", "ff0000"))
+                return false
+            }
+
+            userData[message.author.id].inventory.shoes.uses -= 1
+            if (userData[message.author.id].inventory.shoes.uses < 1) {
+                userData[message.author.id].inventory.shoes.amount -= 1
+                userData[message.author.id].inventory.shoes.uses = shopData.shoes.uses
+            }
+
+            userData[message.author.id].maxHP += functions.randomNumber(0, 5)
+            message.channel.send("Gettin' fast n' strong here at " + userData[message.author.id].maxHP + " max HP.")
         }
     }
 }
