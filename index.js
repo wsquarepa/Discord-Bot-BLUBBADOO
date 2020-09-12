@@ -568,4 +568,8 @@ client.on('message', message => {
 	}
 });
 
+client.on("guildCreate", (guild) => {
+	guild.members.cache.get(client.user.id).setNickname("[==] Blubbadoo")
+})
+
 client.login(token);

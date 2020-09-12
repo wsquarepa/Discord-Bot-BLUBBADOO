@@ -43,7 +43,7 @@ module.exports = {
             if (args.slice(1).join(" ") != "==") {
                 message.guild.members.cache.get("596715111511490560").setNickname("[" + args.slice(1).join(" ") + "] Blubbadoo")
             } else {
-                message.guild.members.cache.get("596715111511490560").setNickname("Blubbadoo")
+                message.guild.members.cache.get("596715111511490560").setNickname("[==] Blubbadoo")
             }
             message.channel.send("Complete! Server prefix set to `" + args.slice(1).join(" ") + "`!")
         } else if (args[0] == "messages") {

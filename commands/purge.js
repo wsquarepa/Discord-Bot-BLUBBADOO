@@ -65,7 +65,9 @@ module.exports = {
                             if (args[0] % 100 != 0 && (i - 1) == times) {
                                 message.channel.bulkDelete(args[0] % 100, true).catch().then(msgsDeleted => {
                                     totalMessagesDeleted += msgsDeleted.size
-                                    message.channel.send("Complete! Purged " + totalMessagesDeleted + " messages.")
+                                    setTimeout(() => {
+                                        message.channel.send("Complete! Purged " + totalMessagesDeleted + " messages.")
+                                    }, 2000);
                                 })
                             }
                         })
