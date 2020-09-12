@@ -30,6 +30,6 @@ module.exports = {
             }
         }
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-        message.channel.send("You harvested " + earnings + " carrots. Sell all of them using " + guildData[message.guild.id].prefix  + "`sell carrot all`!")
+        message.channel.send("You harvested " + earnings + " carrots. Sell all of them using `" + guildData[message.guild.id].prefix  + "sell carrot all`!")
     }
 }
