@@ -203,10 +203,10 @@ client.on('message', message => {
 				prefix: "==",
 				warnings: {},
 				settings: {
-					levelUpMessages: true,
-					moneyExceedMessage: true,
-					raceCompletionMessage: true,
-					achivementMessage: true
+					levelUpMessages: false,
+					moneyExceedMessage: false,
+					raceCompletionMessage: false,
+					achivementMessage: false
 				}
 			}
 		}
