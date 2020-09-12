@@ -15,6 +15,11 @@ module.exports = {
     category: "economy",
     adminOnly: false,
     execute(message, args, mention) {
+        if (userData[message.author.id].cash < 10000) {
+            message.channel.send("You cannot fight without at least $10000")
+            return false;
+        }
+
         if (!mention) {
             const chance = functions.randomNumber(0, 3)
             if (chance == 0) {
@@ -34,6 +39,16 @@ module.exports = {
             if (mention.presence.status == "offline") {
                 message.channel.send("You can't fight someone offline")
                 return false
+            }
+
+            if (userData[mention.id].account.type.toLowerCase() == "admin") {
+                message.channel.send("To make it fair, you can't fight bot admins as they have indefinate money.")
+                return false;
+            }
+
+            if (userData[mention.id].cash < 10000) {
+                message.channel.send("The person you are fighting has less than $10000, so you cannot fight them.")
+                return false;
             }
 
             if (mention.id == message.author.id) {
