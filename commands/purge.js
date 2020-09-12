@@ -30,12 +30,15 @@ module.exports = {
                 args[0] = 100
             }
 
+            console.log(args[0])
+
             var times = 1
             if (args[0] > 100) {
-                times = (args[0] - args[0] % 100) / 100
+                times = (args[0] - (args[0] % 100)) / 100
             }
 
             if (times == 1) {
+                console.log("times 1 called")
                 message.channel.bulkDelete(args[0], true).catch(function (error) {
                     console.error(error)
                     message.channel.send("Uh oh, it seems like I don't have permissions to do that!")
