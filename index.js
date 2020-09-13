@@ -595,6 +595,7 @@ client.on('message', message => {
 		embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
 		embed.setTitle("Execution Failure " + functions.makeid(10) + ":")
 		embed.setDescription(error)
+		embed.setFooter("Server: " + message.guild.name + " (" + message.guild.id + ")")
 		embed.setColor(functions.globalEmbedColor)
 		errWebhook.send(embed)
 		message.channel.send('Command execution error - logged').catch()
