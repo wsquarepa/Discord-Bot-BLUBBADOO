@@ -73,7 +73,7 @@ module.exports = {
                 return false;
             }
 
-            message.channel.send("<@" + mention.id + ">, do you want to fight " + message.author.tag + "?")
+            message.channel.send(mention.tag + ", do you want to fight " + message.author.tag + "?")
             const collector = new discord.MessageCollector(message.channel, x => x.author.id == mention.id, {
                 time: 10000
             })
@@ -84,7 +84,7 @@ module.exports = {
             })
 
             collector.on('end', () => {
-                if (choice = "n") {
+                if (choice == "n") {
                     message.channel.send("That's too bad.")
                     return
                 }
