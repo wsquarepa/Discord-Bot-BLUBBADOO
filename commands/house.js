@@ -72,7 +72,7 @@ Three options:
 
     2: Buy house (Cash)
     Requires:
-        a: 5 Million dollars
+        a: ${5000000 * (userData[message.author.id].houses.length + 1)} dollars
 
     3: Materialize house (Gems)
     Requires:
@@ -123,7 +123,7 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                     })
                     message.channel.send("You made a house with materials!")
                 } else if (number == 2) {
-                    if (userData[message.author.id].cash < 5000000) {
+                    if (userData[message.author.id].cash < (5000000 * (userData[message.author.id].houses.length + 1))) {
                         message.channel.send("You don't have enough **cash** to buy a house. Try withdrawing all your money!")
                         return;
                     }
