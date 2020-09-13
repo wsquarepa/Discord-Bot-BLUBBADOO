@@ -79,7 +79,7 @@ module.exports = {
             })
             var choice = "n"
             collector.on('collect', (msg) => {
-                choice = msg.content.slice(0, 1)
+                choice = msg.content.charAt(0)
                 collector.stop()
             })
 
