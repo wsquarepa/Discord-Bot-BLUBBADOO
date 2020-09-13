@@ -184,6 +184,16 @@ client.once("ready", function () {
 		}
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	}, 60000)
+
+	setInterval(() => {
+		const keys = Object.keys(userData)
+		for (var i = 0; i < keys.length; i++) {
+			if (userData[keys[i]].hp < userData[keys[i]].maxHP) {
+				userData[keys[i]].hp += 1
+			}
+		}
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+	}, 10000)
 })
 
 client.on('message', message => {
@@ -243,7 +253,8 @@ client.on('message', message => {
 				intellegencePoints: 1,
 				strength: 0,
 				defence: 0,
-				maxHP: 0
+				hp: 100,
+				maxHP: 100
 			}
 		}
 
@@ -277,6 +288,10 @@ client.on('message', message => {
 
 		if (!userData[message.author.id].maxHP) {
 			userData[message.author.id].maxHP = 100
+		}
+
+		if (!userData[message.author.id].hp) {
+			userData[message.author.id].hp = userData[message.author.id].maxHP
 		}
 
 		userData[message.author.id].xp += 1

@@ -36,6 +36,10 @@ module.exports = {
                 return
             }
 
+            if (!userData[mention.id]) {
+                message.channel.send("No account associated with user.")
+            }
+
             if (mention.presence.status == "offline") {
                 message.channel.send("You can't fight someone offline")
                 return false
@@ -57,6 +61,16 @@ module.exports = {
                 return false
             }
 
+            if (userData[message.author.id].hp < 11) {
+                message.channel.send("You don't have enough HP to fight.")
+                return false;
+            }
+
+            if (userData[mention.id].hp < 11) {
+                message.channel.send("They don't have enough HP to fight.")
+                return false;
+            }
+
             message.channel.send("<@" + mention.id + ">, do you want to fight " + message.author.tag + "?")
             const collector = new discord.MessageCollector(message.channel, x => x.author.id == mention.id, {
                 time: 10000
@@ -75,10 +89,10 @@ module.exports = {
 
                 const userStrength = userData[message.author.id].strength
                 const userDefence = userData[message.author.id].defence
-                const userMaxHP = userData[message.author.id].maxHP
+                const userHp = userData[message.author.id].hp
                 const mentionStrength = userData[mention.id].strength
                 const mentionDefence = userData[mention.id].defence
-                const mentionMaxHP = userData[mention.id].maxHP
+                const mentionHp = userData[mention.id].hp
 
                 if (userStrength - mentionDefence > mentionStrength - userDefence) {
                     userData[message.author.id].cash += 5000
@@ -89,7 +103,7 @@ module.exports = {
                     userData[mention.id].cash += 5000
                     message.channel.send("Failed fight. **" + mention.tag + "** earned $5000!")
                 } else {
-                    if (userMaxHP > mentionMaxHP) {
+                    if (userHp > mentionHp) {
                         userData[message.author.id].cash += 5000
                         userData[mention.id].cash -= 5000
                         message.channel.send("Successfull fight! **" + message.author.tag + "** earned $5000!")
@@ -99,6 +113,8 @@ module.exports = {
                         message.channel.send("Failed fight. **" + mention.tag + "** earned $5000!")
                     }
                 }
+                userData[message.author.id].hp -= functions.randomNumber(5, 10)
+                userData[mention.id].hp -= functions.randomNumber(1, 5)
             })
         }
 

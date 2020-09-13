@@ -33,6 +33,7 @@ module.exports = {
             const intellect = userData[message.author.id].intellegencePoints
             const strength = userData[message.author.id].strength
             const defence = userData[message.author.id].defence
+            const hp = userData[message.author.id].hp
             const maxHP = userData[message.author.id].maxHP
             var keys = Object.keys(userData)
             var dict = {}
@@ -83,7 +84,7 @@ module.exports = {
 
             embed.addField("Strength", strength, true)
             embed.addField("Defence", defence, true)
-            embed.addField("Max HP", maxHP, true)
+            embed.addField("HP", hp + "/" + maxHP, true)
 
             message.channel.send(embed)
         } else {
@@ -98,6 +99,7 @@ module.exports = {
             const intellect = userData[mention.id].intellegencePoints
             const strength = userData[mention.id].strength
             const defence = userData[mention.id].defence
+            const hp = userData[mention.id].hp
             const maxHP = userData[mention.id].maxHP
             var keys = Object.keys(userData)
             var dict = {}
@@ -146,7 +148,7 @@ module.exports = {
 
             embed.addField("Strength", strength, true)
             embed.addField("Defence", defence, true)
-            embed.addField("Max HP", maxHP, true)
+            embed.addField("HP", hp + "/" + maxHP, true)
 
             message.channel.send(embed)
         }
