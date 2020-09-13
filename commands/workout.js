@@ -61,7 +61,7 @@ module.exports = {
                 userData[message.author.id].inventory.shoes.uses = shopData.shoes.uses
             }
 
-            userData[message.author.id].maxHP += functions.randomNumber(0, 5)
+            userData[message.author.id].maxHP += functions.randomNumber(1, 10)
             message.channel.send("Gettin' fast n' strong here at " + userData[message.author.id].maxHP + " max HP.")
         }
     }
