@@ -20,6 +20,8 @@ const execSync = require('child_process').execSync
 const dblApi = require('dblapi.js')
 const dbl = new dblApi(dblToken, client)
 var guildData = require("./guildData.json")
+const errWebhook = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS-2uN7rucTK6UZl6xh0FgHqLoFXPm2_HJ6LNYDBBTDcTna2N8OYm1ZTmZ");
+const functions = require("./jsHelpers/functions")
 
 function isEmpty(obj) {
 	for (var key in obj) {
@@ -588,8 +590,14 @@ client.on('message', message => {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		}
 	} catch (error) {
-		console.error(error);
-		message.reply('There was an error trying to execute that command!').catch()
+		console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):\n\n\n" + error);
+		const embed = new Discord.MessageEmbed()
+		embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
+		embed.setTitle("Execution Failure " + functions.makeid(10) + ":")
+		embed.setDescription(error)
+		embed.setColor(functions.globalEmbedColor)
+		errWebhook.send(embed)
+		message.channel.send('Command execution error - logged').catch()
 	}
 });
 
