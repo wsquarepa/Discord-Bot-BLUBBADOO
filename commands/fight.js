@@ -29,7 +29,7 @@ module.exports = {
                 userData[message.author.id].cash -= 2500
                 message.channel.send("Whoopsies! You failed and had to pay $2500")
             }
-            userData[message.author.id].hp -= functions.randomNumber(5, 10)
+            userData[message.author.id].hp -= functions.randomNumber(10, 20)
         } else {
             if (mention.bot) {
                 message.channel.send("Failed fight. **" + mention.tag + "** earned $" + userData[message.author.id].cash + "! \n" + 
@@ -63,12 +63,12 @@ module.exports = {
                 return false
             }
 
-            if (userData[message.author.id].hp < 11) {
+            if (userData[message.author.id].hp < 31) {
                 message.channel.send("You don't have enough HP to fight.")
                 return false;
             }
 
-            if (userData[mention.id].hp < 11) {
+            if (userData[mention.id].hp < 31) {
                 message.channel.send("They don't have enough HP to fight.")
                 return false;
             }
@@ -115,8 +115,8 @@ module.exports = {
                         message.channel.send("Failed fight. **" + mention.tag + "** earned $5000!")
                     }
                 }
-                userData[message.author.id].hp -= functions.randomNumber(5, 10)
-                userData[mention.id].hp -= functions.randomNumber(1, 5)
+                userData[message.author.id].hp -= functions.randomNumber(20, 30)
+                userData[mention.id].hp -= functions.randomNumber(20, 30)
             })
         }
 

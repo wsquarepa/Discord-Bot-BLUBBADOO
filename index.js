@@ -443,6 +443,16 @@ client.on('message', message => {
 		return
 	}
 
+	if (userData[message.author.id].hp < 5) {
+		const embed = new Discord.MessageEmbed()
+		embed.setAuthor("ERR_HEALTH")
+		embed.setTitle("You don't have enough health to preform any tasks!")
+		embed.setDescription(userData[message.author.id].hp + " < 5")
+		embed.setColor("ff0000")
+		message.channel.send(embed)
+		return
+	}
+
 	const args = message.content.slice(prefix.length).split(/ +/);
 	var mention = message.mentions.users.first()
 
