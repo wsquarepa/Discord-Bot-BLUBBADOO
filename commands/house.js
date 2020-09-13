@@ -128,14 +128,14 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                         return;
                     }
 
-                    userData[message.author.id].cash -= 5000000
+                    userData[message.author.id].cash -= (5000000 * (userData[message.author.id].houses.length + 1))
                     userData[message.author.id].houses.push({
                         durability: 1000000,
                         level: 0,
                         xp: 0,
                         xpUntil: 100
                     })
-                    message.channel.send("You bought a house for 5 Million dollars!")
+                    message.channel.send("You bought a house for " + (5000000 * (userData[message.author.id].houses.length + 1)) + " dollars!")
                 } else if (number == 3) {
                     if (userData[message.author.id].gems < 100) {
                         message.channel.send("You don't have enough gems to make the house.")
