@@ -29,6 +29,7 @@ module.exports = {
                 userData[message.author.id].cash -= 2500
                 message.channel.send("Whoopsies! You failed and had to pay $2500")
             }
+            userData[message.author.id].hp -= functions.randomNumber(5, 10)
         } else {
             if (mention.bot) {
                 message.channel.send("Failed fight. **" + mention.tag + "** earned $" + userData[message.author.id].cash + "! \n" + 
@@ -38,6 +39,7 @@ module.exports = {
 
             if (!userData[mention.id]) {
                 message.channel.send("No account associated with user.")
+                return false;
             }
 
             if (mention.presence.status == "offline") {
