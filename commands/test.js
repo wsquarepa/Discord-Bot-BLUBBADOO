@@ -13,7 +13,7 @@ module.exports = {
         if (!args.length) {
             args[0] = "Test Error"
         }
-        const errorThrow = args[0]
+        const errorThrow = args.join(" ")
         throw args[0]
     }
 }
