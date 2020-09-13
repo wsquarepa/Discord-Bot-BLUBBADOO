@@ -10,7 +10,7 @@ module.exports = {
     usage: '[@mention]',
     guildOnly: false,
     aliases: [],
-    cooldown: 60,
+    cooldown: 10,
     levelRequirement: 4,
     category: "economy",
     adminOnly: false,
@@ -99,20 +99,20 @@ module.exports = {
                 if (userStrength - mentionDefence > mentionStrength - userDefence) {
                     userData[message.author.id].cash += 5000
                     userData[mention.id].cash -= 5000
-                    message.channel.send("Successfull fight! **" + message.author.tag + "** earned $5000!")
+                    message.channel.send("Congratulations! **" + message.author.tag + "** earned $5000!")
                 } else if (userStrength - mentionDefence < mentionStrength - userDefence) {
                     userData[message.author.id].cash -= 5000
                     userData[mention.id].cash += 5000
-                    message.channel.send("Failed fight. **" + mention.tag + "** earned $5000!")
+                    message.channel.send("Congratulations! **" + mention.tag + "** earned $5000!")
                 } else {
                     if (userHp > mentionHp) {
                         userData[message.author.id].cash += 5000
                         userData[mention.id].cash -= 5000
-                        message.channel.send("Successfull fight! **" + message.author.tag + "** earned $5000!")
+                        message.channel.send("Congratulations! **" + message.author.tag + "** earned $5000!")
                     } else {
                         userData[message.author.id].cash -= 5000
                         userData[mention.id].cash += 5000
-                        message.channel.send("Failed fight. **" + mention.tag + "** earned $5000!")
+                        message.channel.send("Congratulations! **" + mention.tag + "** earned $5000!")
                     }
                 }
                 userData[message.author.id].hp -= functions.randomNumber(20, 30)
