@@ -542,11 +542,7 @@ client.on('message', message => {
 	}
 
 	if (command.adminOnly && !botAdmins.includes(message.author.id) && userData[message.author.id].account.type.toLowerCase() != "admin") {
-		var embed = new Discord.MessageEmbed()
-		embed.setAuthor("ERR_MISSING_PERMS")
-		embed.setTitle(`Error: You don't have permission to execute that command!`)
-		embed.setColor("ff0000")
-		return message.channel.send(embed).catch()
+		return;
 	}
 
 	if (!cooldowns.has(command.name)) {
