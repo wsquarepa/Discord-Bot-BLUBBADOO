@@ -602,9 +602,9 @@ client.on('message', message => {
 			embed.setDescription(
 				`
 				In server: ${message.guild.name + " (" + message.guild.id + ")"} 
-				-> Invite: (Click here)[${invite.url}]
-				Channel: ${message.channel.name + " (" + message.channel.id + ")"}
-				Message: (Click here)[${message.url} 'Click to jump'] (${message.id})
+				-> Invite: [Click here](${invite.url})
+				Channel: \`${message.channel.name + "` (" + message.channel.id + ")"}
+				Message: [Click here](${message.url} 'Click to jump') (${message.id})
 				`
 			)
 			embed.setFooter("Check server console for more information. Invite expires:")
