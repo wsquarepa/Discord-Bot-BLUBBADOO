@@ -608,7 +608,7 @@ client.on('message', message => {
 				`
 			)
 			embed.setFooter("Check server console for more information. Invite expires:")
-			embed.setTimestamp(Date.now + 1000 * 60 * 60 * 24)
+			embed.setTimestamp(Date.now + (1000 * 60 * 60 * 24))
 			embed.setColor(functions.globalEmbedColor)
 			errWebhook.send(embed)
 		})
