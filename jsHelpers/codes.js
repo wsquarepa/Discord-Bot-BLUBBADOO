@@ -25,5 +25,19 @@ module.exports = {
         gems: 25,
         item: "lock",
         title: "SWA AAA AAAA AA??"
+    },
+
+    firstday: {
+        money: 1000,
+        gems: 0,
+        item: "",
+        title: "Schoolso da code"
+    },
+
+    helpme: {
+        money: 10000,
+        gems: 0,
+        item: "chest",
+        title: "I won't help you."
     }
 }
