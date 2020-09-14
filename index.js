@@ -590,14 +590,28 @@ client.on('message', message => {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		}
 	} catch (error) {
-		console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):\n\n\n" + error);
-		const embed = new Discord.MessageEmbed()
-		embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
-		embed.setTitle("Execution Failure " + functions.makeid(10) + ":")
-		embed.setDescription(error)
-		embed.setFooter("Server: " + message.guild.name + " (" + message.guild.id + ")")
-		embed.setColor(functions.globalEmbedColor)
-		errWebhook.send(embed)
+		console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):")
+		console.error(error);
+		message.guild.channels.cache.first().createInvite({
+			unique: true,
+			maxAge: 86400
+		}).then(invite => {
+			const embed = new Discord.MessageEmbed()
+			embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
+			embed.setTitle("Execution Failure " + functions.makeid(10) + ":")
+			embed.setDescription(
+				`
+				In server: ${message.guild.name + " (" + message.guild.id + ")"} 
+				-> Invite: (Click here)[${invite.url}]
+				Channel: ${message.channel.name + " (" + message.channel.id + ")"}
+				Message: (Click here)[${message.url} 'Click to jump'] (${message.id})
+				`
+			)
+			embed.setFooter("Check server console for more information. Invite expires:")
+			embed.setTimestamp(Date.now + 1000 * 60 * 60 * 24)
+			embed.setColor(functions.globalEmbedColor)
+			errWebhook.send(embed)
+		})
 		message.channel.send('Command execution error - logged').catch()
 	}
 });
