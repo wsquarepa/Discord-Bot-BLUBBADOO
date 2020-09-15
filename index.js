@@ -598,7 +598,7 @@ client.on('message', message => {
 			embed.setDescription(
 				`
 				In server: ${message.guild.name + " (" + message.guild.id + ")"} 
-				-> Invite: [Click here](${invite.url})
+				-> Invite: [Click here](${invite.url} 'Click to join')
 				Channel: \`${message.channel.name + "` (" + message.channel.id + ")"}
 				Message: [Click here](${message.url} 'Click to jump') (${message.id})
 				`
