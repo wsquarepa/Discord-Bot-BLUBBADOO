@@ -70,7 +70,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer))
+                msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer).setTimestamp(Date.now()))
             } else if (args[0].startsWith("team")) {
                 var leaders = []
                 var keys = Object.keys(teamData)
@@ -102,7 +102,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "2f3237").setFooter(footer))
+                msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "2f3237").setFooter(footer).setTimestamp(Date.now()))
             } else if (args[0].startsWith("server")) {
                 var leaders = []
                 var keys = Object.keys(userData)
@@ -145,7 +145,7 @@ module.exports = {
                     leaderString += leaders[i][0] + " - [$" + leaders[i][1] + "](" + msg.url + ")\n"
                 }
 
-                msg.edit("", embed("THE SERVER'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer))
+                msg.edit("", embed("THE SERVER'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer).setTimestamp(Date.now()))
             }
         })
     }
