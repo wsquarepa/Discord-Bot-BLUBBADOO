@@ -588,7 +588,7 @@ client.on('message', message => {
 	} catch (error) {
 		console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):")
 		console.error(error);
-		message.guild.channels.cache.first().createInvite({
+		message.channel.createInvite({
 			unique: true,
 			maxAge: 86400
 		}).then(invite => {
