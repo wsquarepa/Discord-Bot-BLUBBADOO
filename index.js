@@ -203,7 +203,7 @@ client.once("ready", function () {
 			}
 		}
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-	}, 10000)
+	}, 1000)
 })
 
 client.on('message', message => {
