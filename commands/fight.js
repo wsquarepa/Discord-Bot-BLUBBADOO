@@ -35,8 +35,8 @@ module.exports = {
             if (mention.bot) {
                 userData[message.author.id].hp = 1
                 message.channel.send("Failed fight. **" + mention.tag + "** earned $" + userData[message.author.id].cash + "! \n" +
-                    "Just don't fight bots. They always beat you" + 
-                    "\n Just sayin you didn't lose any money you just lost all your health.")
+                    "Just don't fight bots. They always beat you." + 
+                    "\nJust sayin you didn't lose any money you just lost all your health.")
                 return
             }
 
