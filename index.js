@@ -556,11 +556,11 @@ client.on('message', message => {
 		return
 	}
 
-	if (userData[message.author.id].hp < 5 && command.category == "economy") {
+	if (userData[message.author.id].hp < 10 && command.category == "economy") {
 		const embed = new Discord.MessageEmbed()
 		embed.setAuthor("ERR_HEALTH")
 		embed.setTitle("You don't have enough health to preform any tasks!")
-		embed.setDescription("You have " + userData[message.author.id].hp + "HP! You need at least **5HP** to prefom tasks!")
+		embed.setDescription("You have " + userData[message.author.id].hp + "HP! You need at least **10 HP** to prefom tasks!")
 		embed.setColor("ff0000")
 		message.channel.send(embed)
 		return
@@ -594,7 +594,7 @@ client.on('message', message => {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 			if (command.category == "economy") {
-				userData[message.author.id].hp -= randomNumber(1, 4)
+				userData[message.author.id].hp -= randomNumber(1, 9)
 			}
 		}
 	} catch (error) {

@@ -24,11 +24,11 @@ module.exports = {
             const chance = functions.randomNumber(0, 3)
             if (chance == 0) {
                 userData[message.author.id].cash += 5000
-                message.channel.send("Great! You fought someone and earned $2500!")
+                message.channel.send("Great! You fought someone and earned $5000!")
                 userData[message.author.id].hp -= functions.randomNumber(10, 20)
             } else {
                 userData[message.author.id].cash -= 5000
-                message.channel.send("Whoopsies! You failed and had to pay $2500")
+                message.channel.send("Whoopsies! You failed and had to pay $5000")
                 userData[message.author.id].hp = functions.randomNumber(10, 20)
             }
         } else {
