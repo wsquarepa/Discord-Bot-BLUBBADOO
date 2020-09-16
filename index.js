@@ -594,7 +594,7 @@ client.on('message', message => {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 			if (command.category == "economy") {
-				userData[message.author.id].hp -= randomNumber(1, 5)
+				userData[message.author.id].hp -= randomNumber(1, 4)
 			}
 		}
 	} catch (error) {
