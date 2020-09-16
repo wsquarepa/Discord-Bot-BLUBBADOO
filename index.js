@@ -452,17 +452,6 @@ client.on('message', message => {
 		message.channel.send(embed)
 		return
 	}
-
-	if (userData[message.author.id].hp < 5) {
-		const embed = new Discord.MessageEmbed()
-		embed.setAuthor("ERR_HEALTH")
-		embed.setTitle("You don't have enough health to preform any tasks!")
-		embed.setDescription("You have " + userData[message.author.id].hp + "HP! You need at least **5HP** to prefom tasks!")
-		embed.setColor("ff0000")
-		message.channel.send(embed)
-		return
-	}
-
 	const args = message.content.slice(prefix.length).split(/ +/);
 	var mention = message.mentions.users.first()
 
@@ -566,6 +555,17 @@ client.on('message', message => {
 		message.channel.send(embed).catch()
 		return
 	}
+
+	if (userData[message.author.id].hp < 5 && command.category == "economy") {
+		const embed = new Discord.MessageEmbed()
+		embed.setAuthor("ERR_HEALTH")
+		embed.setTitle("You don't have enough health to preform any tasks!")
+		embed.setDescription("You have " + userData[message.author.id].hp + "HP! You need at least **5HP** to prefom tasks!")
+		embed.setColor("ff0000")
+		message.channel.send(embed)
+		return
+	}
+
 
 	const timestamps = cooldowns.get(command.name);
 	const cooldownAmount = (command.cooldown || 1) * 1000;
