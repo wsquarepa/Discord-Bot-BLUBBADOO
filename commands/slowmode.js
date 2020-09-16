@@ -15,7 +15,7 @@ module.exports = {
     adminOnly: false,
 	execute(message, args, mention) {
         if (args[0] == "off") {
-            args[0] == 0
+            args[0] = 0
         }
 
         if (isNaN(parseInt(args[0]))) {
@@ -24,6 +24,6 @@ module.exports = {
         }
 
         message.channel.setRateLimitPerUser(args[0])
-        message.channel.send("Complete! Channel slowmode set to `" + args[0] + "` seconds!")
+        message.channel.send("Complete! Channel slowmode set to `" + args[0] + "` second(s)!")
     }
 }
