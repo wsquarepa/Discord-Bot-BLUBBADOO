@@ -23,18 +23,20 @@ module.exports = {
         if (!mention) {
             const chance = functions.randomNumber(0, 3)
             if (chance == 0) {
-                userData[message.author.id].cash += 2500
+                userData[message.author.id].cash += 5000
                 message.channel.send("Great! You fought someone and earned $2500!")
                 userData[message.author.id].hp -= functions.randomNumber(10, 20)
             } else {
-                userData[message.author.id].cash -= 2500
+                userData[message.author.id].cash -= 5000
                 message.channel.send("Whoopsies! You failed and had to pay $2500")
                 userData[message.author.id].hp = functions.randomNumber(10, 20)
             }
         } else {
             if (mention.bot) {
+                userData[message.author.id].hp = 1
                 message.channel.send("Failed fight. **" + mention.tag + "** earned $" + userData[message.author.id].cash + "! \n" +
-                    "Just don't fight bots. They always beat you")
+                    "Just don't fight bots. They always beat you" + 
+                    "\n Just sayin you didn't lose any money you just lost all your health.")
                 return
             }
 
@@ -60,6 +62,7 @@ module.exports = {
 
             if (mention.id == message.author.id) {
                 userData[message.author.id].cash -= 25
+                userData[message.author.id].hp = functions.randomNumber(1, 3)
                 message.channel.send("You punch yourself and lose $25")
                 return false
             }
@@ -98,30 +101,30 @@ module.exports = {
                 const mentionHp = userData[mention.id].hp
 
                 if (userStrength - mentionDefence > mentionStrength - userDefence) {
-                    userData[message.author.id].cash += 5000
-                    userData[mention.id].cash -= 5000
+                    userData[message.author.id].cash += 10000
+                    userData[mention.id].cash -= 10000
                     userData[message.author.id].hp -= functions.randomNumber(20, 30)
                     userData[mention.id].hp = functions.randomNumber(1, 3)
-                    message.channel.send("Congratulations! **" + message.author.tag + "** earned $5000!")
+                    message.channel.send("Congratulations! **" + message.author.tag + "** earned $10000!")
                 } else if (userStrength - mentionDefence < mentionStrength - userDefence) {
-                    userData[message.author.id].cash -= 5000
-                    userData[mention.id].cash += 5000
+                    userData[message.author.id].cash -= 10000
+                    userData[mention.id].cash += 10000
                     userData[message.author.id].hp = functions.randomNumber(1, 3)
                     userData[mention.id].hp -= functions.randomNumber(20, 30)
-                    message.channel.send("Congratulations! **" + mention.tag + "** earned $5000!")
+                    message.channel.send("Congratulations! **" + mention.tag + "** earned $10000!")
                 } else {
                     if (userHp > mentionHp) {
-                        userData[message.author.id].cash += 5000
-                        userData[mention.id].cash -= 5000
+                        userData[message.author.id].cash += 10000
+                        userData[mention.id].cash -= 10000
                         userData[message.author.id].hp -= functions.randomNumber(20, 30)
                         userData[mention.id].hp = functions.randomNumber(1, 3)
-                        message.channel.send("Congratulations! **" + message.author.tag + "** earned $5000!")
+                        message.channel.send("Congratulations! **" + message.author.tag + "** earned $10000!")
                     } else {
-                        userData[message.author.id].cash -= 5000
-                        userData[mention.id].cash += 5000
+                        userData[message.author.id].cash -= 10000
+                        userData[mention.id].cash += 10000
                         userData[message.author.id].hp = functions.randomNumber(1, 3)
                         userData[mention.id].hp -= functions.randomNumber(20, 30)
-                        message.channel.send("Congratulations! **" + mention.tag + "** earned $5000!")
+                        message.channel.send("Congratulations! **" + mention.tag + "** earned $10000!")
                     }
                 }
             })
