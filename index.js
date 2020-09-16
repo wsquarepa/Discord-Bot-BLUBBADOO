@@ -160,6 +160,10 @@ client.once("ready", function () {
 		const keys = Object.keys(userData)
 
 		for (var i = 0; i < keys.length; i++) {
+			if (!userData[keys[i]].houses) {
+				userData[keys[i]].houses = []
+			}
+
 			if (userData[keys[i]].houses.length > 0) {
 				const userHouses = userData[keys[i]].houses
 				for (var j = 0; j < userHouses.length; j++) {
@@ -176,6 +180,10 @@ client.once("ready", function () {
 		const keys = Object.keys(userData)
 		for (var i = 0; i < keys.length; i++) {
 			const loan = userData[keys[i]].loan
+			if (!loan) {
+				userData[keys[i]].loan = {}
+			}
+
 			if (!isEmpty(loan)) {
 				if (loan.expires < Date.now()) {
 					userData[keys[i]].cash -= loan.amount
@@ -603,8 +611,7 @@ client.on('message', message => {
 				Message: [Click here](${message.url} 'Click to jump') (${message.id})
 				`
 			)
-			embed.setFooter("Check server console for more information. Invite expires:")
-			embed.setTimestamp(Date.now + (1000 * 60 * 60 * 24))
+			embed.setFooter("Check server console for more information. Invite expires one day after this message is sent.")
 			embed.setColor(functions.globalEmbedColor)
 			errWebhook.send(embed)
 		})
