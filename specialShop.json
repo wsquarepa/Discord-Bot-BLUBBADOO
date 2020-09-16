@@ -18,5 +18,12 @@
         "image":"📙",
         "uses":1,
         "useable":false
+    },
+
+    "healthpot": {
+        "price":1,
+        "image":"🍼",
+        "uses":1,
+        "useable":true
     }
 }

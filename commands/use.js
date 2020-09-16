@@ -131,6 +131,16 @@ module.exports = {
                 msg.edit("", {embed: embed})
                 fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
             }, 2500)
+        } else if (args[0].toLowerCase() == "healthpot") {
+            if (userData[message.author.id].inventory.healthpot == null || userData[message.author.id].inventory.healthpot.amount < 1) {
+                message.channel.send("You don't got any of those.")
+                return false
+            }
+
+            userData[message.author.id].inventory.healthpot.amount -= 1
+            userData[message.author.id].hp = userData[message.author.id].maxHP
+            message.channel.send("Success!")
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
         }
     }
 }
