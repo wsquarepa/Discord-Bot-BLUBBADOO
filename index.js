@@ -592,6 +592,10 @@ client.on('message', message => {
 		if (success) {
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+			if (command.category == "economy") {
+				userData[message.author.id].hp -= randomNumber(1, 5)
+			}
 		}
 	} catch (error) {
 		console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):")
