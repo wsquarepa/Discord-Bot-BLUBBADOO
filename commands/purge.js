@@ -10,7 +10,7 @@ module.exports = {
     guildOnly: true,
     aliases: ['clear', 'delete'],
     cooldown: 2.3,
-    category: "economy",
+    category: "moderation",
     adminOnly: false,
     execute(message, args, mention) {
 
