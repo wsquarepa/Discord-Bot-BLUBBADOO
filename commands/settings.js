@@ -39,12 +39,12 @@ module.exports = {
                 return
             }
 
-            guildData[message.guild.id].prefix = args.slice(1).join(" ")
-            if (args.slice(1).join(" ") != "==") {
-                message.guild.members.cache.get("596715111511490560").setNickname("[" + args.slice(1).join(" ") + "] Blubbadoo")
-            } else {
-                message.guild.members.cache.get("596715111511490560").setNickname("[==] Blubbadoo")
+            if (args[1] == "default") {
+                args[1] = "=="
             }
+
+            guildData[message.guild.id].prefix = args.slice(1).join(" ")
+            message.guild.members.cache.get("596715111511490560").setNickname("[" + args.slice(1).join(" ") + "] Blubbadoo")
             message.channel.send("Complete! Server prefix set to `" + args.slice(1).join(" ") + "`!")
         } else if (args[0] == "messages") {
             if (args[1] == "levelup") {
