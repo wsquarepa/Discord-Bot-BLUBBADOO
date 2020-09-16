@@ -457,7 +457,7 @@ client.on('message', message => {
 		const embed = new Discord.MessageEmbed()
 		embed.setAuthor("ERR_HEALTH")
 		embed.setTitle("You don't have enough health to preform any tasks!")
-		embed.setDescription(userData[message.author.id].hp + " < 5")
+		embed.setDescription("You have " + userData[message.author.id].hp + "HP! You need at least **5HP** to prefom tasks!")
 		embed.setColor("ff0000")
 		message.channel.send(embed)
 		return
