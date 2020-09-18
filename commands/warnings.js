@@ -72,7 +72,7 @@ module.exports = {
             }
 
             for (i = 0; i < page.length; i++) {
-                if (guild.warnings[keys[i]].user == message.author.id) {
+                if (guild.warnings[page[i]].user == message.author.id) {
                     embed.addField(guild.warnings[page[i]].reason, "Issued by <@" + guild.warnings[page[i]].moderator + ">, ID: **" + page[i] + "**")
                 }
             }
