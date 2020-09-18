@@ -72,7 +72,9 @@ module.exports = {
             }
 
             for (i = 0; i < page.length; i++) {
-                embed.addField(guild.warnings[page[i]].reason, "Issued by <@" + guild.warnings[page[i]].moderator + ">")
+                if (guild.warnings[keys[i]].user == message.author.id) {
+                    embed.addField(guild.warnings[page[i]].reason, "Issued by <@" + guild.warnings[page[i]].moderator + ">, ID: **" + page[i] + "**")
+                }
             }
 
             embed.setColor("2f3237")
@@ -135,7 +137,9 @@ module.exports = {
             }
 
             for (i = 0; i < page.length; i++) {
-                embed.addField(guild.warnings[page[i]].reason, "Issued by <@" + guild.warnings[page[i]].moderator + ">")
+                if (guild.warnings[keys[i]].user == mention.id) {
+                    embed.addField(guild.warnings[page[i]].reason, "Issued by <@" + guild.warnings[page[i]].moderator + ">, ID: **" + page[i] + "**")
+                }
             }
 
             embed.setColor("2f3237")
