@@ -343,7 +343,7 @@ client.on('message', message => {
 						}).catch()).catch()
 				}
 			}
-			userData[message.author.id].nextGemCashGoal = netWorth + 10000
+			userData[message.author.id].nextGemCashGoal = netWorth * 2
 		}
 
 		if (!isEmpty(userData[message.author.id].pet)) {
