@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const webhookClient = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS-2uN7rucTK6UZl6xh0FgHqLoFXPm2_HJ6LNYDBBTDcTna2N8OYm1ZTmZ");
 const guildData = require('../guildData.json')
+const functions = require('../jsHelpers/functions')
 
 module.exports = {
     name: 'report',
@@ -21,11 +22,11 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
             .setTitle('New report from ' + message.author.tag)
             .setDescription(args.join(" "))
-            .setColor('#0000ff')
+            .setColor(functions.globalEmbedColor)
             .setFooter("User id: " + message.author.id)
 
         webhookClient.send({
-            username: 'Blubbadoo Reports',
+            username: 'User Reports',
             embeds: [embed],
         });
 

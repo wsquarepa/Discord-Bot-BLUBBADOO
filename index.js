@@ -617,7 +617,10 @@ client.on('message', message => {
 			)
 			embed.setFooter("Check server console for more information. Invite expires one day after this message is sent.")
 			embed.setColor(functions.globalEmbedColor)
-			errWebhook.send(embed)
+			errWebhook.send({
+				username: 'Error Reports',
+				embeds: [embed],
+			});
 		})
 		message.channel.send('Command execution error - logged').catch()
 	}
