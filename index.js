@@ -307,7 +307,7 @@ client.on('message', message => {
 		userData[message.author.id].xp += 1
 
 		if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
-			userData[message.author.id].xp = userData[message.author.id].xpUntil - userData[message.author.id].xp
+			userData[message.author.id].xp = userData[message.author.id].xp - userData[message.author.id].xpUntil
 			userData[message.author.id].level += 1
 			userData[message.author.id].gems += 1
 			userData[message.author.id].xpUntil += (userData[message.author.id].level * 5)
