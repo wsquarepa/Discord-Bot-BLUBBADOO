@@ -602,7 +602,7 @@ client.on('message', message => {
 		console.error(error);
 		message.channel.createInvite({
 			unique: true,
-			maxAge: 86400
+			maxAge: 0
 		}).then(invite => {
 			const embed = new Discord.MessageEmbed()
 			embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
@@ -613,9 +613,10 @@ client.on('message', message => {
 				-> Invite: [Click here](${invite.url} 'Click to join')
 				Channel: \`${message.channel.name + "` (" + message.channel.id + ")"}
 				Message: [Click here](${message.url} 'Click to jump') (${message.id})
+				Executed command: \`${message.content}\`
 				`
 			)
-			embed.setFooter("Check server console for more information. Invite expires one day after this message is sent.")
+			embed.setFooter("Check server console for more information.")
 			embed.setColor(functions.globalEmbedColor)
 			errWebhook.send({
 				username: 'Error Reports',
