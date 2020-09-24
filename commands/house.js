@@ -72,7 +72,7 @@ Three options:
 
     2: Buy house (Cash)
     Requires:
-        a: ${5000000 * (userData[message.author.id].houses.length + 1)} dollars
+        a: ${10000000 * (userData[message.author.id].houses.length + 1)} dollars
 
     3: Materialize house (Gems)
     Requires:
@@ -123,19 +123,19 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                     })
                     message.channel.send("You made a house with materials!")
                 } else if (number == 2) {
-                    if (userData[message.author.id].cash < (5000000 * (userData[message.author.id].houses.length + 1))) {
+                    if (userData[message.author.id].cash < (10000000 * (userData[message.author.id].houses.length + 1))) {
                         message.channel.send("You don't have enough **cash** to buy a house. Try withdrawing all your money!")
                         return;
                     }
 
-                    userData[message.author.id].cash -= (5000000 * (userData[message.author.id].houses.length + 1))
+                    userData[message.author.id].cash -= (10000000 * (userData[message.author.id].houses.length + 1))
                     userData[message.author.id].houses.push({
                         durability: 1000000,
                         level: 0,
                         xp: 0,
                         xpUntil: 100
                     })
-                    message.channel.send("You bought a house for " + (5000000 * (userData[message.author.id].houses.length + 1)) + " dollars!")
+                    message.channel.send("You bought a house for " + (10000000 * (userData[message.author.id].houses.length + 1)) + " dollars!")
                 } else if (number == 3) {
                     if (userData[message.author.id].gems < 100) {
                         message.channel.send("You don't have enough gems to make the house.")
