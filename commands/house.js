@@ -72,7 +72,7 @@ Three options:
 
     2: Buy house (Cash)
     Requires:
-        a: ${10000000 * (userData[message.author.id].houses.length + 1)} dollars
+        a: $${10000000 * (userData[message.author.id].houses.length + 1)} blubbadoo bux
 
     3: Materialize house (Gems)
     Requires:

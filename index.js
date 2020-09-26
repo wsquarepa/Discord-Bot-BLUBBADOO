@@ -263,7 +263,7 @@ client.on('message', message => {
 				intellegencePoints: 1,
 				strength: 0,
 				defence: 0,
-				hp: 5,
+				hp: 10,
 				maxHP: 100
 			}
 		}
