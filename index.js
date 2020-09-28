@@ -55,6 +55,27 @@ for (const file of commandFiles) {
 	}
 }
 
+process.on("uncaughtException", function (error) {
+	fs.writeFileSync("./index-out.txt", error)
+	const embed = new Discord.MessageEmbed()
+	embed.setTitle("Uncaught exception " + functions.makeid(10) + ":")
+	embed.setDescription(
+		`
+		Check \`index-out.txt\` for crash notes
+		Process has been stopped
+		<@596715111511490560> will now be offline.
+		`
+	)
+	embed.setColor(functions.globalEmbedColor)
+	errWebhook.send("<@509874745567870987> New error log:", {
+		username: 'Error Reports - Crashed!',
+		embeds: [embed],
+	});
+	execSync("pm2 stop index", {
+		encoding: 'utf-8'
+	})
+})
+
 setInterval(function () {
 	const shopKeys = Object.keys(shopData)
 	shopKeys.splice(0, 1)

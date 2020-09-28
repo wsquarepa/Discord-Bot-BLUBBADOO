@@ -15,15 +15,6 @@ function saveCoins() {
     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 }
 
-function embed(title, description, color) {
-    var embed = new discord.MessageEmbed()
-        .setTitle(title)
-        .setDescription(description)
-        .setColor(color)
-    return embed
-}
-
-
 module.exports = {
     name: 'pet',
     description: 'Do stuff with your pet!',
