@@ -135,7 +135,7 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                         xp: 0,
                         xpUntil: 100
                     })
-                    message.channel.send("You bought a house for " + (10000000 * (userData[message.author.id].houses.length + 1)) + " dollars!")
+                    message.channel.send("You bought a house for " + (10000000 * (userData[message.author.id].houses.length)) + " dollars!")
                 } else if (number == 3) {
                     if (userData[message.author.id].gems < 100) {
                         message.channel.send("You don't have enough gems to make the house.")
