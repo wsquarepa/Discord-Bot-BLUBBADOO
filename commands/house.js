@@ -76,7 +76,7 @@ Three options:
 
     3: Materialize house (Gems)
     Requires:
-        a: 100 Gems
+        a: 250 Gems
     
 Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
             `)
@@ -137,19 +137,19 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
                     })
                     message.channel.send("You bought a house for " + (10000000 * (userData[message.author.id].houses.length)) + " dollars!")
                 } else if (number == 3) {
-                    if (userData[message.author.id].gems < 100) {
+                    if (userData[message.author.id].gems < 250) {
                         message.channel.send("You don't have enough gems to make the house.")
                         return
                     }
 
-                    userData[message.author.id].gems -= 100
+                    userData[message.author.id].gems -= 250
                     userData[message.author.id].houses.push({
                         durability: 1000000,
                         level: 0,
                         xp: 0,
                         xpUntil: 100
                     })
-                    message.channel.send("You materialized a house with 100 gems!")
+                    message.channel.send("You materialized a house with 250 gems!")
                 }
             })
         } else if (args[0] == "fix") {
