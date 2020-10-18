@@ -49,6 +49,8 @@ module.exports = {
             } else {
                 message.guild.member(mention).roles.remove(opRole)
                 message.channel.send("Operation complete!")
+                    .then(() => {message.channel.send("Operation complete!")})
+                    .catch(() => {message.channel.send("Error executing command - OP role is above my role")})
             }
         }
     }

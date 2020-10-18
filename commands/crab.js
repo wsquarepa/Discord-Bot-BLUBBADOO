@@ -43,7 +43,8 @@ module.exports = {
         var msg = new discord.Message()
         message.channel.send("Okie, crabbing...").then(m => msg = m)
         var chance = randomNumber(0, 3)
-        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith(guildData[message.guild.id].prefix) && 
+        const inGuild = message.channel.type == "dm"? false:true
+        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && inGuild?message.content.startsWith(guildData[message.guild.id].prefix):message.content.startsWith("==") && 
             m.content != guildData[message.guild.id].prefix + "fish")
         collector.on("collect", function() {
             msg.edit("You can't multitask.")
