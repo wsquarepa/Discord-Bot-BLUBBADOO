@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const craftables = require("../craftables.json")
 const fs = require('fs');
 const discord = require("discord.js")
+const functions = require("../jsHelpers/functions")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -208,6 +209,7 @@ module.exports = {
 
                     const sendEmbed = embed("Crafting complete", "You created " + craftables[args[0]].result[args[0]].amount * args[1] + " " + args[0] + 
                         "(s). \n It's now in your inventory!", "00ff00").setFooter("+" + xp + " EXP")
+                    functions.giveAchivement(message, "Craft something")
                     message.channel.send(sendEmbed)
                 }, args[1] * 1000)
             }

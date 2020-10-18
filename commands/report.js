@@ -5,7 +5,7 @@ const functions = require('../jsHelpers/functions')
 
 module.exports = {
     name: 'report',
-    description: 'Report a bug, or anything to wsquarepa! Be descriptive and kind!',
+    description: 'Report a bug, or anything to the bot developers! Be descriptive and kind!',
     args: true,
     usage: '<message>',
     guildOnly: false,
@@ -32,5 +32,6 @@ module.exports = {
 
         message.channel.send("Your report has been logged. \n For further assistance, join Blubbadoo Support Server! \n Invite links are provided with " + 
         guildData[message.guild.id].prefix + "invite.")
+        
     }
 }

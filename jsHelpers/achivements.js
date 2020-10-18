@@ -5,8 +5,7 @@ module.exports = {
             cash: 100000,
             bank: 0,
             total: 0,
-            gems: 0,
-            command: ""
+            gems: 0
         },
         
         reward: {
@@ -17,32 +16,13 @@ module.exports = {
         }
     },
 
-    "Report something": {
-        description: "I wanna tell you sth...",
-        toGet: {
-            cash: 0,
-            bank: 0,
-            total: 0,
-            gems: 0,
-            command: "report"
-        },
-
-        reward: {
-            money: 0,
-            gems: 0,
-            item: "gold",
-            title: "reporter"
-        }
-    },
-
     "Store $10000 into the bank": {
         description: "Bank: \"Uh thanks?\"",
         toGet: {
             cash: 0,
             bank: 10000,
             total: 0,
-            gems: 0,
-            command: ""
+            gems: 0
         },
 
         reward: {
@@ -59,8 +39,7 @@ module.exports = {
             cash: 0,
             bank: 0,
             total: 0,
-            gems: 0,
-            command: "craft"
+            gems: 0
         },
 
         reward: {
@@ -77,8 +56,7 @@ module.exports = {
             cash: 0,
             bank: 0,
             total: 1000000,
-            gems: 0,
-            command: ""
+            gems: 0
         },
 
         reward: {
