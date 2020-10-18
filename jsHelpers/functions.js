@@ -1,5 +1,8 @@
 const discord = require('discord.js')
 const fs = require('fs')
+var userData = require('../userData.json')
+const guildData = require("../guildData.json")
+const achivements = require("./achivements")
 
 module.exports = {
     embed: function embed(title, description, color) {
@@ -53,13 +56,27 @@ module.exports = {
     emoji: function emoji(id, message) {
         return message.client.emojis.cache.find(x => x.id == id).toString()
     },
-    
+
     isEmpty: function isEmpty(obj) {
         for (var key in obj) {
             if (obj.hasOwnProperty(key))
                 return false;
         }
         return true;
+    },
+
+    giveAchivement: function (messageObject, achivementName) {
+        if (achivements[achivementName] != null) {
+            if (!userData[messageObject.author.id].achivements.includes(achivementName)) {
+                userData[messageObject.author.id].achivements.push(achivementName)
+                if (guildData[messageObject.guild.id].settings.achivementMessage) {
+                    message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+                        .then(m => m.delete({
+                            timeout: 5000
+                        }).catch()).catch()
+                }
+            }
+        }
     },
 
     globalEmbedColor: "2f3237"

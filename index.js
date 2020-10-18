@@ -494,45 +494,6 @@ client.on('message', message => {
 
 	if (!command) return;
 
-	if (!modeOfUser.testMode) {
-		for (var i in achivements) {
-			var requirementStuff = {
-				command: achivements[i].toGet.command
-			}
-
-			if (
-				commandName == requirementStuff.command &&
-				requirementStuff.command != "" &&
-				!userData[message.author.id].achivements.includes(i)
-			) {
-				userData[message.author.id].achivements.push(i)
-
-				var stuffEarn = achivements[i].reward
-				userData[message.author.id].bank += stuffEarn.money
-				userData[message.author.id].gems += stuffEarn.gems
-				if (stuffEarn.item != "") {
-					if (userData[message.author.id].inventory[stuffEarn.item]) {
-						userData[message.author.id].inventory[stuffEarn.item].amount += 1
-					} else {
-						userData[message.author.id].inventory[stuffEarn.item] = {
-							amount: 1,
-							uses: 1
-						}
-					}
-				}
-				if (message.channel.type != "dm") {
-					if (guildData[message.guild.id].settings.achivementMessage) {
-						message.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
-							.then(m => m.delete({
-								timeout: 5000
-							}).catch()).catch()
-					}
-				}
-			}
-		}
-	}
-
-
 	const now = Date.now();
 	//#region - Here is the command tracking. 
 	botData[command.name].uses++
