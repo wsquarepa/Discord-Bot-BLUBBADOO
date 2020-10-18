@@ -20,7 +20,7 @@ function randomNumber(min, max) {
 
 module.exports = {
     name: 'crab',
-	description: 'Crab for crabs!',
+    description: 'Crab for crabs!',
     args: false,
     usage: '',
     guildOnly: false,
@@ -28,7 +28,7 @@ module.exports = {
     cooldown: 45,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+    execute(message, args, mention) {
         if (userData[message.author.id].inventory["cage"] == null || userData[message.author.id].inventory["cage"].amount < 1) {
             message.channel.send(embed("Error", "How do you suppose you crab without a cage?", "ff0000"))
             return false
@@ -40,34 +40,35 @@ module.exports = {
             userData[message.author.id].inventory.cage.uses = shopData.cage.uses
         }
         var timeoutkey = 0
-        var msg = new discord.Message()
-        message.channel.send("Okie, crabbing...").then(m => msg = m)
-        var chance = randomNumber(0, 3)
-        const inGuild = message.channel.type == "dm"? false:true
-        var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && inGuild?message.content.startsWith(guildData[message.guild.id].prefix):message.content.startsWith("==") && 
-            m.content != guildData[message.guild.id].prefix + "fish")
-        collector.on("collect", function() {
-            msg.edit("You can't multitask.")
-            collector.stop()
-            chance = -1
-            clearTimeout(timeoutkey)
-            return;
-        })
-        timeoutkey = setTimeout(function() {
-            collector.stop()
-            if (chance > 0) {
-                var earnings = randomNumber(100, 750)
-                msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
-                userData[message.author.id].cash += earnings
-                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-            } else {
-                if (chance == -1) {
-                    return; 
+        message.channel.send("Okie, crabbing...").then(msg => {
+            var chance = randomNumber(0, 3)
+            const inGuild = message.channel.type == "dm" ? false : true
+            var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && inGuild ? message.content.startsWith(guildData[message.guild.id].prefix) : message.content.startsWith("==") &&
+                m.content != guildData[message.guild.id].prefix + "fish")
+            collector.on("collect", function () {
+                msg.edit("You can't multitask.")
+                collector.stop()
+                chance = -1
+                clearTimeout(timeoutkey)
+                return;
+            })
+            timeoutkey = setTimeout(function () {
+                collector.stop()
+                if (chance > 0) {
+                    var earnings = randomNumber(100, 750)
+                    msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
+                    userData[message.author.id].cash += earnings
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                } else {
+                    if (chance == -1) {
+                        return;
+                    }
+
+                    msg.edit("No crabs fell for your trap.")
                 }
 
-                msg.edit("No crabs fell for your trap.")
-            }
-            
-        }, 3000)
+            }, 3000)
+        })
+
     }
 }
