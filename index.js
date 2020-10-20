@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const fs = require('fs');
+const path = require('path')
 const {
 	token,
 	bannedServers,
@@ -111,31 +112,22 @@ client.once("ready", function () {
 	}, 1800000);
 
 	schedule.scheduleJob('0 0 * * *', () => {
-		if (JSON.stringify(botData) == "" || JSON.stringify(userData) == "") {
-			try {
-				client.channels.cache.get("720427122480644149").send("**WARNING** \n A FILE HAS BEEN CLEARED!")
-			} catch {
-				//pass
-			}
-			return;
+		var pathToFile = path.join(__dirname, "userData.json")
+		var pathToNewDestination = path.join(__dirname, "backups", Date.now() + ".json")
+		try {
+			fs.copyFileSync(pathToFile, pathToNewDestination)
+		} catch {
+			//pass
 		}
 
+		pathToFile = path.join(__dirname, "botData.json")
+		pathToNewDestination = path.join(__dirname, "backups", Date.now() + 1 + ".json")
 		try {
-			execSync('git pull', {
-				encoding: 'utf-8'
-			})
-			execSync('git add .', {
-				encoding: 'utf-8'
-			});
-			execSync('git commit -m backup', {
-				encoding: 'utf-8'
-			})
-			execSync('git push', {
-				encoding: 'utf-8'
-			})
-		} catch (e) {
-			console.error(e)
+			fs.copyFileSync(pathToFile, pathToNewDestination)
+		} catch {
+			//pass
 		}
+
 	})
 
 	schedule.scheduleJob("*/30 * * * *", () => {
