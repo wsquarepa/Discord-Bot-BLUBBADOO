@@ -107,10 +107,6 @@ client.once("ready", function () {
 			console.log("Custom status go.")
 		})
 
-	setInterval(() => {
-		dbl.postStats(client.guilds.size);
-	}, 1800000);
-
 	schedule.scheduleJob('0 0 * * *', () => {
 		var pathToFile = path.join(__dirname, "userData.json")
 		var pathToNewDestination = path.join(__dirname, "backups", Date.now() + ".json")
