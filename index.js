@@ -18,8 +18,6 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 var shopData = require('./shop.json')
 const schedule = require('node-schedule')
 const execSync = require('child_process').execSync
-const dblApi = require('dblapi.js')
-const dbl = new dblApi(dblToken, client)
 var guildData = require("./guildData.json")
 const errWebhook = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS-2uN7rucTK6UZl6xh0FgHqLoFXPm2_HJ6LNYDBBTDcTna2N8OYm1ZTmZ");
 const functions = require("./jsHelpers/functions")
