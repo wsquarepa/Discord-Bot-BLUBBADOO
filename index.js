@@ -175,7 +175,7 @@ client.once("ready", function () {
 				const userHouses = userData[keys[i]].houses
 				for (var j = 0; j < userHouses.length; j++) {
 					userData[keys[i]].houses[j].durability -= 100
-					userData[keys[i]].bank += 100000
+					userData[keys[i]].bank += 10000
 				}
 			}
 		}
@@ -428,7 +428,7 @@ client.on('message', message => {
 				if (!userData[message.author.id].houses[a].durability < 1) {
 					userData[message.author.id].houses[a].durability -= 1
 					userData[message.author.id].houses[a].xp += 1
-					userData[message.author.id].bank += (randomNumber(100, 1000) * userData[message.author.id].houses[a].level)
+					userData[message.author.id].bank += (randomNumber(0, 100) * userData[message.author.id].houses[a].level)
 
 					if (userData[message.author.id].houses[a].xp > userData[message.author.id].houses[a].xpUntil) {
 						userData[message.author.id].houses[a].level++
