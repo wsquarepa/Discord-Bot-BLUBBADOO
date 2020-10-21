@@ -5,12 +5,12 @@ const achivements = require("../jsHelpers/achivements")
 const functions = require("../jsHelpers/functions")
 
 module.exports = {
-    name: 'achievements',
-	description: 'View your achievements!',
+    name: 'advancements',
+	description: 'View your advancements!',
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: ['achivements', 'advancements'],
+    aliases: ['achivements', 'achievements'],
     cooldown: 5,
     levelRequirement: 0,
     category: "economy",
@@ -20,7 +20,7 @@ module.exports = {
         var achivementsCopy = {}
         Object.assign(achivementsCopy, achivements)
         var embed = new discord.MessageEmbed()
-            .setTitle("Your achievements:")
+            .setTitle("Your advancements:")
             .setColor(functions.globalEmbedColor)
 
         for (var i = 0; i < userAchivements.length; i++) {
@@ -28,7 +28,7 @@ module.exports = {
             delete achivementsCopy[userAchivements[i]]
         }
 
-        embed.addField("UNDONE ACHIVEMENTS", "\u200B", false)
+        embed.addField("Undone advancements:", "\u200B", false)
 
         const undoneKeys = Object.keys(achivementsCopy)
         for (i = 0; i < undoneKeys.length; i++) {

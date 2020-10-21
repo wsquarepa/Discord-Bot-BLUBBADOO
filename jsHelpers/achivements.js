@@ -44,7 +44,7 @@ module.exports = {
     },
 
     "Get 1 Million blubbadoo bux!": {
-        description: "Literally what the achvement is.",
+        description: "Literally what the advancement is.",
         toGet: {
             cash: 0,
             bank: 0,
@@ -87,6 +87,16 @@ module.exports = {
             gems: 1,
             item: "coin",
             title: "The MUFF dood"
+        }
+    },
+
+    "Robber": {
+        description: "Successfully rob someone!",
+        reward: { 
+            money: 0,
+            gems: 0,
+            item: "lock",
+            title: "Robber"
         }
     }
 }
