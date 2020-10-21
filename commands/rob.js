@@ -1,5 +1,6 @@
 var userData = require('../userData.json')
 const fs = require('fs');
+const functions = require("../jsHelpers/functions")
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -77,6 +78,7 @@ module.exports = {
             message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
             mention.send("Oh no! " + message.author.username + " robbed you, and earned $" + earnings + " off of you!")
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            functions.giveAchivement(message, "Robber")
         } else {
             var earnings = userData[message.author.id].cash * 0.5
             earnings = Math.round(earnings)
