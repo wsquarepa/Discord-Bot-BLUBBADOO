@@ -368,8 +368,7 @@ client.on('message', message => {
 
 		var achivements = require('./jsHelpers/achivements')
 		for (var i in achivements) {
-
-			if (achivements[i].toGet.command == "") {
+			if (achivements[i].toGet) {
 				var requirements = {
 					cash: achivements[i].toGet.cash,
 					bank: achivements[i].toGet.bank,

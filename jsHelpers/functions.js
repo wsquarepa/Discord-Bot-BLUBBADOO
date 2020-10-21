@@ -66,14 +66,11 @@ module.exports = {
     },
 
     giveAchivement: function (messageObject, achivementName) {
-        if (achivements[achivementName] != null) {
+        if (achivements[achivementName] !== null) {
             if (!userData[messageObject.author.id].achivements.includes(achivementName)) {
                 userData[messageObject.author.id].achivements.push(achivementName)
                 if (guildData[messageObject.guild.id].settings.achivementMessage) {
                     messageObject.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
-                        .then(m => m.delete({
-                            timeout: 5000
-                        }).catch()).catch()
                 }
             }
         }

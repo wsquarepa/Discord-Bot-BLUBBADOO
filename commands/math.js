@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const discord = require('discord.js')
 const fs = require('fs');
+const functions = require("../jsHelpers/functions")
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -49,6 +50,7 @@ module.exports = {
                 message.channel.send("Correct!")
                 var earnings = 100
                 userData[message.author.id].cash += earnings
+                functions.giveAchivement(message, "MUFF")
             } else {
                 message.channel.send("WRONG!")
                 var losings = 100

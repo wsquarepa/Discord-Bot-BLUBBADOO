@@ -2,6 +2,7 @@ var discord = require('discord.js')
 var userData = require("../userData.json")
 var fs = require("fs")
 var sentencer = require('sentencer')
+const functions = require("../jsHelpers/functions")
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -84,6 +85,7 @@ module.exports = {
                                     if (messageCollected.content == sentence) {
                                         messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
                                         userData[messageCollected.author.id].cash += 250
+                                        functions.giveAchivement(message, "Sentencer")
                                         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                                         guessCollect.stop("Game end")
                                         clearInterval(changer)

@@ -34,14 +34,7 @@ module.exports = {
     },
 
     "Craft something": {
-        description: "KLANG KLANG KLANG",
-        toGet: {
-            cash: 0,
-            bank: 0,
-            total: 0,
-            gems: 0
-        },
-
+        description: "Create something using the craft command",
         reward: {
             money: 0,
             gems: 0,
@@ -51,7 +44,7 @@ module.exports = {
     },
 
     "Get 1 Million blubbadoo bux!": {
-        description: "Imma rich people!",
+        description: "Literally what the achvement is.",
         toGet: {
             cash: 0,
             bank: 0,
@@ -64,6 +57,36 @@ module.exports = {
             gems: 0,
             item: "lock",
             title: "Millionaire"
+        }
+    },
+
+    "The explorer": {
+        description: "Successfully find a chest while exploring",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "",
+            title: "Lootbox Finder"
+        }
+    },
+
+    "Sentencer": {
+        description: "Win a game of phrase!",
+        reward: {
+            money: 0,
+            gems: 3,
+            item: "chest",
+            title: "Sentencer"
+        }
+    },
+
+    "MUFF": {
+        description: "Get a math problem correct",
+        reward: {
+            money: 0,
+            gems: 1,
+            item: "coin",
+            title: "The MUFF dood"
         }
     }
 }

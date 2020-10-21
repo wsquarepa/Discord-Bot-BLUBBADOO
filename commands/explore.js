@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const guildData = require('../guildData.json')
+const functions = require("../jsHelpers/functions")
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -54,7 +55,7 @@ module.exports = {
                 if (chance == 3) {
                     msg.edit("Hmm... what's that shiny thingy? OH WAIT ITS A TREASURE CHEST WOOOOOOOOOO!!!! It's in your inventory now; do `" + guildData[message.guild.id].prefix +
                         "use chest` to open it!")
-
+                    functions.giveAchivement(message, "The explorer")
                     if (userData[message.author.id].inventory["chest"]) {
                         userData[message.author.id].inventory["chest"].amount += 1
                     } else {
