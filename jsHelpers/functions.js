@@ -70,7 +70,7 @@ module.exports = {
             if (!userData[messageObject.author.id].achivements.includes(achivementName)) {
                 userData[messageObject.author.id].achivements.push(achivementName)
                 if (guildData[messageObject.guild.id].settings.achivementMessage) {
-                    messageObject.channel.send("**ACHIEVEMENT EARNED!** \n `" + i + "`!")
+                    messageObject.channel.send("**ACHIEVEMENT EARNED!** \n `" + achivementName + "`! \n Do `==achievements` to view your achievements!")
                 }
             }
         }
