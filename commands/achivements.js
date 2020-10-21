@@ -10,7 +10,7 @@ module.exports = {
     args: false,
     usage: '',
     guildOnly: false,
-    aliases: ['achivements'],
+    aliases: ['achivements', 'advancements'],
     cooldown: 5,
     levelRequirement: 0,
     category: "economy",
