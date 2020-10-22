@@ -1,6 +1,7 @@
 const guildData = require('../guildData.json')
 const discord = require ('discord.js')
 const categoriesDescriptionInfoThingyThatIsAHelperFileThatHelpsMeALot = require('../jsHelpers/categories')
+const functions = require("../jsHelpers/functions")
 
 module.exports = {
 	name: 'help',
@@ -28,7 +29,8 @@ module.exports = {
             }
 
             var embed = new discord.MessageEmbed({
-                title: 'Here\'s a list of my categories:'
+                title: 'Here\'s a list of my categories:',
+                color: functions.globalEmbedColor
             }).setFooter(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command or \`${prefix}help [category name]\` to see the commands in that category!`)
 
             for (var i in categories) {
@@ -64,7 +66,8 @@ module.exports = {
             var commandsInCategory = totalCommandStuff.filter(x => commands.get(x).category == name)
             var embed = new discord.MessageEmbed({
                 title: `Here's a list of all the commands in category "${name}":`,
-                description: "`" + commandsInCategory.join("`, `") + "`"
+                description: "`" + commandsInCategory.join("`, `") + "`",
+                color: functions.globalEmbedColor
             }).setFooter(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`)
 
             message.channel.send(embed)
