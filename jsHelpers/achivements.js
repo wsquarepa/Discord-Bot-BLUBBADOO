@@ -98,5 +98,15 @@ module.exports = {
             item: "lock",
             title: "Robber"
         }
+    },
+
+    "The guesser": {
+        description: "Guess the answer to the impossible math question (==math impossible)",
+        reward: {
+            money: 0,
+            gems: 20,
+            item: "",
+            title: "The guesser"
+        }
     }
 }
