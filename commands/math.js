@@ -23,6 +23,11 @@ module.exports = {
     execute(message, args, mention) {
         if (args.length) {
             if (args[0] == "impossible") {
+                if (userData[message.author.id].cash < 1000) {
+                    message.channel.send("You can't play this game without at least $1000 in cash.")
+                    return false
+                }
+
                 const keys = Object.keys(impQuestions)
                 const question = keys[functions.randomNumber(0, keys.length - 1)]
 
@@ -45,13 +50,13 @@ module.exports = {
                         return false
                     }
     
-                    if (parseInt(message) == keys[question]) {
+                    if (parseInt(message) == impQuestions[question]) {
                         message.channel.send("WHOAH!!! YOU ARE ACTUALLY CORRECT!!!")
                         var earnings = 1000000
                         userData[message.author.id].bank += earnings
                         functions.giveAchivement(message, "The guesser")
                     } else {
-                        message.channel.send("WRONG! I told you it was impossible! \n The answer is " + keys[question] + ". \n Promise, the question's answer doesn't change. Ever.")
+                        message.channel.send("WRONG! I told you it was impossible! \n The answer is " + impQuestions[question] + ". \n Promise, the question's answer doesn't change. Ever.")
                         var losings = 1000
                         userData[message.author.id].cash -= losings
                     }
@@ -65,7 +70,7 @@ module.exports = {
                 })
             }
         } else {
-            if ((userData[message.author.id].cash - 100) < 0) {
+            if (userData[message.author.id].cash < 100) {
                 message.channel.send("You can't play this game without at least $100 in cash.")
                 return false
             }
