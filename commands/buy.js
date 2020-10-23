@@ -31,6 +31,11 @@ module.exports = {
 
             args[1] = parseInt(args[1])
 
+            if (isNaN(args[1])) {
+                message.channel.send("Enter a number.")
+                return;
+            }
+
             if (specialShopData[args[0]].price * args[1] > userData[message.author.id].gems) {
                 message.channel.send("You obviously can't buy that. Get more **GEMS**.")
                 return false
@@ -60,8 +65,17 @@ module.exports = {
             args[1] = 1
         }
 
-        args[1] = parseInt(args[1])
-
+        if (isNaN(parseInt(args[1]))) {
+            if (args[1] == "all") {
+                args[1] = shopData[args[0]].stock.remaining
+            } else {
+                message.channel.send("Enter a number.")
+                return;
+            }
+        } else {
+            args[1] = parseInt(args[1])
+        }
+        
         if (shopData[args[0]].price * args[1] > userData[message.author.id].cash) {
             message.channel.send("You obviously can't buy that. Get more **CASH**.")
             return false
