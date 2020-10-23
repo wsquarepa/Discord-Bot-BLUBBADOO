@@ -85,7 +85,7 @@ module.exports = {
                                     if (messageCollected.content == sentence) {
                                         messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
                                         userData[messageCollected.author.id].cash += 250
-                                        functions.giveAchivement(message, "Sentencer")
+                                        functions.giveAchivement(messageCollected, "Sentencer")
                                         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                                         guessCollect.stop("Game end")
                                         clearInterval(changer)
