@@ -51,7 +51,8 @@ module.exports = {
                     }
     
                     if (parseInt(message) == impQuestions[question]) {
-                        message.channel.send("So... hate to break it to you... wait sorry **YOU GOT IT RIGHT**!!!")
+                        message.channel.send("So... hate to break it to you... wait sorry **YOU GOT IT RIGHT**!!! \n " + 
+                        "If you want to share your results, share this link: **" + message.url + "**")
                         var earnings = 1000000
                         userData[message.author.id].bank += earnings
                         functions.giveAchivement(message, "The guesser")
