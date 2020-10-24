@@ -45,7 +45,6 @@ module.exports = {
     category: "economy",
     adminOnly: true,
 	execute(message, args, mention) {
-        functions.giveAchivement(message, "The impossible advancement")
         if (userData[message.author.id].team == "") {
             console.log("no team")
             var teamKeys = Object.keys(teamData)
