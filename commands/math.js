@@ -55,8 +55,6 @@ module.exports = {
                         var earnings = 1000000
                         userData[message.author.id].bank += earnings
                         functions.giveAchivement(message, "The guesser")
-                        delete impQuestions[question]
-                        functions.save("../mathquestions.json", impQuestions)
                     } else {
                         message.channel.send("WRONG! I told you it was impossible! \n The answer is " + impQuestions[question] + ". \n Promise, the question's answer doesn't change. Ever.")
                         var losings = 1000
