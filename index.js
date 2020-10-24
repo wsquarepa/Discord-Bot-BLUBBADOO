@@ -557,7 +557,7 @@ client.on('message', message => {
 					embed.setTitle("Error: ")
 					embed.setDescription(`You have to wait ${timeLeftDate.getHours()} hour(s), ${timeLeftDate.getMinutes()} minute(s) and ${timeLeftDate.getSeconds()} more second(s) ` +
 						`before reusing the \`${prefix}${command.name}\` command.` + (command.category == "economy"? "\n As well, since this is an economy command, your health will" + 
-						"still deplete.":""))
+						" still deplete.":""))
 					embed.setColor("ff0000")
 					return message.channel.send(embed).catch()
 				}
