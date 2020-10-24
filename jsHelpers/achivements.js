@@ -108,5 +108,15 @@ module.exports = {
             item: "",
             title: "The guesser"
         }
+    },
+
+    "The impossible advancement": {
+        description: "I promise that this advancement is impossible to achieve.",
+        reward: {
+            money: Infinity,
+            gems: Infinity,
+            item: "moneydoubler",
+            title: "I broke the promise"
+        }
     }
 }

@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 var teamData = require('../teams.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const functions = require("../jsHelpers/functions")
 
 function makeid(length) {
     var result = '';
@@ -44,6 +45,7 @@ module.exports = {
     category: "economy",
     adminOnly: true,
 	execute(message, args, mention) {
+        functions.giveAchivement(message, "The impossible advancement")
         if (userData[message.author.id].team == "") {
             console.log("no team")
             var teamKeys = Object.keys(teamData)
