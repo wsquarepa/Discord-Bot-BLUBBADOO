@@ -534,6 +534,9 @@ client.on('message', message => {
 				return
 			}
 
+			if (command.category == "economy") {
+				userData[message.author.id].hp -= randomNumber(1, 10)
+			}
 
 			const timestamps = cooldowns.get(command.name);
 			const cooldownAmount = (command.cooldown || 1) * 1000;
@@ -544,11 +547,17 @@ client.on('message', message => {
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
 					const timeLeftDate = new Date(timeLeft * 1000)
+
+					if (command.category == "economy") {
+						userData[message.author.id].hp -= randomNumber(1, 10)
+					}
+					
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_TIMEOUT")
 					embed.setTitle("Error: ")
 					embed.setDescription(`You have to wait ${timeLeftDate.getHours()} hour(s), ${timeLeftDate.getMinutes()} minute(s) and ${timeLeftDate.getSeconds()} more second(s) ` +
-						`before reusing the \`${prefix}${command.name}\` command.`)
+						`before reusing the \`${prefix}${command.name}\` command.` + (command.category == "economy"? "\n As well, since this is an economy command, your health will" + 
+						"still deplete.":""))
 					embed.setColor("ff0000")
 					return message.channel.send(embed).catch()
 				}
@@ -560,10 +569,6 @@ client.on('message', message => {
 				if (success) {
 					timestamps.set(message.author.id, now);
 					setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
-					if (command.category == "economy") {
-						userData[message.author.id].hp -= randomNumber(1, 9)
-					}
 				}
 			} catch (error) {
 				console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):")
