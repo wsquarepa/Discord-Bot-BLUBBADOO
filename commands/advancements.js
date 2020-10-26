@@ -28,7 +28,15 @@ module.exports = {
             delete achivementsCopy[userAchivements[i]]
         }
 
-        embed.addField("Undone advancements:", "\u200B", false)
+        var hidden = 0
+
+        for (i = 0; i < undoneKeys.length; i++) {
+            if (achivementsCopy[undoneKeys[i]].secret) {
+                hidden++
+            }
+        }
+
+        embed.addField("Undone advancements:", "Hidden: `" + hidden + "`", false)
 
         const undoneKeys = Object.keys(achivementsCopy)
         for (i = 0; i < undoneKeys.length; i++) {
