@@ -32,6 +32,7 @@ module.exports = {
                 const question = keys[functions.randomNumber(0, keys.length - 1)]
 
                 message.channel.send("What is " + question + "?")
+                console.log(message.author.tag + "'s impossible math question's answer: " + impQuestions[question])
                 const collector = new discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {
                     time: 10000,
                     maxMatches: 1
