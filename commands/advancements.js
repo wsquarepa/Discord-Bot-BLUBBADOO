@@ -30,6 +30,7 @@ module.exports = {
 
         var hidden = 0
 
+        const undoneKeys = Object.keys(achivementsCopy)
         for (i = 0; i < undoneKeys.length; i++) {
             if (achivementsCopy[undoneKeys[i]].secret) {
                 hidden++
@@ -37,8 +38,7 @@ module.exports = {
         }
 
         embed.addField("Undone advancements:", "Hidden: `" + hidden + "`", false)
-
-        const undoneKeys = Object.keys(achivementsCopy)
+        
         for (i = 0; i < undoneKeys.length; i++) {
             if (!achivementsCopy[undoneKeys[i]].secret) {
                 embed.addField(undoneKeys[i], achivements[undoneKeys[i]].description, true)
