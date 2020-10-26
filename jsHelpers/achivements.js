@@ -13,7 +13,8 @@ module.exports = {
             gems: 0,
             item: "lock",
             title: "Da Rich Dood"
-        }
+        },
+        secret: false
     },
 
     "Store $10000 into the bank": {
@@ -30,7 +31,8 @@ module.exports = {
             gems: 0,
             item: "",
             title: "I want my money safe"
-        }
+        },
+        secret: false
     },
 
     "Craft something": {
@@ -40,7 +42,8 @@ module.exports = {
             gems: 0,
             item: "craftingbench",
             title: "Blacksmith"
-        }
+        },
+        secret: false
     },
 
     "Get 1 Million blubbadoo bux!": {
@@ -57,7 +60,8 @@ module.exports = {
             gems: 0,
             item: "lock",
             title: "Millionaire"
-        }
+        },
+        secret: false
     },
 
     "The explorer": {
@@ -67,7 +71,8 @@ module.exports = {
             gems: 0,
             item: "",
             title: "Lootbox Finder"
-        }
+        },
+        secret: false
     },
 
     "Sentencer": {
@@ -77,7 +82,8 @@ module.exports = {
             gems: 3,
             item: "chest",
             title: "Sentencer"
-        }
+        },
+        secret: false
     },
 
     "MUFF": {
@@ -87,7 +93,8 @@ module.exports = {
             gems: 1,
             item: "coin",
             title: "The MUFF dood"
-        }
+        },
+        secret: false
     },
 
     "Robber": {
@@ -97,7 +104,8 @@ module.exports = {
             gems: 0,
             item: "lock",
             title: "Robber"
-        }
+        },
+        secret: false
     },
 
     "The guesser": {
@@ -107,16 +115,51 @@ module.exports = {
             gems: 20,
             item: "",
             title: "The guesser"
-        }
+        },
+        secret: false
     },
 
-    "The impossible advancement": {
-        description: "I promise that this advancement is impossible to achieve.",
+    "Speed typist": {
+        description: "Win a game of race",
         reward: {
-            money: Infinity,
-            gems: Infinity,
-            item: "moneydoubler",
-            title: "I broke the promise"
-        }
+            money: 0,
+            gems: 2,
+            item: "",
+            title: "Lightning Fast Typist"
+        },
+        secret: false
+    },
+
+    "Bot fighter": {
+        description: "Fight a bot and lose all your health",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "",
+            title: "A bot beat me"
+        },
+        secret: true
+    },
+
+    "Fighter": {
+        description: "Fight someone else and win",
+        reward: {
+            money: 0,
+            gems: 1,
+            item: "",
+            title: "Fighter"
+        },
+        secret: false
+    },
+
+    "Mr. Nice guy": {
+        description: "Punch yourself",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "",
+            title: "My face hurts"
+        },
+        secret: true
     }
 }

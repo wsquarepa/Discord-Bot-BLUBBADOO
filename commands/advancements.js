@@ -32,7 +32,9 @@ module.exports = {
 
         const undoneKeys = Object.keys(achivementsCopy)
         for (i = 0; i < undoneKeys.length; i++) {
-            embed.addField(undoneKeys[i], achivements[undoneKeys[i]].description, true)
+            if (!achivementsCopy[undoneKeys[i]].secret) {
+                embed.addField(undoneKeys[i], achivements[undoneKeys[i]].description, true)
+            }
         }
 
         message.channel.send(embed)

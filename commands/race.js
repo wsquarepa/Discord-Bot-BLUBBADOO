@@ -4,6 +4,7 @@ const textToPicture = require("text-to-picture")
 var userData = require("../userData.json")
 const fs = require("fs")
 const guildData = require("../guildData.json")
+const functions = require("../jsHelpers/functions")
 
 function makeid(length) {
     var result = '';
@@ -93,6 +94,7 @@ module.exports = {
                             raceCollector.on('collect', raceCollectorMsg => {
                                 if (raceCollectorMsg.content == randomString) {
                                     raceCollectorMsg.channel.send("CONGRATULATIONS! <@" + raceCollectorMsg.author.id + "> WON THE RACE!!!")
+                                    functions.giveAchivement(raceCollectorMsg, "Speed typist")
                                     userData[raceCollectorMsg.author.id].cash += 250
                                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                                     if (guildData[message.guild.id].settings.raceCompletionMessage) {

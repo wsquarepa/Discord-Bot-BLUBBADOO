@@ -71,6 +71,11 @@ module.exports = {
                 userData[messageObject.author.id].achivements.push(achivementName)
                 if (guildData[messageObject.guild.id].settings.achivementMessage) {
                     messageObject.channel.send("**ACHIEVEMENT EARNED!** \n `" + achivementName + "`! \n Do `==achievements` to view your achievements!")
+                        .then(function(msg) {
+                            if (achivements[achivementName].secret) {
+                                msg.delete({timeout: 5000})
+                            }
+                        })
                 }
             }
         }
