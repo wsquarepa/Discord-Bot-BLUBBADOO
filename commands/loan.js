@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const guildData = require('../guildData.json')
+const functions = require("../jsHelpers/functions")
 
 function isEmpty(obj) {
     for (var key in obj) {
@@ -79,7 +80,7 @@ module.exports = {
             }
 
             if (userData[message.author.id].cash < 1) {
-                message.channel.send("You cannot loan with negative money.")
+                message.channel.send("You cannot loan with less than $1.")
                 return false;
             }
 
@@ -96,6 +97,8 @@ module.exports = {
             embed.setTitle("Success!")
             embed.setDescription("You loaned $" + amount + " from the bank!")
             embed.setColor("2f3237")
+
+            functions.giveAchivement(message, "Loaner")
 
             message.channel.send(embed)
         }

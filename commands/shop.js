@@ -1,5 +1,6 @@
 const shopData = require('../shop.json')
 const discord = require('discord.js')
+const functions = require("../jsHelpers/functions")
 
 function emoji(id, message) {
     return message.client.emojis.cache.find(x => x.id == id).toString()
@@ -35,6 +36,7 @@ module.exports = {
         keys = pages[page]
         if (!keys) {
             message.channel.send("That page doesn't exist.")
+            functions.giveAchivement(message, "Shop Looker")
             return false
         }
 

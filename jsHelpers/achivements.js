@@ -161,5 +161,49 @@ module.exports = {
             title: "My face hurts"
         },
         secret: true
+    },
+
+    "Loaner": {
+        description: "Take out a loan from the bank",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "",
+            title: ""
+        },
+        secret: false
+    },
+
+    "Shop Looker": {
+        description: "Look at a non-existent page of the shop",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "",
+            title: "Curiosity Person"
+        },
+        secret: true
+    },
+
+    "Realtor": {
+        description: "Own 5 houses",
+        reward: {
+            money: 0,
+            gems: 2,
+            item: "",
+            title: "The Realtor"
+        },
+        secret: false
+    },
+
+    "Scaredy Squirrel": {
+        description: "Lock your account after it's locked",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "",
+            title: "Scaredy Squirrel"
+        },
+        secret: true
     }
 }

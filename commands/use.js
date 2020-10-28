@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const shopData = require('../shop.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const functions = require("../jsHelpers/functions")
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -42,6 +43,7 @@ module.exports = {
 
             if (userData[message.author.id].account.secured == true) {
                 message.channel.send("Your account is already secured, there's no point re-securing it.")
+                functions.giveAchivement(message, "Scaredy Squirrel")
                 return false
             }
 

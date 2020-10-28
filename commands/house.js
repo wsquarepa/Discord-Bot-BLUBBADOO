@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const functions = require("../jsHelpers/functions")
 
 function isEmpty(obj) {
     for (var key in obj) {
@@ -54,6 +55,10 @@ module.exports = {
             }
             embed.setColor("2f3237")
             message.channel.send(embed)
+
+            if (keys.length == 5) {
+                functions.giveAchivement(message, "Realtor")
+            }
         } else if (args[0] == "buy") {
 
             if (userData[message.author.id].houses.length == 5) {
