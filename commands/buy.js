@@ -23,7 +23,7 @@ module.exports = {
         if (args[0] == "all") {
             var totalprice = 0
             for (var i = 0; i < keys.length; i++) {
-                totalprice += shopData[keys[i]].price
+                totalprice += (shopData[keys[i]].price * shopData[keys[i]].stock.remaining)
             }
 
             if (totalprice > userData[message.author.id].cash) {
