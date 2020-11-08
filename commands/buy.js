@@ -51,7 +51,7 @@ module.exports = {
             fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
             var embed = new discord.MessageEmbed()
             embed.setTitle("Success!")
-            embed.setDescription(`Successful! You bought EVERYTHING!`)
+            embed.setDescription(`Successful! You bought EVERYTHING! \n (Well everything that was in-stock)`)
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
         } else if (!keys.includes(args[0])) {
