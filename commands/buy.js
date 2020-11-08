@@ -17,6 +17,7 @@ module.exports = {
     adminOnly: false,
     execute(message, args, mention) {
         var keys = Object.keys(shopData)
+        keys.splice(0, 1)
         args[0] = args[0].toLowerCase()
 
         if (args[0] == "all") {
