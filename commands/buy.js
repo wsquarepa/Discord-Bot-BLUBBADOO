@@ -28,7 +28,7 @@ module.exports = {
 
             if (totalprice > userData[message.author.id].cash) {
                 message.channel.send("You obviously can't buy all of that. You need $" + totalprice + " and you have" +
-                userData[message.author.id].cash + " in your cash.")
+                    userData[message.author.id].cash + " in your cash.")
                 return false
             }
 
@@ -95,51 +95,51 @@ module.exports = {
             embed.setFooter("Sorry for the grammar it's hard ok?")
             message.channel.send(embed)
             return true
-        }
+        } else {
+            if (args[1] == null) {
+                args[1] = 1
+            }
 
-        if (args[1] == null) {
-            args[1] = 1
-        }
-
-        if (isNaN(parseInt(args[1]))) {
-            if (args[1] == "all") {
-                args[1] = shopData[args[0]].stock.remaining
+            if (isNaN(parseInt(args[1]))) {
+                if (args[1] == "all") {
+                    args[1] = shopData[args[0]].stock.remaining
+                } else {
+                    message.channel.send("Enter a number.")
+                    return;
+                }
             } else {
-                message.channel.send("Enter a number.")
-                return;
+                args[1] = parseInt(args[1])
             }
-        } else {
-            args[1] = parseInt(args[1])
-        }
-        
-        if (shopData[args[0]].price * args[1] > userData[message.author.id].cash) {
-            message.channel.send("You obviously can't buy that. Get more **CASH**.")
-            return false
-        }
 
-        if (shopData[args[0]].stock.remaining < args[1]) {
-            message.channel.send("Uh oh! The shop doesn't have enough stock!")
-            return false
-        }
-
-        userData[message.author.id].cash -= shopData[args[0]].price * args[1]
-        shopData.shopBalance += shopData[args[0]].price * args[1]
-        shopData[args[0]].stock.remaining -= args[1]
-        if (userData[message.author.id].inventory[args[0]]) {
-            userData[message.author.id].inventory[args[0]].amount += args[1]
-        } else {
-            userData[message.author.id].inventory[args[0]] = {
-                amount: args[1],
-                uses: shopData[args[0]].uses
+            if (shopData[args[0]].price * args[1] > userData[message.author.id].cash) {
+                message.channel.send("You obviously can't buy that. Get more **CASH**.")
+                return false
             }
+
+            if (shopData[args[0]].stock.remaining < args[1]) {
+                message.channel.send("Uh oh! The shop doesn't have enough stock!")
+                return false
+            }
+
+            userData[message.author.id].cash -= shopData[args[0]].price * args[1]
+            shopData.shopBalance += shopData[args[0]].price * args[1]
+            shopData[args[0]].stock.remaining -= args[1]
+            if (userData[message.author.id].inventory[args[0]]) {
+                userData[message.author.id].inventory[args[0]].amount += args[1]
+            } else {
+                userData[message.author.id].inventory[args[0]] = {
+                    amount: args[1],
+                    uses: shopData[args[0]].uses
+                }
+            }
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
+            var embed = new discord.MessageEmbed()
+            embed.setTitle("Success!")
+            embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "(s)":""}!`)
+            embed.setColor(functions.globalEmbedColor)
+            embed.setFooter("Sorry for the grammar it's hard ok?")
+            message.channel.send(embed)
         }
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-        fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
-        var embed = new discord.MessageEmbed()
-        embed.setTitle("Success!")
-        embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "(s)":""}!`)
-        embed.setColor(functions.globalEmbedColor)
-        embed.setFooter("Sorry for the grammar it's hard ok?")
-        message.channel.send(embed)
     }
 }
