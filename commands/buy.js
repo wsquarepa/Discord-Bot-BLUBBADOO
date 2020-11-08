@@ -18,7 +18,42 @@ module.exports = {
     execute(message, args, mention) {
         var keys = Object.keys(shopData)
         args[0] = args[0].toLowerCase()
-        if (!keys.includes(args[0])) {
+
+        if (args[0] == "all") {
+            var totalprice = 0
+            for (var i = 0; i < keys.length; i++) {
+                totalprice += shopData[keys[i]].price
+            }
+
+            if (totalprice > userData[message.author.id].cash) {
+                message.channel.send("You obviously can't buy all of that. You need $" + totalprice + " and you have" +
+                userData[message.author.id].cash + " in your cash.")
+                return false
+            }
+
+            for (i = 0; i < keys.length; i++) {
+                const amountToBuy = shopData[keys[i]].stock.remaining
+                userData[message.author.id].cash -= shopData[keys[i]].price * amountToBuy
+                shopData.shopBalance += shopData[keys[i]].price * amountToBuy
+                shopData[keys[i]].stock.remaining -= amountToBuy
+                if (userData[message.author.id].inventory[keys[i]]) {
+                    userData[message.author.id].inventory[keys[i]].amount += amountToBuy
+                } else {
+                    userData[message.author.id].inventory[keys[i]] = {
+                        amount: amountToBuy,
+                        uses: shopData[keys[i]].uses
+                    }
+                }
+            }
+
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
+            var embed = new discord.MessageEmbed()
+            embed.setTitle("Success!")
+            embed.setDescription(`Successful! You bought EVERYTHING!`)
+            embed.setColor(functions.globalEmbedColor)
+            message.channel.send(embed)
+        } else if (!keys.includes(args[0])) {
             keys = Object.keys(specialShopData)
             if (!keys.includes(args[0])) {
                 message.channel.send("That's not an item from either shops.")
