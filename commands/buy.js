@@ -27,7 +27,7 @@ module.exports = {
             }
 
             if (totalprice > userData[message.author.id].cash) {
-                message.channel.send("You obviously can't buy all of that. You need $" + totalprice + " and you have" +
+                message.channel.send("You obviously can't buy all of that. You need $" + totalprice + " and you have $" +
                     userData[message.author.id].cash + " in your cash.")
                 return false
             }
