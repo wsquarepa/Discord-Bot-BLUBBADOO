@@ -15,17 +15,12 @@ module.exports = {
     category: "economy",
     adminOnly: false,
 	execute(message, args, mention) {
-        var range = args[0]
+        var range = 100
 
-        if (!range) {
-            range = 100
-        }
-
-        range = parseInt(range)
-
-        if (isNaN(range)) {
-            message.channel.send("Range is not a number.")
-            return false
+        if (args.length) {
+            if (!isNaN(parseInt(args[0]))) {
+                range = parseInt(args[0])
+            }
         }
 
         if (range < 100) {
