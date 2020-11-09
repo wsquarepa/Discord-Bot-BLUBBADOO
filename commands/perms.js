@@ -55,6 +55,7 @@ module.exports = {
         embed.setTitle(user.tag + "'s Permissions:")
         embed.setDescription(userPerms.join("\n"))
         embed.setFooter("USE_VAD means 'Use voice auto detection'.")
+        embed.setColor(functions.globalEmbedColor)
         message.channel.send(embed)
     }
 }
