@@ -41,13 +41,17 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
 
-            for (var i = 0; i < (keys.length / 5); i++) {
-                pages.push(keys.splice(0, (keys.length < 5? keys.length:5)))
+            for (var i = 0; i < Math.ceil(keys.length / 5); i++) {
+                try {
+                    pages.push(keys.splice(0, (keys.length < 5? keys.length:5)))
+                } catch {
+                    //pass
+                }
             }
 
-            // if (keys.length) {
-            //     pages.push(keys)
-            // }
+            if (keys.length) {
+                pages.push(keys)
+            }
 
             if (!pages[0]) {
                 embed.setDescription("You have nothing!")
