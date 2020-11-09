@@ -64,6 +64,7 @@ module.exports = {
             } else if (guess == computerNumber) {
                 userData[message.author.id].cash += bet * 2
                 message.channel.send("You got it!")
+                collector.stop()
                 return
             } else if (guessesLeft < 1) {
                 
@@ -73,6 +74,7 @@ module.exports = {
 
             if (guessesLeft < 1) {
                 message.channel.send("Out of chances! My number was `" + computerNumber + "`! Next time try the `binary search` method!")
+                collector.stop()
                 return
             }
         })
