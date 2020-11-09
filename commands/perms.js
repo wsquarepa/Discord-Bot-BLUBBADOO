@@ -45,16 +45,10 @@ module.exports = {
             'MANAGE_WEBHOOKS',
             'MANAGE_EMOJIS'
         ]
-        var userPerms = []
-        var user = mention? mention:message.client.user
+        const user = mention? mention:message.client.user
+        var userPerms = message.guild.member(user).permissions.toArray()
         if (message.guild.member(user).hasPermission("ADMINISTRATOR")) {
-            userPerms.push("ADMINISTRATOR")
-        } else {
-            for (var i = 0; i < permissions.length; i++) {
-                if (message.guild.member(user).hasPermission(permissions[i])) {
-                    userPerms.push(permissions[i])
-                }
-            }
+            userPerms = ["ADMINISTRATOR"]
         }
 
         var embed = new discord.MessageEmbed()
