@@ -10,7 +10,7 @@ module.exports = {
     usage: '<bet>',
     guildOnly: false,
     aliases: [''],
-    cooldown: 45,
+    cooldown: 120,
     levelRequirement: 0,
     category: "economy",
     adminOnly: false,
@@ -43,12 +43,16 @@ module.exports = {
         }
 
         const computerNumber = functions.randomNumber(1, 100)
-        var guessesLeft = 7
+        var guessesLeft = 0
+        for (var i = 0; i < bet; i / 2) {
+            guessesLeft++
+        }
+        guessesLeft++
         
         userData[message.author.id].cash -= bet
 
-        message.channel.send("I chose a number between 1 and 100. You have `7` guesses left. Give it a try!" + 
-        " \n To give up say `cancel`. You still lose your bet. \n You have 1 minute")
+        message.channel.send(`I chose a number between 1 and ${bet}. You have \`${guessesLeft}\` guesses left. Give it a try!" + 
+        " \n To give up say \`cancel\`. You still lose your bet. \n You have 1 minute`)
         const collector = new discord.MessageCollector(message.channel, m => m.author == message.author, {time: 60000})
         collector.on('collect', msg => {
             if (msg.content == "cancel") {
