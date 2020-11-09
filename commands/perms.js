@@ -49,7 +49,7 @@ module.exports = {
             'MANAGE_EMOJIS'
         ]
         var userPerms = []
-        var user = mention? message.client.user:mention
+        var user = mention? mention:message.client.user
         for (var permission in permissions) {
             if (message.guild.member(user).hasPermission(permission)) {
                 userPerms.push(permission)
