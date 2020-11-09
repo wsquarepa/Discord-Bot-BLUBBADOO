@@ -42,16 +42,12 @@ module.exports = {
             embed.setTitle("Your inventory:")
 
             for (var i = 0; i < (keys.length / 5); i++) {
-                try {
-                    pages.push(keys.splice(0, 5))
-                } catch {
-                    //pass
-                }
+                pages.push(keys.splice(0, (keys.length < 5? keys.length:5)))
             }
 
-            if (keys.length) {
-                pages.push(keys)
-            }
+            // if (keys.length) {
+            //     pages.push(keys)
+            // }
 
             if (!pages[0]) {
                 embed.setDescription("You have nothing!")
