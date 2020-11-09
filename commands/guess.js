@@ -13,7 +13,7 @@ module.exports = {
     cooldown: 120,
     levelRequirement: 0,
     category: "economy",
-    adminOnly: false,
+    adminOnly: true,
 	execute(message, args, mention) {
         var range = 100
 
