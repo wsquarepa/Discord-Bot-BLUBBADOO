@@ -53,6 +53,8 @@ module.exports = {
                 pages.push(keys)
             }
 
+            console.log(pages)
+
             if (!pages[0]) {
                 embed.setDescription("You have nothing!")
                 embed.setColor("2f3237")
@@ -62,7 +64,6 @@ module.exports = {
             
             if (!pages[0].length) {
                 pages[0] = keys
-                pages.splice(1, 1)
             }
 
             const page = pages[pageNumber]
