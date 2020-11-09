@@ -16,7 +16,6 @@ module.exports = {
     adminOnly: false,
     execute(message, args, mention) {
         const permissions = [
-            'ADMINISTRATOR',
             'CREATE_INSTANT_INVITE',
             'KICK_MEMBERS',
             'BAN_MEMBERS',
@@ -50,9 +49,13 @@ module.exports = {
         ]
         var userPerms = []
         var user = mention? mention:message.client.user
-        for (var permission in permissions) {
-            if (message.guild.member(user).hasPermission(permission)) {
-                userPerms.push(permission)
+        if (message.guild.member(user).hasPermission("ADMINISTRATOR")) {
+            userPerms.push("ADMINISTRATOR")
+        } else {
+            for (var permission in permissions) {
+                if (message.guild.member(user).hasPermission(permission)) {
+                    userPerms.push(permission)
+                }
             }
         }
         
@@ -60,5 +63,6 @@ module.exports = {
         embed.setTitle(user.tag + "'s Permissions:")
         embed.setDescription(userPerms.join("\n"))
         embed.setFooter("USE_VAD means 'Use voice auto detection'.")
+        message.channel.send(embed)
     }
 }
