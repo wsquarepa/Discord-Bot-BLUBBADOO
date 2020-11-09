@@ -32,6 +32,11 @@ module.exports = {
             return false
         }
 
+        if (bet > 1000) {
+            message.channel.send("Maximum bet amount is $1000")
+            return false
+        }
+
         if (userData[message.author.id].cash < bet) {
             message.channel.send("Not enough cash for bet. (Your bet is too high!)")
             return false
