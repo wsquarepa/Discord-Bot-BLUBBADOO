@@ -1,5 +1,3 @@
-var userData = require('../userData.json')
-const fs = require('fs');
 const discord = require("discord.js")
 const functions = require("../jsHelpers/functions")
 
@@ -52,13 +50,13 @@ module.exports = {
         if (message.guild.member(user).hasPermission("ADMINISTRATOR")) {
             userPerms.push("ADMINISTRATOR")
         } else {
-            for (var permission in permissions) {
-                if (message.guild.member(user).hasPermission(permission)) {
-                    userPerms.push(permission)
+            for (var i = 0; i < permissions.length; i++) {
+                if (message.guild.member(user).hasPermission(permissions[i])) {
+                    userPerms.push(permissions[i])
                 }
             }
         }
-        
+
         var embed = new discord.MessageEmbed()
         embed.setTitle(user.tag + "'s Permissions:")
         embed.setDescription(userPerms.join("\n"))

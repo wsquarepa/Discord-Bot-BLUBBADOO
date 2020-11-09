@@ -575,7 +575,7 @@ client.on('message', message => {
 				console.error(error);
 				message.channel.createInvite({
 						unique: true,
-						maxAge: 0
+						maxAge: 86400
 					}).then(invite => {
 							const embed = new Discord.MessageEmbed()
 							embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
