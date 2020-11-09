@@ -5,9 +5,9 @@ const functions = require("../jsHelpers/functions")
 
 module.exports = {
     name: 'guess',
-	description: 'Guess the number between 1 and 100!',
+	description: 'Guess the number between 1 and [range]!',
     args: false,
-    usage: '[range]',
+    usage: '[range=100]',
     guildOnly: false,
     aliases: [''],
     cooldown: 120,
@@ -40,7 +40,7 @@ module.exports = {
 
         const computerNumber = functions.randomNumber(1, range)
         var guessesLeft = 0
-        for (var i = 0; i < range; i / 2) {
+        for (var i = range; i > 2; i / 2) {
             guessesLeft++
         }
         guessesLeft++
