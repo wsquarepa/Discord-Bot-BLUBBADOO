@@ -44,6 +44,7 @@ module.exports = {
             console.log(Math.ceil(keys.length / 5))
             for (var i = 0; i < Math.ceil(keys.length / 5); i++) {
                 try {
+                    console.log(keys)
                     pages.push(keys.splice(0, 5))
                 } catch {
                     //pass
