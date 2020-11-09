@@ -41,13 +41,13 @@ module.exports = {
         " \n To give up say `cancel`. You still lose your bet. \n You have 1 minute")
         const collector = new discord.MessageCollector(message.channel, m => m.author == message.author, {time: 60000})
         collector.on('collect', msg => {
-            if (guess == "cancel") {
+            if (msg.content == "cancel") {
                 message.channel.send("Cancelled! You lost $" + bet + "!")
                 collector.stop()
                 return;
             }
 
-            const guess = parseInt(msg)
+            const guess = parseInt(msg.content)
             if (isNaN(guess)) {
                 message.channel.send("Enter a valid number for your guess!")
                 return
