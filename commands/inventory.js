@@ -41,11 +41,13 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
 
+            console.log(Math.ceil(keys.length / 5))
             for (var i = 0; i < Math.ceil(keys.length / 5); i++) {
                 try {
                     pages.push(keys.splice(0, 5))
                 } catch {
                     //pass
+                    console.log("Push Passed in iteration " + (i + 1))
                 }
             }
 
