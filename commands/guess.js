@@ -59,7 +59,7 @@ module.exports = {
                 message.channel.send("Guess too high! " + guessesLeft + " chances left!")
                 return
             } else if (guess < computerNumber) {
-                message.channel.send("Guess too low!" + guessesLeft + " chances left!")
+                message.channel.send("Guess too low! " + guessesLeft + " chances left!")
                 return
             } else if (guess == computerNumber) {
                 userData[message.author.id].cash += bet * 2
