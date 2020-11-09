@@ -43,7 +43,7 @@ module.exports = {
 
             for (var i = 0; i < Math.ceil(keys.length / 5); i++) {
                 try {
-                    pages.push(keys.splice(0, (keys.length < 5? keys.length:5)))
+                    pages.push(keys.splice(0, 5))
                 } catch {
                     //pass
                 }
