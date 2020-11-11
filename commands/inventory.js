@@ -38,7 +38,7 @@ module.exports = {
             embed.setTitle("Your inventory:")
 
             console.log(Math.floor(keys.length / 5))
-            for (var i = 0; i < Math.floor(keys.length / 5); i++) {
+            for (i = 0; i < Math.floor(keys.length / 5); i++) {
                 try {
                     console.log(keys)
                     pages.push(keys.splice(0, 5))
