@@ -23,16 +23,12 @@ module.exports = {
             Object.assign(userInv, userData[message.author.id].inventory)
             var keys = Object.keys(userInv)
 
-            var keysToDelete = []
             for (var i = 0; i < keys.length; i++) {
                 if (userInv[keys[i]].amount < 1) {
-                    keysToDelete.push(keys[i])
+                    const item = keys[i]
+                    delete userInv[item]
+                    keys.splice(keys.indexOf(item), 1)
                 }
-            }
-
-            for (i = 0; i < keysToDelete.length; i++) {
-                keys.splice(keys.indexOf(keysToDelete[i]), 1)
-                delete userInv[keysToDelete[i]]
             }
 
             const pageNumber = ((parseInt(args[0]) - 1) || 0)
@@ -41,8 +37,8 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
 
-            console.log(Math.ceil(keys.length / 5))
-            for (var i = 0; i < Math.ceil(keys.length / 5); i++) {
+            console.log(Math.floor(keys.length / 5))
+            for (var i = 0; i < Math.floor(keys.length / 5); i++) {
                 try {
                     console.log(keys)
                     pages.push(keys.splice(0, 5))
@@ -52,7 +48,7 @@ module.exports = {
                 }
             }
 
-            if (keys.length) {
+            if (keys.length > 0) {
                 pages.push(keys)
             }
 

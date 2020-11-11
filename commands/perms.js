@@ -13,38 +13,6 @@ module.exports = {
     category: "moderation",
     adminOnly: false,
     execute(message, args, mention) {
-        const permissions = [
-            'CREATE_INSTANT_INVITE',
-            'KICK_MEMBERS',
-            'BAN_MEMBERS',
-            'MANAGE_CHANNELS',
-            'MANAGE_GUILD',
-            'ADD_REACTIONS',
-            'VIEW_AUDIT_LOG',
-            'VIEW_CHANNEL',
-            'READ_MESSAGES',
-            'SEND_MESSAGES',
-            'SEND_TTS_MESSAGES',
-            'MANAGE_MESSAGES',
-            'EMBED_LINKS',
-            'ATTACH_FILES',
-            'READ_MESSAGE_HISTORY',
-            'MENTION_EVERYONE',
-            'USE_EXTERNAL_EMOJIS',
-            'EXTERNAL_EMOJIS',
-            'CONNECT', // Voice Channel
-            'SPEAK',
-            'MUTE_MEMBERS',
-            'DEAFEN_MEMBERS',
-            'MOVE_MEMBERS',
-            'USE_VAD', // Voice Auto Detection
-            'CHANGE_NICKNAME',
-            'MANAGE_NICKNAMES',
-            'MANAGE_ROLES',
-            'MANAGE_ROLES_OR_PERMISSIONS',
-            'MANAGE_WEBHOOKS',
-            'MANAGE_EMOJIS'
-        ]
         const user = mention? mention:message.client.user
         var userPerms = message.guild.member(user).permissions.toArray()
         if (message.guild.member(user).hasPermission("ADMINISTRATOR")) {
