@@ -158,9 +158,11 @@ client.once("ready", function () {
 		userData[leaders[2][0]].gems += 1
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 
-		client.users.cache.get(leaders[0][0]).send("Congratulations! You got **5 gems** for being **FIRST PLACE** on the world leaderboard!").catch()
-		client.users.cache.get(leaders[1][0]).send("Congratulations! You got **3 gems** for being **SECOND PLACE** on the world leaderboard!").catch()
-		client.users.cache.get(leaders[2][0]).send("Congratulations! You got **1 gem** for being **THIRD PLACE** on the world leaderboard!").catch()
+		//Uncomment to enable congratulation messages
+		
+		//client.users.cache.get(leaders[0][0]).send("Congratulations! You got **5 gems** for being **FIRST PLACE** on the world leaderboard!").catch()
+		//client.users.cache.get(leaders[1][0]).send("Congratulations! You got **3 gems** for being **SECOND PLACE** on the world leaderboard!").catch()
+		//client.users.cache.get(leaders[2][0]).send("Congratulations! You got **1 gem** for being **THIRD PLACE** on the world leaderboard!").catch()
 	})
 
 	schedule.scheduleJob("0 0 * * *", () => {
