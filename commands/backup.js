@@ -18,11 +18,17 @@ module.exports = {
 	execute(message, args, mention) {
         try {
             const filepath = ("../backups/userData/" + Date.now() + ".json")
-            fs.writeFileSync(filepath, "")
-			var pathToFile = path.join("../userData.json")
-			var pathToNewDestination = path.join(filepath)
-            fs.copyFileSync(pathToFile, pathToNewDestination)
-            message.channel.send("Created backup `" + filepath + "` successfully!")
+            fs.writeFile(filepath, "", (err) => {
+                if (err) {
+                    return
+                }
+                
+                var pathToFile = path.join("../userData.json")
+                var pathToNewDestination = path.join(filepath)
+                fs.copyFileSync(pathToFile, pathToNewDestination)
+                message.channel.send("Created backup `" + filepath + "` successfully!")
+            })
+			
 		} catch (error) {
             //pass
             console.error(error)
