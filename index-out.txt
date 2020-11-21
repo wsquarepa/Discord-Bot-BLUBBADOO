@@ -1,0 +1,1 @@
+TypeError: message.channel.createInvite is not a function
