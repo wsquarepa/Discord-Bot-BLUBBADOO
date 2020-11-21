@@ -21,11 +21,12 @@ module.exports = {
             fs.writeFile(filepath, "")
 			var pathToFile = path.join("../userData.json")
 			var pathToNewDestination = path.join(filepath)
-			fs.copyFileSync(pathToFile, pathToNewDestination)
+            fs.copyFileSync(pathToFile, pathToNewDestination)
+            message.channel.send("Created backup `" + filepath + "` successfully!")
 		} catch (error) {
-			//pass
-            console.log("Was not able to make a backup")
+            //pass
             console.error(error)
+            message.channel.send("Was not able to make backup")
 		}
     }
 }
