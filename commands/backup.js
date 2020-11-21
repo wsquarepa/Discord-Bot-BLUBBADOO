@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const functions = require("../jsHelpers/functions")
+const path = require('path')
 
 module.exports = {
     name: 'backup',
