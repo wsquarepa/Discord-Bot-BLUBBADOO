@@ -18,7 +18,7 @@ module.exports = {
 	execute(message, args, mention) {
         try {
             const filepath = ("../backups/" + Date.now() + ".json")
-            fs.writeFile(filepath, "")
+            fs.writeFileSync(filepath, "")
 			var pathToFile = path.join("../userData.json")
 			var pathToNewDestination = path.join(filepath)
             fs.copyFileSync(pathToFile, pathToNewDestination)
