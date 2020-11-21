@@ -19,10 +19,10 @@ module.exports = {
 			var pathToFile = path.join("../userData.json")
 			var pathToNewDestination = path.join("../backups/", Date.now() + ".json")
 			fs.copyFileSync(pathToFile, pathToNewDestination)
-		} catch (e) {
+		} catch (error) {
 			//pass
             console.log("Was not able to make a backup")
-            console.error(e)
+            console.error(error)
 		}
     }
 }
