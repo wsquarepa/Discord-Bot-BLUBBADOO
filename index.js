@@ -106,12 +106,13 @@ client.once("ready", function () {
 		})
 
 	schedule.scheduleJob('0 0 * * *', () => {
-		var pathToFile = path.join(__dirname, "/userData.json")
-		var pathToNewDestination = path.join(__dirname, "/backups/", Date.now() + ".json")
 		try {
+			var pathToFile = path.join("./userData.json")
+			var pathToNewDestination = path.join("./backups/", Date.now() + ".json")
 			fs.copyFileSync(pathToFile, pathToNewDestination)
 		} catch {
 			//pass
+			console.log("Was not able to make a backup")
 		}
 	})
 
