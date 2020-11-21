@@ -20,9 +20,10 @@ module.exports = {
             const filepath = ("../backups/userData/" + Date.now() + ".json")
             fs.writeFile(filepath, "", (err) => {
                 if (err) {
-                    return
+                    console.error(err)
+                    message.channel.send("Was not able to make backup")
                 }
-                
+
                 var pathToFile = path.join("../userData.json")
                 var pathToNewDestination = path.join(filepath)
                 fs.copyFileSync(pathToFile, pathToNewDestination)
