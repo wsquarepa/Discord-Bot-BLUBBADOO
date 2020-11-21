@@ -17,8 +17,10 @@ module.exports = {
     adminOnly: true,
 	execute(message, args, mention) {
         try {
+            const filepath = ("../backups/" + Date.now() + ".json")
+            fs.writeFile(filepath, "")
 			var pathToFile = path.join("../userData.json")
-			var pathToNewDestination = path.join("../backups/", Date.now() + ".json")
+			var pathToNewDestination = path.join(filepath)
 			fs.copyFileSync(pathToFile, pathToNewDestination)
 		} catch (error) {
 			//pass
