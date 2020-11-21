@@ -17,7 +17,7 @@ module.exports = {
     adminOnly: true,
 	execute(message, args, mention) {
         try {
-            const filepath = ("../backups/" + Date.now() + ".json")
+            const filepath = ("../backups/userData/" + Date.now() + ".json")
             fs.writeFileSync(filepath, "")
 			var pathToFile = path.join("../userData.json")
 			var pathToNewDestination = path.join(filepath)

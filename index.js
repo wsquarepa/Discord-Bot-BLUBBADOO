@@ -108,7 +108,7 @@ client.once("ready", function () {
 	schedule.scheduleJob('0 0 * * *', () => {
 		try {
 			var pathToFile = path.join("./userData.json")
-			var pathToNewDestination = path.join("./backups/", Date.now() + ".json")
+			var pathToNewDestination = path.join("./backups/userData/" + Date.now() + ".json")
 			fs.copyFileSync(pathToFile, pathToNewDestination)
 		} catch {
 			//pass
