@@ -23,7 +23,7 @@ module.exports = {
     description: 'Explore for goods!',
     args: false,
     usage: '',
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['find'],
     cooldown: 60,
     category: "economy",

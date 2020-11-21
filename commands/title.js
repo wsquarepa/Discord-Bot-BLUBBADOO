@@ -10,7 +10,7 @@ module.exports = {
 	description: 'Set your title!',
     args: false,
     usage: '[title id]',
-    guildOnly: false,
+    guildOnly: true,
     aliases: [],
     cooldown: 3,
     levelRequirement: 0,

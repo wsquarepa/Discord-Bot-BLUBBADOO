@@ -12,7 +12,13 @@ module.exports = {
     category: "info",
     adminOnly: false,
 	execute(message, args, mention) {
-        const prefix = guildData[message.guild.id].prefix
+        var prefix = ""
+        if (!message.guild) {
+            prefix = "=="
+        } else {
+            prefix = guildData[message.guild.id].prefix
+        }
+        
 		const data = [];
         const { commands } = message.client;
 

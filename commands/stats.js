@@ -17,7 +17,7 @@ module.exports = {
     description: 'See the stats of the bot!',
     args: false,
     usage: '[command name]',
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['polls'],
     cooldown: 2,
     category: "info",

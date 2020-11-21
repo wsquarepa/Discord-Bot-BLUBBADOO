@@ -544,13 +544,13 @@ client.on('message', message => {
 					if (command.category == "economy") {
 						userData[message.author.id].hp -= randomNumber(1, 10)
 					}
-					
+
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_TIMEOUT")
 					embed.setTitle("Error: ")
 					embed.setDescription(`You have to wait ${timeLeftDate.getHours()} hour(s), ${timeLeftDate.getMinutes()} minute(s) and ${timeLeftDate.getSeconds()} more second(s) ` +
-						`before reusing the \`${prefix}${command.name}\` command.` + (command.category == "economy"? "\n As well, since this is an economy command, your health will" + 
-						" still deplete.":""))
+						`before reusing the \`${prefix}${command.name}\` command.` + (command.category == "economy" ? "\n As well, since this is an economy command, your health will" +
+							" still deplete." : ""))
 					embed.setColor("ff0000")
 					return message.channel.send(embed).catch()
 				}
@@ -566,29 +566,32 @@ client.on('message', message => {
 			} catch (error) {
 				console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):")
 				console.error(error);
-				message.channel.createInvite({
-						unique: true,
-						maxAge: 86400
-					}).then(invite => {
-							const embed = new Discord.MessageEmbed()
-							embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
-							embed.setTitle("Execution Failure " + functions.makeid(10) + ":")
-							embed.setDescription(
+				if (message.channel.type != "dm") {
+					message.channel.createInvite({
+							unique: true,
+							maxAge: 86400
+						}).then(invite => {
+								const embed = new Discord.MessageEmbed()
+								embed.setAuthor(message.author.tag + " (" + message.author.id + ")")
+								embed.setTitle("Execution Failure " + functions.makeid(10) + ":")
+								embed.setDescription(
 									`
-				In server: ${message.guild.name + " (" + message.guild.id + ")"} 
-				-> Invite: [Click here](${invite.url} 'Click to join')
-				Channel: \`${message.channel.name + "` (" + message.channel.id + ")"}
-				Message: [Click here](${message.url} 'Click to jump') (${message.id})
-				Executed command: \`${message.content}\`
-				`
-			)
-			embed.setFooter("Check server console for more information.")
-			embed.setColor(functions.globalEmbedColor)
-			errWebhook.send({
-				username: 'Error Reports',
-				embeds: [embed],
-			});
-		}).catch()
+									In server: ${message.guild.name + " (" + message.guild.id + ")"} 
+									-> Invite: [Click here](${invite.url} 'Click to join')
+									Channel: \`${message.channel.name + "` (" + message.channel.id + ")"}
+									Message: [Click here](${message.url} 'Click to jump') (${message.id})
+									Executed command: \`${message.content}\`
+									`
+								)
+								embed.setFooter("Check server console for more information.")
+								embed.setColor(functions.globalEmbedColor)
+								errWebhook.send({
+									username: 'Error Reports',
+									embeds: [embed],
+								});
+							}).catch()
+				}
+				
 		message.channel.send('Command execution error - logged').catch()
 	}
 });
