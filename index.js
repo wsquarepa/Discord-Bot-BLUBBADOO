@@ -105,16 +105,16 @@ client.once("ready", function () {
 			console.log("Custom status go.")
 		})
 
-	schedule.scheduleJob('0 0 * * *', () => {
-		try {
-			var pathToFile = path.join("./userData.json")
-			var pathToNewDestination = path.join("./backups/userData/" + Date.now() + ".json")
-			fs.copyFileSync(pathToFile, pathToNewDestination)
-		} catch {
-			//pass
-			console.log("Was not able to make a backup")
-		}
-	})
+	// schedule.scheduleJob('0 0 * * *', () => {
+	// 	try {
+	// 		var pathToFile = path.join("./userData.json")
+	// 		var pathToNewDestination = path.join("./backups/userData/" + Date.now() + ".json")
+	// 		fs.copyFileSync(pathToFile, pathToNewDestination)
+	// 	} catch {
+	// 		//pass
+	// 		console.log("Was not able to make a backup")
+	// 	}
+	// })
 
 	schedule.scheduleJob("*/30 * * * *", () => {
 		shopData.shopBalance += 500
