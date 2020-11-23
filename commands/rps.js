@@ -20,11 +20,10 @@ module.exports = {
     adminOnly: false,
     execute(message, args, mention) {
         var options = ["rock", "paper", "scissors"]
-        if (args[0] == null) {
+        if (isNaN(parseInt(args[0]))) {
             message.channel.send("Next time, tell me what you want to bet.")
             return false
         }
-        args[0] = args[0].trim()
         if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
             message.channel.send("You can't bet more than you have on hand.")
             return false
