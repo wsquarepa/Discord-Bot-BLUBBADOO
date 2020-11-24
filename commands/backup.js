@@ -11,13 +11,15 @@ module.exports = {
     usage: '',
     guildOnly: false,
     aliases: [],
-    cooldown: 0,
+    cooldown: 60,
     levelRequirement: 0,
     category: "info",
     adminOnly: true,
 	execute(message, args, mention) {
         try {
-            const filepath = ("./backups/userData/" + Date.now() + ".json")
+            const today = new Date()
+            const filepath = ("./backups/userData/" + (today.getMonth() + "-" + today.getDate() + "-" + today.getFullYear() + "_" + 
+            today.getHours() + ":" + today.getMinutes()) + ".json")
             fs.writeFile(filepath, "", (err) => {
                 if (err) {
                     console.error(err)
