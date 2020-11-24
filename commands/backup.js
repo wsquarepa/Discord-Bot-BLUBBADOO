@@ -17,7 +17,7 @@ module.exports = {
     adminOnly: true,
 	execute(message, args, mention) {
         try {
-            const filepath = ("../backups/userData/" + Date.now() + ".json")
+            const filepath = ("./backups/userData/" + Date.now() + ".json")
             fs.writeFile(filepath, "", (err) => {
                 if (err) {
                     console.error(err)
