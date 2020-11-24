@@ -24,7 +24,7 @@ module.exports = {
                     message.channel.send("Was not able to make backup")
                 }
 
-                var pathToFile = path.join("../userData.json")
+                var pathToFile = path.join("./userData.json")
                 var pathToNewDestination = path.join(filepath)
                 fs.copyFileSync(pathToFile, pathToNewDestination)
                 message.channel.send("Created backup `" + filepath + "` successfully!")
