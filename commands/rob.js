@@ -65,7 +65,7 @@ module.exports = {
             userData[message.author.id].cash -= earnings
             userData[mention.id].bank += earnings
             message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack " + mention.username + "! You were fined $" + earnings + ".")
-            mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
+            //mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
             userData[mention.id].account.secured = false
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
             return
@@ -87,7 +87,7 @@ module.exports = {
             userData[message.author.id].cash -= earnings
             userData[mention.id].bank += earnings
             message.channel.send("Ouch! You failed to rob " + mention.username + " and were fined $" + earnings + ".")
-            mention.send("Oh no! " + message.author.username + " **TRIED** to rob you, but failed. You got $" + earnings + "!")
+            //mention.send("Oh no! " + message.author.username + " **TRIED** to rob you, but failed. You got $" + earnings + "!")
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
         }
     }
