@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const functions = require("../jsHelpers/functions")
+const discord = require('discord.js')
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
