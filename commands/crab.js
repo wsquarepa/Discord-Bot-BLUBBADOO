@@ -43,7 +43,7 @@ module.exports = {
         message.channel.send("Okie, crabbing...").then(msg => {
             var chance = randomNumber(0, 3)
             const inGuild = message.channel.type == "dm" ? false : true
-            var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && inGuild ? message.content.startsWith(guildData[message.guild.id].prefix)
+            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id && inGuild ? message.content.startsWith(guildData[message.guild.id].prefix)
             && m.content !== guildData[message.guild.id].prefix + "fish" : message.content.startsWith("==") &&
             m.content !== "==fish")
             collector.on("collect", function () {
