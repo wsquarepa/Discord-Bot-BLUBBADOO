@@ -59,19 +59,20 @@ module.exports = {
 
         userData[message.author.id].inventory.knife.amount -= 1
 
+        if (userData[mention.id].account.secured) {
+            var earnings = userData[message.author.id].cash * 0.5
+            earnings = Math.round(earnings)
+            userData[message.author.id].cash -= earnings
+            userData[mention.id].bank += earnings
+            message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack " + mention.username + "! You were fined $" + earnings + ".")
+            mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
+            userData[mention.id].account.secured = false
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            return
+        }
+
         var randRobNumber = randomNumber(1, 5)
         if (randRobNumber == 1) {
-            if (userData[mention.id].account.secured) {
-                var earnings = userData[message.author.id].cash * 0.5
-                earnings = Math.round(earnings)
-                userData[message.author.id].cash -= earnings
-                userData[mention.id].bank += earnings
-                message.channel.send("Oh No! Their account was secured, and whoops! You couldn't hack " + mention.username + "! You were fined $" + earnings + ".")
-                mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
-                userData[mention.id].account.secured = false
-                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-                return
-            }
             var earnings = userData[mention.id].cash * 0.40
             earnings = Math.round(earnings)
             serData[message.author.id].bank += earnings
