@@ -1,1 +1,1 @@
-TypeError: message.channel.createInvite is not a function
+Error: ENOENT: no such file or directory, copyfile '../userData.json' -> 'backups/userData/1606177047288.json'
