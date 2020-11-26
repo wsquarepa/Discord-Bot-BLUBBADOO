@@ -52,11 +52,14 @@ module.exports = {
                 return false
             }
 
-            message.channel.send("Ok, locking your account...")
-            userData[message.author.id].inventory.lock.amount -= 1
-            userData[message.author.id].account.secured = true
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
-            message.channel.send("Ok, account secured!")
+            message.channel.send("Ok, locking your account... Wait 5 seconds so that people can rob you within these 5 seconds...").then(m => {
+                userData[message.author.id].inventory.lock.amount -= 1
+                setTimeout(function() {
+                    userData[message.author.id].account.secured = true
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    m.edit("Ok, account secured!")
+                }, 5000)
+            })
         } else if (args[0].toLowerCase() == "moneydoubler") {
 
             if (userData[message.author.id].inventory.moneydoubler == null || userData[message.author.id].inventory.moneydoubler.amount < 1) {
