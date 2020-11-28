@@ -99,6 +99,7 @@ module.exports = {
                     embed.addField("Race Win DMs:", personalSettings.raceWinDM? "ON":"OFF")
                     embed.setColor(functions.globalEmbedColor)
                     embed.setFooter((message.guild? guildData[message.guild.id].prefix : "==") + "prof settings help - for help")
+                    message.channel.send(embed)
                 } else {
                     if (args[1].startsWith("h")) {
                         message.channel.send("**PERSONAL SETTINGS HELP** \n" + 
