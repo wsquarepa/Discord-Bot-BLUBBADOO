@@ -105,7 +105,7 @@ module.exports = {
                         message.channel.send("**PERSONAL SETTINGS HELP** \n" + 
                         "*" + (message.guild? guildData[message.guild.id].prefix : "==") + "prof settings robnotif* - Toggle Rob notifications (When people rob you you get a DM) \n" + 
                         "*" + (message.guild? guildData[message.guild.id].prefix : "==") + 
-                        "prof settings racewindm <on|off>* - Toggle Race Win DMS (Server settings will override this) \n")
+                        "prof settings racewindm <on|off>* - Toggle Race Win DMS (Server settings **will not** override this) \n")
                     } else if (args[1] == "robnotif") {
                         if (args[2] == "on") {
                             userData[message.author.id].account.settings.robNotif = true

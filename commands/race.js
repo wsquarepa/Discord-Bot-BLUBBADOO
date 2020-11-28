@@ -98,8 +98,10 @@ module.exports = {
                                     userData[raceCollectorMsg.author.id].cash += 250
                                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                                     if (guildData[message.guild.id].settings.raceCompletionMessage) {
-                                        raceCollectorMsg.author.send("You earn $250 for that race against **" + 
-                                        (raceCollectorMsg.author.id == message.author.id? mention.tag:message.author.tag) + "**. Congratulations!")
+                                        if (userData[message.author.id].account.settings.raceWinDM) {
+                                            raceCollectorMsg.author.send("You earn $250 for that race against **" + 
+                                            (raceCollectorMsg.author.id == message.author.id? mention.tag:message.author.tag) + "**. Congratulations!")
+                                        }
                                     }
                                     editMsg.delete()
                                     raceCollector.stop("Listen end.")
