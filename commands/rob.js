@@ -27,6 +27,7 @@ module.exports = {
     cooldown: 3600,
     category: "economy",
     adminOnly: false,
+    levelRequirement: 5,
 	execute(message, args, mention) {
 
         if (mention == null) {
