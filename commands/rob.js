@@ -24,7 +24,7 @@ module.exports = {
     usage: '<user: @mention>',
     guildOnly: true,
     aliases: ['steal'],
-    cooldown: 120,
+    cooldown: 3600,
     category: "economy",
     adminOnly: false,
 	execute(message, args, mention) {
