@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const discord = require('discord.js')
 const functions = require("../jsHelpers/functions")
+const guildData = require("../guildData.json")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
