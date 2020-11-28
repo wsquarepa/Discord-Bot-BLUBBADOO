@@ -252,7 +252,12 @@ client.on('message', message => {
 								previousAmt: 0,
 								expires: new Date().getTime() + 1000 * 60 * 60 * (24 + 24) //2 Days
 							},
-							title: "none"
+							title: "none",
+							settings: {
+								robNotif: false,
+								raceWinDM: false,
+								peaceful: false
+							}
 						},
 						pet: {},
 						houses: [],
@@ -303,6 +308,14 @@ client.on('message', message => {
 
 				if (!userData[message.author.id].hp) {
 					userData[message.author.id].hp = userData[message.author.id].maxHP
+				}
+
+				if (!userData[message.author.id].account.settings) {
+					userData[message.author.id].account.settings = {
+						robNotif: false,
+						raceWinDM: false,
+						peaceful: false
+					}
 				}
 
 				userData[message.author.id].xp += 1
