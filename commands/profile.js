@@ -17,7 +17,7 @@ module.exports = {
     usage: '[@mention]',
     guildOnly: true,
     aliases: ['prof'],
-    cooldown: 5,
+    cooldown: 2,
     category: "economy",
     adminOnly: false,
     execute(message, args, mention) {
