@@ -41,7 +41,7 @@ module.exports = {
         
         for (i = 0; i < undoneKeys.length; i++) {
             if (!achivementsCopy[undoneKeys[i]].secret) {
-                embed.addField(undoneKeys[i], achivements[undoneKeys[i]].description, true)
+                embed.addField(undoneKeys[i], "||" + achivements[undoneKeys[i]].description + "||", true)
             }
         }
 
