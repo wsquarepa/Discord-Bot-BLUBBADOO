@@ -59,7 +59,11 @@ module.exports = {
                 var footer = "You are #" + userLocation + " of " + keys.length + " users."
 
                 if (userLocation == 0) {
-                    footer = "You don't show on the leaderboard either because you loaned something or you are a bot admin."
+                    if (userData[message.author.id].account.type.toLowerCase() == "admin") {
+                        footer = "You don't show on the leaderboard because you are a bot admin"
+                    } else {
+                        footer = "You don't show on the leaderboard because you loaned something."
+                    }
                 }
 
                 leaders = items.slice(0, 5);
@@ -71,7 +75,7 @@ module.exports = {
                 }
 
                 msg.edit("", embed("THE WORLD'S LEADERS: FIRST 5", leaderString, "2f3237").setFooter(footer).setTimestamp(Date.now()))
-            } else if (args[0].startsWith("team")) {
+            } else if (args[0].startsWith("t")) {
                 var leaders = []
                 var keys = Object.keys(teamData)
                 var dict = {}
@@ -103,7 +107,7 @@ module.exports = {
                 }
 
                 msg.edit("", embed("THE WORLD'S TOP TEAMS: FIRST 5", leaderString, "2f3237").setFooter(footer).setTimestamp(Date.now()))
-            } else if (args[0].startsWith("server")) {
+            } else if (args[0].startsWith("s")) {
                 var leaders = []
                 var keys = Object.keys(userData)
                 var dict = {}
