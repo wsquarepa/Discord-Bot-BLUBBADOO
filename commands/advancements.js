@@ -24,9 +24,9 @@ module.exports = {
             .setColor(functions.globalEmbedColor)
 
         for (var i = 0; i < userAchivements.length; i++) {
-            embed.addField(userAchivements[i], (achivements[userAchivements[i]].hidden? "||":"") + 
+            embed.addField(userAchivements[i], (achivements[userAchivements[i]].secret? "||":"") + 
                 achivements[userAchivements[i]].description + 
-                (achivements[userAchivements[i]].hidden? "||":""), true)
+                (achivements[userAchivements[i]].secret? "||":""), true)
             delete achivementsCopy[userAchivements[i]]
         }
 
