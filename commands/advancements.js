@@ -24,7 +24,9 @@ module.exports = {
             .setColor(functions.globalEmbedColor)
 
         for (var i = 0; i < userAchivements.length; i++) {
-            embed.addField(userAchivements[i], achivements[userAchivements[i]].description, true)
+            embed.addField(userAchivements[i], (achivements[userAchivements[i]].hidden? "||":"") + 
+                achivements[userAchivements[i]].description + 
+                (achivements[userAchivements[i]].hidden? "||":""), true)
             delete achivementsCopy[userAchivements[i]]
         }
 
@@ -41,7 +43,7 @@ module.exports = {
         
         for (i = 0; i < undoneKeys.length; i++) {
             if (!achivementsCopy[undoneKeys[i]].secret) {
-                embed.addField(undoneKeys[i], "||" + achivements[undoneKeys[i]].description + "||", true)
+                embed.addField(undoneKeys[i], achivements[undoneKeys[i]].description, true)
             }
         }
 
