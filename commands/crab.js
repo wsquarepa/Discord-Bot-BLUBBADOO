@@ -3,6 +3,7 @@ const guildData = require('../guildData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const shopData = require('../shop.json')
+const functions = require("../jsHelpers/functions")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -57,7 +58,11 @@ module.exports = {
                 collector.stop()
                 if (chance > 0) {
                     var earnings = randomNumber(100, 750)
-                    msg.edit("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
+                    var embed = new discord.MessageEmbed()
+                    embed.setTitle("Crab Success!")
+                    embed.setDescription("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
+                    embed.setColor(functions.globalEmbedColor)
+                    msg.edit(embed)
                     userData[message.author.id].cash += earnings
                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                 } else {

@@ -54,7 +54,11 @@ module.exports = {
                 collector.stop()
                 if (chance > 0) {
                     var earnings = randomNumber(100, 500)
-                    msg.edit("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FIIIISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
+                    var embed = new discord.MessageEmbed()
+                    embed.setTitle("Fish Success!")
+                    embed.setDescription("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
+                    embed.setColor(functions.globalEmbedColor)
+                    msg.edit(embed)
                     userData[message.author.id].cash += earnings
                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
                 } else {
