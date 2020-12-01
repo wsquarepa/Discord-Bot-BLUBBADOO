@@ -3,6 +3,7 @@ const fs = require('fs');
 const discord = require("discord.js")
 const shopData = require('../shop.json')
 const guildData = require('../guildData.json')
+const functions = require("../jsHelpers/functions")
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
