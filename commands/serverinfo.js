@@ -1,6 +1,13 @@
 const discord = require("discord.js")
 const functions = require("../jsHelpers/functions")
 
+function checkDays(date) {
+    let now = new Date();
+    let diff = now.getTime() - date.getTime();
+    let days = Math.floor(diff / 86400000);
+    return days + (days == 1 ? " day" : " days") + " ago";
+};
+
 module.exports = {
     name: 'serverinfo',
     description: 'Shows information about your server.',
