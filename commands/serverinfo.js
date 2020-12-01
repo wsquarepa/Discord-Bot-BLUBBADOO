@@ -50,10 +50,10 @@ module.exports = {
             .addField("ID", message.guild.id, true)
             .addField("Owner", `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`, true)
             .addField("Region", region[message.guild.region], true)
-            .addField("Channel Size (People able to see channel)", `
-            Total: ${message.guild.members.cache.size}
-            Humans: ${message.guild.members.cache.filter(member => !member.user.bot).size}
-            Bots: ${message.guild.members.cache.filter(member => member.user.bot).size}`, true)
+            // .addField("Channel Size (People able to see channel)", `
+            // Total: ${message.guild.members.cache.size}
+            // Humans: ${message.guild.members.cache.filter(member => !member.user.bot).size}
+            // Bots: ${message.guild.members.cache.filter(member => member.user.bot).size}`, true)
             .addField("Channels", message.guild.channels.cache.size, true)
             .addField("Roles", message.guild.roles.cache.size, true)
             .addField("Verification Level", message.guild.verificationLevel, true)
