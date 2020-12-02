@@ -96,7 +96,7 @@ setInterval(function () {
 client.once("ready", function () {
 	console.log("Bot logged in!")
 	
-	client.user.setActivity('==help | ' + client.guilds.cache.size + ' servers | ' + Object.keys(userData).length + ' users', { type: 'WATCHING' });
+	client.user.setActivity('==help | ' + client.guilds.cache.size + ' servers | ' + Object.keys(userData).length + ' users', { type: 'LISTENING' });
 
 	// schedule.scheduleJob('0 0 * * *', () => {
 	// 	try {
