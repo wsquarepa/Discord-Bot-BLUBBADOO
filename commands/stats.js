@@ -61,7 +61,7 @@ module.exports = {
                 leaderString += guildData[message.guild.id].prefix + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
             }
 
-            message.channel.send(embed("STATS", "**5 most used commands:** \n " + leaderString +
+            message.channel.send(embed("STATS", "**Top 5 most used commands:** \n " + leaderString +
                 "\n **Number of chat messages recieved:** " + botData.messagesRecieved +
                 "\n **Bot Guilds:** " + message.client.guilds.cache.size + 
                 "\n **Version:** " + version, "2f3237"))
@@ -71,7 +71,7 @@ module.exports = {
         const name = args[0].toLowerCase();
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
-        if (!command || command.name == "sudo" || command.name == "reload") {
+        if (command.adminOnly) {
             message.reply('that\'s not a valid command!');
             return false
         }
