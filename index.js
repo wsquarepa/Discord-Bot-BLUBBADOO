@@ -95,16 +95,8 @@ setInterval(function () {
 
 client.once("ready", function () {
 	console.log("Bot logged in!")
-	if (modeOfUser.testMode) client.user.setActivity({
-			name: "In test mode",
-			type: "CUSTOM_STATUS"
-		})
-		.catch(function (error) {
-			console.error(error)
-		})
-		.then(function () {
-			console.log("Custom status go.")
-		})
+	
+	client.user.setActivity('==help | ' + client.guilds.cache.size + ' servers | ' + Object.keys(userData).length + ' users', { type: 'WATCHING' });
 
 	// schedule.scheduleJob('0 0 * * *', () => {
 	// 	try {
