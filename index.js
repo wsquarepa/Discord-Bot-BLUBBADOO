@@ -170,6 +170,10 @@ client.once("ready", function () {
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
 	})
 
+	schedule.scheduleJob("0 0 * * *", () => {
+		client.user.setActivity('==help | ' + client.guilds.cache.size + ' servers | ' + Object.keys(userData).length + ' users', { type: 'LISTENING' });
+	})
+
 	setInterval(() => {
 		const keys = Object.keys(userData)
 		for (var i = 0; i < keys.length; i++) {
