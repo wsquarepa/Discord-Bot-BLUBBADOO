@@ -522,6 +522,10 @@ client.on('message', message => {
 				cooldowns.set(command.name, new Discord.Collection());
 			}
 
+			if (!cooldownwarned.has(command.name)) {
+				cooldownwarned.set(command.name, new Discord.Collection());
+			}
+
 			const levelRequirement = (command.levelRequirement || 0)
 			if (userData[message.author.id].level < levelRequirement) {
 				var embed = new Discord.MessageEmbed()
