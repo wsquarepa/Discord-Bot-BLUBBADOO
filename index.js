@@ -8,6 +8,7 @@ const {
 	botAdmins
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
+const cooldownwarned = new Discord.Collection()
 const client = new Discord.Client();
 var userData = require('./userData.json')
 const modeOfUser = require('../configs/blubbadoo.json')
@@ -546,10 +547,12 @@ client.on('message', message => {
 			}
 
 			const timestamps = cooldowns.get(command.name);
+			const cooldownwarnedtimestamps = cooldownwarned.get(command.name)
 			const cooldownAmount = (command.cooldown || 1) * 1000;
 
 			if (timestamps.has(message.author.id)) {
 				const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+				const cwexptime = cooldownwarnedtimestamps.get(message.author.id) + cooldownAmount
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
@@ -558,6 +561,13 @@ client.on('message', message => {
 					if (command.category == "economy") {
 						userData[message.author.id].hp -= randomNumber(1, 10)
 					}
+
+					if (now < cwexptime) {
+						return
+					}
+
+					cooldownwarnedtimestamps.set(message.author.id, now);
+					setTimeout(() => cooldownwarnedtimestamps.delete(message.author.id), cooldownAmount);
 
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_TIMEOUT")
