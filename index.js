@@ -552,7 +552,6 @@ client.on('message', message => {
 
 			if (timestamps.has(message.author.id)) {
 				const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-				const cwexptime = cooldownwarnedtimestamps.get(message.author.id) + cooldownAmount
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
@@ -562,7 +561,7 @@ client.on('message', message => {
 						userData[message.author.id].hp -= randomNumber(1, 10)
 					}
 
-					if (now < cwexptime) {
+					if (cooldownwarnedtimestamps.has(message.author.id)) {
 						return
 					}
 
