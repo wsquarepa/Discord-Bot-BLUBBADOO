@@ -3,6 +3,7 @@ const botData = require('../botData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const guildData = require('../guildData.json')
+const { version } = require('../package.json')
 
 function embed(title, description, color) {
     var embed = new discord.MessageEmbed()
@@ -62,7 +63,8 @@ module.exports = {
 
             message.channel.send(embed("STATS", "**5 most used commands:** \n " + leaderString +
                 "\n **Number of chat messages recieved:** \n" + botData.messagesRecieved +
-                "\n **Bot Guilds:** " + message.client.guilds.cache.size, "2f3237"))
+                "\n **Bot Guilds:** " + message.client.guilds.cache.size + 
+                "\n **Version:** " + version, "2f3237"))
             return
         }
 
