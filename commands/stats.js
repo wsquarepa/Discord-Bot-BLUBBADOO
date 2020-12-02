@@ -62,7 +62,7 @@ module.exports = {
             }
 
             message.channel.send(embed("STATS", "**5 most used commands:** \n " + leaderString +
-                "\n **Number of chat messages recieved:** \n" + botData.messagesRecieved +
+                "\n **Number of chat messages recieved:** " + botData.messagesRecieved +
                 "\n **Bot Guilds:** " + message.client.guilds.cache.size + 
                 "\n **Version:** " + version, "2f3237"))
             return
