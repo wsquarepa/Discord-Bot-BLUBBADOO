@@ -518,14 +518,6 @@ client.on('message', message => {
 				return;
 			}
 
-			if (!cooldowns.has(command.name)) {
-				cooldowns.set(command.name, new Discord.Collection());
-			}
-
-			if (!cooldownwarned.has(command.name)) {
-				cooldownwarned.set(command.name, new Discord.Collection());
-			}
-
 			const levelRequirement = (command.levelRequirement || 0)
 			if (userData[message.author.id].level < levelRequirement) {
 				var embed = new Discord.MessageEmbed()
@@ -544,6 +536,14 @@ client.on('message', message => {
 				embed.setColor("ff0000")
 				message.channel.send(embed)
 				return
+			}
+
+			if (!cooldowns.has(command.name)) {
+				cooldowns.set(command.name, new Discord.Collection());
+			}
+
+			if (!cooldownwarned.has(command.name)) {
+				cooldownwarned.set(command.name, new Discord.Collection());
 			}
 
 			if (command.category == "economy") {
@@ -570,7 +570,7 @@ client.on('message', message => {
 					}
 
 					cooldownwarnedtimestamps.set(message.author.id, now);
-					setTimeout(() => cooldownwarnedtimestamps.delete(message.author.id), cooldownAmount);
+					setTimeout(() => cooldownwarnedtimestamps.delete(message.author.id), 300);
 
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_TIMEOUT")
