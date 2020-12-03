@@ -566,7 +566,12 @@ client.on('message', message => {
 					}
 
 					cooldownwarnedtimestamps.set(message.author.id, now);
-					setTimeout(() => cooldownwarnedtimestamps.delete(message.author.id), (command.cooldown <= 60? 15000:60000));
+					var timeouttime = (command.cooldown <= 60? 15000:60000)
+					if (command.cooldown <= 10) {
+						timeouttime = cooldownAmount
+					}
+					
+					setTimeout(() => cooldownwarnedtimestamps.delete(message.author.id), timeouttime);
 
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_TIMEOUT")
