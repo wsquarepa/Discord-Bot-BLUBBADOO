@@ -16,7 +16,7 @@ module.exports = {
     usage: '',
     guildOnly: false,
     aliases: [],
-    cooldown: 30,
+    cooldown: 600,
     levelRequirement: 4,
     category: "economy",
     adminOnly: false,
