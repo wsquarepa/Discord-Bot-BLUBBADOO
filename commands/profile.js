@@ -95,6 +95,7 @@ module.exports = {
                     const personalSettings = userData[message.author.id].account.settings
                     var embed = new discord.MessageEmbed()
                     embed.setTitle("Personal Account Settings:")
+                    embed.addField("PEACEFUL MODE: " + personalSettings.peaceful? "ENABLED":"DISABLED")
                     embed.addField("Rob notifications:", personalSettings.robNotif? "ON":"OFF")
                     embed.addField("Race Win DMs:", personalSettings.raceWinDM? "ON":"OFF")
                     embed.setColor(functions.globalEmbedColor)
@@ -103,9 +104,12 @@ module.exports = {
                 } else {
                     if (args[1].startsWith("h")) {
                         message.channel.send("**PERSONAL SETTINGS HELP** \n" + 
-                        "*" + (message.guild? guildData[message.guild.id].prefix : "==") + "profile settings robnotif* - Toggle Rob notifications (When people rob you you get a DM) \n" + 
                         "*" + (message.guild? guildData[message.guild.id].prefix : "==") + 
-                        "profile settings racewindm <on|off>* - Toggle Race Win DMS (Server settings **will not** override this) \n")
+                        "profile settings robnotif* - Toggle Rob notifications (When people rob you you get a DM) \n" + 
+                        "*" + (message.guild? guildData[message.guild.id].prefix : "==") + 
+                        "profile settings racewindm <on|off>* - Toggle Race Win DMS (Server settings **will not** override this) \n" + 
+                        "*" + (message.guild? guildData[message.guild.id].prefix : "==") + 
+                        "profile settings peaceful <ENABLE|DISABLE>* - Must be \"Enable\" or \"Disable\" as this will affect how much you earn from commands. **Not released yet>**")
                     } else if (args[1] == "robnotif") {
                         if (args[2] == "on") {
                             userData[message.author.id].account.settings.robNotif = true
