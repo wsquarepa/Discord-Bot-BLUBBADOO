@@ -51,11 +51,6 @@ module.exports = {
             return false
         }
 
-        if (mention.presence.status == "offline") {
-            message.channel.send("There's no point trying to race someone offline; they won't be able to say \"yes\".")
-            return false
-        }
-
         message.channel.send("Are you ready, <@" + mention.id + ">?")
         const collector = new discord.MessageCollector(message.channel, m => m.author.id == mention.id, {
             time: 10000,

@@ -46,11 +46,6 @@ module.exports = {
                 return false;
             }
 
-            if (mention.presence.status == "offline") {
-                message.channel.send("You can't fight someone offline")
-                return false
-            }
-
             if (userData[mention.id].account.type.toLowerCase() == "admin") {
                 message.channel.send("To make it fair, you can't fight bot admins as they have indefinate money.")
                 return false;
