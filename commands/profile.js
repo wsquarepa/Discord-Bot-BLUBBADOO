@@ -95,7 +95,7 @@ module.exports = {
                     const personalSettings = userData[message.author.id].account.settings
                     var embed = new discord.MessageEmbed()
                     embed.setTitle("Personal Account Settings:")
-                    embed.addField("PEACEFUL MODE: " + personalSettings.peaceful? "ENABLED":"DISABLED")
+                    embed.addField("PEACEFUL MODE: ", personalSettings.peaceful? "ENABLED":"DISABLED")
                     embed.addField("Rob notifications:", personalSettings.robNotif? "ON":"OFF")
                     embed.addField("Race Win DMs:", personalSettings.raceWinDM? "ON":"OFF")
                     embed.setColor(functions.globalEmbedColor)
