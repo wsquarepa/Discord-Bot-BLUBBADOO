@@ -22,6 +22,9 @@ const execSync = require('child_process').execSync
 var guildData = require("./guildData.json")
 const errWebhook = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS-2uN7rucTK6UZl6xh0FgHqLoFXPm2_HJ6LNYDBBTDcTna2N8OYm1ZTmZ");
 const functions = require("./jsHelpers/functions")
+const DBL = require("dblapi.js")
+const dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5NjcxNTExMTUxMTQ5MDU2MCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTk1NzgxOTAxfQ.bbb9DPH39Q2roE1jKpRxZNMnzyFJQ_ivLJTxoB10cv4',
+					message.client);
 
 function isEmpty(obj) {
 	for (var key in obj) {
@@ -97,6 +100,7 @@ client.once("ready", function () {
 	console.log("Bot logged in!")
 	
 	client.user.setActivity('==help | ' + client.guilds.cache.size + ' servers | ' + Object.keys(userData).length + ' users', { type: 'LISTENING' });
+	dbl.postStats(client.guilds.cache.size)
 
 	// schedule.scheduleJob('0 0 * * *', () => {
 	// 	try {
@@ -172,6 +176,7 @@ client.once("ready", function () {
 
 	schedule.scheduleJob("0 0 * * *", () => {
 		client.user.setActivity('==help | ' + client.guilds.cache.size + ' servers | ' + Object.keys(userData).length + ' users', { type: 'LISTENING' });
+		dbl.postStats(client.guilds.cache.size)
 	})
 
 	setInterval(() => {

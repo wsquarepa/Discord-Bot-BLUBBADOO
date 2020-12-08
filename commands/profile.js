@@ -109,7 +109,7 @@ module.exports = {
                         "*" + (message.guild? guildData[message.guild.id].prefix : "==") + 
                         "profile settings racewindm <on|off>* - Toggle Race Win DMS (Server settings **will not** override this) \n" + 
                         "*" + (message.guild? guildData[message.guild.id].prefix : "==") + 
-                        "profile settings peaceful <ENABLE|DISABLE>* - Must be \"Enable\" or \"Disable\" as this will affect how much you earn from commands. **Not released yet>**")
+                        "profile settings peaceful <ENABLE|DISABLE>* - Must be \"Enable\" or \"Disable\" as this will affect how much you earn from commands. **<Not released yet>**")
                     } else if (args[1] == "robnotif") {
                         if (args[2] == "on") {
                             userData[message.author.id].account.settings.robNotif = true
