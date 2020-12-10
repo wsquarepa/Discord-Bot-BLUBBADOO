@@ -24,7 +24,7 @@ const errWebhook = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS
 const functions = require("./jsHelpers/functions")
 const DBL = require("dblapi.js")
 const dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5NjcxNTExMTUxMTQ5MDU2MCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTk1NzgxOTAxfQ.bbb9DPH39Q2roE1jKpRxZNMnzyFJQ_ivLJTxoB10cv4', client);
-const shardId = 0
+var shardId = 0
 
 function isEmpty(obj) {
 	for (var key in obj) {
