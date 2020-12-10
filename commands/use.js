@@ -38,7 +38,7 @@ module.exports = {
             var earnings = randomNumber(1000, 2000) * args[1]
             userData[message.author.id].cash += earnings
             message.channel.send("Congrats, you earned $" + earnings + " from " + (args[1] > 1 ? "those" : "that") + " " + args[0] + (args[1] > 1 ? "s" : "") + ".")
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
         } else if (args[0].toLowerCase() == "lock") {
 
             if (userData[message.author.id].account.secured == true) {
@@ -56,7 +56,7 @@ module.exports = {
                 userData[message.author.id].inventory.lock.amount -= 1
                 setTimeout(function() {
                     userData[message.author.id].account.secured = true
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                     m.edit("Ok, account secured!")
                 }, 5000)
             })
@@ -78,7 +78,7 @@ module.exports = {
                     message.channel.send("Ok, doubling your **cash**...")
                     userData[message.author.id].inventory.moneydoubler.amount -= 1
                     userData[message.author.id].cash += userData[message.author.id].cash
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                     message.channel.send("Ok, action complete!")
                 } else {
                     message.channel.send("Welp, maybe sometime else huh?")
@@ -136,7 +136,7 @@ module.exports = {
                     msg.edit("", {
                         embed: embed
                     })
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                 }, 2500)
             })
         } else if (args[0].toLowerCase() == "healthpot") {
@@ -148,7 +148,7 @@ module.exports = {
             userData[message.author.id].inventory.healthpot.amount -= 1
             userData[message.author.id].hp = userData[message.author.id].maxHP
             message.channel.send("Success!")
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
         }
     }
 }

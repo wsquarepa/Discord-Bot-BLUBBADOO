@@ -30,7 +30,7 @@ module.exports = {
     },
 
     save: function save(filePath, object) {
-        fs.writeFile(filePath, JSON.stringify(object), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile(filePath, JSON.stringify(object), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
     },
 
     shuffle: function shuffle(array) {

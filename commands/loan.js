@@ -59,7 +59,7 @@ module.exports = {
             if (userData[message.author.id].loan.amount <= 0) {
                 userData[message.author.id].loan = {}
             }
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
             
             embed.setTitle("Complete!")
             embed.setDescription("You paid off " + paypercent + "% of your loan!")
@@ -92,7 +92,7 @@ module.exports = {
             userData[message.author.id].loan.amount = (amount * 1.07).toFixed(0)
             userData[message.author.id].loan.expires = Date.now() + (1000 * 60 * 60 * 24) //one day
             userData[message.author.id].cash += amount
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 
             embed.setTitle("Success!")
             embed.setDescription("You loaned $" + amount + " from the bank!")

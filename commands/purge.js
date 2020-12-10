@@ -30,20 +30,20 @@ module.exports = {
                 args[0] = 100
             }
 
-            console.log(args[0])
+            console.log("[DEBUG/SHARD] " + args[0])
 
             var times = -1
-            console.log(args[0] > 100)
+            console.log("[DEBUG/SHARD] " + args[0] > 100)
             if (args[0] > 100) {
                 times = (args[0] - (args[0] % 100)) / 100
             }
 
-            console.log(times)
+            console.log("[DEBUG/SHARD] " + times)
 
             if (times == -1) {
-                console.log("times 1 called")
+                console.log("[DEBUG/SHARD] " + "Nagative Times Called")
                 message.channel.bulkDelete(args[0], true).catch(function (error) {
-                    console.error(error)
+                    console.error("[ERROR/SHARD] " + error)
                     message.channel.send("Uh oh, it seems like I don't have permissions to do that!")
                 }).then(function (messages) {
                     message.channel.send((messages.size == 0 ? 1 : messages.size) + " message(s) deleted!").then(m => m.delete({

@@ -54,12 +54,13 @@ for (const file of commandFiles) {
 		}
 	}
 	if (botData != "" || botData != null || !isEmpty(botData)) {
-		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 	}
 }
 
 process.on("uncaughtException", function (error) {
 	fs.writeFileSync("./index-out.txt", error)
+	console.error("[ERROR/SHARD] " + error)
 	const embed = new Discord.MessageEmbed()
 	embed.setTitle("Uncaught exception " + functions.makeid(10) + ":")
 	embed.setDescription(
@@ -93,11 +94,11 @@ setInterval(function () {
 			shopData[shopKeys[i]].stock.nextRestock = -1
 		}
 	}
-	fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error(err) : null)
+	fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 }, 1000)
 
 client.once("ready", function () {
-	console.log("Bot logged in!")
+	console.log("[DEBUG/SHARD] Bot logged in!")
 	
 	client.shard.fetchClientValues('guilds.cache.size')
 		.then(results => {
@@ -105,7 +106,7 @@ client.once("ready", function () {
 			client.user.setActivity('==help | ' + guilds + ' servers | ' + Object.keys(userData).length + ' users | Shard ' + shardId, { type: 'LISTENING' });
 			dbl.postStats(guilds)
 		})
-		.catch(console.error);
+		.catch(error => console.error("[ERROR/SHARD] " + error));
 
 	// schedule.scheduleJob('0 0 * * *', () => {
 	// 	try {
@@ -146,7 +147,7 @@ client.once("ready", function () {
 		userData[leaders[0][0]].gems += 5
 		userData[leaders[1][0]].gems += 3
 		userData[leaders[2][0]].gems += 1
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 
 		//Uncomment to enable congratulation messages
 
@@ -172,7 +173,7 @@ client.once("ready", function () {
 			}
 		}
 
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 	})
 
 	schedule.scheduleJob("0 0 * * *", () => {
@@ -182,7 +183,7 @@ client.once("ready", function () {
 				client.user.setActivity('==help | ' + guilds + ' servers | ' + Object.keys(userData).length + ' users | Shard ' + shardId , { type: 'LISTENING' });
 				dbl.postStats(guilds)
 			})
-			.catch(console.error);
+			.catch(err => console.error("[ERROR/SHARD] " + err));
 	})
 
 	setInterval(() => {
@@ -201,7 +202,7 @@ client.once("ready", function () {
 			}
 
 		}
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 	}, 60000)
 
 	setInterval(() => {
@@ -211,7 +212,7 @@ client.once("ready", function () {
 				userData[keys[i]].hp += 1
 			}
 		}
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 	}, 1000)
 })
 
@@ -223,7 +224,7 @@ client.on('message', message => {
 
 			botData.messagesRecieved++
 			if (botData != "" || botData != null || !isEmpty(botData)) {
-				fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+				fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 			}
 
 			if (message.channel.type != "dm") {
@@ -455,7 +456,7 @@ client.on('message', message => {
 					}
 				}
 
-				fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+				fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 			}
 
 			var prefix = "=="
@@ -500,7 +501,7 @@ client.on('message', message => {
 			botData[command.name].uses++
 			botData[command.name].lastUsed = now
 			if (botData != "" || botData != null || !isEmpty(botData)) {
-				fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error(err) : null)
+				fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 			}
 			//#endregion
 
@@ -603,8 +604,8 @@ client.on('message', message => {
 					setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 				}
 			} catch (error) {
-				console.error("Execution failed for " + message.author.tag + " (" + message.author.id + "):")
-				console.error(error);
+				console.error("[ERROR/SHARD] Execution failed for " + message.author.tag + " (" + message.author.id + "):")
+				console.error("[ERROR/SHARD] " + error);
 				if (message.channel.type != "dm") {
 					message.channel.createInvite({
 							unique: true,

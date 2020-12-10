@@ -10,4 +10,4 @@ for (var i = 0; i < 1000; i++) {
 }
 
 functions.save("./mathquestions.json", mathQuestions)
-console.log("Compile complete")
+console.log("[DEBUG/GENERATOR] Compile complete")

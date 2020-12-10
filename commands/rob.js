@@ -70,7 +70,7 @@ module.exports = {
                 mention.send("Oh no! " + message.author.username + " robbed you, but failed because your account is locked. You got $" + earnings + "!")
             }
             userData[mention.id].account.secured = false
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
             return
         }
 
@@ -84,7 +84,7 @@ module.exports = {
                 mention.send("Oh no! " + message.author.username + " robbed you, and earned $" + earnings + " off of you!")
             }
             message.channel.send("You successfully robbed " + mention.username + " and earned $" + earnings)
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
             functions.giveAchivement(message, "Robber")
         } else {
             var earnings = userData[message.author.id].cash * 0.5
@@ -95,7 +95,7 @@ module.exports = {
             if (userData[mention.id].account.settings.robNotif) {
                 mention.send("Oh no! " + message.author.username + " **TRIED** to rob you, but failed. You got $" + earnings + "!")
             }
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
         }
     }
 }

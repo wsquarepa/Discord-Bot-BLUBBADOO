@@ -29,10 +29,10 @@ module.exports = {
             }
         }
 
-        console.log(pages)
+        console.log("[DEBUG/SHARD] " + pages)
 
         var page = (args[0] == null? 0:parseInt(args[0]) - 1)
-        console.log(page)
+        console.log("[DEBUG/SHARD] " + page)
         keys = pages[page]
         if (!keys) {
             message.channel.send("That page doesn't exist.")

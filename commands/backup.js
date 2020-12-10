@@ -22,7 +22,7 @@ module.exports = {
                 today.getHours() + ":" + today.getMinutes()) + ".json")
             fs.writeFile(userDataFilePath, "", (err) => {
                 if (err) {
-                    console.error(err)
+                    console.error("[ERROR/SHARD] " + err)
                     message.channel.send("Was not able to make backup")
                 }
 
@@ -35,7 +35,7 @@ module.exports = {
                     today.getHours() + ":" + today.getMinutes()) + ".json")
                 fs.writeFile(botDataFilePath, "", (err) => {
                     if (err) {
-                        console.error(err)
+                        console.error("[ERROR/SHARD] " + err)
                         message.channel.send("Was not able to make backup")
                     }
 
@@ -48,7 +48,7 @@ module.exports = {
 
         } catch (error) {
             //pass
-            console.error(error)
+            console.error("[ERROR/SHARD] " + error)
             message.channel.send("Was not able to make backup")
         }
     }

@@ -45,7 +45,7 @@ module.exports = {
                 }
             }
             userData[message.author.id].account.title = tag
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
             message.channel.send("Successfully set tag to: `" + tag + "`")
         }
     }

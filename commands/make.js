@@ -26,7 +26,7 @@ module.exports = {
         const earnings = randomNumber(100, 1000) * userData[message.author.id].intellegencePoints
 
         userData[message.author.id].cash += earnings
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
         var embed = new discord.MessageEmbed()
         embed.setTitle("Make Success!")
         embed.setDescription("You made a " + making + " and sold it for $" + earnings + "!")

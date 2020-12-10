@@ -69,7 +69,7 @@ module.exports = {
                         "\n **Bot Servers:** " + guilds + 
                         "\n **Version:** " + version, "2f3237"))
                 })
-                .catch(console.error);
+                .catch(error => console.error("[ERROR/SHARD] " + error));
             return
         }
 

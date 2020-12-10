@@ -56,7 +56,7 @@ module.exports = {
                             setTimeout(function () {
                                 msg.edit("GOOOOOOO")
                                 var sentence = sentencer.make("{{an_adjective}} {{noun}}")
-                                console.log(sentence)
+                                console.log("[DEBUG/LOG] " + sentence)
                                 var revealed = []
                                 var sentenceList = sentence.split("")
                                 for (var i = 0; i < sentence.length; i++) {
@@ -86,7 +86,7 @@ module.exports = {
                                         messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
                                         userData[messageCollected.author.id].cash += 250
                                         functions.giveAchivement(messageCollected, "Sentencer")
-                                        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                                        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                                         guessCollect.stop("Game end")
                                         clearInterval(changer)
                                     } else {

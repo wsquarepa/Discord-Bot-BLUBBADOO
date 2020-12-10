@@ -61,7 +61,7 @@ module.exports = {
                     embed.setColor(functions.globalEmbedColor)
                     msg.edit(embed)
                     userData[message.author.id].cash += earnings
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                 } else {
                     if (chance == -1) {
                         return;

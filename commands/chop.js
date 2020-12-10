@@ -47,7 +47,7 @@ module.exports = {
             }
         }
 
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 
         message.channel.send("You got " + wood + " pieces of wood from that tree.")
     }

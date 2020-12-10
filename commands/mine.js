@@ -74,7 +74,7 @@ module.exports = {
             }
         }
 
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
 
         message.channel.send(createEmbed("Total earnings:", `
         **Iron:** ${iron}

@@ -121,8 +121,8 @@ module.exports = {
 
                                 message.channel.send("Creation successfull!")
                                 collector.stop()
-                                fs.writeFile("./teams.json", JSON.stringify(teamData), (err) => err !== null ? console.error(err) : null)
-                                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                                fs.writeFile("./teams.json", JSON.stringify(teamData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+                                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                             } else {
                                 message.channel.send("Cancelled.")
                                 collector.stop()
@@ -151,8 +151,8 @@ module.exports = {
                     teamData[args[1]].members.push(message.author.id)
 
                     message.channel.send("You joined the " + teamData[args[1]].name)
-                    fs.writeFile("./teams.json", JSON.stringify(teamData), (err) => err !== null ? console.error(err) : null)
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                    fs.writeFile("./teams.json", JSON.stringify(teamData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                 }
             } else {
                 console.log("show called")
@@ -258,7 +258,7 @@ module.exports = {
                     team.money -= parseInt(args[1])
                     userData[message.author.id].cash += parseInt(args[1])
                 }
-                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
                 message.channel.send("You withdrew " + (args[1] != "all" ? `$${args[1]}` : "all the money") + " from the team.")
             } else if (args[0] == "ban") {
 
@@ -569,7 +569,7 @@ module.exports = {
             }
         }
 
-        fs.writeFile("./teams.json", JSON.stringify(teamData), (err) => err !== null ? console.error(err) : null)
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error(err) : null)
+        fs.writeFile("./teams.json", JSON.stringify(teamData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
     }
 }
