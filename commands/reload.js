@@ -11,10 +11,6 @@ module.exports = {
     category: "info",
     adminOnly: true,
 	execute(message, args, mention) {
-		const commandName = args[0].toLowerCase();
-		const command = message.client.commands.get(commandName)
-			|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
 		if (!args.length) {
 			message.channel.send("Are you sure you want to stop the process, <@" + message.author.id + ">? This will clear all cooldowns.")
 			const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 10000})
@@ -32,6 +28,10 @@ module.exports = {
 			})
 			return;
 		}
+
+		const commandName = args[0].toLowerCase();
+		const command = message.client.commands.get(commandName)
+			|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 		if (!command) {
 			message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
