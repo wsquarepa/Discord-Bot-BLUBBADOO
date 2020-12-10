@@ -118,10 +118,6 @@ client.once("ready", function () {
 	// 	}
 	// })
 
-	schedule.scheduleJob("*/30 * * * *", () => {
-		shopData.shopBalance += 500
-	})
-
 	schedule.scheduleJob('0 0 * * 0', () => {
 		var leaders = []
 		var keys = Object.keys(userData)
