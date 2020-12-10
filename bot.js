@@ -644,7 +644,6 @@ process.on("message", message => {
     if (!message.type) return false;
 
     if (message.type == "shardId") {
-		console.log(`[DEBUG/SHARD] The shard id is: ${message.data.shardId}`);
 		shardId = message.data.shardId
     };
 });
