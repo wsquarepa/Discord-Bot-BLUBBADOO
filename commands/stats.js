@@ -61,10 +61,15 @@ module.exports = {
                 leaderString += guildData[message.guild.id].prefix + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
             }
 
-            message.channel.send(embed("STATS", "**Top 5 most used commands:** \n " + leaderString +
-                "\n **Number of chat messages recieved:** " + botData.messagesRecieved +
-                "\n **Bot Guilds:** " + message.client.guilds.cache.size + 
-                "\n **Version:** " + version, "2f3237"))
+            client.shard.fetchClientValues('guilds.cache.size')
+                .then(results => {
+                    const guilds = results.reduce((acc, guildCount) => acc + guildCount, 0)
+                    message.channel.send(embed("STATS", "**Top 5 most used commands:** \n " + leaderString +
+                        "\n **Number of chat messages recieved:** " + botData.messagesRecieved +
+                        "\n **Bot Servers:** " + guilds + 
+                        "\n **Version:** " + version, "2f3237"))
+                })
+                .catch(console.error);
             return
         }
 
