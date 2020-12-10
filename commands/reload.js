@@ -28,6 +28,13 @@ module.exports = {
 			return;
 		}
 
+		if (!isNaN(parseInt(args[0]))) {
+			const shardId = parseInt(args[0])
+			if (message.client.shard.ids.includes(shardId)) {
+				message.client.shard.broadcastEval('if (this.shard.ids.includes(' + shardId + ')) process.exit();');
+			}
+		}
+
 		const commandName = args[0].toLowerCase();
 		const command = message.client.commands.get(commandName)
 			|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
