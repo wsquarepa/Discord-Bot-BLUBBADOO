@@ -98,8 +98,6 @@ setInterval(function () {
 }, 1000)
 
 client.once("ready", function () {
-	console.log("[DEBUG/SHARD] Bot logged in!")
-	
 	client.shard.fetchClientValues('guilds.cache.size')
 		.then(results => {
 			const guilds = results.reduce((acc, guildCount) => acc + guildCount, 0)
@@ -107,17 +105,6 @@ client.once("ready", function () {
 			dbl.postStats(guilds)
 		})
 		.catch(error => console.error("[ERROR/SHARD] " + error));
-
-	// schedule.scheduleJob('0 0 * * *', () => {
-	// 	try {
-	// 		var pathToFile = path.join("./userData.json")
-	// 		var pathToNewDestination = path.join("./backups/userData/" + Date.now() + ".json")
-	// 		fs.copyFileSync(pathToFile, pathToNewDestination)
-	// 	} catch {
-	// 		//pass
-	// 		console.log("Was not able to make a backup")
-	// 	}
-	// })
 
 	schedule.scheduleJob('0 0 * * 0', () => {
 		var leaders = []
@@ -148,12 +135,6 @@ client.once("ready", function () {
 		userData[leaders[1][0]].gems += 3
 		userData[leaders[2][0]].gems += 1
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
-
-		//Uncomment to enable congratulation messages
-
-		//client.users.cache.get(leaders[0][0]).send("Congratulations! You got **5 gems** for being **FIRST PLACE** on the world leaderboard!").catch()
-		//client.users.cache.get(leaders[1][0]).send("Congratulations! You got **3 gems** for being **SECOND PLACE** on the world leaderboard!").catch()
-		//client.users.cache.get(leaders[2][0]).send("Congratulations! You got **1 gem** for being **THIRD PLACE** on the world leaderboard!").catch()
 	})
 
 	schedule.scheduleJob("0 0 * * *", () => {
