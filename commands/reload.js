@@ -10,6 +10,24 @@ module.exports = {
     category: "info",
     adminOnly: true,
 	execute(message, args, mention) {
+		if (!args.length) {
+			message.channel.send("Are you sure you want to stop the process, <@" + message.author.id + ">? This will clear all cooldowns.")
+			const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 10000})
+			collector.on('collect', (msg) => {
+				collector.stop()
+				if (msg.content.startsWith("y")) {
+					message.channel.send("Process ending in 5 seconds...").then(() => {
+						setTimeout(() => {
+							process.exit()
+						}, 5000);	
+					})
+				} else {
+					message.channel.send("Process continuing.")
+				}
+			})
+			return;
+		}
+
 		const commandName = args[0].toLowerCase();
 		const command = message.client.commands.get(commandName)
 			|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
