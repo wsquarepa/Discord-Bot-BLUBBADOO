@@ -87,7 +87,7 @@ module.exports = {
 
                 if (!item) {
                     item = {
-                        image: "?"
+                        image: "[?] "
                     }
                 }
                 

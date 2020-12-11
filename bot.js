@@ -613,7 +613,13 @@ client.on('message', message => {
 							}).catch()
 				}
 				
-		message.channel.send('Command execution error - logged').catch()
+		const embedErrorToUser = new Discord.MessageEmbed()
+			.setTitle("Uh oh!")
+			.setDescription("There was an issue executing that command!")
+			.setColor(functions.globalEmbedColor)
+			.setFooter("My developers have recieved a notification.")
+			.setTimestamp(Date.now())
+		message.channel.send(embedErrorToUser).catch()
 	}
 });
 
