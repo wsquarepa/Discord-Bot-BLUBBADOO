@@ -33,7 +33,7 @@ module.exports = {
             console.log("[DEBUG/SHARD] Amount to purge: " + args[0])
 
             var times = -1
-            console.log("[DEBUG/SHARD] Greater than 100: " + args[0] > 100)
+            console.log("[DEBUG/SHARD] Greater than 100: " + (args[0] > 100))
             if (args[0] > 100) {
                 times = (args[0] - (args[0] % 100)) / 100
             }
