@@ -2,8 +2,6 @@ const { ShardingManager } = require('discord.js');
 const { token } = require("./config.json")
 const manager = new ShardingManager('./bot.js', { token: token });
 
-manager.spawn().catch(error => console.error(`[ERROR/MASTER] Shard failed to spawn.`));
-
 manager.on("shardCreate", shard => {
     // Listeing for the ready event on shard.
     shard.on("ready", () => {
@@ -12,3 +10,6 @@ manager.on("shardCreate", shard => {
         shard.send({type: "shardId", data: {shardId: shard.id}});
     });
 });
+
+manager.spawn("auto") //Set automatic amount of shards to spawn
+    .catch(error => console.error(`[ERROR/MASTER] Shard failed to spawn.`));
