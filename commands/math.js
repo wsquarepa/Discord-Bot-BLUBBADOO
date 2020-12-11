@@ -32,7 +32,7 @@ module.exports = {
                 const question = keys[functions.randomNumber(0, keys.length - 1)]
 
                 message.channel.send("What is " + question + "?")
-                console.log("[DEBUG/SHARD] " + message.author.tag + "'s impossible math question's answer: " + impQuestions[question])
+                console.log("[SHARD/DEBUG] " + message.author.tag + "'s impossible math question's answer: " + impQuestions[question])
                 const collector = new discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {
                     time: 10000,
                     maxMatches: 1
@@ -63,7 +63,7 @@ module.exports = {
                         userData[message.author.id].cash -= losings
                     }
     
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
                 })
                 collector.on('end', function (collectMsgs) {
                     if (collectMsgs.size < 1) {
@@ -109,7 +109,7 @@ module.exports = {
                     userData[message.author.id].cash -= losings
                 }
 
-                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
             })
             collector.on('end', function (collectMsgs) {
                 if (collectMsgs.size < 1) {

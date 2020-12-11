@@ -81,6 +81,6 @@ module.exports = {
             userData[message.author.id].cash -= args[1]
             message.channel.send("Spectacular! You **LOST**! It flipped " + otherPossibility)
         }
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }

@@ -105,7 +105,7 @@ module.exports = {
                     return false
                 }
                 userData[message.author.id].cash += earnings
-                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+                fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
                 return
             } else {
                 message.channel.send("You do realize that that's not a choice.")

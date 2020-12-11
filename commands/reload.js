@@ -48,7 +48,7 @@ module.exports = {
 				msg.delete({timeout: 2500})
 			});
 		} catch (error) {
-			console.log("[ERROR/SHARD] " + error);
+			console.log("[SHARD/ERROR] " + error);
 			message.channel.send(`There was an error while reloading a command \`${command.name}\`:\n\`${error.message}\``);
 		}
 	},

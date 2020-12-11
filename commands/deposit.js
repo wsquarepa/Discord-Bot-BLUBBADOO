@@ -34,7 +34,7 @@ module.exports = {
             userData[message.author.id].bank += parseInt(args[0])
             userData[message.author.id].cash -= parseInt(args[0])
         }
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
         message.channel.send("You deposited " + (args[0] != "all" ? `$${args[0]}` : "all your money") + " to the bank.")
     }
 }

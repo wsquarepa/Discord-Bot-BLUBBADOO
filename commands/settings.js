@@ -124,6 +124,6 @@ module.exports = {
             "*" + guildData[message.guild.id].prefix + "settings prefix <prefix>* - set server prefix \n" + 
             "*" + guildData[message.guild.id].prefix + "settings messages <levelup | moneyexceed | racecompletion | achievements | **ALL**> <on | off>* - toggle messages")
         }
-        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }

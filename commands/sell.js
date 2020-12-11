@@ -70,7 +70,7 @@ module.exports = {
         }
         userData[message.author.id].inventory[itemName].amount -= amount
         message.channel.send("You sold " + amount + " " + itemName + "(s) for " + (gems? "💎 ":"$") + earnings)
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
-        fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+        fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }

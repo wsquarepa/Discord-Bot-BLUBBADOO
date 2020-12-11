@@ -40,6 +40,6 @@ module.exports = {
         embed.setFooter(`Streak: ${streakText}. (+$${userData[message.author.id].account.daily.previousAmt})`)
         message.channel.send(embed)
         userData[message.author.id].account.daily.expires = new Date().getTime() + 1000 * 60 * 60 * (24 + 24)
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }

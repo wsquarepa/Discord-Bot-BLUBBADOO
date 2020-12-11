@@ -26,7 +26,7 @@ module.exports = {
         }
 
         delete guildData[message.guild.id].warnings[args[0]]
-        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
         message.channel.send("Warning `" + args[0] + "` deleted!")
     }
 }

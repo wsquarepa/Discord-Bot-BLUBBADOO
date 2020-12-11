@@ -45,7 +45,7 @@ module.exports = {
         userData[mention.id].bank += cashAmt
         userData[message.author.id].cash -= cashAmt
 
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 
         message.channel.send("Successfully gave " + mention.username + " $" + cashAmt + ". It is now in their bank.")
     }

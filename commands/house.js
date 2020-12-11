@@ -92,7 +92,7 @@ Type \`1\`, \`2\`, \`3\` or \`cancel\` into the chat.
             var number = 0
 
             collector.on('collect', (msg) => {
-                console.log("[DEBUG/SHARD] " + msg.content)
+                console.log("[SHARD/DEBUG] " + msg.content)
                 if (parseInt(msg.content)) {
                     number = parseInt(msg.content)
                 }

@@ -41,6 +41,6 @@ module.exports = {
         var earnings = randomNumber(50, 200)
         userData[message.author.id].cash += earnings
         message.channel.send(`You successfully hunt a ${animal} and earn $${earnings}!`)
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }

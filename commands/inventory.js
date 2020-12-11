@@ -37,14 +37,14 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your inventory:")
 
-            console.log("[DEBUG/SHARD] " + Math.floor(keys.length / 5))
+            console.log("[SHARD/DEBUG] " + Math.floor(keys.length / 5))
             for (i = 0; i <= Math.floor(keys.length / 5); i++) {
                 try {
-                    console.log("[DEBUG/SHARD] " + keys)
+                    console.log("[SHARD/DEBUG] " + keys)
                     pages.push(keys.splice(0, 5))
                 } catch {
                     //pass
-                    console.log("[DEBUG/SHARD] " + "Push Passed in iteration " + (i + 1))
+                    console.log("[SHARD/DEBUG] " + "Push Passed in iteration " + (i + 1))
                 }
             }
 
@@ -52,7 +52,7 @@ module.exports = {
                 pages.push(keys)
             }
 
-            console.log("[DEBUG/SHARD] " + pages)
+            console.log("[SHARD/DEBUG] " + pages)
 
             if (!pages[0]) {
                 embed.setDescription("You have nothing!")

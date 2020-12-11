@@ -38,7 +38,7 @@ module.exports = {
             reason: reason,
             moderator: message.author.id
         }
-        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./guildData.json", JSON.stringify(guildData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 
         mention.send("You were warned in **" + message.guild.name + "** for: `" + reason + "`.")
         message.channel.send("**" + mention.tag + "** has been warned for: `" + reason + "`")

@@ -28,6 +28,6 @@ module.exports = {
         embed.setDescription(`You got $${earnings} from working as a ${workType}!`)
         embed.setColor(functions.globalEmbedColor)
         message.channel.send(embed)
-        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }

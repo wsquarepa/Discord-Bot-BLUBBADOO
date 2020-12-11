@@ -47,8 +47,8 @@ module.exports = {
                 }
             }
 
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
-            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
             var embed = new discord.MessageEmbed()
             embed.setTitle("Success!")
             embed.setDescription(`Successful! You bought EVERYTHING! \n (Well everything that was in-stock)`)
@@ -86,8 +86,8 @@ module.exports = {
                     uses: specialShopData[args[0]].uses
                 }
             }
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
-            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
             var embed = new discord.MessageEmbed()
             embed.setTitle("Success!")
             embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "s":""}!`)
@@ -132,8 +132,8 @@ module.exports = {
                     uses: shopData[args[0]].uses
                 }
             }
-            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
-            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[ERROR/SHARD] " + err) : null)
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+            fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
             var embed = new discord.MessageEmbed()
             embed.setTitle("Success!")
             embed.setDescription(`Successful! You bought ${args[1] == null? "1":args[1]} ${args[0]}${args[1] != null? "(s)":""}!`)
