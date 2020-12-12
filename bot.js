@@ -586,7 +586,7 @@ client.on('message', message => {
 				}
 			} catch (error) {
 				console.error("[SHARD/ERROR] Execution failed for " + message.author.tag + " (" + message.author.id + "):")
-				console.error("[SHARD/ERROR] " + error);
+				console.error(error);
 				if (message.channel.type != "dm") {
 					message.channel.createInvite({
 							unique: true,
