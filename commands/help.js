@@ -69,7 +69,7 @@ module.exports = {
                 return false;
             }
 
-            var commandsInCategory = totalCommandStuff.filter(x => commands.get(x).category == name)
+            var commandsInCategory = totalCommandStuff.filter(x => (commands.get(x).category == name && !commands.get(x).adminOnly))
             var embed = new discord.MessageEmbed({
                 title: `Here's a list of all the commands in category "${name}":`,
                 description: "`" + commandsInCategory.join("`, `") + "`",
