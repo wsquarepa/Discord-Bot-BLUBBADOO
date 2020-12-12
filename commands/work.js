@@ -10,7 +10,7 @@ module.exports = {
     usage: '',
     guildOnly: false,
     aliases: [],
-    cooldown: 600,
+    cooldown: 900,
     category: "economy",
     adminOnly: false,
 	execute(message, args, mention) {
