@@ -10,7 +10,7 @@ module.exports = {
     usage: '',
     guildOnly: false,
     aliases: [],
-    cooldown: 3600,
+    cooldown: 600,
     category: "economy",
     adminOnly: false,
 	execute(message, args, mention) {
@@ -20,7 +20,7 @@ module.exports = {
 
         userData[message.author.id].cash += earnings
 
-        var workTypes = ["cook", 'coder', 'janitor', 'teacher', 'discord developer', 'fighter', 'alien', 'human', 'authy developer', 'lock', 'water bottle']
+        var workTypes = fs.readFileSync("./jobslist.txt").toString().split("\n")
         var workType = workTypes[Math.floor((Math.random() * workTypes.length))]
         
         var embed = new discord.MessageEmbed()
