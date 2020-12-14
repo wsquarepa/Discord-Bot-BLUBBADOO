@@ -36,6 +36,7 @@ module.exports = {
         }
         var cash = userData[message.author.id].cash
         var bank = userData[message.author.id].bank
+        var gems = userData[message.author.id].gems
         var bankLimit = userData[message.author.id].bankLimit
         var bankChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
     
@@ -45,7 +46,7 @@ module.exports = {
         var embed = new discord.MessageEmbed()
                 .setTitle("Your balance:")
                 .addField("Cash", "$" + cash)
-                .addField("Bank", "$" + bank + " / " + bankLimit + " (" + bankChart.join("") + ")")
+                .addField("Bank", "$" + bank + " / $" + bankLimit + " (" + bankChart.join("") + ")")
                 .addField("Gems", gems + "💎")
                 .setColor("2f3237")
                 .setFooter(userData[message.author.id].account.secured? "Account Locked." : "Account not Locked.")
