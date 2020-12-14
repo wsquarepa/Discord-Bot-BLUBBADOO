@@ -57,7 +57,7 @@ module.exports = {
                 const now = Date.now()
                 var timeAgo = now - leaders[i][2]
                 timeAgo = timeAgo / 1000 / 60
-                timeAgo = Math.round((timeAgo + Number.EPSILON) * 100) / 100
+                timeAgo = Math.round((timeAgo + Number.EPSILON) * 100)
                 leaderString += guildData[message.guild.id].prefix + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
             }
 
