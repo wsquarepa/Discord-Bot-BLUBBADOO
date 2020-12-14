@@ -21,13 +21,13 @@ module.exports = {
             userData[message.author.id].cash += userData[message.author.id].bank
             userData[message.author.id].bank = 0
         } else if (args[0] != null) {
-            if ((userData[message.author.id].bank - parseInt(args[0])) < 0) {
-                message.channel.send("You can't withdraw more than you have.")
+            if (isNaN(parseInt(args[0]))) {
+                message.channel.send("You can't withdraw that.")
                 return false;
             }
 
-            if (isNaN(parseInt(args[0]))) {
-                message.channel.send("You can't withdraw that.")
+            if ((userData[message.author.id].bank - parseInt(args[0])) < 0) {
+                message.channel.send("You can't withdraw more than you have.")
                 return false;
             }
             

@@ -27,13 +27,13 @@ module.exports = {
                 userData[message.author.id].cash = 0
             }
         } else if (args[0] != null) {
-            if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
-                message.channel.send("You can't deposit more than you have.")
+            if (isNaN(parseInt(args[0]))) {
+                message.channel.send("You can't deposit that.")
                 return false;
             }
 
-            if (isNaN(parseInt(args[0]))) {
-                message.channel.send("You can't deposit that.")
+            if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
+                message.channel.send("You can't deposit more than you have.")
                 return false;
             }
 
