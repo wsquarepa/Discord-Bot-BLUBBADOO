@@ -41,7 +41,7 @@ module.exports = {
     
         const loc = parseInt(10.0 * (bank / bankLimit) + 0.5)
 
-        xpChart[loc] = "**|**"
+        bankChart[loc] = "**|**"
         var embed = new discord.MessageEmbed()
                 .setTitle("Your balance:")
                 .addField("Cash", "$" + cash)
