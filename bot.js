@@ -314,8 +314,8 @@ client.on('message', message => {
 				}
 
 				userData[message.author.id].xp += 1
-				userData[message.author.id].bankLimit = userData[message.author.id].level * 1000
-				
+				userData[message.author.id].bankLimit = userData[message.author.id].level * 100000
+
 				if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 					userData[message.author.id].xp = userData[message.author.id].xp - userData[message.author.id].xpUntil
 					userData[message.author.id].level += 1
@@ -432,7 +432,13 @@ client.on('message', message => {
 						if (!userData[message.author.id].houses[a].durability < 1) {
 							userData[message.author.id].houses[a].durability -= randomNumber(1, 100)
 							userData[message.author.id].houses[a].xp += 1
-							userData[message.author.id].bank += (randomNumber(0, 100) * userData[message.author.id].houses[a].level)
+							
+							const amountToAdd = randomNumber(0, 100) * userData[message.author.id].houses[a].level
+							if ((userData[message.author.id].bankLimit - userData[message.author.id].bank) < amountToAdd) {
+								userData[message.author.id].bank = userData[message.author.id].bankLimit
+							} else {
+								userData[message.author.id].bank += (amountToAdd * userData[message.author.id].houses[a].level)
+							}
 
 							if (userData[message.author.id].houses[a].xp > userData[message.author.id].houses[a].xpUntil) {
 								userData[message.author.id].houses[a].level++

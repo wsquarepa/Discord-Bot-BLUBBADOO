@@ -19,9 +19,13 @@ module.exports = {
         args[0] = args[0].trim()
         if (args[0] == "all") {
             const space = userData[message.author.id].bankLimit - userData[message.author.id].bank
-            const amount = (space > userData[message.author.id].cash? userData[message.author.id].cash:userData[message.author.id].cash - space)
-            userData[message.author.id].bank += amount
-            userData[message.author.id].cash -= amount
+            if (userData[message.author.id].cash > space) {
+                userData[message.author.id].bank += space
+                userData[message.author.id].cash -= space
+            } else {
+                userData[message.author.id].bank = userData[message.author.id].cash
+                userData[message.author.id].cash = 0
+            }
         } else if (args[0] != null) {
             if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
                 message.channel.send("You can't deposit more than you have.")
