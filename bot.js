@@ -228,6 +228,7 @@ client.on('message', message => {
 					userData[message.author.id] = {
 						cash: 0,
 						bank: 0,
+						bankLimit: 0,
 						gems: 0,
 						xp: 0,
 						xpUntil: 10,
@@ -308,8 +309,13 @@ client.on('message', message => {
 					}
 				}
 
-				userData[message.author.id].xp += 1
+				if (!userData[message.author.id].bankLimit) {
+					userData[message.author.id].bankLimit = 0
+				}
 
+				userData[message.author.id].xp += 1
+				userData[message.author.id].bankLimit = userData[message.author.id].level * 1000
+				
 				if (userData[message.author.id].xp >= userData[message.author.id].xpUntil) {
 					userData[message.author.id].xp = userData[message.author.id].xp - userData[message.author.id].xpUntil
 					userData[message.author.id].level += 1

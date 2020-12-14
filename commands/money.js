@@ -14,7 +14,6 @@ module.exports = {
 	execute(message, args, mention) {
         
         if (mention) {
-            
             if (mention.bot) {
                 message.channel.send("Fortunately, bots obviously doesn't have money")
                 return false;
@@ -37,12 +36,20 @@ module.exports = {
         }
         var cash = userData[message.author.id].cash
         var bank = userData[message.author.id].bank
-        var gems = userData[message.author.id].gems
+        var bankLimit = userData[message.author.id].bankLimit
+        var bankChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
+    
+        const loc = parseInt(10.0 * (bank / bankLimit) + 0.5)
+
+        xpChart[loc] = "**|**"
         var embed = new discord.MessageEmbed()
                 .setTitle("Your balance:")
-                .setDescription("Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎")
+                .addField("Cash", "$" + cash)
+                .addField("Bank", "$" + bank + " / " + bankLimit + " (" + bankChart.join("") + ")")
+                .addField("Gems", gems + "💎")
                 .setColor("2f3237")
-                .setFooter("Account status - locked: " + userData[message.author.id].account.secured)
+                .setFooter(userData[message.author.id].account.secured? "Account Locked." : "Account not Locked.")
+                .setTimestamp(Date.now())
         message.channel.send(embed)
     }
 }
