@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const functions = require("../jsHelpers/functions")
 
 module.exports = {
     name: 'give',
@@ -48,5 +49,6 @@ module.exports = {
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 
         message.channel.send("Successfully gave " + mention.username + " $" + cashAmt + ". It is now in their bank.")
+        functions.logMoney(message, cashAmt, "gave", mention)
     }
 }
