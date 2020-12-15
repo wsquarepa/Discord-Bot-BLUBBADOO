@@ -84,6 +84,7 @@ module.exports = {
                                 guessCollect.on('collect', function (messageCollected) {
                                     if (messageCollected.content == sentence) {
                                         messageCollected.channel.send("CONGRATULATIONS! <@" + messageCollected.author.id + "> GUESSED THE PHRASE!")
+                                        functions.logMoney(message, 250, "used phrase and got", {id: "null", tag:"Multiple users"})
                                         userData[messageCollected.author.id].cash += 250
                                         functions.giveAchivement(messageCollected, "Sentencer")
                                         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)

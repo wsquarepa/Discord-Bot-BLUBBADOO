@@ -91,6 +91,7 @@ module.exports = {
                                     raceCollectorMsg.channel.send("CONGRATULATIONS! <@" + raceCollectorMsg.author.id + "> WON THE RACE!!!")
                                     functions.giveAchivement(raceCollectorMsg, "Speed typist")
                                     userData[raceCollectorMsg.author.id].cash += 250
+                                    functions.logMoney(raceCollectorMsg, 250, "raced and gave/got", (raceCollectorMsg.author.id == message.author.id? mention:message.author))
                                     fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
                                     if (guildData[message.guild.id].settings.raceCompletionMessage) {
                                         if (userData[message.author.id].account.settings.raceWinDM) {

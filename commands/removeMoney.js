@@ -1,6 +1,7 @@
 var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
+const functions = require("../jsHelpers/functions")
 
 module.exports = {
     name: 'removemoney',
@@ -34,6 +35,7 @@ module.exports = {
             userData[mention.id][args[1]] -= amount
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
             message.channel.send("Complete! Removed " + args[2] + " " + args[1] +"(s) from users\n Current user status: \n ```json\n" + JSON.stringify(userData[mention.id]) + "\n```")
+            functions.logMoney(message, amount, "removed", mention)
         } catch(e) {
             console.error("[SHARD/ERROR] " + e)
             message.channel.send("Error, Something went wrong.")

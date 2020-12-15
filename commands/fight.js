@@ -104,6 +104,7 @@ module.exports = {
                     userData[mention.id].hp = functions.randomNumber(1, 3)
                     message.channel.send("Congratulations! **" + message.author.tag + "** earned $10000!")
                     functions.giveAchivement(message, "Fighter")
+                    functions.logMoney(message, 10000, "fought and gave", mention)
                 } else if (userStrength - mentionDefence < mentionStrength - userDefence) {
                     userData[message.author.id].cash -= 10000
                     userData[mention.id].cash += 10000
@@ -111,6 +112,7 @@ module.exports = {
                     userData[mention.id].hp -= functions.randomNumber(20, 30)
                     message.channel.send("Congratulations! **" + mention.tag + "** earned $10000!")
                     functions.giveAchivement({author: {id: mention.id}}, "Fighter")
+                    functions.logMoney(message, 10000, "fought and lost", mention)
                 } else {
                     if (userHp > mentionHp) {
                         userData[message.author.id].cash += 10000
@@ -119,6 +121,7 @@ module.exports = {
                         userData[mention.id].hp = functions.randomNumber(1, 3)
                         message.channel.send("Congratulations! **" + message.author.tag + "** earned $10000!")
                         functions.giveAchivement(message, "Fighter")
+                        functions.logMoney(message, 10000, "fought and gave", mention)
                     } else {
                         userData[message.author.id].cash -= 10000
                         userData[mention.id].cash += 10000
@@ -126,6 +129,7 @@ module.exports = {
                         userData[mention.id].hp -= functions.randomNumber(20, 30)
                         message.channel.send("Congratulations! **" + mention.tag + "** earned $10000!")
                         functions.giveAchivement({author: {id: mention.id}}, "Fighter")
+                        functions.logMoney(message, 10000, "fought and lost", mention)
                     }
                 }
             })

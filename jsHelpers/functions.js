@@ -81,5 +81,12 @@ module.exports = {
         }
     },
 
+    logMoney: function (message, amount, action, otherUser) {
+        var date = new Date()
+        fs.writeFile("./money-log.txt", "[" + date.toTimeString() + "] " + message.author.tag + " (" + message.author.id + ") " + action + " $" + amount + " to " 
+            + otherUser.tag + "(" + otherUser.id + ")", 
+            (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+    },
+
     globalEmbedColor: "2f3237"
 }
