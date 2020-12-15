@@ -20,11 +20,6 @@ module.exports = {
     category: "moderation",
     adminOnly: false,
     execute(message, args, mention) {
-        if (!message.guild.member(message.author).hasPermission("MANAGE_GUILD")) {
-            message.channel.send("Sorry, but only users with the MANAGE_GUILD permission can see server information. \n " +
-                "You can ask someone who does have that permssion to execute this command.")
-            return;
-        }
 
         let region = {
             "brazil": ":flag_br: Brazil",
