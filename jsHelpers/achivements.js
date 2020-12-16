@@ -215,6 +215,6 @@ module.exports = {
             item: "chest",
             title: "Serious Farmer"
         },
-        secret: true
+        secret: false
     }
 }
