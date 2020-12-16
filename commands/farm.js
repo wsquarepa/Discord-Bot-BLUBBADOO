@@ -37,7 +37,7 @@ module.exports = {
             iron: "788834847997165650",
             gold: "788834848201769031",
             diamond: "788834848386973716",
-            netherite: "788833879892819988"
+            netherite: "788841905772429354"
         }
 
         const chance = functions.randomNumber(1, 100)
@@ -56,7 +56,7 @@ module.exports = {
             hoeChosen = hoes.wooden
         }
 
-        if (hoeChosen == "788833879892819988") {
+        if (hoeChosen == "788841905772429354") {
             functions.giveAchivement("Serious Dedication")
         }
 
