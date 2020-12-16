@@ -19,6 +19,14 @@ module.exports = {
             return false;
         }
 
+        if (message.guild.member(message.client.user).hasPermission("MANAGE_MESSAGES")) {
+            message.channel.send(
+'```diff' +
+`- Missing Permission: MANAGE_MESSAGES` +
+'```'
+            )
+        }
+
         message.delete().then(function () {
             try {
                 args[0] = parseInt(args[0])

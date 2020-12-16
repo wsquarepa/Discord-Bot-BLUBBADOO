@@ -9,10 +9,18 @@ module.exports = {
     category: "moderation",
     adminOnly: false,
 	execute(message, args, mention, specialArgs) {
-        if (!(message.member.hasPermission("BAN_MEMBERS")) && !(message.member.id == 509874745567870987)) {
+        if (!(message.member.hasPermission("KICK_MEMBERS")) && !specialArgs.includes("f")) {
             var embed = new MessageEmbed().setTitle("Error").setAuthor(message.author).setDescription("You can't do that!").setColor("ff0000")
             message.channel.send(embed)
             return false;
+        }
+
+        if (message.guild.member(message.client.user).hasPermission("KICK_MEMBERS")) {
+            message.channel.send(
+'```diff' +
+`- Missing Permission: KICK_MEMBERS` +
+'```'
+            )
         }
         
         if (!mention) {

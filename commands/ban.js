@@ -9,10 +9,18 @@ module.exports = {
     category: "moderation",
     adminOnly: false,
 	execute(message, args, mention, specialArgs) {
-        if (!(message.member.hasPermission("BAN_MEMBERS")) && !(message.member.id == 509874745567870987)) {
+        if (!(message.member.hasPermission("BAN_MEMBERS")) && !specialArgs.includes("f")) {
             var embed = new MessageEmbed().setTitle("Error").setAuthor(message.author).setDescription("You can't do that").setColor("ff0000")
             message.channel.send(embed)
             return false;
+        }
+
+        if (message.guild.member(message.client.user).hasPermission("BAN_MEMBERS")) {
+            message.channel.send(
+'```diff' +
+`- Missing Permission: BAN_MEMBERS` +
+'```'
+            )
         }
 
         if (!mention) {
@@ -25,7 +33,7 @@ module.exports = {
 
         message.channel.send("<@" + mention.id + ">" + " has been banned for the reason `" + reason + "`")
         mention.send("You have been banned from " + message.guild.name + " for: \n`" + reason + "`").then(function() {
-            message.guild.member(mention).ban({reason: reason}).catch(() => message.channel.send("I don't have permission to ban members."))
+            message.guild.member(mention).ban({reason: reason})
         })
     }
 }
