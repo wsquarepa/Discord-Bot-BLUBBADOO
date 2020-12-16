@@ -21,6 +21,7 @@ module.exports = {
 `- Missing Permission: KICK_MEMBERS` +
 '```'
             )
+            return
         }
         
         if (!mention) {

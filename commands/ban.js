@@ -21,6 +21,7 @@ module.exports = {
 `- Missing Permission: BAN_MEMBERS` +
 '```'
             )
+            return
         }
 
         if (!mention) {

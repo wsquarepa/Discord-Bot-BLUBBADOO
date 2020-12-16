@@ -25,6 +25,7 @@ module.exports = {
 `- Missing Permission: MANAGE_MESSAGES` +
 '```'
             )
+            return;
         }
 
         message.delete().then(function () {
