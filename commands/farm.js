@@ -2,6 +2,7 @@ var userData = require('../userData.json')
 const fs = require('fs');
 const discord = require("discord.js")
 const guildData = require('../guildData.json')
+const functions = require("../jsHelpers/functions")
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -29,7 +30,11 @@ module.exports = {
                 uses: 1
             }
         }
+
+        const hoes = ["788834848038846545", "788834848244629514", "788834847997165650", "788834848201769031", "788834848386973716", "788833879892819988"]
+        
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-        message.channel.send("You harvested " + earnings + " carrots. Sell all of them using `" + guildData[message.guild.id].prefix  + "sell carrot all`!")
+        message.channel.send(functions.emoji(hoes[functions.randomNumber(0, hoes.length - 1)]) + " You harvested " + earnings + " carrots. Sell all of them using `" 
+        + message.guild? guildData[message.guild.id].prefix:"=="  + "sell carrot all`!")
     }
 }
