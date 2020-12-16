@@ -56,6 +56,8 @@ module.exports = {
             hoeChosen = hoes.wooden
         }
 
+        console.log("[SHARD/DEBUG] " + message.author.tag + "'s chance for hoes: " + chance)
+
         if (hoeChosen == "788841905772429354") {
             functions.giveAchivement("Serious Dedication")
         }
