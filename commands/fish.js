@@ -51,7 +51,7 @@ module.exports = {
             userData[message.author.id].cash += earnings
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
         } else {
-            msg.edit("Uh oh, unfourtunatley no fish wanted you to catch them. Try again in 45 seconds!")
+            message.channel.send("Uh oh, unfourtunatley no fish wanted you to catch them. Try again in 45 seconds!")
         }
     }
 }
