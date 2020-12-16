@@ -205,5 +205,16 @@ module.exports = {
             title: "Scaredy Squirrel"
         },
         secret: true
+    },
+
+    "Serious Dedication": {
+        description: "Get a netherite hoe when farming",
+        reward: {
+            money: 0,
+            gems: 0,
+            item: "chest",
+            title: "Serious Farmer"
+        },
+        secret: true
     }
 }
