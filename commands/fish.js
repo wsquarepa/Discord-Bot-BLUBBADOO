@@ -47,7 +47,7 @@ module.exports = {
             embed.setTitle("Fish Success!")
             embed.setDescription("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
             embed.setColor(functions.globalEmbedColor)
-            msg.edit(embed)
+            message.channel.send(embed)
             userData[message.author.id].cash += earnings
             fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
         } else {
