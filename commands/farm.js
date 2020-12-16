@@ -21,12 +21,12 @@ module.exports = {
     category: "economy",
     adminOnly: false,
     execute(message, args, mention) {
-        var earnings = randomNumber(30, 100)
+        const chance = functions.randomNumber(1, 100)
         if (userData[message.author.id].inventory["carrot"]) {
-            userData[message.author.id].inventory["carrot"].amount += earnings
+            userData[message.author.id].inventory["carrot"].amount += chance
         } else {
             userData[message.author.id].inventory["carrot"] = {
-                amount: earnings,
+                amount: chance,
                 uses: 1
             }
         }
@@ -40,7 +40,6 @@ module.exports = {
             netherite: "788841905772429354"
         }
 
-        const chance = functions.randomNumber(1, 100)
         var hoeChosen = ""
         if (chance == 100) {
             hoeChosen = hoes.netherite
@@ -63,7 +62,7 @@ module.exports = {
         }
 
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-        message.channel.send(functions.emoji(hoeChosen, message) + " You harvested " + earnings + " carrots. Sell all of them using `" +
+        message.channel.send(functions.emoji(hoeChosen, message) + " You harvested " + chance + " carrots. Sell all of them using `" +
             (message.guild ? guildData[message.guild.id].prefix : "==") + "sell carrot all`!")
     }
 }
