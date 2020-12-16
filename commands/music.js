@@ -20,7 +20,7 @@ module.exports = {
     levelRequirement: 0,
     category: "music",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 
         if (!message.author.id == "509874745567870987") {
             message.channel.send("Sorry, but music commands are currently limited to admins only!")

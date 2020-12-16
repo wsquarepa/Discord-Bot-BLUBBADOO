@@ -17,7 +17,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!args.length) args[0] = "s"
         if (!args[0].startsWith("s") && !args[0].startsWith("d") && !args[0].startsWith("c")) args[0] = "s"
 

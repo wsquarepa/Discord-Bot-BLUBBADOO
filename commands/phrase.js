@@ -20,7 +20,7 @@ module.exports = {
     cooldown: 300,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         message.channel.send("For the people who are here, if anyone wants to play PHRASE GUESSER with <@" + message.author.id + ">, then say 'Join' within the next " +
             "10 seconds.")
         const collector = new discord.MessageCollector(message.channel, m => m.author.id != message.author.id && !m.author.bot, {

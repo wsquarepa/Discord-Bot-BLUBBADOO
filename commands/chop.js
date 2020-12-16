@@ -19,7 +19,7 @@ module.exports = {
     cooldown: 60,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].inventory["axe"] == null || userData[message.author.id].inventory["axe"].amount < 1) {
             var embed = new discord.MessageEmbed({
                 title: "Error",

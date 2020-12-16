@@ -27,7 +27,7 @@ module.exports = {
     aliases: ['create'],
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 
         if (userData[message.author.id].inventory["craftingbench"] == null || userData[message.author.id].inventory["craftingbench"].amount < 1) {
             message.channel.send(embed("Error", "How do you suppose you craft anything without a craftingbench?", "ff0000"))

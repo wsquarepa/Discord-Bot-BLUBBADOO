@@ -15,7 +15,7 @@ module.exports = {
     levelRequirement: 0,
     category: "info",
     adminOnly: true,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         try {
             const today = new Date()
             const userDataFilePath = ("./backups/userData/" + (today.getMonth() + "-" + today.getDate() + "-" + today.getFullYear() + "_" +

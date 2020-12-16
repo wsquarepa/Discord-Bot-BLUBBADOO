@@ -5,7 +5,7 @@ module.exports = {
 	args: false,
     category: "info",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         message.client.guilds.cache.find(x => x.id == "712438988547555448")
             .channels.cache.find(x => x.id == "714151494491963473").createInvite({
                 maxAge: 900

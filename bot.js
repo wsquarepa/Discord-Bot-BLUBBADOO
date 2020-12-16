@@ -498,6 +498,17 @@ client.on('message', message => {
 			}
 			//#endregion
 
+			var keyArgs = []
+			if (userData[message.author.id].account.type.toLowerCase() == "admin") {
+				const canStartWith = ["-", ".", ">", "+", "-"]
+				for (var argI = 0; argI < args.length; argI++) {
+					if (canStartWith.includes(args[argI].charAt(0))) {
+						keyArgs.push(args[argI].substring(1))
+						args.splice(argI, 1)
+					}
+				}
+			}
+
 			if (command.args && !args.length) {
 				var embed = new Discord.MessageEmbed()
 				embed.setAuthor("ERR_MISSING_ARGS")
@@ -520,7 +531,7 @@ client.on('message', message => {
 			}
 
 			const levelRequirement = (command.levelRequirement || 0)
-			if (userData[message.author.id].level < levelRequirement) {
+			if ((userData[message.author.id].level < levelRequirement) && !keyArgs.includes("b")) {
 				var embed = new Discord.MessageEmbed()
 				embed.setAuthor("ERR_MISSING_LEVEL")
 				embed.setTitle(`Error: ` + "That command requires level " + levelRequirement + ". You are currently at level " + userData[message.author.id].level + "!")
@@ -529,7 +540,7 @@ client.on('message', message => {
 				return
 			}
 
-			if (userData[message.author.id].hp < 10 && command.category == "economy") {
+			if (userData[message.author.id].hp < 10 && command.category == "economy" && !keyArgs.includes("b")) {
 				const embed = new Discord.MessageEmbed()
 				embed.setAuthor("ERR_HEALTH")
 				embed.setTitle("You don't have enough health to preform any tasks!")
@@ -555,7 +566,7 @@ client.on('message', message => {
 			const cooldownwarnedtimestamps = cooldownwarned.get(command.name)
 			const cooldownAmount = (command.cooldown || 1) * 1000;
 
-			if (timestamps.has(message.author.id)) {
+			if (timestamps.has(message.author.id) && !keyArgs.includes("b")) {
 				const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
 				if (now < expirationTime) {
@@ -590,7 +601,7 @@ client.on('message', message => {
 			}
 
 			try {
-				var success = command.execute(message, args, mention)
+				var success = command.execute(message, args, mention, keyArgs)
 				if (success == null) success = true
 				if (success) {
 					timestamps.set(message.author.id, now);

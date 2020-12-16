@@ -15,7 +15,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var userAchivements = userData[message.author.id].achivements
         var achivementsCopy = {}
         Object.assign(achivementsCopy, achivements)

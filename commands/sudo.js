@@ -14,7 +14,7 @@ module.exports = {
     cooldown: 0,
     category: "admincmd",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!config["botAdmins"].includes(message.author.id) &&
             userData[message.author.id].account.type.toLowerCase() != "admin") return message.channel.send("You can't run that.")
 

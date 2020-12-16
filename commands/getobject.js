@@ -13,7 +13,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!mention) {
             message.channel.send("Misread `args[0]`: Mention")
             return;

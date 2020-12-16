@@ -11,7 +11,7 @@ module.exports = {
     cooldown: 2,
     category: "moderation",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var json = message.content.slice((guildData[message.guild.id].prefix + 'embed ').length)
         try {
             var embedJSON = JSON.parse(json)

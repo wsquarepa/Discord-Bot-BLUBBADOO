@@ -9,7 +9,7 @@ module.exports = {
     levelRequirement: 0,
     category: "info",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!args.length) {
             args[0] = "Test Error"
         }

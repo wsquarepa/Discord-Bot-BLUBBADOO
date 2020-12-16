@@ -13,7 +13,7 @@ module.exports = {
     cooldown: 0,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!mention) {
             message.channel.send("@mention someone please.")
             return false

@@ -29,7 +29,7 @@ module.exports = {
     levelRequirement: 4,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].inventory.magnif == null || userData[message.author.id].inventory.magnif.amount < 1) {
             message.channel.send("You do realize that you can't exactly search without that special maginfying glass from the shop right?")
             return false

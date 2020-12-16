@@ -16,7 +16,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!args.length) {
             var availableTags = []
             for (var i = 0; i < userData[message.author.id].achivements.length; i++) {

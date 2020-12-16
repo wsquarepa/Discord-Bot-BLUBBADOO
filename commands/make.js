@@ -20,7 +20,7 @@ module.exports = {
     levelRequirement: 4,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         const makeables = ['video', 'cake', 'cookie', 'game', 'website', 'discord bot', 'gun']
         const making = makeables[randomNumber(0, makeables.length - 1)]
         const earnings = randomNumber(100, 1000) * userData[message.author.id].intellegencePoints

@@ -17,7 +17,7 @@ module.exports = {
     cooldown: 1,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (!mention) {
             var userInv = {}
             Object.assign(userInv, userData[message.author.id].inventory)

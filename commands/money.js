@@ -11,7 +11,7 @@ module.exports = {
     cooldown: 0.5,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         
         if (mention) {
             if (mention.bot) {

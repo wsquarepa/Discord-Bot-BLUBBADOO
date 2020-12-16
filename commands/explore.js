@@ -28,7 +28,7 @@ module.exports = {
     cooldown: 60,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].inventory["map"] == null || userData[message.author.id].inventory["map"].amount < 1) {
             message.channel.send(embed("Error", "You can't explore without a map; you'll get lost.", "ff0000"))
             return false

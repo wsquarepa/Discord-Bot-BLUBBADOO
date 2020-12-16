@@ -25,7 +25,7 @@ module.exports = {
     cooldown: 1,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (isEmpty(userData[message.author.id].pet)) {
             if (userData[message.author.id].gems < 5) {
                 message.channel.send("You don't have enough **GEMS** to buy a pet.")

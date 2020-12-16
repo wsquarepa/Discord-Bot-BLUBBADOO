@@ -10,7 +10,7 @@ module.exports = {
 	aliases: ['update'],
     category: "info",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 		if (!args.length) {
 			message.channel.send("Are you sure you want to stop the process, <@" + message.author.id + ">? This will clear all cooldowns.")
 			const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 10000})

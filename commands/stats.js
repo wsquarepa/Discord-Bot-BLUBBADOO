@@ -23,7 +23,7 @@ module.exports = {
     cooldown: 2,
     category: "info",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         const { commands } = message.client;
         if (!args.length) {
             var leaders = []

@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 0,
     category: "moderation",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!message.guild.member(message.author).hasPermission("MANAGE_GUILD")) {
             message.channel.send("You cannot do that, my friend!")
             return;

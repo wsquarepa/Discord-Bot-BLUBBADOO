@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         const amount = parseInt(args[2])
         if (!amount) {
             message.channel.send("Enter a valid amount!")

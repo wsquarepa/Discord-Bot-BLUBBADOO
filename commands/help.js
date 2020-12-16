@@ -11,7 +11,7 @@ module.exports = {
 	cooldown: 2.5,
     category: "info",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var prefix = ""
         if (!message.guild) {
             prefix = "=="

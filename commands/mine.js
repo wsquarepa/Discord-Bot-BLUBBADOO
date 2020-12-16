@@ -27,7 +27,7 @@ module.exports = {
     cooldown: 60,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 
         if (userData[message.author.id].inventory["pickaxe"] == null || userData[message.author.id].inventory["pickaxe"].amount < 1) {
             var embed = new discord.MessageEmbed({

@@ -12,7 +12,7 @@ module.exports = {
     levelRequirement: 0,
     category: "moderation",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         const user = mention? mention:message.client.user
         var userPerms = message.guild.member(user).permissions.toArray()
         if (message.guild.member(user).hasPermission("ADMINISTRATOR")) {

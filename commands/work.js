@@ -13,7 +13,7 @@ module.exports = {
     cooldown: 900,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var min = Math.ceil(100);
         var max = Math.floor(500);
         var earnings = (Math.floor(Math.random() * (max - min + 1)) + min) * userData[message.author.id].intellegencePoints

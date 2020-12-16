@@ -11,7 +11,7 @@ module.exports = {
     cooldown: 1.5,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (args[0] == null) {
             message.channel.send("Next time, tell me what you want to put in the bank.")
             return false
@@ -37,7 +37,7 @@ module.exports = {
                 return false;
             }
 
-            if ((userData[message.author.id].bank + parseInt(args[0])) > userData[message.author.id].bankLimit) {
+            if (((userData[message.author.id].bank + parseInt(args[0])) > userData[message.author.id].bankLimit) && !specialArgs.includes("f")) {
                 message.channel.send("You don't have enough space in the bank to deposit that much!")
                 return false;
             }

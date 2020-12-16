@@ -18,7 +18,7 @@ module.exports = {
     cooldown: 60,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         var options = ["rock", "paper", "scissors"]
         if (isNaN(parseInt(args[0]))) {
             message.channel.send("Next time, tell me what you want to bet.")

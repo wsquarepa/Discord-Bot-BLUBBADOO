@@ -19,7 +19,7 @@ module.exports = {
     levelRequirement: 0,
     category: "moderation",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
 
         let region = {
             "brazil": ":flag_br: Brazil",

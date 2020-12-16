@@ -15,7 +15,7 @@ module.exports = {
     cooldown: 2,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         var keys = Object.keys(shopData)
         keys.splice(0, 1)
         args[0] = args[0].toLowerCase()

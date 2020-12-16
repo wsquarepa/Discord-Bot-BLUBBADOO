@@ -44,7 +44,7 @@ module.exports = {
     levelRequirement: 5,
     category: "economy",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].team == "") {
             console.log("no team")
             var teamKeys = Object.keys(teamData)

@@ -16,7 +16,7 @@ module.exports = {
     cooldown: 1,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var pages = []
         var keys = Object.keys(shopData)
         keys.splice(0, 1)

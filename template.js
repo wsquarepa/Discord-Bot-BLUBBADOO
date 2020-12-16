@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 0,
     category: "",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 
     }
 }

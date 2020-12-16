@@ -28,7 +28,7 @@ module.exports = {
     category: "economy",
     adminOnly: false,
     levelRequirement: 5,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 
         if (mention == null) {
             message.channel.send("You gotta tell me who you wanna rob.")

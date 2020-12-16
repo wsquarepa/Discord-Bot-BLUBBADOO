@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 2,
     category: "moderation",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var channelMention = args[0]
         channelMention = channelMention.substring(2)
         channelMention = channelMention.substring(0, channelMention.length - (1))

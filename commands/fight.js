@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 4,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].cash < 10000) {
             message.channel.send("You cannot fight without at least $10000")
             return false;

@@ -11,7 +11,7 @@ module.exports = {
     cooldown: 1.5,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (args[0] == null) {
             message.channel.send("Next time, tell me what you want to take out of the bank.")
             return false

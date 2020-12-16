@@ -13,7 +13,7 @@ module.exports = {
     levelRequirement: 0,
     category: "info",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         const embed = new discord.MessageEmbed({
             title: "Blubbadoo Rules",
             description: "You must comply to these rules, otherwise you will be banned/blacklisted from using me.",

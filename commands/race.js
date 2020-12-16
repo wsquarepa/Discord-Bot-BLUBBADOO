@@ -34,7 +34,7 @@ module.exports = {
     cooldown: 60,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
 
         if (mention == null) {
             message.channel.send("Please mention someone next time.")

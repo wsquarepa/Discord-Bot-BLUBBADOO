@@ -15,7 +15,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var codeKeys = Object.keys(codes)
         if (codeKeys.includes(args[0]) && !userData[message.author.id].codesUsed.includes(args[0])) {
             userData[message.author.id].codesUsed.push(args[0])

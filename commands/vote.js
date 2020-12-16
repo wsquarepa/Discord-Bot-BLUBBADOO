@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].nextVoteTime > Date.now()) {
             const voteAgainTime = (userData[message.author.id].nextVoteTime - Date.now()) / (1000 * 60 * 60)
             var embed = new discord.MessageEmbed()

@@ -29,7 +29,7 @@ module.exports = {
     cooldown: 5,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         message.channel.send("Creating leaderboard... please wait.").then(function (msg) {
             if (!args.length) {
                 var leaders = []

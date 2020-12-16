@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 0,
     category: "economy",
     adminOnly: true,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var range = 100
 
         if (args.length) {

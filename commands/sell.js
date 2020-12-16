@@ -14,7 +14,7 @@ module.exports = {
     cooldown: 3,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var itemName = args[0].toLowerCase()
         var amount = parseInt(args[1])
 

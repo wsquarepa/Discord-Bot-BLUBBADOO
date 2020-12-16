@@ -22,7 +22,7 @@ module.exports = {
     levelRequirement: 10,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (!args.length) {
             const embed = new discord.MessageEmbed()
                 .setTitle("Your houses:")

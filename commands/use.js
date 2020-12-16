@@ -20,7 +20,7 @@ module.exports = {
     cooldown: 3.3,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (args[0].toLowerCase() == "gem") {
 
             if (args[1] == null) {

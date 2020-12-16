@@ -21,7 +21,7 @@ module.exports = {
     cooldown: 2,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
 
         if (mention == null) {
             if (!args.length) {

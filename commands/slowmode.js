@@ -13,7 +13,7 @@ module.exports = {
     levelRequirement: 0,
     category: "moderation",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (args[0] == "off") {
             args[0] = 0
         }

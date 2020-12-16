@@ -20,7 +20,7 @@ module.exports = {
     cooldown: 40,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (args.length) {
             if (args[0] == "impossible") {
                 if (userData[message.author.id].cash < 1000) {

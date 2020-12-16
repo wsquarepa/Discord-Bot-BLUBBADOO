@@ -20,7 +20,7 @@ module.exports = {
     cooldown: 60,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         const chance = functions.randomNumber(1, 100)
         if (userData[message.author.id].inventory["carrot"]) {
             userData[message.author.id].inventory["carrot"].amount += chance

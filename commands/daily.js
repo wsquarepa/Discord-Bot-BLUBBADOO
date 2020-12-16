@@ -18,7 +18,7 @@ module.exports = {
     cooldown: 86400,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].account.daily.expires < (new Date().getTime())) {
             userData[message.author.id].account.daily.streak = -1
             userData[message.author.id].account.daily.previousAmt = 0

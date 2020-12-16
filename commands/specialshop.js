@@ -15,7 +15,7 @@ module.exports = {
     cooldown: 1,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         var keys = Object.keys(shopData)
         var itemString = ""
         for (var i = 0; i < keys.length; i++) {

@@ -18,7 +18,7 @@ module.exports = {
     cooldown: 40,
     category: "economy",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].inventory["knife"] == null || userData[message.author.id].inventory["knife"].amount < 1) {
             message.channel.send("How do you suppose you hunt without a knife?")
             return false

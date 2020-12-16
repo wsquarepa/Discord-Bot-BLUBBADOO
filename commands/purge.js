@@ -12,7 +12,7 @@ module.exports = {
     cooldown: 2.3,
     category: "moderation",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
 
         if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGES") && message.author.id != "509874745567870987") {
             message.reply("you can't do that!")

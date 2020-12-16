@@ -14,7 +14,7 @@ module.exports = {
     levelRequirement: 0,
     category: "moderation",
     adminOnly: false,
-	execute(message, args, mention) {
+	execute(message, args, mention, specialArgs) {
         if (!mention) {
             const guild = guildData[message.guild.id]
             var warnings = {}

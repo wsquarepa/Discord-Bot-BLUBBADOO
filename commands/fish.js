@@ -29,7 +29,7 @@ module.exports = {
     cooldown: 45,
     category: "economy",
     adminOnly: false,
-    execute(message, args, mention) {
+    execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].inventory["fishingrod"] == null || userData[message.author.id].inventory["fishingrod"].amount < 1) {
             message.channel.send(embed("Error", "How do you suppose you fish without a fishingrod?", "ff0000"))
             return false
