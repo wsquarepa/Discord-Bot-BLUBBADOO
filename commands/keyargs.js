@@ -21,8 +21,8 @@ module.exports = {
             `Use ["-", ".", ">", "+", "-"] for it` +
             '```fix' + 
             `
-            b -> Bypass all cooldowns, health and level
-            f -> Force command to work, bypassing all permissions
+b -> Bypass all cooldowns, health and level
+f -> Force command to work, bypassing all permissions
             ` + 
             '```'
         )
