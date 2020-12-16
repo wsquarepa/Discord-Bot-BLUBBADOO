@@ -480,7 +480,11 @@ client.on('message', message => {
 					try {
 						mention = message.guild.members.cache.find(x => x.nickname == args.join(" ")).user
 					} catch {
-						mention = null
+						if (message.guild.members.cache.find(x => x.id == args[0])) {
+							mention = message.guild.members.cache.find(x => x.id == args[0])
+						} else {
+							mention = null
+						}
 					}
 				}
 			}
