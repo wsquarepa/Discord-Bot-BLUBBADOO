@@ -35,6 +35,6 @@ module.exports = {
         
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
         message.channel.send(functions.emoji(hoes[functions.randomNumber(0, hoes.length - 1)], message) + " You harvested " + earnings + " carrots. Sell all of them using `" 
-        + message.guild? guildData[message.guild.id].prefix:"=="  + "sell carrot all`!")
+        + (message.guild? guildData[message.guild.id].prefix:"==")  + "sell carrot all`!")
     }
 }
