@@ -18,7 +18,7 @@ module.exports = {
         const embed = new discord.MessageEmbed()
         embed.setTitle("Known keyArgs Args:")
         embed.setDescription(
-            `Use ["-", ".", ">", "+", "-"] for it` +
+            'Use `-`, `.`, `>`, `+` or `-` for it' +
             '```fix' + 
             `
 b -> Bypass all cooldowns, health and level
