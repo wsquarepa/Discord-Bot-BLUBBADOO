@@ -40,36 +40,18 @@ module.exports = {
             userData[message.author.id].inventory.fishingrod.amount -= 1
             userData[message.author.id].inventory.fishingrod.uses = shopData.fishingrod.uses
         }
-        var timeoutkey = 0
-        message.channel.send("Okie, fishing...").then(msg => {
-            var chance = randomNumber(0, 2)
-            var collector = new discord.MessageCollector(message.channel, m => m.author == message.author && message.content.startsWith(guildData[message.guild.id].prefix))
-            collector.on("collect", function () {
-                msg.edit("You can't multitask.")
-                collector.stop()
-                chance = -1
-                clearTimeout(timeoutkey)
-                return;
-            })
-            timeoutkey = setTimeout(function () {
-                collector.stop()
-                if (chance > 0) {
-                    var earnings = randomNumber(100, 500)
-                    var embed = new discord.MessageEmbed()
-                    embed.setTitle("Fish Success!")
-                    embed.setDescription("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
-                    embed.setColor(functions.globalEmbedColor)
-                    msg.edit(embed)
-                    userData[message.author.id].cash += earnings
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-                } else {
-                    if (chance == -1) {
-                        return;
-                    }
-
-                    msg.edit("Uh oh, unfourtunatley no fish wanted you to catch them. Try again in approx 42 seconds!")
-                }
-            }, 3000)
-        })
+        var chance = randomNumber(0, 2)
+        if (chance > 0) {
+            var earnings = randomNumber(100, 500)
+            var embed = new discord.MessageEmbed()
+            embed.setTitle("Fish Success!")
+            embed.setDescription("GOOD! YOU FISH, SOMETHING TUGS ON YOUR ROD, AND YOU PULL OUT A FISH!!! \n 🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟🐟 \n You sell it for $" + earnings)
+            embed.setColor(functions.globalEmbedColor)
+            msg.edit(embed)
+            userData[message.author.id].cash += earnings
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+        } else {
+            msg.edit("Uh oh, unfourtunatley no fish wanted you to catch them. Try again in 45 seconds!")
+        }
     }
 }

@@ -40,41 +40,18 @@ module.exports = {
             userData[message.author.id].inventory.cage.amount -= 1
             userData[message.author.id].inventory.cage.uses = shopData.cage.uses
         }
-        var timeoutkey = 0
-        message.channel.send("Okie, crabbing...").then(msg => {
-            var chance = randomNumber(0, 3)
-            const inGuild = message.channel.type == "dm" ? false : true
-            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id && inGuild ? message.content.startsWith(guildData[message.guild.id].prefix)
-            && m.content !== guildData[message.guild.id].prefix + "fish" : message.content.startsWith("==") &&
-            m.content !== "==fish")
-            collector.on("collect", function () {
-                msg.edit("You can't multitask.")
-                collector.stop()
-                chance = -1
-                clearTimeout(timeoutkey)
-                return;
-            })
-            timeoutkey = setTimeout(function () {
-                collector.stop()
-                if (chance > 0) {
-                    var earnings = randomNumber(100, 750)
-                    var embed = new discord.MessageEmbed()
-                    embed.setTitle("Crab Success!")
-                    embed.setDescription("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
-                    embed.setColor(functions.globalEmbedColor)
-                    msg.edit(embed)
-                    userData[message.author.id].cash += earnings
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-                } else {
-                    if (chance == -1) {
-                        return;
-                    }
-
-                    msg.edit("No crabs fell for your trap.")
-                }
-
-            }, 3000)
-        })
-
+        var chance = randomNumber(0, 3)
+        if (chance > 0) {
+            var earnings = randomNumber(50, 400)
+            var embed = new discord.MessageEmbed()
+            embed.setTitle("Crab Success!")
+            embed.setDescription("GOOD! YOU CRAB, AND A CRAB FALLS FOR YOUR TRAP! \n 🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀🦀 \n You sell it for $" + earnings)
+            embed.setColor(functions.globalEmbedColor)
+            msg.edit(embed)
+            userData[message.author.id].cash += earnings
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+        } else {
+            msg.edit("No crabs fell for your trap.")
+        }
     }
 }
