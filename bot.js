@@ -500,7 +500,7 @@ client.on('message', message => {
 
 			var keyArgs = []
 			if (userData[message.author.id].account.type.toLowerCase() == "admin") {
-				const canStartWith = ["-", ".", ">", "+", "-"]
+				const canStartWith = ["-", ".", ">", "+", "$", "!"]
 				for (var argI = 0; argI < args.length; argI++) {
 					if (canStartWith.includes(args[argI].charAt(0))) {
 						keyArgs.push(args[argI].substring(1))
