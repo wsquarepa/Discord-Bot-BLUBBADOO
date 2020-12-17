@@ -21,12 +21,22 @@ module.exports = {
     category: "economy",
     adminOnly: false,
     execute(message, args, mention, specialArgs) {
-        const chance = functions.randomNumber(1, 100)
+        var numberList = []
+        var hundreds = 0
+        for (var i = 0; i < 100; i++) {
+            const chosenNumber = functions.randomNumber(1, 100)
+            numberList.push(chosenNumber)
+            if (chosenNumber == 100) {
+                hundreds++
+            }
+        }
+        const chance = functions.randomNumber(0, numberList.length - 1)
+        const amount = numberList[chance]
         if (userData[message.author.id].inventory["carrot"]) {
-            userData[message.author.id].inventory["carrot"].amount += chance
+            userData[message.author.id].inventory["carrot"].amount += amount
         } else {
             userData[message.author.id].inventory["carrot"] = {
-                amount: chance,
+                amount: amount,
                 uses: 1
             }
         }
@@ -41,28 +51,28 @@ module.exports = {
         }
 
         var hoeChosen = ""
-        if (chance == 100) {
+        if (amount == 100) {
             hoeChosen = hoes.netherite
-        } else if (chance < 100 && chance > 95) {
+        } else if (amount < 100 && amount > 95) {
             hoeChosen = hoes.diamond
-        } else if (chance <= 95 && chance > 85) {
+        } else if (amount <= 95 && amount > 85) {
             hoeChosen = hoes.gold
-        } else if (chance <= 85 && chance > 70) {
+        } else if (amount <= 85 && amount > 70) {
             hoeChosen = hoes.iron
-        } else if (chance <= 70 && chance > 50) {
+        } else if (amount <= 70 && amount > 50) {
             hoeChosen = hoes.stone
         } else {
             hoeChosen = hoes.wooden
         }
 
-        console.log("[SHARD/DEBUG] " + message.author.tag + "'s chance for hoes: " + chance)
+        console.log("[SHARD/DEBUG] " + message.author.tag + "'s chance for hoes: " + amount)
 
         if (hoeChosen == "788841905772429354") {
             functions.giveAchivement("Serious Dedication", message)
         }
 
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-        message.channel.send(functions.emoji(hoeChosen, message) + " You harvested " + chance + " carrots. Sell all of them using `" +
-            (message.guild ? guildData[message.guild.id].prefix : "==") + "sell carrot all`!")
+        message.channel.send(functions.emoji(hoeChosen, message) + " You harvested " + amount + " carrots. Sell all of them using `" +
+            (message.guild ? guildData[message.guild.id].prefix : "==") + "sell carrot all`! \n BTW: There were " + hundreds + " 100's in your numberlist.")
     }
 }
