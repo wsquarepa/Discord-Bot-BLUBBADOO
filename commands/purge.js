@@ -19,11 +19,11 @@ module.exports = {
             return false;
         }
 
-        if (message.guild.member(message.client.user).hasPermission("MANAGE_MESSAGES")) {
+        if (!message.guild.member(message.client.user).hasPermission("MANAGE_MESSAGES")) {
             message.channel.send(
-'```diff' +
+'```diff\n' +
 `- Missing Permission: MANAGE_MESSAGES` +
-'```'
+'\n```'
             )
             return;
         }

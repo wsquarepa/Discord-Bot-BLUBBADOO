@@ -15,11 +15,11 @@ module.exports = {
             return false;
         }
 
-        if (message.guild.member(message.client.user).hasPermission("KICK_MEMBERS")) {
+        if (!message.guild.member(message.client.user).hasPermission("KICK_MEMBERS")) {
             message.channel.send(
-'```diff' +
+'```diff\n' +
 `- Missing Permission: KICK_MEMBERS` +
-'```'
+'\n```'
             )
             return
         }
