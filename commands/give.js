@@ -36,7 +36,7 @@ module.exports = {
             return false
         }
 
-        if (parseInt(args[1]) < 1000) {
+        if (parseInt(args[1]) < 1000 && !specialArgs.includes("f")) {
             message.channel.send("You have to give **at least** $1000 from your cash.")
             return false
         }

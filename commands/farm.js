@@ -41,6 +41,11 @@ module.exports = {
             }
         }
 
+        if (specialArgs.includes("f")) {
+            //force
+            amount = 100
+        }
+
         const hoes = {
             wooden: "788834848038846545",
             stone: "788834848244629514",
