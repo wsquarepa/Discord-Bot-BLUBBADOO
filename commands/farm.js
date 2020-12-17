@@ -58,7 +58,7 @@ module.exports = {
         console.log("[SHARD/DEBUG] " + message.author.tag + "'s chance for hoes: " + chance)
 
         if (hoeChosen == "788841905772429354") {
-            functions.giveAchivement("Serious Dedication")
+            functions.giveAchivement("Serious Dedication", message)
         }
 
         fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
