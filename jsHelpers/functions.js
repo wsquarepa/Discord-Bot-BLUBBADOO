@@ -69,13 +69,15 @@ module.exports = {
         if (achivements[achivementName] !== null) {
             if (!userData[messageObject.author.id].achivements.includes(achivementName)) {
                 userData[messageObject.author.id].achivements.push(achivementName)
-                if (guildData[messageObject.guild.id].settings.achivementMessage) {
-                    messageObject.channel.send("**ACHIEVEMENT EARNED!** \n `" + achivementName + "`! \n Do `==advancements` to view your advancements!")
-                        .then(function(msg) {
-                            if (achivements[achivementName].secret) {
-                                msg.delete({timeout: 5000})
-                            }
-                        })
+                if (messageObject.guild) {
+                    if (guildData[messageObject.guild.id].settings.achivementMessage) {
+                        messageObject.channel.send("**ACHIEVEMENT EARNED!** \n `" + achivementName + "`! \n Do `==advancements` to view your advancements!")
+                            .then(function(msg) {
+                                if (achivements[achivementName].secret) {
+                                    msg.delete({timeout: 5000})
+                                }
+                            })
+                    }
                 }
             }
         }
