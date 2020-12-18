@@ -35,8 +35,8 @@ module.exports = {
             message.channel.send(embed)
             return
         }
-        var cash = userData[message.author.id].cash.split().reverse().match(/.{1,3}/g).reverse().join(" ")
-        var bank = userData[message.author.id].bank.split().reverse().match(/.{1,3}/g).reverse().join(" ")
+        var cash = userData[message.author.id].cash.toString().split().reverse().match(/.{1,3}/g).reverse().join(" ")
+        var bank = userData[message.author.id].bank.toString().split().reverse().match(/.{1,3}/g).reverse().join(" ")
         var gems = userData[message.author.id].gems
         var bankLimit = userData[message.author.id].bankLimit
         var bankChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
