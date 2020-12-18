@@ -24,10 +24,11 @@ module.exports = {
         }
 
         const embed = new discord.MessageEmbed()
-        embed.setTitle("Emoji \"" + emojiName + "\"", true)
-        embed.addField("ID", emoji.id, true)
-        embed.addField("Emoji", emoji.toString(), true)
-        embed.addField("Raw emoji form", "\\" + emoji.toString(), true)
+        embed.setTitle("Emoji \"" + emojiName + "\"")
+        embed.addField("ID", emoji.id)
+        embed.addField("Emoji", emoji.toString())
+        embed.addField("Raw emoji form", "\\" + emoji.toString())
+        embed.setColor(functions.globalEmbedColor)
         message.channel.send(embed)
     }
 }
