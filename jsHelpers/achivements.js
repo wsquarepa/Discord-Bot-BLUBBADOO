@@ -216,5 +216,16 @@ module.exports = {
             title: "Serious Farmer"
         },
         secret: false
+    },
+
+    "CARROTS!!!": {
+        description: "Get 1000 carrots when farming.",
+        reward: {
+            money: 10000,
+            gems: 3,
+            item: "chest",
+            title: "I luv carrots"
+        },
+        secret: true
     }
 }
