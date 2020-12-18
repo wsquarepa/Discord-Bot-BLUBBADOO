@@ -1,6 +1,14 @@
 const discord = require('discord.js')
 const userData = require('../userData.json')
 
+function convertHuman(number) {
+    const stringList = number.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
+    for (var i = 0; i < stringList.length; i++) {
+        stringList[i].split("").reverse().join("")
+    }
+    return stringList.join(" ")
+}
+
 module.exports = {
     name: 'money',
 	description: '',
@@ -42,9 +50,9 @@ module.exports = {
         var bankLimit = userData[message.author.id].bankLimit
         var bankChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
 
-        const cashDisplay = cash.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
-        const bankDisplay = bank.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
-        const bankLimitDisplay = bankLimit.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
+        const cashDisplay = convertHuman(cash)
+        const bankDisplay = convertHuman(bank)
+        const bankLimitDisplay = convertHuman(bankLimitDisplay)
     
         const loc = parseInt(10.0 * (bank / bankLimit) + 0.5)
 
