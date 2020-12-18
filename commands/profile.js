@@ -73,21 +73,21 @@ module.exports = {
                 xpChart[loc] = "**|**"
     
                 //embed.addField("Username:", name, false)
-                embed.addField("Cash", cash, true)
-                embed.addField("Bank", bank, true)
-                embed.addField("Gems", gems, true)
+                embed.addField("💵 Cash", cash, true)
+                embed.addField("🏦 Bank", bank, true)
+                embed.addField("💎 Gems", gems, true)
                 //embed.addField("\u200b", "\u200b", false)
                 embed.addField("Title", type, true)
-                embed.addField("Secured?", secured, true)
+                embed.addField("🔒 Secured?", secured, true)
                 embed.addField("Leaderboard Location", userLocation, true)
                 //space
                 embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
                 embed.addField("Level", level, true)
-                embed.addField("Intellect", intellect, true)
+                embed.addField("🤔 Intellect", intellect, true)
     
-                embed.addField("Strength", strength, true)
-                embed.addField("Defence", defence, true)
-                embed.addField("HP", hp + "/" + maxHP, true)
+                embed.addField("💪 Strength", strength, true)
+                embed.addField("🛡️ Defence", defence, true)
+                embed.addField("❤️ HP", hp + "/" + maxHP, true)
     
                 message.channel.send(embed)
             } else if (args[0].startsWith("s")) {
