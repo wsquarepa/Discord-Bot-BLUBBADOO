@@ -5,14 +5,6 @@ const discord = require("discord.js")
 const shopData = require('../shop.json')
 const functions = require("../jsHelpers/functions")
 
-function embed(title, description, color) {
-    var embed = new discord.MessageEmbed()
-        .setAuthor(title)
-        .setDescription(description)
-        .setColor(color)
-    return embed
-}
-
 function randomNumber(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -31,7 +23,11 @@ module.exports = {
     adminOnly: false,
     execute(message, args, mention, specialArgs) {
         if (userData[message.author.id].inventory["cage"] == null || userData[message.author.id].inventory["cage"].amount < 1) {
-            message.channel.send(embed("Error", "How do you suppose you crab without a cage?", "ff0000"))
+            const embed = new discord.MessageEmbed()
+            embed.setTitle("Error")
+            embed.setDescription("How do you suppose you crab without a cage?")
+            embed.setColor("ff0000")
+            message.channel.send(embed)
             return false
         }
 

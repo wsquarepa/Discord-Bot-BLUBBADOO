@@ -640,7 +640,7 @@ client.on('message', message => {
 			.setTitle("Uh oh!")
 			.setDescription("There was an issue executing that command!")
 			.setColor(functions.globalEmbedColor)
-			.setFooter("My developers have recieved a notification.")
+			.setFooter("My developers have received a notification.")
 			.setTimestamp(Date.now())
 		message.channel.send(embedErrorToUser).catch()
 	}
