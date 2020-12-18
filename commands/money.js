@@ -36,19 +36,23 @@ module.exports = {
             return
         }
 
-        var cash = userData[message.author.id].cash.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
-        var bank = userData[message.author.id].bank.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
+        var cash = userData[message.author.id].cash
+        var bank = userData[message.author.id].bank
         var gems = userData[message.author.id].gems
         var bankLimit = userData[message.author.id].bankLimit
         var bankChart = ['|', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '|']
+
+        const cashDisplay = cash.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
+        const bankDisplay = bank.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
+        const bankLimitDisplay = bankLimit.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
     
         const loc = parseInt(10.0 * (bank / bankLimit) + 0.5)
 
         bankChart[loc] = "**|**"
         var embed = new discord.MessageEmbed()
                 .setTitle("Your balance:")
-                .addField("Cash", "$" + cash)
-                .addField("Bank", "$" + bank + " / $" + bankLimit + " " + bankChart.join("") + " (" + (Math.round(bank / bankLimit)) + "%)")
+                .addField("Cash", "$" + cashDisplay)
+                .addField("Bank", "$" + bankDisplay + " / $" + bankLimitDisplay + " " + bankChart.join("") + " (" + (Math.round(bank / bankLimit)) + "%)")
                 .addField("Gems", gems + "💎")
                 .setColor("2f3237")
                 .setFooter(userData[message.author.id].account.secured? "Account Locked." : "Account not Locked.")
