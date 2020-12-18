@@ -16,8 +16,18 @@ module.exports = {
     adminOnly: false,
 	execute(message, args, mention, specialArgs) {
         const emojiName = args.join(" ")
-        const emoji = message.guild.emojis.cache.find(x => x.name == emojiName).toString()
+        const emoji = message.guild.emojis.cache.find(x => x.name == emojiName)
 
-        message.channel.send("\\" + emoji)
+        if (!emoji) {
+            message.channel.send("Sorry, but that emoji does not exist!")
+            return;
+        }
+
+        const embed = new discord.MessageEmbed()
+        embed.setTitle("Emoji \"" + emojiName + "\"", true)
+        embed.addField("ID", emoji.id, true)
+        embed.addField("Emoji", emoji.toString(), true)
+        embed.addField("Raw emoji form", "\\" + emoji.toString(), true)
+        message.channel.send(embed)
     }
 }
