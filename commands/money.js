@@ -2,9 +2,9 @@ const discord = require('discord.js')
 const userData = require('../userData.json')
 
 function convertHuman(number) {
-    const stringList = number.toString().split("").reverse().join("").match(/.{1,3}/g).reverse().join(" ")
+    const stringList = number.toString().split("").reverse().join("").match(/.{1,3}/g).reverse()
     for (var i = 0; i < stringList.length; i++) {
-        stringList[i].split("").reverse().join("")
+        stringList[i] = stringList[i].split("").reverse().join("")
     }
     return stringList.join(" ")
 }
