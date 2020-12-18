@@ -57,7 +57,7 @@ module.exports = {
 
         try {
             if (args[0].toLowerCase() == "help") {
-                const prefix = guildData[message.guild.id].prefix
+                const prefix = (message.guild? guildData[message.guild.id].prefix:"==")
                 var embed = new discord.MessageEmbed({
                     title: "Help on pets:",
                     description: `

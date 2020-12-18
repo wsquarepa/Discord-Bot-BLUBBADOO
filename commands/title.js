@@ -10,7 +10,7 @@ module.exports = {
 	description: 'Set your title!',
     args: false,
     usage: '[title id]',
-    guildOnly: true,
+    guildOnly: false,
     aliases: [],
     cooldown: 3,
     levelRequirement: 0,
@@ -30,7 +30,7 @@ module.exports = {
                     availableTags.push("ID: " + (i + z) + " - " + codes[userData[message.author.id].codesUsed[z]].title)
                 }
             }
-            message.channel.send("Available titles: (use " + guildData[message.guild.id].prefix + "title [title id] to set your title) \n" + availableTags.join("\n"))
+            message.channel.send("Available titles: (use " + (message.guild? guildData[message.guild.id].prefix:"==") + "title [title id] to set your title) \n" + availableTags.join("\n"))
         } else {
             var id = parseInt(args[0])
             var tag = ""

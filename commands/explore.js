@@ -36,43 +36,24 @@ module.exports = {
 
         userData[message.author.id].inventory["map"].amount--
 
-        var timeout = 0
         var chance = randomNumber(0, 5)
-
-        message.channel.send("Exploring... Please wait...").then(msg => {
-            var collector = new discord.MessageCollector(message.channel, m => m.author.id == message.author.id && m.content.startsWith(guildData[message.guild.id].prefix))
-
-            collector.on("collect", function () {
-                collector.stop()
-                clearTimeout(timeout)
-                msg.edit("You can't do anything while you're exploring.")
-                chance = 0
-                return;
-            })
-
-            timeout = setTimeout(function () {
-                collector.stop()
-                if (chance == 3) {
-                    msg.edit("Hmm... what's that shiny thingy? OH WAIT ITS A TREASURE CHEST WOOOOOOOOOO!!!! It's in your inventory now; do `" + 
-                        (message.guild? guildData[message.guild.id].prefix:"==") +
-                        "use chest` to open it!")
-                    functions.giveAchivement(message, "The explorer")
-                    if (userData[message.author.id].inventory["chest"]) {
-                        userData[message.author.id].inventory["chest"].amount += 1
-                    } else {
-                        userData[message.author.id].inventory["chest"] = {
-                            amount: 1,
-                            uses: 1
-                        }
-                    }
-
-                    fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-                } else {
-                    msg.edit("Hmm... what's that shiny thing? Great, it's just another puddle of water.")
+        if (chance == 3) {
+            message.channel.send("Hmm... what's that shiny thingy? OH WAIT ITS A TREASURE CHEST WOOOOOOOOOO!!!! It's in your inventory now; do `" + 
+                (message.guild? guildData[message.guild.id].prefix:"==") +
+                "use chest` to open it!")
+            functions.giveAchivement(message, "The explorer")
+            if (userData[message.author.id].inventory["chest"]) {
+                userData[message.author.id].inventory["chest"].amount += 1
+            } else {
+                userData[message.author.id].inventory["chest"] = {
+                    amount: 1,
+                    uses: 1
                 }
-            }, 5000)
-        })
+            }
 
-
+            fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+        } else {
+            message.channel.send("Hmm... what's that shiny thing? Great, it's just another puddle of water.")
+        }
     }
 }

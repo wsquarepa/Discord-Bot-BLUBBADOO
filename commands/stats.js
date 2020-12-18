@@ -58,7 +58,7 @@ module.exports = {
                 var timeAgo = now - leaders[i][2]
                 timeAgo = timeAgo / 1000 / 60
                 timeAgo = Math.round((timeAgo + Number.EPSILON))
-                leaderString += guildData[message.guild.id].prefix + leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
+                leaderString += leaders[i][0] + " - used " + leaders[i][1] + " times. \n Last used ≈" + timeAgo + " minutes ago.\n \n"
             }
 
             message.client.shard.fetchClientValues('guilds.cache.size')
@@ -87,7 +87,7 @@ module.exports = {
         timeAgo = Math.round((timeAgo + Number.EPSILON))
 
         var data = []
-        data.push("**" + guildData[message.guild.id].prefix + command.name + " " + command.usage +"**")
+        data.push("**" + command.name + " " + command.usage +"**")
         data.push("Used **" + botData[command.name].uses + "** times")
         data.push("Last used **≈" + timeAgo + "** minutes ago.")
 
