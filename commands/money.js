@@ -61,7 +61,7 @@ module.exports = {
                 .setTitle("Your balance:")
                 .addField("Cash", "$" + cashDisplay)
                 .addField("Bank", "$" + bankDisplay + " / $" + bankLimitDisplay + " " + bankChart.join("") + " (" + (((bank / bankLimit) * 100).toFixed(2)) + "%)")
-                .addField("Gems", gems + "💎")
+                .addField("Gems", gems + " 💎")
                 .setColor("2f3237")
                 .setFooter(userData[message.author.id].account.secured? "Account Locked." : "Account not Locked.")
                 .setTimestamp(Date.now())
