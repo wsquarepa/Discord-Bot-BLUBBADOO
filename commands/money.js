@@ -60,7 +60,7 @@ module.exports = {
         var embed = new discord.MessageEmbed()
                 .setTitle("Your balance:")
                 .addField("Cash", "$" + cashDisplay)
-                .addField("Bank", "$" + bankDisplay + " / $" + bankLimitDisplay + " " + bankChart.join("") + " (" + (Math.round(bank / bankLimit)) + "%)")
+                .addField("Bank", "$" + bankDisplay + " / $" + bankLimitDisplay + " " + bankChart.join("") + " (" + (((bank / bankLimit).toFixed(4)) * 100) + "%)")
                 .addField("Gems", gems + "💎")
                 .setColor("2f3237")
                 .setFooter(userData[message.author.id].account.secured? "Account Locked." : "Account not Locked.")

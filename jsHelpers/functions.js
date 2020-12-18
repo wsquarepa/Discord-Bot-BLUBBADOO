@@ -90,5 +90,13 @@ module.exports = {
             (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     },
 
+    convertToHumanReadableString: function (number) {
+        const stringList = number.toString().split("").reverse().join("").match(/.{1,3}/g).reverse()
+        for (var i = 0; i < stringList.length; i++) {
+            stringList[i] = stringList[i].split("").reverse().join("")
+        }
+        return stringList.join(" ")
+    },
+
     globalEmbedColor: "2f3237"
 }
