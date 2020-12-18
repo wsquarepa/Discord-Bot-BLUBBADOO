@@ -52,7 +52,7 @@ module.exports = {
 
         const cashDisplay = convertHuman(cash)
         const bankDisplay = convertHuman(bank)
-        const bankLimitDisplay = convertHuman(bankLimitDisplay)
+        const bankLimitDisplay = convertHuman(bankLimit)
     
         const loc = parseInt(10.0 * (bank / bankLimit) + 0.5)
 
