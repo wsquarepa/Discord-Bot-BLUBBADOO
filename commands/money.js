@@ -36,9 +36,12 @@ module.exports = {
             var bank = userData[mention.id].bank
             var gems = userData[mention.id].gems
 
+            const cashDisplay = convertHuman(cash)
+            const bankDisplay = convertHuman(bank)
+
             var embed = new discord.MessageEmbed()
                 .setTitle(mention.username + "'s balance:")
-                .setDescription("Cash: $" + cash + " \n Bank: $" + bank + "\n Gems: " + gems + "💎")
+                .setDescription("Cash: $" + cashDisplay + " \n Bank: $" + bankDisplay + "\n Gems: " + gems + "💎")
                 .setColor("2f3237")
             message.channel.send(embed)
             return
