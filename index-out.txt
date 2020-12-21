@@ -1,1 +1,1 @@
-TypeError: Cannot read property 'includes' of undefined
+Error [ERR_IPC_CHANNEL_CLOSED]: Channel closed
