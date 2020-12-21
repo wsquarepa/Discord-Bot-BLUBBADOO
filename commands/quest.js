@@ -36,8 +36,7 @@ module.exports = {
             
             for (i = 0; i < pageKeys.length; i++) {
                 embed.addField(pageKeys[i], 
-`**ID:** ${i}
-**Cash:** $${quests[pageKeys[i]].minCash} - $${quests[pageKeys[i]].maxCash}
+`**Cash:** $${quests[pageKeys[i]].minCash} - $${quests[pageKeys[i]].maxCash}
 **Gems:** ${quests[pageKeys[i]].minGems} 💎 - ${quests[pageKeys[i]].maxGems} 💎
 **Item(s):** ${quests[pageKeys[i]].itemList.join(", ")}
 **Time:** ${quests[pageKeys[i]].timeH} hour(s)
@@ -156,7 +155,7 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Your Quest:")
             embed.setDescription(
-`**ID:** ${userData[message.author.id].quest.id}
+`**Name:** ${keys[userData[message.author.id].quest.id]}
 **Cash:** $${quests[keys[userData[message.author.id].quest.id]].minCash} - $${quests[keys[userData[message.author.id].quest.id]].maxCash}
 **Gems:** ${quests[keys[userData[message.author.id].quest.id]].minGems} 💎 - ${quests[keys[userData[message.author.id].quest.id]].maxGems} 💎
 **Item(s):** ${quests[keys[userData[message.author.id].quest.id]].itemList.join(", ")}
