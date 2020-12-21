@@ -18,7 +18,7 @@ module.exports = {
     adminOnly: true, //change to false later
 	execute(message, args, mention, specialArgs) {
         const keys = Object.keys(quests)
-        if (functions.isEmpty(userData[message.author.id].quest) && !isNaN(parseInt(args[0]))) {
+        if (functions.isEmpty(userData[message.author.id].quest) && !args.length && !isNaN(parseInt(args[0]))) {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Available Quests:")
             var pages = []            
