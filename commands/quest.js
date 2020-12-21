@@ -68,6 +68,10 @@ module.exports = {
             "Say **yes** to confirm that you would like to start the quest.")
             const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 10000, max: 1})
             collector.on('end', (msgs) => {
+                if (msgs.size < 1) {
+                    message.channel.send("I guess not then... ok.")
+                    return;
+                }
                 const msg = msgs.first()
                 if (msg.content.toLowerCase() == "yes") {
                     userData[message.author.id].quest = {
@@ -127,6 +131,10 @@ module.exports = {
             message.channel.send("Are you sure you want to end your quest? You will forfiet all your earnings and will have a 1 day cooldown before starting another quest.")
             const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 10000, max: 1})
             collector.on('end', (msgs) => {
+                if (msgs.size < 1) {
+                    message.channel.send("I guess not then... ok.")
+                    return;
+                }
                 const msg = msgs.first()
                 if (msg.content.toLowerCase() == "yes") {
                     userData[message.author.id].quest = {
