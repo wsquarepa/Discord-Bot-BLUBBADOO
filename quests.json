@@ -5,7 +5,6 @@
         "minGems":1,
         "maxGems":2,
         "itemList":["knife", "knife", "knife"],
-        "timeH":24,
-        "survivalChance":100
+        "timeH":24
     }
 }

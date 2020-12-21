@@ -556,12 +556,12 @@ client.on('message', message => {
 				return
 			}
 
-			if (!functions.isEmpty(userData[message.author.id].quest)) {
+			if (!functions.isEmpty(userData[message.author.id].quest) && command.name != "quest" && !keyArgs.includes("b")) {
 				if (!userData[message.author.id].quest.cooldown) {
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_QUEST")
 					embed.setTitle("You are currently in a quest!")
-					embed.setDescription("You cannot preform tasks in a quest, except for the ones that are allowed.")
+					embed.setDescription("You cannot preform tasks in a quest, except for the ones that are allowed. Use `quest` to see your current quest!")
 					embed.setColor("ff0000")
 					message.channel.send(embed)
 					return
