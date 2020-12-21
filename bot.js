@@ -569,7 +569,7 @@ client.on('message', message => {
 				return
 			}
 
-			if (!functions.isEmpty(userData[message.author.id].quest) && command.name != "quest" && !keyArgs.includes("b")) {
+			if (!functions.isEmpty(userData[message.author.id].quest) && command.name != "quest" && command.category == "econnomy" && !keyArgs.includes("b")) {
 				if (!userData[message.author.id].quest.cooldown) {
 					const embed = new Discord.MessageEmbed()
 					embed.setAuthor("ERR_QUEST")
