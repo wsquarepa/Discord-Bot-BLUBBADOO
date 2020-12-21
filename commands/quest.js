@@ -57,8 +57,7 @@ module.exports = {
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
         } else if (functions.isEmpty(userData[message.author.id].quest)) {
-            const id = keys.indexOf(args.join(" "))
-            if (!keys[id]) {
+            if (!quests[args.join(" ")]) {
                 message.channel.send("Whoops! That quest doesn't exist, my friend!")
                 return
             }
@@ -72,10 +71,10 @@ module.exports = {
                 const msg = msgs.first()
                 if (msg.content.toLowerCase() == "yes") {
                     userData[message.author.id].quest = {
-                        expiryTime: (Date.now() + (1000 * 60 * 60 * quests[keys[id]].timeH)),
-                        id: id
+                        expiryTime: (Date.now() + (1000 * 60 * 60 * quests[args.join(" ")].timeH)),
+                        id: keys.indexOf(args.join(" "))
                     }
-                    message.channel.send("Quest started! Check back in " + quests[keys[i]].timeH + " hours to collect your prize!")
+                    message.channel.send("Quest started! Check back in " + quests[args.join(" ")].timeH + " hours to collect your prize!")
                 } else {
                     message.channel.send("Oh. Ok. Maybe another time then.")
                 }
