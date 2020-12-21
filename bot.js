@@ -190,6 +190,19 @@ client.once("ready", function () {
 	setInterval(() => {
 		const keys = Object.keys(userData)
 		for (var i = 0; i < keys.length; i++) {
+			if (userData[keys[i]].quest) {
+				if (userData[keys[i]].quest.cooldown) {
+					if (userData[keys[i]].quest.cooldown < Date.now()) {
+						userData[keys[i]].quest = {}
+					}
+				}
+			}
+		}
+	}, 1000)
+
+	setInterval(() => {
+		const keys = Object.keys(userData)
+		for (var i = 0; i < keys.length; i++) {
 			if (userData[keys[i]].hp < userData[keys[i]].maxHP) {
 				userData[keys[i]].hp += 1
 			}
