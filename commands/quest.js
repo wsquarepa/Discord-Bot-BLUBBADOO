@@ -145,6 +145,12 @@ module.exports = {
                     message.channel.send("Okay.")
                 }
             })
+        } else if (args[0] == "help") {
+            const embed = new discord.MessageEmbed()
+            embed.setTitle("Quest Help")
+            embed.setDescription("Collect quest: `==quest collect`, collects all earnings \n" + "End quest: `==quest end`, ends quest and forfiets all earnings")
+            embed.setColor(functions.globalEmbedColor)
+            message.channel.send(embed)
         } else {
             const timeLeft = new Date(userData[message.author.id].quest.expiryTime - Date.now())
             const embed = new discord.MessageEmbed()
@@ -154,7 +160,7 @@ module.exports = {
 **Cash:** $${quests[keys[userData[message.author.id].quest.id]].minCash} - $${quests[keys[userData[message.author.id].quest.id]].maxCash}
 **Gems:** ${quests[keys[userData[message.author.id].quest.id]].minGems} 💎 - ${quests[keys[userData[message.author.id].quest.id]].maxGems} 💎
 **Item(s):** ${quests[keys[userData[message.author.id].quest.id]].itemList.join(", ")}
-**Time:** ${timeLeft.getHours()} hour(s) and ${timeLeft.getMinutes()} minute(s) remaining.`
+**Time:** ${userData[message.author.id].quest.expiryTime - Date.now() <= 0? `READY TO COLLECT`:`${timeLeft.getHours()} hour(s) and ${timeLeft.getMinutes()} minute(s) remaining.`}`
             )
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
