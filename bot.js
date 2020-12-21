@@ -195,7 +195,7 @@ client.once("ready", function () {
 			}
 		}
 		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
-	}, 1000)
+	}, 5000)
 })
 
 client.on('message', message => {

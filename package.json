@@ -1,6 +1,6 @@
 {
   "name": "blubbadoo",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Blubbadoo Discord Bot",
   "main": "index.js",
   "scripts": {

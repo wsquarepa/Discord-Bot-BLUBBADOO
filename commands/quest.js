@@ -15,7 +15,7 @@ module.exports = {
     cooldown: 5,
     levelRequirement: 3,
     category: "economy",
-    adminOnly: true, //change to false later
+    adminOnly: false,
 	execute(message, args, mention, specialArgs) {
         const keys = Object.keys(quests)
         if (functions.isEmpty(userData[message.author.id].quest) && (!args.length || !isNaN(parseInt(args[0])))) {
