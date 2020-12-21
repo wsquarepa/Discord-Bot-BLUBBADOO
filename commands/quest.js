@@ -81,6 +81,16 @@ module.exports = {
             })
         } else if (args[0] == "collect") {
             if (Date.now() > userData[message.author.id].quest.expiryTime) {
+                if ((Date.now() - userData[message.author.id].quest.expiryTime) > 1000 * 60 * 60) {
+                    const overTime = new Date((Date.now() - userData[message.author.id].quest.expiryTime) - 1000 * 60 * 60)
+                    message.channel.send("Uh oh, you collected your quest " + overTime.getHours() + " hour(s) and " + overTime.getMinutes() + " minute(s) late! That means" + 
+                    " you get nothing! Oops!")
+                    userData[message.author.id].quest = {
+                        cooldown: 1000 * 60 * 60 * 24
+                    }
+                    return;
+                }
+
                 const questData = quests[keys[userData[message.author.id].quest.id]]
                 for (var i = 0; i < questData.itemList.length; i++) {
                     const itemName = questData.itemList[i]
