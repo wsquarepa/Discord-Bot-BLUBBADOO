@@ -63,7 +63,7 @@ module.exports = {
 
             message.channel.send("Are you 100% sure you want to start the quest? When you start a quest, you **CANNOT** execute any commands except for this one. " +
             "Also, you must do `quest collect` to collect your reward within an hour of finishing. Otherwise, " + 
-            "you **will not** automatically collct your reward. Also, you can end your quest at any time by saying `quest end`. " + 
+            "you **will not** automatically collect your reward. Also, you can end your quest at any time by saying `quest end`. " + 
             "Say **yes** to confirm that you would like to start the quest.")
             const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 10000, max: 1})
             collector.on('end', (msgs) => {
