@@ -9,7 +9,7 @@ module.exports = {
     name: 'quest',
 	description: 'View your quests or start a quest.',
     args: false,
-    usage: '[quest id]',
+    usage: '[quest name]',
     guildOnly: false,
     aliases: ['adventure'],
     cooldown: 5,
@@ -18,7 +18,7 @@ module.exports = {
     adminOnly: true, //change to false later
 	execute(message, args, mention, specialArgs) {
         const keys = Object.keys(quests)
-        if (functions.isEmpty(userData[message.author.id].quest)) {
+        if (functions.isEmpty(userData[message.author.id].quest) && !isNaN(parseInt(args[0]))) {
             const embed = new discord.MessageEmbed()
             embed.setTitle("Available Quests:")
             var pages = []            
@@ -56,8 +56,8 @@ module.exports = {
             "You have to wait " + timeLeft.getHours() + " hours and " + timeLeft.getMinutes() + " minutes before doing another quest!")
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
-        } else if (!isNaN(parseInt(args[0]))) {
-            const id = parseInt(args[0])
+        } else if (functions.isEmpty(userData[message.author.id].quest)) {
+            const id = keys.indexOf(args.join(" "))
             if (!keys[id]) {
                 message.channel.send("Whoops! That quest doesn't exist, my friend!")
                 return
