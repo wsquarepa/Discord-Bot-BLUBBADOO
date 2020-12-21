@@ -130,9 +130,9 @@ module.exports = {
                 const msg = msgs.first()
                 if (msg.content.toLowerCase() == "yes") {
                     userData[message.author.id].quest = {
-                        cooldown: 1000 * 60 * 60 * 24
+                        cooldown: Date.now() + 1000 * 60 * 60
                     }
-                    message.channel.send("Quest ended!")
+                    message.channel.send("Quest ended! Wait 1 hour before *questing* again!")
                 } else {
                     message.channel.send("Okay.")
                 }
