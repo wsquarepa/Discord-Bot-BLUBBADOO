@@ -25,6 +25,7 @@ const functions = require("./jsHelpers/functions")
 const DBL = require("dblapi.js")
 const dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5NjcxNTExMTUxMTQ5MDU2MCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTk1NzgxOTAxfQ.bbb9DPH39Q2roE1jKpRxZNMnzyFJQ_ivLJTxoB10cv4', client);
 var shardId = 0
+const quests = require("./quests.json")
 
 function isEmpty(obj) {
 	for (var key in obj) {
@@ -261,7 +262,8 @@ client.on('message', message => {
 						strength: 0,
 						defence: 0,
 						hp: 10,
-						maxHP: 100
+						maxHP: 100,
+						quest: {}
 					}
 				}
 
@@ -311,6 +313,10 @@ client.on('message', message => {
 
 				if (!userData[message.author.id].bankLimit) {
 					userData[message.author.id].bankLimit = 0
+				}
+
+				if (!userData[message.author.id].quest) {
+					userData[message.author.id].quest = {}
 				}
 
 				userData[message.author.id].xp += 1
@@ -545,6 +551,19 @@ client.on('message', message => {
 				embed.setAuthor("ERR_HEALTH")
 				embed.setTitle("You don't have enough health to preform any tasks!")
 				embed.setDescription("You have " + userData[message.author.id].hp + "HP! You need at least **10 HP** to prefom tasks!")
+				embed.setColor("ff0000")
+				message.channel.send(embed)
+				return
+			}
+
+			if (functions.isEmpty(userData[message.author.id].quest) && 
+				!userData[message.author.id].quest.cooldown && 
+				userData[message.author.id].quest.allowed.includes(command.name)) 
+			{
+				const embed = new Discord.MessageEmbed()
+				embed.setAuthor("ERR_QUEST")
+				embed.setTitle("You are currently in a quest!")
+				embed.setDescription("You cannot preform tasks in a quest, except for the ones that are allowed.")
 				embed.setColor("ff0000")
 				message.channel.send(embed)
 				return
