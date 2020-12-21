@@ -556,17 +556,18 @@ client.on('message', message => {
 				return
 			}
 
-			if (functions.isEmpty(userData[message.author.id].quest) && 
-				!userData[message.author.id].quest.cooldown && 
-				userData[message.author.id].quest.allowed.includes(command.name)) 
-			{
-				const embed = new Discord.MessageEmbed()
-				embed.setAuthor("ERR_QUEST")
-				embed.setTitle("You are currently in a quest!")
-				embed.setDescription("You cannot preform tasks in a quest, except for the ones that are allowed.")
-				embed.setColor("ff0000")
-				message.channel.send(embed)
-				return
+			if (!functions.isEmpty(userData[message.author.id].quest)) {
+				if (!userData[message.author.id].quest.cooldown) {
+					if (!userData[message.author.id].quest.allowed.includes(command.name)) {
+						const embed = new Discord.MessageEmbed()
+						embed.setAuthor("ERR_QUEST")
+						embed.setTitle("You are currently in a quest!")
+						embed.setDescription("You cannot preform tasks in a quest, except for the ones that are allowed.")
+						embed.setColor("ff0000")
+						message.channel.send(embed)
+						return
+					}
+				}
 			}
 
 			if (!cooldowns.has(command.name)) {
