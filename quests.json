@@ -1,10 +1,19 @@
 {
-    "questTest": {
+    "robbery": {
         "minCash":1000,
         "maxCash":10000,
         "minGems":1,
         "maxGems":2,
         "itemList":["knife", "knife", "knife"],
-        "timeH":24
+        "timeH":3
+    },
+
+    "exploration": {
+        "minCash": 1000,
+        "maxCash": 5000,
+        "minGems": 5,
+        "maxGems": 8,
+        "itemList": ["chest", "key"],
+        "timeH":12
     }
 }
