@@ -36,14 +36,13 @@ module.exports = {
             for (i = 0; i < pageKeys.length; i++) {
                 embed.addField(pageKeys[i], 
 `**ID:** ${i}
-**Profit:**
-    **Cash:** $${quests[pageKeys[i]].minCash} - $${quests[pageKeys[i]].maxCash}
-    **Gems:** ${quests[pageKeys[i]].minGems} 💎 - ${quests[pageKeys[i]].maxGems} 💎
-    **Item(s):** ${quests[pageKeys[i]].itemList.join(", ")}
+**Cash:** $${quests[pageKeys[i]].minCash} - $${quests[pageKeys[i]].maxCash}
+**Gems:** ${quests[pageKeys[i]].minGems} 💎 - ${quests[pageKeys[i]].maxGems} 💎
+**Item(s):** ${quests[pageKeys[i]].itemList.join(", ")}
 **Time:** ${quests[pageKeys[i]].timeH} hour(s)
 **Survival Chance:** ${quests[pageKeys[i]].survivalChance}%
 `
-                )
+                , true)
             }
 
             message.channel.send(embed)
