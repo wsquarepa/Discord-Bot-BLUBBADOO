@@ -1,7 +1,7 @@
 {
     "robbery": {
         "minCash":1000,
-        "maxCash":10000,
+        "maxCash":2000,
         "minGems":1,
         "maxGems":2,
         "itemList":["knife", "knife", "knife"],
@@ -15,5 +15,14 @@
         "maxGems": 8,
         "itemList": ["chest", "key"],
         "timeH":12
+    },
+
+    "charity": {
+        "minCash": 10000,
+        "maxCash": 100000,
+        "minGems": 10,
+        "maxGems": 15,
+        "itemList": ["chest", "key", "lock", "healthpot"],
+        "timeH":24
     }
 }
