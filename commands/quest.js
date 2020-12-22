@@ -164,6 +164,7 @@ module.exports = {
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
         }
-        functions.save("./userData.json", userData)
+
+        fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     }
 }
