@@ -24,5 +24,14 @@
         "maxGems": 15,
         "itemList": ["chest", "key", "lock", "healthpot"],
         "timeH":24
+    },
+
+    "discovery": {
+        "minCash": 1000000,
+        "maxCash": 10000000,
+        "minGems": 20,
+        "maxGems": 25,
+        "itemList": ["moneydoubler", "chest", "key"],
+        "timeH":168
     }
 }
