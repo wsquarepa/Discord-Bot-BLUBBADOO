@@ -32,8 +32,6 @@ module.exports = {
 
             Object.assign(dict, botData)
 
-            delete dict.messagesRecieved
-
             for (var i = 0; i < keys.length; i++) {
                 if (keys[i] == "stats" || keys[i] == "sudo" || keys[i] == "reload" || keys[i] == "report") {
                     delete dict[keys[i]]
@@ -65,7 +63,6 @@ module.exports = {
                 .then(results => {
                     const guilds = results.reduce((acc, guildCount) => acc + guildCount, 0)
                     message.channel.send(embed("STATS", "**Top 5 most used commands:** \n " + leaderString +
-                        "\n **Number of chat messages recieved:** " + botData.messagesRecieved +
                         "\n **Bot Servers:** " + guilds + 
                         "\n **Version:** " + version, "2f3237"))
                 })
