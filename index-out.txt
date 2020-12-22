@@ -1,1 +1,1 @@
-Error [ERR_IPC_CHANNEL_CLOSED]: Channel closed
+TypeError: Cannot read property 'content' of undefined
