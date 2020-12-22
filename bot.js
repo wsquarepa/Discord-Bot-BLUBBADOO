@@ -635,6 +635,7 @@ client.on('message', message => {
 				var success = command.execute(message, args, mention, keyArgs)
 				if (success == null) success = true
 				if (success) {
+					fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 					timestamps.set(message.author.id, now);
 					setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 				}
