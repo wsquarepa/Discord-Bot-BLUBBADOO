@@ -73,21 +73,21 @@ module.exports = {
                 xpChart[loc] = "**|**"
     
                 //embed.addField("Username:", name, false)
-                embed.addField("💵 Cash", cash, true)
-                embed.addField("🏦 Bank", bank, true)
-                embed.addField("💎 Gems", gems, true)
+                embed.addField("💵 Cash", functions.convertToHumanReadableString(cash), true)
+                embed.addField("🏦 Bank", functions.convertToHumanReadableString(bank), true)
+                embed.addField("💎 Gems", functions.convertToHumanReadableString(gems), true)
                 //embed.addField("\u200b", "\u200b", false)
                 embed.addField("Title", type, true)
                 embed.addField("🔒 Secured?", secured, true)
-                embed.addField("Leaderboard Location", userLocation, true)
+                embed.addField("Leaderboard Location", functions.convertToHumanReadableString(userLocation), true)
                 //space
-                embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
-                embed.addField("Level", level, true)
-                embed.addField("🤔 Intellect", intellect, true)
+                embed.addField("XP", xpChart.join("") + " \n " + functions.convertToHumanReadableString(xp) + "/" + functions.convertToHumanReadableString(xpUntil), true)
+                embed.addField("Level", functions.convertToHumanReadableString(level), true)
+                embed.addField("🤔 Intellect", functions.convertToHumanReadableString(intellect), true)
     
-                embed.addField("💪 Strength", strength, true)
-                embed.addField("🛡️ Defence", defence, true)
-                embed.addField("❤️ HP", hp + "/" + maxHP, true)
+                embed.addField("💪 Strength", functions.convertToHumanReadableString(strength), true)
+                embed.addField("🛡️ Defence", functions.convertToHumanReadableString(defence), true)
+                embed.addField("❤️ HP", functions.convertToHumanReadableString(hp) + "/" + functions.convertToHumanReadableString(maxHP), true)
     
                 message.channel.send(embed)
             } else if (args[0].startsWith("s")) {
@@ -184,21 +184,22 @@ module.exports = {
 
             xpChart[loc] = "**|**"
 
-            embed.addField("Cash", cash, true)
-            embed.addField("Bank", bank, true)
-            embed.addField("Gems", gems, true)
-
+            //embed.addField("Username:", name, false)
+            embed.addField("💵 Cash", functions.convertToHumanReadableString(cash), true)
+            embed.addField("🏦 Bank", functions.convertToHumanReadableString(bank), true)
+            embed.addField("💎 Gems", functions.convertToHumanReadableString(gems), true)
+            //embed.addField("\u200b", "\u200b", false)
             embed.addField("Title", type, true)
-            embed.addField("Secured?", "Access Denied", true)
-            embed.addField("Leaderboard Location", userLocation, true)
+            embed.addField("🔒 Secured?", "Access Denied", true)
+            embed.addField("Leaderboard Location", functions.convertToHumanReadableString(userLocation), true)
+            //space
+            embed.addField("XP", xpChart.join("") + " \n " + functions.convertToHumanReadableString(xp) + "/" + functions.convertToHumanReadableString(xpUntil), true)
+            embed.addField("Level", functions.convertToHumanReadableString(level), true)
+            embed.addField("🤔 Intellect", functions.convertToHumanReadableString(intellect), true)
 
-            embed.addField("XP", xpChart.join("") + " \n " + xp + "/" + xpUntil, true)
-            embed.addField("Level", level, true)
-            embed.addField("Intellect", intellect, true)
-
-            embed.addField("Strength", strength, true)
-            embed.addField("Defence", defence, true)
-            embed.addField("HP", hp + "/" + maxHP, true)
+            embed.addField("💪 Strength", functions.convertToHumanReadableString(strength), true)
+            embed.addField("🛡️ Defence", functions.convertToHumanReadableString(defence), true)
+            embed.addField("❤️ HP", functions.convertToHumanReadableString(hp) + "/" + functions.convertToHumanReadableString(maxHP), true)
 
             message.channel.send(embed)
         }
