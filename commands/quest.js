@@ -12,7 +12,7 @@ module.exports = {
     usage: '[quest name]',
     guildOnly: false,
     aliases: ['adventure'],
-    cooldown: 5,
+    cooldown: 3,
     levelRequirement: 3,
     category: "economy",
     adminOnly: false,
