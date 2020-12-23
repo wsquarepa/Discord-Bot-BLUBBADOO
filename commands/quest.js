@@ -127,7 +127,7 @@ module.exports = {
             embed.setDescription("Collect quest: `==quest collect`, collects all earnings \n" + "End quest: `==quest end`, ends quest and forfiets all earnings")
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
-        } else if (isNaN(args[0])) {
+        } else if (isNaN(parseInt(args[0])) && !userData[message.author.id].quest.id) {
             if (userData[message.author.id].quest.cooldown) {
                 const embed = new discord.MessageEmbed()
                 const now = Date.now()
