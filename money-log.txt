@@ -1,1 +1,1 @@
-[22:30:52 GMT+0000 (Coordinated Universal Time)] wsquarepa#4447 (509874745567870987) gave $10000 to Velocity#9098(703336679888650371) 
+[19:17:56 GMT+0000 (Coordinated Universal Time)] User: wsquarepa#4447 (509874745567870987), Action: gave, Amount: $50000, Other User: deer#5394(497869249549828119) 
