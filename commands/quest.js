@@ -43,22 +43,26 @@ module.exports = {
 `
                 , true)
             }
+            embed.setDescription("To start a quest, do `quest <quest name>`! \n For help on quests, do `quest help`!")
             embed.setColor(functions.globalEmbedColor)
             embed.setFooter("Page " + (page + 1) + " of " + pages.length)
-            message.channel.send(embed)
-        } else if (userData[message.author.id].quest.cooldown) {
-            const embed = new discord.MessageEmbed()
-            const now = Date.now()
-            const timeLeft = new Date(userData[message.author.id].quest.cooldown - now)
-            embed.setTitle("Uh Oh!")
-            embed.setDescription("You cannot do any quests as you are on cooldown! \n" + 
-            "You have to wait " + timeLeft.getHours() + " hours and " + timeLeft.getMinutes() + " minutes before doing another quest!")
-            embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
         } else if (functions.isEmpty(userData[message.author.id].quest)) {
             if (!quests[args.join(" ")]) {
                 message.channel.send("Whoops! That quest doesn't exist, my friend!")
-                return
+                return false
+            }
+
+            if (userData[message.author.id].quest.cooldown) {
+                const embed = new discord.MessageEmbed()
+                const now = Date.now()
+                const timeLeft = new Date(userData[message.author.id].quest.cooldown - now)
+                embed.setTitle("Uh Oh!")
+                embed.setDescription("You cannot do any quests as you are on cooldown! \n" + 
+                "You have to wait " + timeLeft.getHours() + " hours and " + timeLeft.getMinutes() + " minutes before doing another quest!")
+                embed.setColor(functions.globalEmbedColor)
+                message.channel.send(embed)
+                return false
             }
 
             message.channel.send("Are you 100% sure you want to start the quest? When you start a quest, you **CANNOT** execute any commands except for this one. " +
