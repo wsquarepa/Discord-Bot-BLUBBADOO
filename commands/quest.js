@@ -56,7 +56,7 @@ module.exports = {
             embed.setColor(functions.globalEmbedColor)
             embed.setFooter("Page " + (page + 1) + " of " + pages.length)
             message.channel.send(embed)
-        } else if (functions.isEmpty(userData[message.author.id].quest)) {
+        } else if (isNaN(args[0])) {
             if (!quests[args.join(" ")]) {
                 message.channel.send("Whoops! That quest doesn't exist, my friend!")
                 return false
