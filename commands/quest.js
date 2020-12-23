@@ -56,45 +56,6 @@ module.exports = {
             embed.setColor(functions.globalEmbedColor)
             embed.setFooter("Page " + (page + 1) + " of " + pages.length)
             message.channel.send(embed)
-        } else if (isNaN(args[0])) {
-            if (userData[message.author.id].quest.cooldown) {
-                const embed = new discord.MessageEmbed()
-                const now = Date.now()
-                const timeLeft = new Date(userData[message.author.id].quest.cooldown - now)
-                embed.setTitle("Uh Oh!")
-                embed.setDescription("You cannot do any quests as you are on cooldown! \n" + 
-                "You have to wait " + timeLeft.getHours() + " hours and " + timeLeft.getMinutes() + " minutes before doing another quest!")
-                embed.setColor(functions.globalEmbedColor)
-                message.channel.send(embed)
-                return;
-            }
-
-            if (!quests[args.join(" ")]) {
-                message.channel.send("Whoops! That quest doesn't exist, my friend!")
-                return false
-            }
-
-            message.channel.send("Are you 100% sure you want to start the quest? When you start a quest, you **CANNOT** execute any commands except for this one. " +
-            "Also, you must do `quest collect` to collect your reward within an hour of finishing. Otherwise, " + 
-            "you **will not** automatically collect your reward. Also, you can end your quest at any time by saying `quest end`. " + 
-            "Say **yes** to confirm that you would like to start the quest.")
-            const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 30000, max: 1})
-            collector.on('end', (msgs) => {
-                if (msgs.size < 1) {
-                    message.channel.send("I guess not then... ok.")
-                    return;
-                }
-                const msg = msgs.first()
-                if (msg.content.toLowerCase() == "yes") {
-                    userData[message.author.id].quest = {
-                        expiryTime: (Date.now() + (1000 * 60 * 60 * quests[args.join(" ")].timeH)),
-                        id: keys.indexOf(args.join(" "))
-                    }
-                    message.channel.send("Quest started! Check back in " + quests[args.join(" ")].timeH + " hours to collect your prize!")
-                } else {
-                    message.channel.send("Oh. Ok. Maybe another time then.")
-                }
-            })
         } else if (args[0] == "collect") {
             if (Date.now() > userData[message.author.id].quest.expiryTime) {
                 if ((Date.now() - userData[message.author.id].quest.expiryTime) > 1000 * 60 * 60) {
@@ -166,6 +127,45 @@ module.exports = {
             embed.setDescription("Collect quest: `==quest collect`, collects all earnings \n" + "End quest: `==quest end`, ends quest and forfiets all earnings")
             embed.setColor(functions.globalEmbedColor)
             message.channel.send(embed)
+        } else if (isNaN(args[0])) {
+            if (userData[message.author.id].quest.cooldown) {
+                const embed = new discord.MessageEmbed()
+                const now = Date.now()
+                const timeLeft = new Date(userData[message.author.id].quest.cooldown - now)
+                embed.setTitle("Uh Oh!")
+                embed.setDescription("You cannot do any quests as you are on cooldown! \n" + 
+                "You have to wait " + timeLeft.getHours() + " hours and " + timeLeft.getMinutes() + " minutes before doing another quest!")
+                embed.setColor(functions.globalEmbedColor)
+                message.channel.send(embed)
+                return;
+            }
+
+            if (!quests[args.join(" ")]) {
+                message.channel.send("Whoops! That quest doesn't exist, my friend!")
+                return false
+            }
+
+            message.channel.send("Are you 100% sure you want to start the quest? When you start a quest, you **CANNOT** execute any commands except for this one. " +
+            "Also, you must do `quest collect` to collect your reward within an hour of finishing. Otherwise, " + 
+            "you **will not** automatically collect your reward. Also, you can end your quest at any time by saying `quest end`. " + 
+            "Say **yes** to confirm that you would like to start the quest.")
+            const collector = new discord.MessageCollector(message.channel, x => x.author.id == message.author.id, {time: 30000, max: 1})
+            collector.on('end', (msgs) => {
+                if (msgs.size < 1) {
+                    message.channel.send("I guess not then... ok.")
+                    return;
+                }
+                const msg = msgs.first()
+                if (msg.content.toLowerCase() == "yes") {
+                    userData[message.author.id].quest = {
+                        expiryTime: (Date.now() + (1000 * 60 * 60 * quests[args.join(" ")].timeH)),
+                        id: keys.indexOf(args.join(" "))
+                    }
+                    message.channel.send("Quest started! Check back in " + quests[args.join(" ")].timeH + " hours to collect your prize!")
+                } else {
+                    message.channel.send("Oh. Ok. Maybe another time then.")
+                }
+            })
         } else {
             const timeLeft = new Date(userData[message.author.id].quest.expiryTime - Date.now())
             const embed = new discord.MessageEmbed()
