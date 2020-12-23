@@ -3,15 +3,18 @@ const fs = require('fs');
 const path = require('path')
 const {
 	token,
-	bannedServers,
 	dblToken,
+	webhookToken,
+	testMode
+} = require("../configs/blubbadoo.json")
+const {
+	bannedServers,
 	botAdmins
 } = require('./config.json');
 const cooldowns = new Discord.Collection();
 const cooldownwarned = new Discord.Collection()
 const client = new Discord.Client();
 var userData = require('./userData.json')
-const modeOfUser = require('../configs/blubbadoo.json')
 const teamData = require('./teams.json')
 var botData = require('./botData.json')
 client.commands = new Discord.Collection();
@@ -20,10 +23,10 @@ var shopData = require('./shop.json')
 const schedule = require('node-schedule')
 const execSync = require('child_process').execSync
 var guildData = require("./guildData.json")
-const errWebhook = new Discord.WebhookClient("720427166650728589", "4PVEXDDaz0MS-2uN7rucTK6UZl6xh0FgHqLoFXPm2_HJ6LNYDBBTDcTna2N8OYm1ZTmZ");
+const errWebhook = new Discord.WebhookClient("720427166650728589", webhookToken);
 const functions = require("./jsHelpers/functions")
 const DBL = require("dblapi.js")
-const dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5NjcxNTExMTUxMTQ5MDU2MCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTk1NzgxOTAxfQ.bbb9DPH39Q2roE1jKpRxZNMnzyFJQ_ivLJTxoB10cv4', client);
+const dbl = new DBL(dblToken, client);
 var shardId = 0
 const quests = require("./quests.json")
 
@@ -214,7 +217,7 @@ client.once("ready", function () {
 client.on('message', message => {
 	if (message.channel.type == 'dm') return;
 	if (bannedServers.includes(message.guild.id)) return;
-	if ((message.author.id != "509874745567870987" && modeOfUser.testMode)) return
+	if ((message.author.id != "509874745567870987" && testMode.testMode)) return
 
 	if (!guildData[message.guild.id]) {
 		guildData[message.guild.id] = {
