@@ -32,7 +32,7 @@ module.exports = {
             log = log.slice(Math.max(log.length - 15, 0))
             const embed = new discord.MessageEmbed()
             embed.setTitle("Last 15 actions:")
-            embed.setDescription("``` \n " + log.join("\n") + " ``` More [here](" + url + " 'Haste Online')")
+            embed.setDescription("``` \n " + log.join("\n") + " ```")
             embed.setColor(functions.globalEmbedColor)
             embed.setTimestamp(Date.now())
             message.channel.send(embed)
