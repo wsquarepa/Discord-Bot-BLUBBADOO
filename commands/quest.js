@@ -24,7 +24,7 @@ module.exports = {
             var pages = []            
             for (var i = 0; i < (keys.length / 3); i++) {
                 try {
-                    pages.push(keys.splice(0, 5))
+                    pages.push(keys.splice(0, 3))
                 } catch {
                     //pass
                 }
@@ -33,6 +33,11 @@ module.exports = {
             console.log("[SHARD/DEBUG] " + pages)
             var page = (args[0] == null? 0:parseInt(args[0]) - 1)
             var pageKeys = pages[page]
+
+            if (!pageKeys) {
+                message.channel.send("That page doesn't exist.")
+                return false
+            }
             
             for (i = 0; i < pageKeys.length; i++) {
                 embed.addField(pageKeys[i], 
