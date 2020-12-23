@@ -29,6 +29,10 @@ module.exports = {
                     //pass
                 }
             }
+
+            if (keys.length > 0) {
+                pages.push(keys)
+            }
     
             console.log("[SHARD/DEBUG] " + pages)
             var page = (args[0] == null? 0:parseInt(args[0]) - 1)
