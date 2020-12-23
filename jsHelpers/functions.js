@@ -85,8 +85,8 @@ module.exports = {
 
     logMoney: function (message, amount, action, otherUser) {
         var date = new Date()
-        fs.writeFile("./money-log.txt", "[" + date.toTimeString() + "] " + message.author.tag + " (" + message.author.id + ") " + action + " $" + amount + " to " 
-            + otherUser.tag + "(" + otherUser.id + ") \n", 
+        fs.writeFile("./money-log.txt", "[" + date.toTimeString() + "] User: " + message.author.tag + " (" + message.author.id + "), Action: " + action + ", Amount: $" 
+        + amount + ", Other User: " + otherUser.tag + "(" + otherUser.id + ") \n", 
             (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
     },
 
