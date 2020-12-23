@@ -8,3 +8,7 @@ All pull requests must have your discord username in the description and a detai
 You must also be part of <a href="https://discord.gg/wmPAatT">our discord community</a>.
 
 To submit a bug report, submit it in the issues tab.
+
+| TODO:
+| - Fix the bug where all data is cleared every time I restart the bot
+| - Fix team command
