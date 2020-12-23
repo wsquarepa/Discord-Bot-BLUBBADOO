@@ -57,11 +57,6 @@ module.exports = {
             embed.setFooter("Page " + (page + 1) + " of " + pages.length)
             message.channel.send(embed)
         } else if (isNaN(args[0])) {
-            if (!quests[args.join(" ")]) {
-                message.channel.send("Whoops! That quest doesn't exist, my friend!")
-                return false
-            }
-
             if (userData[message.author.id].quest.cooldown) {
                 const embed = new discord.MessageEmbed()
                 const now = Date.now()
@@ -71,6 +66,11 @@ module.exports = {
                 "You have to wait " + timeLeft.getHours() + " hours and " + timeLeft.getMinutes() + " minutes before doing another quest!")
                 embed.setColor(functions.globalEmbedColor)
                 message.channel.send(embed)
+                return;
+            }
+
+            if (!quests[args.join(" ")]) {
+                message.channel.send("Whoops! That quest doesn't exist, my friend!")
                 return false
             }
 
