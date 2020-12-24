@@ -13,4 +13,5 @@ To submit a bug report, submit it in the issues tab.
 <ul>
     <li>Fix the bug where all data is cleared every time I restart the bot</li>
     <li>Fix team command</li>
+    <li>Fix music command</li>
 </ul>
