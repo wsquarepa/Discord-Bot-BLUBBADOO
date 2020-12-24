@@ -1,0 +1,37 @@
+{
+    "robbery": {
+        "minCash":1000,
+        "maxCash":2000,
+        "minGems":1,
+        "maxGems":2,
+        "itemList":["knife", "knife", "knife"],
+        "timeH":3
+    },
+
+    "exploration": {
+        "minCash": 1000,
+        "maxCash": 5000,
+        "minGems": 5,
+        "maxGems": 8,
+        "itemList": ["chest", "key"],
+        "timeH":12
+    },
+
+    "charity": {
+        "minCash": 10000,
+        "maxCash": 100000,
+        "minGems": 10,
+        "maxGems": 15,
+        "itemList": ["chest", "key", "lock", "healthpot"],
+        "timeH":24
+    },
+
+    "discovery": {
+        "minCash": 1000000,
+        "maxCash": 10000000,
+        "minGems": 20,
+        "maxGems": 25,
+        "itemList": ["moneydoubler", "chest", "key"],
+        "timeH":168
+    }
+}

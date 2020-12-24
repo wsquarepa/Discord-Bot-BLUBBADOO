@@ -1,0 +1,29 @@
+{
+    "lock":{
+        "price":2,
+        "image":"🔒",
+        "uses":1,
+        "useable":true
+    },
+
+    "moneydoubler":{
+        "price":50,
+        "image":"754357054516232296",
+        "uses":1,
+        "useable":true
+    },
+
+    "goldenbook":{
+        "price":10,
+        "image":"📙",
+        "uses":1,
+        "useable":false
+    },
+
+    "healthpot": {
+        "price":1,
+        "image":"🍼",
+        "uses":1,
+        "useable":true
+    }
+}
