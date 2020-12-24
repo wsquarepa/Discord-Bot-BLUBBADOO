@@ -9,6 +9,8 @@ You must also be part of <a href="https://discord.gg/wmPAatT">our discord commun
 
 To submit a bug report, submit it in the issues tab.
 
-| TODO:
-| - Fix the bug where all data is cleared every time I restart the bot
-| - Fix team command
+<h4>TODO:</h4>
+<ul>
+    <li>Fix the bug where all data is cleared every time I restart the bot</li>
+    <li>Fix team command</li>
+</ul>
