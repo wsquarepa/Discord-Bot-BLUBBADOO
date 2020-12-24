@@ -13,4 +13,12 @@ To submit a bug report, submit it in the issues tab.
 <ul>
     <li>Fix the bug where all data is cleared every time I restart the bot</li>
     <li>Fix team command</li>
+    <li>Fix music command</li>
+</ul>
+
+<h2>Contribution rules:</h2>
+<ul>
+    <li>You may not edit <a href="https://github.com/wsquarepa/Discord-Bot-BLUBBADOO/blob/master/userData.json">userData.json</a>. All pull requests that have <a href="https://github.com/wsquarepa/Discord-Bot-BLUBBADOO/blob/master/userData.json">userData.json</a>. edited will be denied.</li>
+    <li>You may create economy commands, but none that are too overpowered. (Like a command that gives people 1 million dollars per execution)</li>
+    <li>All bot code can be edited but without credit. You may not add extra text or comments in the code that mention you. (This includes all text that the bot sends)</li>
 </ul>
