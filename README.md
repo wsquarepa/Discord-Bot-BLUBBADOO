@@ -21,4 +21,5 @@ To submit a bug report, submit it in the issues tab.
     <li>Add your Discord username, tag and ID into the pull request description and if your command is accepted and you are in the support server we will give you <b>at least</b> one gem for your contributions.</li>
     <li>Make replies funny! You can make a boring reply like "You got $1000" into "Wowee! You <i>did this</i> and got $1000!".</li>
     <li>Fix an issue! You get extra gems for that! Make sure you specify which issue and if possible link to it!</li>
+    <li>Link it to the <a href="https://github.com/wsquarepa/Discord-Bot-BLUBBADOO/projects/1">Blubbadoo development project board</a>! That makes it easier to see and will most likely be noticed sooner!</li>
 </ul>
