@@ -6,29 +6,41 @@ const {
 	dblToken,
 	webhookToken,
 	testMode
-} = require("../configs/blubbadoo.json")
+} = require("../configs/blubbadoo.json") // NOT SHOWN IN GITHUB, BOT BROKEN
+
+// Import Data
 const {
 	bannedServers,
 	botAdmins
-} = require('./config.json');
+} = require('./data/config.json');
+const teamData = require('./data/teams.json');
+var userData = require('./data/userData.json');
+var botData = require('./data/botData.json');
+var shopData = require('./data/shop.json');
+var guildData = require("./data/guildData.json");
+const quests = require("./data/quests.json");
+
 const cooldowns = new Discord.Collection();
 const cooldownwarned = new Discord.Collection()
 const client = new Discord.Client();
-var userData = require('./userData.json')
-const teamData = require('./teams.json')
-var botData = require('./botData.json')
+
+
+
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-var shopData = require('./shop.json')
+
 const schedule = require('node-schedule')
 const execSync = require('child_process').execSync
-var guildData = require("./guildData.json")
+
 const errWebhook = new Discord.WebhookClient("720427166650728589", webhookToken);
-const functions = require("./jsHelpers/functions")
-const DBL = require("dblapi.js")
+const functions = require("./jsHelpers/functions");
+
+const DBL = require("dblapi.js");
 const dbl = new DBL(dblToken, client);
+
 var shardId = 0
-const quests = require("./quests.json")
+
+
 
 function isEmpty(obj) {
 	for (var key in obj) {
@@ -58,7 +70,7 @@ for (const file of commandFiles) {
 		}
 	}
 	if (botData != "" || botData != null || !isEmpty(botData)) {
-		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	}
 }
 
@@ -98,7 +110,7 @@ setInterval(function () {
 			shopData[shopKeys[i]].stock.nextRestock = -1
 		}
 	}
-	fs.writeFile("./shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+	fs.writeFile("./data/shop.json", JSON.stringify(shopData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 }, 1000)
 
 client.once("ready", function () {
@@ -138,7 +150,7 @@ client.once("ready", function () {
 		userData[leaders[0][0]].gems += 5
 		userData[leaders[1][0]].gems += 3
 		userData[leaders[2][0]].gems += 1
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	})
 
 	schedule.scheduleJob("0 0 * * *", () => {
@@ -158,7 +170,7 @@ client.once("ready", function () {
 			}
 		}
 
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	})
 
 	schedule.scheduleJob("0 0 * * *", () => {
@@ -187,7 +199,7 @@ client.once("ready", function () {
 			}
 
 		}
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	}, 60000)
 
 	setInterval(() => {
@@ -210,7 +222,7 @@ client.once("ready", function () {
 				userData[keys[i]].hp += 1
 			}
 		}
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	}, 5000)
 })
 
@@ -457,7 +469,7 @@ client.on('message', message => {
 			}
 		}
 
-		fs.writeFile("./userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/userData.json", JSON.stringify(userData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	}
 
 	var prefix = "=="
@@ -500,7 +512,7 @@ client.on('message', message => {
 	botData[command.name].uses++
 	botData[command.name].lastUsed = now
 	if (botData != "" || botData != null || !isEmpty(botData)) {
-		fs.writeFile("./botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
+		fs.writeFile("./data/botData.json", JSON.stringify(botData), (err) => err !== null ? console.error("[SHARD/ERROR] " + err) : null)
 	}
 	//#endregion
 
