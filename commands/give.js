@@ -41,6 +41,11 @@ module.exports = {
             return false
         }
 
+        if (parseInt(args[0]) < 1) {
+            message.channel.send("Uhh not sure how you're gonna do that...")
+            return false
+        } 
+
         var cashAmt = parseInt(args[1])
 
         userData[mention.id].bank += cashAmt

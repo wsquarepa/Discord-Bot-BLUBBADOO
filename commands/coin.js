@@ -55,6 +55,11 @@ module.exports = {
             return false
         }
 
+        if (args[1] < 1) {
+            message.channel.send("Uhh not sure how you're gonna do that...")
+            return false
+        } 
+
         userData[message.author.id].inventory.coin.uses -= 1
         if (userData[message.author.id].inventory.coin.uses < 1) {
             userData[message.author.id].inventory.coin.amount -= 1

@@ -24,6 +24,12 @@ module.exports = {
             message.channel.send("Next time, tell me what you want to bet.")
             return false
         }
+
+        if (parseInt(args[0]) < 1) {
+            message.channel.send("Uhh not sure how you're gonna do that...")
+            return false
+        } 
+
         if ((userData[message.author.id].cash - parseInt(args[0])) < 0) {
             message.channel.send("You can't bet more than you have on hand.")
             return false

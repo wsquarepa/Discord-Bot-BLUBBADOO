@@ -18,7 +18,7 @@ module.exports = {
         var itemName = args[0].toLowerCase()
         var amount = parseInt(args[1])
 
-        if (!amount) amount = 1
+        if (!amount || amount < 1) amount = 1
         
         var invKeys = Object.keys(userData[message.author.id].inventory)
         if (!invKeys.includes(itemName)) {

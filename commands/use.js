@@ -33,6 +33,11 @@ module.exports = {
                 return false
             }
 
+            if (args[1] < 1) {
+                message.channel.send("Uhh not sure how you're gonna do that...")
+                return false
+            } 
+
             message.channel.send("Ok, using " + args[1] + " " + args[0] + (args[1] > 1 ? "s" : "") + " ...")
             userData[message.author.id].gems -= args[1]
             var earnings = randomNumber(1000, 2000) * args[1]

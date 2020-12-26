@@ -51,6 +51,11 @@ module.exports = {
                 return false;
             }
 
+            if (amount < 1) {
+                message.channel.send("Uhh not sure how you're gonna do that...")
+                return false
+            } 
+
             const paypercent = (amount / userData[message.author.id].loan.amount).toFixed(2) * 100
 
             userData[message.author.id].loan.amount -= amount

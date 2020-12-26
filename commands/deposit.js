@@ -16,6 +16,12 @@ module.exports = {
             message.channel.send("Next time, tell me what you want to put in the bank.")
             return false
         }
+
+        if (parseInt(args[0]) < 1) {
+            message.channel.send("Uhh not sure how you're gonna do that...")
+            return false
+        } 
+
         args[0] = args[0].trim()
         if (args[0] == "all") {
             const space = userData[message.author.id].bankLimit - userData[message.author.id].bank
